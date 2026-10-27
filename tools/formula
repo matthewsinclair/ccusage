@@ -35,7 +35,11 @@ if grep -q '@RELEASE_' "$stage"; then echo "Unresolved formula placeholder" >&2;
 cat "$stage" > "$output"
 if [ "$mode" = publish ]; then
   git -C "$tap" add -- Formula/ccusage.rb
-  if git -C "$tap" diff --cached --quiet; then echo "Tap is already at $tag"; exit 0; fi
-  git -C "$tap" commit -m "Update ccusage to $tag"
+  if git -C "$tap" diff --cached --quiet; then
+    echo "Tap is already at $tag"
+  else
+    git -C "$tap" commit -m "Update ccusage to $tag"
+  fi
+  # A previous run may have committed the update but failed during its push.
   git -C "$tap" push origin HEAD:refs/heads/main
 fi

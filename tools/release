@@ -1,0 +1,198 @@
+#!/bin/sh
+# Release stable versions; never overwrite a tag or force-push either repository.
+set -eu
+
+root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
+repo=matthewsinclair/ccusage
+tap=${CCUSAGE_TAP:-"$root/../homebrew-ccusage"}
+remote=${CCUSAGE_REMOTE:-}
+dry_run=false
+resume=false
+version=
+
+die() { echo "release: $*" >&2; exit 1; }
+usage() { echo "Usage: tools/release [--dry-run | --resume] VERSION [--tap PATH] [--remote NAME]"; }
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --dry-run) dry_run=true ;;
+    --resume) resume=true ;;
+    --tap|--remote)
+      option=$1
+      shift
+      [ "$#" -gt 0 ] || die "$option requires a value"
+      case "$option" in --tap) tap=$1 ;; --remote) remote=$1 ;; esac
+      ;;
+    -h|--help) usage; exit 0 ;;
+    -*) usage >&2; die "unknown option: $1" ;;
+    *) [ -z "$version" ] || die "expected one version"; version=$1 ;;
+  esac
+  shift
+done
+[ -n "$version" ] || { usage >&2; exit 2; }
+printf '%s\n' "$version" | grep -Eq '^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' ||
+  die "use a stable version such as 0.1.1 (no leading v or leading zeros)"
+[ "$dry_run$resume" != truetrue ] || die "--dry-run and --resume are mutually exclusive"
+tag=v$version
+
+package_version() {
+  awk '
+    /^\[package\]$/ { package = 1; next }
+    /^\[/ { package = 0 }
+    package && /^[[:space:]]*version[[:space:]]*=/ {
+      split($0, parts, "\""); print parts[2]; found++
+    }
+    END { if (found != 1) exit 1 }
+  ' "$1"
+}
+for tool in git cargo gh actionlint shellcheck; do
+  command -v "$tool" >/dev/null 2>&1 || die "required maintainer tool is missing: $tool"
+done
+cd "$root"
+[ "$(git branch --show-current)" = main ] || die "source checkout must be on main"
+[ -z "$(git status --porcelain)" ] || die "source checkout must be clean; commit your changes first"
+[ -d "$tap" ] || die "tap checkout not found: $tap; use --tap PATH"
+tap=$(CDPATH='' cd -- "$tap" && pwd)
+[ "$(git -C "$tap" branch --show-current)" = main ] || die "tap checkout must be on main"
+[ -z "$(git -C "$tap" status --porcelain)" ] || die "tap checkout must be clean"
+if [ -z "$remote" ]; then
+  if git remote get-url upstream >/dev/null 2>&1; then remote=upstream; else remote=origin; fi
+fi
+remote_url=$(git config --get "remote.$remote.url")
+case "$remote_url" in
+  https://github.com/matthewsinclair/ccusage|https://github.com/matthewsinclair/ccusage.git|git@github.com:matthewsinclair/ccusage.git|git@github.com-matthewsinclair:matthewsinclair/ccusage.git) ;;
+  *) die "remote $remote is not the expected GitHub repository: $remote_url" ;;
+esac
+current=$(package_version Cargo.toml) || die "cannot read the package version"
+if [ "$resume" = true ]; then
+  [ "$current" = "$version" ] || die "--resume requires Cargo.toml to already be at $version"
+else
+  # Compare digit strings rather than overflowing shell integers.
+  awk -v old="$current" -v new="$version" 'BEGIN {
+    split(old, a, "."); split(new, b, ".")
+    for (i = 1; i <= 3; i++) {
+      if (length(b[i]) > length(a[i])) exit 0
+      if (length(b[i]) < length(a[i])) exit 1
+      if (("v" b[i]) > ("v" a[i])) exit 0
+      if (("v" b[i]) < ("v" a[i])) exit 1
+    }
+    exit 1
+  }' || die "$version must be newer than $current; use --resume only for an interrupted release"
+fi
+echo "Ccusage $current -> $version"
+echo "Source remote: $remote; tap checkout: $tap"
+if [ "$dry_run" = true ]; then
+  echo "Would fetch both repositories and verify they are not behind or diverged."
+  echo "Would update Cargo.toml/Cargo.lock, run fmt, Clippy, tests, build, and workflow/shell checks."
+  echo "Would commit the version bump, create annotated tag $tag, and atomically push main and the tag."
+  echo "Would wait for the tagged GitHub build and verify all four archives and SHA256SUMS exist."
+  echo "Would publish the pinned Homebrew formula and wait for its macOS/Linux tests. No files, refs, or remote state changed."
+  exit 0
+fi
+
+phase=preparation
+stage=
+lock=$(git rev-parse --git-path ccusage-release.lock)
+mkdir "$lock" 2>/dev/null || die "another release may be running; inspect $lock before removing a stale lock"
+on_exit() {
+  code=$?
+  trap - 0
+  if [ -n "$stage" ]; then rm -f "$stage"; fi
+  rmdir "$lock" || echo "release: could not remove release lock: $lock" >&2
+  if [ "$code" -ne 0 ]; then
+    echo "release: stopped during $phase; no tags or commits were reset." >&2
+    case "$phase" in
+      preparation|validation) echo "Version-file edits may remain for inspection; fix or restore them before retrying." >&2 ;;
+      *) echo "Once resolved, continue with: tools/release --resume $version --tap '$tap' --remote '$remote'" >&2 ;;
+    esac
+  fi
+  exit "$code"
+}
+trap on_exit 0
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+[ "$(gh api "repos/$repo" --jq .permissions.push)" = true ] || die "the active gh account cannot publish to $repo"
+[ "$(gh api repos/matthewsinclair/homebrew-ccusage --jq .permissions.push)" = true ] || die "the active gh account cannot publish the tap"
+owner=$(cd "$tap" && gh repo view --json nameWithOwner --jq .nameWithOwner)
+[ "$owner" = matthewsinclair/homebrew-ccusage ] || die "unexpected tap repository: $owner"
+git fetch "$remote" main --tags
+git merge-base --is-ancestor "refs/remotes/$remote/main" HEAD ||
+  die "source main is behind or diverged; synchronize it before releasing"
+git -C "$tap" fetch origin main
+git -C "$tap" merge --ff-only origin/main
+
+if [ "$resume" = false ]; then
+  if git show-ref --verify --quiet "refs/tags/$tag"; then die "tag $tag already exists"; fi
+  stage=$(mktemp "$root/.release-manifest.XXXXXX")
+  awk -v version="$version" '
+    /^\[package\]$/ { package = 1 }
+    /^\[/ && $0 != "[package]" { package = 0 }
+    package && /^[[:space:]]*version[[:space:]]*=/ { $0 = "version = \"" version "\""; found++ }
+    { print }
+    END { if (found != 1) exit 1 }
+  ' Cargo.toml > "$stage"
+  cat "$stage" > Cargo.toml
+  rm "$stage"
+  stage=
+  cargo update --workspace --offline
+  phase=validation
+  cargo fmt --check
+  cargo clippy --all-targets --locked -- -D warnings
+  cargo test --locked
+  cargo build --release --locked
+  actionlint .github/workflows/build.yml
+  shellcheck tools/release tools/formula tests/release.sh
+  sh tests/release.sh
+  git diff --check
+  # Do not include unrelated edits that appeared while validation was running.
+  unexpected=$(git status --porcelain | grep -Ev '^ M Cargo\.(toml|lock)$' || :)
+  [ -z "$unexpected" ] || die "unexpected working-tree changes appeared during validation"
+  git add -- Cargo.toml Cargo.lock
+  git commit -m "Release Ccusage $tag"
+fi
+
+phase=publication
+revision=$(git rev-parse HEAD)
+if git show-ref --verify --quiet "refs/tags/$tag"; then
+  [ "$resume" = true ] || die "tag already exists"
+  [ "$(git cat-file -t "refs/tags/$tag")" = tag ] || die "release tag is not annotated"
+  [ "$(git rev-parse "refs/tags/$tag^{commit}")" = "$revision" ] || die "checkout is no longer at the interrupted release commit"
+else
+  [ "$(git log -1 --format=%s)" = "Release Ccusage $tag" ] || die "HEAD is not the prepared release commit"
+  git tag -a "$tag" -m "Ccusage $tag"
+fi
+git push --atomic "$remote" HEAD:refs/heads/main "refs/tags/$tag"
+
+wait_for_workflow() {
+  wf_repo=$1
+  wf_file=$2
+  wf_ref=$3
+  wf_commit=$4
+  attempt=0
+  run_id=
+  while [ "$attempt" -lt 30 ]; do
+    run_id=$(gh run list --repo "$wf_repo" --workflow "$wf_file" --event push --branch "$wf_ref" --commit "$wf_commit" \
+      --limit 1 --json databaseId --jq '.[0].databaseId // empty')
+    [ -z "$run_id" ] || break
+    attempt=$((attempt + 1))
+    sleep 2
+  done
+  [ -n "$run_id" ] || die "workflow $wf_file has not appeared in $wf_repo; check Actions before resuming"
+  gh run watch "$run_id" --repo "$wf_repo" --exit-status --interval 10
+}
+
+phase=CI
+wait_for_workflow "$repo" build.yml "$tag" "$revision"
+assets=$(gh release view "$tag" --repo "$repo" --json assets,isDraft \
+  --jq 'if .isDraft then empty else .assets[].name end')
+for target in aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu; do
+  printf '%s\n' "$assets" | grep -Fx "ccusage-$tag-$target.tar.gz" >/dev/null || die "release archive is missing: $target"
+done
+printf '%s\n' "$assets" | grep -Fx SHA256SUMS >/dev/null || die "release checksums are missing"
+phase=Homebrew
+"$root/tools/formula" publish "$tag" "$tap"
+phase="Homebrew CI"
+wait_for_workflow matthewsinclair/homebrew-ccusage test.yml main "$(git -C "$tap" rev-parse HEAD)"
+phase=complete
+gh release view "$tag" --repo "$repo" --json url --jq .url
+echo "Released Ccusage $version and updated the Homebrew tap."

@@ -145,3 +145,7 @@ The parser uses the canonical `limits` array when present, including model displ
 ## Logo
 
 `design/icons/ccusage-logo.svg` contains three plain horizontal bars on a transparent background: long green at the top, medium amber in the middle, and short red at the bottom.
+
+## Maintainer release command
+
+From a clean `main` checkout, run `tools/release 0.1.1` to bump the version, validate, commit/tag/push, wait for the GitHub release, and update the Homebrew tap. Use `tools/release --dry-run 0.1.1` to preview, or `--resume 0.1.1` to recover an interrupted publication. This does not install or uninstall local packages. See [releasing](docs/releasing.md) for prerequisites and recovery details.
