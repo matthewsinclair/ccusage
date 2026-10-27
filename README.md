@@ -1,6 +1,6 @@
 # Ccusage
 
-Named Claude Code accounts, explicit account selection, and a compact terminal dashboard for subscription usage. Written in Rust, with seven direct dependencies and no async runtime. Requires `claude` on `PATH`; the interactive dashboard requires a terminal.
+Named Claude Code accounts, explicit account selection, and a compact terminal dashboard for subscription usage. Rust. Requires `claude` on `PATH`; the interactive dashboard requires a terminal.
 
 ## Install
 
