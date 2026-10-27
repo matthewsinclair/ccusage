@@ -23,6 +23,7 @@ Usage: ccusage [--config PATH] [--no-color] [--verbose] COMMAND
   tui [--demo]                 Interactive account dashboard (demo works without setup)
   shell zsh|bash               Print an optional wrapper for plain claude
   paths                        Show resolved XDG directories
+  doctor                       Check Claude, configuration, and private-file permissions
   help                         Show this help
   --version                    Show version
 
@@ -110,6 +111,10 @@ pub fn run(mut args: Vec<String>) -> Result<()> {
     empty(&args)?;
     println!("{HELP}");
     return Ok(());
+  }
+  if command == "doctor" {
+    empty(&args)?;
+    return crate::doctor::run(&config::absolute(&path)?);
   }
   if command == "shell" {
     let shell = one(&args)?;

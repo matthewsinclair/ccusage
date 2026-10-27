@@ -1,0 +1,41 @@
+#!/bin/sh
+# Render the versioned template or publish it using the maintainer's Git/gh login.
+set -eu
+root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
+mode=${1:-}
+tag=${2:-}
+case "$mode" in render|publish) ;; *) echo "Usage: tools/formula render TAG OUTPUT | publish TAG TAP_CHECKOUT" >&2; exit 2 ;; esac
+if [ "$#" -ne 3 ]; then echo "Expected TAG and output path/tap checkout" >&2; exit 2; fi
+if ! printf '%s\n' "$tag" | grep -Eq '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+  echo "Expected a stable release tag such as v0.1.0" >&2
+  exit 2
+fi
+git -C "$root" show-ref --verify --quiet "refs/tags/$tag"
+revision=$(git -C "$root" rev-parse --verify "refs/tags/$tag^{commit}")
+version=$(git -C "$root" show "$tag:Cargo.toml" | sed -n 's/^version = "\([^"]*\)"$/\1/p')
+if [ "$tag" != "v$version" ]; then echo "Tag does not match Cargo.toml version" >&2; exit 1; fi
+output=$3
+if [ "$mode" = publish ]; then
+  tap=$output
+  if [ -n "$(git -C "$tap" status --porcelain)" ]; then echo "Tap checkout must be clean" >&2; exit 1; fi
+  if [ "$(git -C "$tap" branch --show-current)" != main ]; then echo "Tap checkout must be on main" >&2; exit 1; fi
+  # Verify the exact repository, including SSH aliases, without changing Git auth.
+  owner=$(cd "$tap" && gh repo view --json nameWithOwner --jq .nameWithOwner)
+  if [ "$owner" != matthewsinclair/homebrew-ccusage ]; then echo "Unexpected tap repository" >&2; exit 1; fi
+  remote_revision=$(gh api "repos/matthewsinclair/ccusage/commits/$tag" --jq .sha)
+  if [ "$remote_revision" != "$revision" ]; then echo "Release tag is not published at the expected commit" >&2; exit 1; fi
+  mkdir -p "$tap/Formula"
+  output=$tap/Formula/ccusage.rb
+fi
+stage=$(mktemp)
+trap 'rm -f "$stage" "$stage.template"' 0 HUP INT TERM
+git -C "$root" show "$tag:packaging/homebrew/ccusage.rb" > "$stage.template"
+sed -e "s/@RELEASE_TAG@/$tag/g" -e "s/@RELEASE_REVISION@/$revision/g" "$stage.template" > "$stage"
+if grep -q '@RELEASE_' "$stage"; then echo "Unresolved formula placeholder" >&2; exit 1; fi
+cat "$stage" > "$output"
+if [ "$mode" = publish ]; then
+  git -C "$tap" add -- Formula/ccusage.rb
+  if git -C "$tap" diff --cached --quiet; then echo "Tap is already at $tag"; exit 0; fi
+  git -C "$tap" commit -m "Update ccusage to $tag"
+  git -C "$tap" push origin HEAD:refs/heads/main
+fi

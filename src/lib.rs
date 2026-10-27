@@ -2,6 +2,7 @@ pub mod auth;
 pub mod cli;
 pub mod config;
 pub mod display;
+pub mod doctor;
 pub mod storage;
 pub mod usage;
 

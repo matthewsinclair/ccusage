@@ -28,6 +28,7 @@ impl Sandbox {
     let script = r##"#!/bin/sh
 umask 077
 case "$1 $2" in
+  '--version ') /bin/echo 'Claude Code (test fixture)' ;;
   'auth login')
     /bin/mkdir -p "$CLAUDE_CONFIG_DIR"
     /bin/cat > "$CLAUDE_CONFIG_DIR/.credentials.json" <<'JSON'
@@ -416,5 +417,32 @@ fn config_parser_errors_do_not_echo_misplaced_secrets() -> Result<()> {
   let error = String::from_utf8(output.stderr)?;
   assert!(error.contains("contents redacted"));
   assert!(!error.contains("MISPLACED_PRIVATE_SECRET"));
+  Ok(())
+}
+
+#[test]
+fn doctor_checks_claude_and_explains_uninitialized_setup_without_writes() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let output = sandbox.ok(&["doctor"])?;
+  assert!(output.contains("Claude on PATH"));
+  assert!(output.contains("ccusage init"));
+  assert!(!sandbox.root.join("config").exists());
+  assert!(!sandbox.root.join("data").exists());
+  Ok(())
+}
+
+#[test]
+fn doctor_fails_when_claude_is_missing_or_private_files_are_insecure() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  let config = sandbox.root.join("config/ccusage/config.toml");
+  fs::set_permissions(config, fs::Permissions::from_mode(0o644))?;
+  let output = sandbox.run(&["doctor"])?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stdout)?.contains("mode 0644"));
+  fs::remove_file(sandbox.root.join("bin/claude"))?;
+  let output = sandbox.run(&["doctor"])?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stdout)?.contains("Cannot run claude from PATH"));
   Ok(())
 }

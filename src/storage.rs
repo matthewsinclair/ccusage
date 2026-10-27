@@ -64,20 +64,9 @@ pub fn write_atomic(path: &Path, bytes: &[u8]) -> Result<()> {
   result
 }
 
-pub fn read_optional(path: &Path) -> Result<Option<Vec<u8>>> {
-  let metadata = match fs::metadata(path) {
-    Ok(metadata) => metadata,
-    Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
-    Err(error) => return Err(error.into()),
-  };
+fn validate_private_metadata(metadata: &fs::Metadata, path: &Path) -> Result<()> {
   if !metadata.is_file() {
     return Err(format!("private path is not a regular file: {}", path.display()).into());
-  }
-  let mut file = fs::File::open(path)?;
-  // Inspect the opened file, not just the path, before reading any contents.
-  let metadata = file.metadata()?;
-  if !metadata.is_file() {
-    return Err("private file changed type while opening".into());
   }
   #[cfg(unix)]
   {
@@ -93,6 +82,37 @@ pub fn read_optional(path: &Path) -> Result<Option<Vec<u8>>> {
       );
     }
   }
+  Ok(())
+}
+
+/// Inspect only metadata; doctor must not read credential contents.
+pub fn check_private_file(path: &Path) -> Result<bool> {
+  match fs::metadata(path) {
+    Ok(metadata) => {
+      validate_private_metadata(&metadata, path)?;
+      Ok(true)
+    }
+    Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(false),
+    Err(error) => Err(error.into()),
+  }
+}
+
+pub fn read_optional(path: &Path) -> Result<Option<Vec<u8>>> {
+  let metadata = match fs::metadata(path) {
+    Ok(metadata) => metadata,
+    Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+    Err(error) => return Err(error.into()),
+  };
+  if !metadata.is_file() {
+    return Err(format!("private path is not a regular file: {}", path.display()).into());
+  }
+  let mut file = fs::File::open(path)?;
+  // Inspect the opened file, not just the path, before reading any contents.
+  let metadata = file.metadata()?;
+  if !metadata.is_file() {
+    return Err("private file changed type while opening".into());
+  }
+  validate_private_metadata(&metadata, path)?;
   let mut bytes = Vec::new();
   file.read_to_end(&mut bytes)?;
   Ok(Some(bytes))

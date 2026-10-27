@@ -2,7 +2,17 @@
 
 Named Claude Code accounts, explicit account selection, and a compact terminal dashboard for subscription usage. Written in Rust, with seven direct dependencies and no async runtime. Requires `claude` on `PATH`; the interactive dashboard requires a terminal.
 
+## Install
+
+```sh
+brew install matthewsinclair/ccusage/ccusage
+ccusage doctor
+```
+
+The Homebrew formula builds from a pinned release tag and commit on macOS and Linux. Rust is a build dependency; Claude Code must be installed separately for account operations. Prebuilt binaries for macOS (ARM64 and Intel) and Linux (ARM64 and x86-64), with checksums, are available on the [releases page](https://github.com/matthewsinclair/ccusage/releases).
+
 ## Build and try
+
 
 ```sh
 cargo build --release --locked
@@ -11,7 +21,12 @@ cargo build --release --locked
 
 The demo uses fixture data, reads no credentials, and makes no network requests. `ccusage usage --demo` prints the same layout without entering an interactive screen. An installable binary can be built with `cargo install --path . --locked`; ensure Cargo's binary directory is on `PATH`.
 
+## Check the environment
+
+`ccusage doctor` checks that `claude --version` runs from `PATH`, validates the configuration, inspects XDG/profile directory permissions, and checks existing private files are `0600`. It reads no credential contents, does not invoke browser login or fetch usage, and makes no configuration changes. Missing initial setup is informational and includes the next commands; a missing/broken Claude executable, malformed config, inaccessible path, or unsafe private file exits nonzero. Directory permissions other than `0700` and a stale active profile produce warnings. Native macOS/Linux builds run in CI for ARM64 and x86-64; see [releasing](docs/releasing.md) for the release and tap-update process.
+
 ## Set up accounts
+
 
 ```sh
 ccusage init
@@ -96,7 +111,7 @@ The dashboard fetches accounts in a background worker, keeps the terminal respon
 
 Each failed account gets its own error, so `usage --all` continues through the remaining profiles. Usage commands exit nonzero when any account has an error, even if last-known data is displayed. JSON output includes `name`, `fetched_at` (Unix seconds, UTC), `cached`, `snapshot`, and `error`. Raw usage percentages are retained; the terminal rounds them for display. Optional weekly model windows appear when the API returns them.
 
-This initial version targets Claude subscription accounts on macOS and Linux. Console/API-billing and cloud-provider accounts are outside its usage model. Native Windows operation has not been validated.
+This initial version targets Claude subscription accounts on macOS and Linux. Console/API-billing and cloud-provider accounts are outside its usage model. Native Windows operation has not been validated. Native macOS and Linux tests and release builds run in the four-platform GitHub Actions matrix.
 
 ## Development
 
