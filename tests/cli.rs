@@ -273,7 +273,7 @@ fn reauthentication_clears_old_usage_even_on_email_mismatch() -> Result<()> {
 }
 
 #[test]
-fn verbose_cache_diagnostics_use_stderr_and_preserve_json_stdout() -> Result<()> {
+fn verbose_with_json_outputs_only_json() -> Result<()> {
   let sandbox = Sandbox::new()?;
   sandbox.setup()?;
   sandbox.cached("work", ccusage::now(), 0)?;
@@ -285,11 +285,38 @@ fn verbose_cache_diagnostics_use_stderr_and_preserve_json_stdout() -> Result<()>
     assert!(output.status.success());
     let reports: serde_json::Value = serde_json::from_slice(&output.stdout)?;
     assert_eq!(reports[0]["snapshot"]["five_hour"]["utilization"], 62);
-    let diagnostics = String::from_utf8(output.stderr)?;
-    assert!(diagnostics.contains("profile work"));
-    assert!(diagnostics.contains("network skipped: cache is fresh"));
-    assert!(diagnostics.contains("cached usage response"));
-    assert!(!diagnostics.contains("TEST_TOKEN"));
+    assert!(output.stderr.is_empty());
+  }
+  Ok(())
+}
+
+#[test]
+fn verbose_shows_formatted_details_without_json_or_diagnostics() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  sandbox.cached("work", ccusage::now(), 0)?;
+  let cache_file = sandbox.root.join("cache/ccusage/work.json");
+  let mut cache: serde_json::Value = serde_json::from_slice(&fs::read(&cache_file)?)?;
+  cache["snapshot"] = serde_json::from_str(include_str!("fixtures/usage-with-breakdown.json"))?;
+  fs::write(&cache_file, serde_json::to_vec(&cache)?)?;
+  let default = sandbox.ok(&["usage", "work"])?;
+  assert!(default.contains("Fable"));
+  assert!(!default.contains("WEEKLY BREAKDOWN"));
+  for args in [
+    vec!["--verbose", "usage", "work"],
+    vec!["usage", "work", "--verbose"],
+  ] {
+    let output = sandbox.run(&args)?;
+    assert!(output.status.success());
+    assert!(output.stderr.is_empty());
+    let text = String::from_utf8(output.stdout)?;
+    assert!(text.contains("WEEKLY BREAKDOWN"));
+    assert!(text.contains("EXTRA USAGE"));
+    assert!(text.contains("QUOTA WINDOWS"));
+    assert!(text.contains("Example model"));
+    assert!(text.contains("Not provided"));
+    assert!(!text.contains('{'));
+    assert!(!text.contains("\"utilization\""));
   }
   Ok(())
 }

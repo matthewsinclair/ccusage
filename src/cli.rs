@@ -154,13 +154,13 @@ pub fn run(mut args: Vec<String>) -> Result<()> {
   }
   if command == "usage" && switch(&mut args, "--demo") {
     let json = switch(&mut args, "--json");
-    switch(&mut args, "--verbose");
+    verbose |= switch(&mut args, "--verbose");
     empty(&args)?;
     let reports = crate::usage::demo();
     if json {
       println!("{}", serde_json::to_string_pretty(&reports)?);
     } else {
-      display::print(&reports, None, no_color)?;
+      display::print(&reports, None, no_color, verbose)?;
     }
     return Ok(());
   }
@@ -281,7 +281,7 @@ pub fn run(mut args: Vec<String>) -> Result<()> {
       if names.is_empty() {
         return Err("no profiles; run ccusage add NAME".into());
       }
-      let client = Client::default().with_verbose(verbose);
+      let client = Client::default();
       let reports: Vec<_> = names
         .iter()
         .map(|name| client.report(&store, name, refresh))
@@ -289,7 +289,7 @@ pub fn run(mut args: Vec<String>) -> Result<()> {
       if json {
         println!("{}", serde_json::to_string_pretty(&reports)?);
       } else {
-        display::print(&reports, store.active()?.as_deref(), no_color)?;
+        display::print(&reports, store.active()?.as_deref(), no_color, verbose)?;
       }
       if reports.iter().any(|report| report.error.is_some()) {
         return Err("some accounts could not refresh; see per-account errors".into());

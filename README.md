@@ -92,7 +92,7 @@ ccusage tui
 
 The undocumented `GET https://api.anthropic.com/api/oauth/usage` endpoint reports subscription percentages and reset times. This integration may need updating when Anthropic changes its API. It performs no model inference. It uses HTTPS with certificate verification, rejects redirects, has a 15-second request timeout, and limits response size. HTTP 429 responses persist a cooldown of at least 30 minutes, extended by a longer numeric `Retry-After`. No retry loop runs automatically.
 
-The dashboard fetches accounts in a background worker, keeps the terminal responsive, and updates reset countdowns while open. Press `r` to refresh all accounts, arrows or `j`/`k` to select, Enter to activate, Page Up/Down to scroll, and `q`, Escape, or Ctrl-C to quit. It does not switch accounts automatically. The colors, sparse layout, and usage bars are inspired by Claude Code. `NO_COLOR` or a leading `--no-color` disables colors; redirected output is also plain. Small terminals omit bars so percentages and reset times remain visible.
+The dashboard fetches accounts in a background worker, keeps the terminal responsive, and updates reset countdowns while open. Use arrows or `j`/`k` to select an account and Enter to open its detail page. The detail page shows only that account, using the same full formatting as `usage --verbose`. Use arrows or Page Up/Down to scroll; Escape, Backspace, or `b` returns to the overview. Press `a` to activate the selected account from either page. Press `r` to refresh all accounts on the overview or just the current account on a detail page. `q` or Ctrl-C quits from either page; Escape also quits from the overview. It does not switch accounts automatically. The colors, sparse layout, and usage bars are inspired by Claude Code. `NO_COLOR` or a leading `--no-color` disables colors; redirected output is also plain. Small terminals omit bars so percentages and reset times remain visible.
 
 Each failed account gets its own error, so `usage --all` continues through the remaining profiles. Usage commands exit nonzero when any account has an error, even if last-known data is displayed. JSON output includes `name`, `fetched_at` (Unix seconds, UTC), `cached`, `snapshot`, and `error`. Raw usage percentages are retained; the terminal rounds them for display. Optional weekly model windows appear when the API returns them.
 
@@ -111,14 +111,22 @@ Tests use local HTTP fixtures and temporary XDG directories. A fake Claude execu
 
 Code is split into configuration, credential access, storage, usage retrieval, terminal rendering, and CLI coordination. Dependency purposes are documented beside their entries in `Cargo.toml`. Formatting uses two spaces. Unsafe Rust is forbidden; Clippy denies `unwrap` and `expect`. Cargo.lock is retained for reproducible application builds. Intent integration is intentionally deferred.
 
-## Verbose diagnostics
+## Detailed output
 
 ```sh
 ccusage usage hello --verbose
-ccusage --verbose usage --all --refresh
-ccusage usage hello --json --verbose 2>ccusage-debug.log
+ccusage --verbose usage --all
+ccusage usage hello --json
 ```
 
-`--verbose` prints the selected profile, cache location and freshness/cooldown decisions, request URL, HTTP status, and the full usage response JSON to stderr. On a cache hit or failed refresh, it also prints the retained response and its retrieval timestamp. Authentication headers are never printed. Secret-bearing JSON fields and any echoed access token are redacted; non-JSON response bodies are omitted. Standard output retains its usual human-readable or JSON format. Verbose diagnostics are supported by `usage`, where they cannot interfere with the interactive dashboard screen.
+The default output shows the compact plan usage bars and retrieval timestamp. `--verbose` adds all fields from the response as readable sections and aligned values: quota windows, exact percentages and reset times, weekly attribution, credits, model shares, optional fields, and retrieval metadata. Long values wrap to the terminal width. Missing values appear as `Not provided`, booleans as Yes/No, and percentages retain their original precision. Unknown future fields are included too. Both leading `--verbose` and `usage ... --verbose` are supported.
+
+JSON is printed only with `--json`, which takes precedence over `--verbose` and emits only the JSON report. Verbose output does not dump network diagnostics or raw JSON to stderr. Credential-bearing response fields and echoed access tokens are redacted before persistence; formatted details also redact older cached response fields. Normal request failures still show an error and the retained data's original `as of` timestamp.
+
+In the TUI, Enter opens the selected login's own detail page. It shares the verbose CLI renderer, with no information from other accounts included. Escape returns to the overview with the previous selection and scroll position intact. Enter does not activate an account; use `a` for that.
 
 The parser uses the canonical `limits` array when present, including model display names such as Fable, and supports older top-level quota fields as a fallback. Attribution objects such as `seven_day_breakdown` are metadata and do not get interpreted as usage windows. Parser errors identify the offending field without quoting its contents.
+
+## Logo
+
+`design/icons/ccusage-logo.svg` contains three plain horizontal bars on a transparent background: long green at the top, medium amber in the middle, and short red at the bottom.

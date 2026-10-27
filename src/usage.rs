@@ -163,13 +163,11 @@ impl Report {
 
 pub struct Client {
   agent: ureq::Agent,
-  verbose: bool,
 }
 
 impl Default for Client {
   fn default() -> Self {
     Self {
-      verbose: false,
       agent: ureq::Agent::config_builder()
         .timeout_global(Some(Duration::from_secs(15)))
         .http_status_as_error(false)
@@ -185,18 +183,7 @@ enum Fetch {
   Limited(i64),
 }
 
-fn diagnostic(verbose: bool, message: &str) {
-  if verbose {
-    let safe = message
-      .lines()
-      .map(crate::clean)
-      .collect::<Vec<_>>()
-      .join("\n");
-    eprintln!("ccusage: {safe}");
-  }
-}
-
-fn redact(value: &serde_json::Value, token: Option<&str>) -> serde_json::Value {
+pub(crate) fn redact(value: &serde_json::Value, token: Option<&str>) -> serde_json::Value {
   match value {
     serde_json::Value::Object(fields) => fields
       .iter()
@@ -234,35 +221,7 @@ fn redact(value: &serde_json::Value, token: Option<&str>) -> serde_json::Value {
   }
 }
 
-fn diagnostic_json(
-  verbose: bool,
-  label: &str,
-  value: &serde_json::Value,
-  token: Option<&str>,
-) -> Result<()> {
-  if verbose {
-    diagnostic(
-      true,
-      &format!(
-        "{label}:\n{}",
-        serde_json::to_string_pretty(&redact(value, token))?
-      ),
-    );
-  }
-  Ok(())
-}
-
-fn fetch(
-  agent: &ureq::Agent,
-  endpoint: &str,
-  token: &str,
-  now: i64,
-  verbose: bool,
-) -> Result<Fetch> {
-  diagnostic(
-    verbose,
-    &format!("GET {endpoint} (authentication redacted)"),
-  );
+fn fetch(agent: &ureq::Agent, endpoint: &str, token: &str, now: i64) -> Result<Fetch> {
   let mut response = agent
     .get(endpoint)
     .header("Authorization", &format!("Bearer {token}"))
@@ -270,49 +229,22 @@ fn fetch(
     .header("anthropic-beta", "oauth-2025-04-20")
     .call()
     .map_err(|_| "usage request failed (network or TLS); credentials redacted")?;
-  diagnostic(verbose, &format!("HTTP {}", response.status()));
-  let status = response.status().as_u16();
-  let retry = response
-    .headers()
-    .get("retry-after")
-    .and_then(|v| v.to_str().ok())
-    .and_then(|v| v.parse::<i64>().ok())
-    .unwrap_or(BACKOFF)
-    .max(BACKOFF);
-  let body = if status == 200 || verbose {
-    match response
-      .body_mut()
-      .with_config()
-      .limit(128 * 1024)
-      .read_to_vec()
-    {
-      Ok(bytes) => Some(bytes),
-      Err(_) if status == 200 => return Err("could not read usage response".into()),
-      Err(_) => {
-        diagnostic(
-          verbose,
-          "error response body could not be read; using HTTP status",
-        );
-        None
-      }
-    }
-  } else {
-    None
-  };
-  if verbose && let Some(bytes) = &body {
-    match serde_json::from_slice::<serde_json::Value>(bytes) {
-      Ok(value) => diagnostic_json(true, "usage response", &value, Some(token))?,
-      Err(_) => diagnostic(true, "non-JSON response body omitted"),
-    }
-  }
-  match status {
+  match response.status().as_u16() {
     200 => {
-      let snapshot: Snapshot = serde_json::from_slice(body.as_deref().ok_or("missing usage response")?).map_err(|_| "invalid usage response JSON")?;
+      let bytes = response.body_mut().with_config().limit(128 * 1024).read_to_vec()
+        .map_err(|_| "could not read usage response")?;
+      let value: serde_json::Value = serde_json::from_slice(&bytes)
+        .map_err(|_| "invalid usage response JSON")?;
+      // Redact before persistence or either display mode, including echoed tokens.
+      let snapshot: Snapshot = serde_json::from_value(redact(&value, Some(token)))
+        .map_err(|_| "invalid usage response JSON")?;
       snapshot.validate()?;
       Ok(Fetch::Success(snapshot))
     },
     401 | 403 => Err("Claude login expired or lacks access; run ccusage login NAME (or launch this profile in Claude to refresh it)".into()),
     429 => {
+      let retry = response.headers().get("retry-after").and_then(|v| v.to_str().ok())
+        .and_then(|v| v.parse::<i64>().ok()).unwrap_or(BACKOFF).max(BACKOFF);
       Ok(Fetch::Limited(now.saturating_add(retry)))
     },
     status => Err(format!("usage endpoint returned HTTP {status}").into()),
@@ -320,13 +252,7 @@ fn fetch(
 }
 
 impl Client {
-  pub fn with_verbose(mut self, verbose: bool) -> Self {
-    self.verbose = verbose;
-    self
-  }
-
   pub fn report(&self, store: &Store, name: &str, refresh: bool) -> Report {
-    diagnostic(self.verbose, &format!("profile {name}"));
     match self.load(store, name, refresh) {
       Ok(report) => report,
       Err(error) => Report::failed(name, error),
@@ -337,7 +263,7 @@ impl Client {
     let dir = store.profile_dir(name)?;
     let source = dir.to_string_lossy().into_owned();
     let path = store.cache.join(format!("{name}.json"));
-    diagnostic(self.verbose, &format!("cache file {}", path.display()));
+
     let mut cache: Cache = match storage::read_optional(&path)? {
       Some(bytes) => serde_json::from_slice(&bytes)
         .map_err(|_| "invalid usage cache; remove it to fetch again")?,
@@ -354,28 +280,16 @@ impl Client {
     let mut error = None;
     let mut cached = true;
     if cache.retry_at > now {
-      diagnostic(
-        self.verbose,
-        "network skipped: persisted rate-limit cooldown",
-      );
       error = Some(format!(
         "usage rate limited; retry in {}",
         crate::display::duration(cache.retry_at - now)
       ));
     } else if refresh || !fresh {
-      diagnostic(
-        self.verbose,
-        if refresh {
-          "refresh requested"
-        } else {
-          "cache missing or older than five minutes"
-        },
-      );
       let result = auth::read(&dir).and_then(|token| {
         if token.expires_at.is_some_and(|expiry| expiry / 1000 <= now) {
           return Err("login token expired; launch this profile in Claude to refresh it, or run ccusage login NAME".into());
         }
-        fetch(&self.agent, ENDPOINT, &token.access_token, now, self.verbose)
+        fetch(&self.agent, ENDPOINT, &token.access_token, now)
       });
       match result {
         Ok(Fetch::Success(snapshot)) => {
@@ -402,31 +316,8 @@ impl Client {
           }
         }
         Err(failure) => {
-          diagnostic(
-            self.verbose,
-            &format!("refresh failed: {failure}; retaining last successful snapshot"),
-          );
           error = Some(failure.to_string());
         }
-      }
-    } else {
-      diagnostic(self.verbose, "network skipped: cache is fresh");
-    }
-    if let Some(snapshot) = &cache.snapshot {
-      diagnostic(
-        self.verbose,
-        &format!(
-          "snapshot as of Unix timestamp {}; cached={cached}",
-          cache.fetched_at
-        ),
-      );
-      if cached {
-        diagnostic_json(
-          self.verbose,
-          "cached usage response",
-          &serde_json::to_value(snapshot)?,
-          None,
-        )?;
       }
     }
     Ok(Report {
@@ -572,7 +463,7 @@ mod tests {
   }
 
   #[test]
-  fn verbose_response_redacts_nested_secrets_and_echoed_access_token() -> Result<()> {
+  fn usage_response_redacts_nested_secrets_and_echoed_access_token() -> Result<()> {
     let value = serde_json::json!({
       "accessToken": "PRIVATE_ACCESS", "refresh_token": "PRIVATE_REFRESH",
       "headers": {"Authorization": "Bearer PRIVATE_ACCESS", "cookie": "PRIVATE_COOKIE"},
@@ -612,13 +503,7 @@ mod tests {
       }
       stream.write_all(reply.as_bytes())
     });
-    let result = fetch(
-      &Client::default().agent,
-      &endpoint,
-      "TEST_SECRET",
-      100,
-      false,
-    );
+    let result = fetch(&Client::default().agent, &endpoint, "TEST_SECRET", 100);
     thread.join().map_err(|_| "HTTP fixture panicked")??;
     result
   }
