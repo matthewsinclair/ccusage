@@ -1,4 +1,8 @@
-use std::{fs, io::Write, path::Path};
+use std::{
+  fs,
+  io::{Read, Write},
+  path::Path,
+};
 
 use crate::Result;
 
@@ -61,9 +65,35 @@ pub fn write_atomic(path: &Path, bytes: &[u8]) -> Result<()> {
 }
 
 pub fn read_optional(path: &Path) -> Result<Option<Vec<u8>>> {
-  match fs::read(path) {
-    Ok(bytes) => Ok(Some(bytes)),
-    Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
-    Err(error) => Err(error.into()),
+  let metadata = match fs::metadata(path) {
+    Ok(metadata) => metadata,
+    Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+    Err(error) => return Err(error.into()),
+  };
+  if !metadata.is_file() {
+    return Err(format!("private path is not a regular file: {}", path.display()).into());
   }
+  let mut file = fs::File::open(path)?;
+  // Inspect the opened file, not just the path, before reading any contents.
+  let metadata = file.metadata()?;
+  if !metadata.is_file() {
+    return Err("private file changed type while opening".into());
+  }
+  #[cfg(unix)]
+  {
+    use std::os::unix::fs::PermissionsExt;
+    let mode = metadata.permissions().mode() & 0o7777;
+    if mode != 0o600 {
+      return Err(
+        format!(
+          "private file {} has mode {mode:04o}; set it to 0600 with chmod 600",
+          path.display()
+        )
+        .into(),
+      );
+    }
+  }
+  let mut bytes = Vec::new();
+  file.read_to_end(&mut bytes)?;
+  Ok(Some(bytes))
 }

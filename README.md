@@ -76,7 +76,7 @@ ccusage add existing --dir ~/.claude
 
 Or set `config_dir` in a profile. Relative paths resolve against the config file's directory; `~/` is expanded. Duplicate directories, including existing symlink aliases, are rejected. Each default profile contains Claude's own settings, history, plugins, and authentication state; these are kept together because Claude manages that directory as a unit. macOS login secrets normally remain in Keychain. Ccusage's XDG placement does not relocate files Claude itself chooses to store elsewhere.
 
-New directories use mode `0700` and Ccusage files use `0600` on Unix. Existing directory permissions are preserved. These modes do not add encryption to credential files Claude stores on Linux; protect and back up the profile directories accordingly.
+New directories use mode `0700` and Ccusage files use `0600` on Unix. Existing directory permissions are preserved. Before reading an existing config, state, cache, or fallback credential file, Ccusage requires a regular file with mode exactly `0600` (including no special permission bits); otherwise it refuses with a `chmod 600` instruction before reading contents. It checks the opened file, and does not silently repair user-managed files. Config parser errors redact source contents. These modes do not add encryption to credential files Claude stores on Linux; protect and back up the profile directories accordingly.
 
 ## Usage and dashboard
 

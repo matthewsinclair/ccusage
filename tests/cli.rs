@@ -26,6 +26,7 @@ impl Sandbox {
     fs::create_dir_all(root.join("home"))?;
     // Claude fixture: browser login and auth status without touching real accounts.
     let script = r##"#!/bin/sh
+umask 077
 case "$1 $2" in
   'auth login')
     /bin/mkdir -p "$CLAUDE_CONFIG_DIR"
@@ -318,5 +319,102 @@ fn verbose_shows_formatted_details_without_json_or_diagnostics() -> Result<()> {
     assert!(!text.contains('{'));
     assert!(!text.contains("\"utilization\""));
   }
+  Ok(())
+}
+
+#[test]
+fn private_config_state_cache_and_credentials_are_mode_600() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  sandbox.ok(&["login", "work"])?;
+  sandbox.ok(&["use", "work"])?;
+  sandbox.cached("work", ccusage::now(), 0)?;
+  for relative in [
+    "config/ccusage/config.toml",
+    "state/ccusage/active.json",
+    "cache/ccusage/work.json",
+    "data/ccusage/profiles/work/.credentials.json",
+  ] {
+    let path = sandbox.root.join(relative);
+    assert_eq!(
+      fs::metadata(&path)?.permissions().mode() & 0o7777,
+      0o600,
+      "{relative}"
+    );
+    assert!(storage::read_optional(&path)?.is_some());
+  }
+  for relative in [
+    "config/ccusage",
+    "state/ccusage",
+    "cache/ccusage",
+    "data/ccusage/profiles/work",
+  ] {
+    assert_eq!(
+      fs::metadata(sandbox.root.join(relative))?
+        .permissions()
+        .mode()
+        & 0o7777,
+      0o700,
+      "{relative}"
+    );
+  }
+  Ok(())
+}
+
+#[test]
+fn insecure_existing_private_files_are_rejected_without_exposing_contents() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  sandbox.cached("work", ccusage::now(), 0)?;
+  let config = sandbox.root.join("config/ccusage/config.toml");
+  fs::set_permissions(&config, fs::Permissions::from_mode(0o644))?;
+  let output = sandbox.run(&["list"])?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stderr)?.contains("mode 0644"));
+  fs::set_permissions(&config, fs::Permissions::from_mode(0o600))?;
+  let cache = sandbox.root.join("cache/ccusage/work.json");
+  fs::set_permissions(cache, fs::Permissions::from_mode(0o644))?;
+  assert!(!sandbox.run(&["usage", "work"])?.status.success());
+  let credentials = sandbox.root.join("test-credentials.json");
+  fs::write(&credentials, "PRIVATE_TEST_SECRET")?;
+  for mode in [0o644, 0o660, 0o666, 0o700] {
+    fs::set_permissions(&credentials, fs::Permissions::from_mode(mode))?;
+    let error = storage::read_optional(&credentials)
+      .err()
+      .ok_or("expected permission rejection")?
+      .to_string();
+    assert!(error.contains("chmod 600"));
+    assert!(!error.contains("PRIVATE_TEST_SECRET"));
+  }
+  fs::set_permissions(&credentials, fs::Permissions::from_mode(0o600))?;
+  assert!(storage::read_optional(&credentials)?.is_some());
+  Ok(())
+}
+
+#[test]
+fn atomic_writes_replace_broad_permissions_with_mode_600() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let path = sandbox.root.join("private.json");
+  fs::write(&path, "old")?;
+  fs::set_permissions(&path, fs::Permissions::from_mode(0o644))?;
+  storage::write_atomic(&path, b"new")?;
+  assert_eq!(fs::metadata(&path)?.permissions().mode() & 0o7777, 0o600);
+  assert_eq!(storage::read_optional(&path)?, Some(b"new".to_vec()));
+  Ok(())
+}
+
+#[test]
+fn config_parser_errors_do_not_echo_misplaced_secrets() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  fs::write(
+    sandbox.root.join("config/ccusage/config.toml"),
+    "[profiles.work]\npassword='MISPLACED_PRIVATE_SECRET'\n",
+  )?;
+  let output = sandbox.run(&["list"])?;
+  assert!(!output.status.success());
+  let error = String::from_utf8(output.stderr)?;
+  assert!(error.contains("contents redacted"));
+  assert!(!error.contains("MISPLACED_PRIVATE_SECRET"));
   Ok(())
 }

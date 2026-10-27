@@ -100,7 +100,9 @@ impl Store {
     let path = absolute(&path)?;
     let bytes = storage::read_optional(&path)?
       .ok_or_else(|| format!("no config at {}; run ccusage init", path.display()))?;
-    let config: Config = toml::from_str(std::str::from_utf8(&bytes)?)?;
+    // Decoder diagnostics may quote a misplaced secret from the source text.
+    let config: Config = toml::from_str(std::str::from_utf8(&bytes)?)
+      .map_err(|_| "invalid Ccusage config; check TOML syntax and supported profile fields (contents redacted)")?;
     let root = path.parent().ok_or("config has no parent")?.to_path_buf();
     for name in config.profiles.keys() {
       if !valid_name(name) {
