@@ -1,0 +1,30 @@
+[package]
+name = "ccusage"
+version = "0.1.0"
+edition = "2024"
+description = "Named Claude Code accounts and a compact terminal usage dashboard"
+
+[dependencies]
+# Native credential files, usage responses, and persisted state.
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Human-editable profile configuration.
+toml = "0.9"
+# Blocking HTTPS; no async runtime or model SDK.
+ureq = { version = "3", default-features = false, features = ["rustls"] }
+# Keyboard events, terminal sizing, colors, and safe raw-mode handling.
+crossterm = "0.29"
+# ISO-8601 reset times from the usage API.
+time = { version = "0.3", features = ["parsing", "formatting"] }
+# Claude's per-directory macOS Keychain service names.
+sha2 = "0.10"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+
+[profile.dev]
+debug = "line-tables-only"

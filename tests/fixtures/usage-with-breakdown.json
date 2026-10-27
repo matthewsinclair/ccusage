@@ -1,0 +1,22 @@
+{
+  "five_hour": {"utilization": 23.5, "resets_at": "2026-10-27T20:00:00.123456+00:00", "limit_dollars": null},
+  "seven_day": {"utilization": 62, "resets_at": "2026-11-01T00:00:00Z"},
+  "seven_day_opus": null,
+  "seven_day_sonnet": null,
+  "seven_day_cowork": null,
+  "seven_day_oauth_apps": null,
+  "seven_day_breakdown": {
+    "as_of": "2026-10-27T17:00:00Z",
+    "window_started_at": "2026-10-25T00:00:00Z",
+    "rows": [{"display_name": "Example model", "key": "example", "percent": 42}]
+  },
+  "limits": [
+    {"kind": "session", "group": "session", "percent": 23.5, "resets_at": "2026-10-27T20:00:00.123456+00:00", "scope": null, "is_active": true, "severity": "normal"},
+    {"kind": "weekly_all", "group": "weekly", "percent": 62, "resets_at": "2026-11-01T00:00:00Z", "scope": null, "is_active": true, "severity": "normal"},
+    {"kind": "weekly_scoped", "group": "weekly", "percent": 0, "resets_at": null, "scope": {"model": {"display_name": "Fable", "id": null}, "surface": null}, "is_active": false, "severity": "normal"}
+  ],
+  "extra_usage": {"is_enabled": false, "utilization": 0, "currency": "USD"},
+  "weekly_scoped_shares": [{"allowance_percent_of_weekly": 50, "limit_index": 2, "used_percent_of_weekly": 0}],
+  "iguana_necktie": {"utilization": 10, "resets_at": "2026-11-01T00:00:00Z"},
+  "member_dashboard_available": false
+}
