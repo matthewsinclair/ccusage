@@ -2,6 +2,8 @@
 
 A Rust-based tool for viewing Claude Code usage across multiple named accounts, explicit account selection, and a compact terminal dashboard for subscription usage. Rust. Requires `claude` on `PATH`; the interactive dashboard requires a terminal.
 
+Ccusage is a command-line take on [Claude Usage](https://github.com/richhickson/claudecodeusage). Thanks to [@richhickson](https://github.com/richhickson) for creating Claude Usage and inspiring this project.
+
 ## Install
 
 ```sh
