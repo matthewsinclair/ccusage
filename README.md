@@ -40,7 +40,7 @@ ccusage run
 
 `login` runs Claude's browser-based subscription login with an account-specific `CLAUDE_CONFIG_DIR`. The email pre-fills the browser login and is checked against `claude auth status` after login. You still choose and authenticate the account in your browser. No passwords or tokens belong in Ccusage's config.
 
-Claude retains ownership of its credentials: macOS Keychain, or its native `.credentials.json` file. Ccusage reads the access token for usage requests, never prints it, and never copies it into its config or usage cache. It does not perform OAuth refresh or rewrite Claude's tokens. If a token expires, launch that profile in Claude so Claude can refresh it, or use `ccusage login NAME` again. An expired login does not prevent launching Claude through `ccusage run`.
+Claude retains ownership of its credentials: macOS Keychain, or its native `.credentials.json` file. Ccusage automatically renews tokens when fetching usage within one minute of expiry, or retries once after an HTTP 401. Renewed credentials stay in the same native store; private files are written atomically with mode `0600`. No tokens enter Ccusage config, usage caches, output, or process arguments. Renewal preserves unrelated credential metadata and coordinates with Claude Code using its refresh and storage locks. macOS may ask you to allow Ccusage to update the existing Keychain item. Accounts renew on demand; no background daemon or model request is needed. If renewal is rejected, retry usage first; a revoked or expired refresh token requires `ccusage login NAME`. Network failures retain the last successful usage with its original timestamp. An expired login does not prevent launching Claude through `ccusage run`.
 
 ```sh
 ccusage list
@@ -148,4 +148,4 @@ The parser uses the canonical `limits` array when present, including model displ
 
 ## Maintainer release command
 
-From a clean `main` checkout, run `tools/release 0.1.1` to bump the version, validate, commit/tag/push, wait for the GitHub release, and update the Homebrew tap. Use `tools/release --dry-run 0.1.1` to preview, or `--resume 0.1.1` to recover an interrupted publication. This does not install or uninstall local packages. See [releasing](docs/releasing.md) for prerequisites and recovery details.
+From a clean `main` checkout, with the tap at `../Brew/homebrew-ccusage` (or set `CCUSAGE_TAP`), run `tools/release 0.1.2` to bump the version, validate, commit/tag/push, wait for the GitHub release, and update the Homebrew tap. Use `tools/release --dry-run 0.1.2` to preview, or `--resume 0.1.1` to recover an interrupted publication. This does not install or uninstall local packages. See [releasing](docs/releasing.md) for prerequisites and recovery details.

@@ -4,18 +4,18 @@ The application version is in `Cargo.toml`; keep `Cargo.lock` in sync. Use stabl
 
 ## One command
 
-From a clean Ccusage checkout on `main`, with the sibling `homebrew-ccusage` checkout also clean:
+From a clean Ccusage checkout on `main`, with the `../Brew/homebrew-ccusage` checkout also clean:
 
 ```sh
-tools/release 0.1.1
+tools/release 0.1.2
 ```
 
 Pass the new stable version without a leading `v`. The command updates Cargo.toml and Cargo.lock, runs fmt, Clippy, tests, the release build, actionlint, shellcheck, and release-helper integration tests, then commits the version bump. It creates an annotated tag and atomically pushes the source `main` branch and tag. It waits for the exact tag/commit's GitHub Actions run to succeed, checks all four release archives and SHA256SUMS are published, updates/pushes the pinned Homebrew formula, and waits for the tap’s macOS/Linux Homebrew tests. It does not install or uninstall anything locally.
 
-Required maintainer tools: Git, Cargo/Rust, authenticated `gh`, `actionlint`, and `shellcheck`. The active GitHub account needs push access to both repositories. The source remote defaults to `upstream` when present, otherwise `origin`. The tap defaults to the sibling `../homebrew-ccusage` directory. To use different local names/locations:
+Required maintainer tools: Git, Cargo/Rust, authenticated `gh`, `actionlint`, and `shellcheck`. The active GitHub account needs push access to both repositories. The source remote defaults to `upstream` when present, otherwise `origin`. The tap defaults to the `../Brew/homebrew-ccusage` directory. To use different local names/locations:
 
 ```sh
-tools/release 0.1.1 --remote origin --tap /path/to/homebrew-ccusage
+tools/release 0.1.2 --remote origin --tap /path/to/homebrew-ccusage
 ```
 
 `CCUSAGE_REMOTE` and `CCUSAGE_TAP` provide the same defaults. The command verifies the source remote and tap repository identities, fetches both repositories, refuses a source branch that is behind/diverged, and fast-forwards the tap when possible. It permits local source commits ahead of GitHub, which are included in the atomic push. It never force-pushes or rewrites an existing tag. A per-checkout release lock prevents concurrent invocations.
@@ -23,7 +23,7 @@ tools/release 0.1.1 --remote origin --tap /path/to/homebrew-ccusage
 Preview without editing versions, running validation, contacting GitHub, or publishing:
 
 ```sh
-tools/release --dry-run 0.1.1
+tools/release --dry-run 0.1.2
 ```
 
 The preview still requires clean local checkouts and installed maintainer tools. It describes the intended steps; it does not assert that remote permissions or CI will pass.
@@ -31,7 +31,7 @@ The preview still requires clean local checkouts and installed maintainer tools.
 If publication was interrupted after the version commit, resolve the network/CI/tap failure and continue from the same release commit:
 
 ```sh
-tools/release --resume 0.1.1
+tools/release --resume 0.1.2
 ```
 
 Resume does not bump the version or create another source commit. It retries the atomic push, waits for the existing workflow, verifies assets, retries the tap update, including a tap commit whose earlier push failed, and waits for Homebrew CI. It does not automatically rerun failed CI: inspect the failure and rerun the job in GitHub when appropriate. A code defect requires a new patch release, not moving a published tag. If the checkout has advanced beyond the tagged release commit, use the lower-level formula publisher below for a tap-only repair.
@@ -53,6 +53,14 @@ cargo test --locked
 cargo build --release --locked
 actionlint .github/workflows/build.yml
 ```
+
+On macOS, also test updates against a disposable Keychain (no real account credentials are used):
+
+```sh
+cargo test --locked native_keychain_updates_existing_item_without_plaintext_fallback -- --ignored
+```
+
+This test needs access to the macOS Security service and may fail to create its disposable Keychain inside an agent sandbox. Both macOS CI targets run it explicitly.
 
 Commit and push the release changes to `main`, and wait for the Build and release workflow to pass on all four platforms. Then create and push an annotated release tag:
 
