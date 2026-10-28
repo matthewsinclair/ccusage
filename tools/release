@@ -4,7 +4,7 @@ set -eu
 
 root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 repo=matthewsinclair/ccusage
-tap=${CCUSAGE_TAP:-"$root/../homebrew-ccusage"}
+tap=${CCUSAGE_TAP:-"$root/../Brew/homebrew-ccusage"}
 remote=${CCUSAGE_REMOTE:-}
 dry_run=false
 resume=false

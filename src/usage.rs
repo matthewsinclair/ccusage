@@ -181,6 +181,7 @@ impl Default for Client {
 enum Fetch {
   Success(Snapshot),
   Limited(i64),
+  Unauthorized,
 }
 
 pub(crate) fn redact(value: &serde_json::Value, token: Option<&str>) -> serde_json::Value {
@@ -231,27 +232,57 @@ fn fetch(agent: &ureq::Agent, endpoint: &str, token: &str, now: i64) -> Result<F
     .map_err(|_| "usage request failed (network or TLS); credentials redacted")?;
   match response.status().as_u16() {
     200 => {
-      let bytes = response.body_mut().with_config().limit(128 * 1024).read_to_vec()
+      let bytes = response
+        .body_mut()
+        .with_config()
+        .limit(128 * 1024)
+        .read_to_vec()
         .map_err(|_| "could not read usage response")?;
-      let value: serde_json::Value = serde_json::from_slice(&bytes)
-        .map_err(|_| "invalid usage response JSON")?;
+      let value: serde_json::Value =
+        serde_json::from_slice(&bytes).map_err(|_| "invalid usage response JSON")?;
       // Redact before persistence or either display mode, including echoed tokens.
       let snapshot: Snapshot = serde_json::from_value(redact(&value, Some(token)))
         .map_err(|_| "invalid usage response JSON")?;
       snapshot.validate()?;
       Ok(Fetch::Success(snapshot))
-    },
-    401 | 403 => Err("Claude login expired or lacks access; run ccusage login NAME (or launch this profile in Claude to refresh it)".into()),
+    }
+    401 => Ok(Fetch::Unauthorized),
+    403 => Err("Claude login lacks usage access (HTTP 403); check account permissions".into()),
     429 => {
-      let retry = response.headers().get("retry-after").and_then(|v| v.to_str().ok())
-        .and_then(|v| v.parse::<i64>().ok()).unwrap_or(BACKOFF).max(BACKOFF);
+      let retry = response
+        .headers()
+        .get("retry-after")
+        .and_then(|v| v.to_str().ok())
+        .and_then(|v| v.parse::<i64>().ok())
+        .unwrap_or(BACKOFF)
+        .max(BACKOFF);
       Ok(Fetch::Limited(now.saturating_add(retry)))
-    },
+    }
     status => Err(format!("usage endpoint returned HTTP {status}").into()),
   }
 }
 
+fn fetch_authenticated(
+  agent: &ureq::Agent,
+  endpoint: &str,
+  now: i64,
+  mut token: impl FnMut(Option<&str>) -> Result<auth::Token>,
+) -> Result<Fetch> {
+  let first = token(None)?;
+  let result = fetch(agent, endpoint, &first.access_token, now)?;
+  if matches!(result, Fetch::Unauthorized) {
+    let renewed = token(Some(&first.access_token))?;
+    fetch(agent, endpoint, &renewed.access_token, now)
+  } else {
+    Ok(result)
+  }
+}
+
 impl Client {
+  #[cfg(test)]
+  pub(crate) fn agent_for_test(&self) -> ureq::Agent {
+    self.agent.clone()
+  }
   pub fn report(&self, store: &Store, name: &str, refresh: bool) -> Report {
     match self.load(store, name, refresh) {
       Ok(report) => report,
@@ -285,11 +316,8 @@ impl Client {
         crate::display::duration(cache.retry_at - now)
       ));
     } else if refresh || !fresh {
-      let result = auth::read(&dir).and_then(|token| {
-        if token.expires_at.is_some_and(|expiry| expiry / 1000 <= now) {
-          return Err("login token expired; launch this profile in Claude to refresh it, or run ccusage login NAME".into());
-        }
-        fetch(&self.agent, ENDPOINT, &token.access_token, now)
+      let result = fetch_authenticated(&self.agent, ENDPOINT, now, |rejected| {
+        auth::fresh(&self.agent, &dir, rejected)
       });
       match result {
         Ok(Fetch::Success(snapshot)) => {
@@ -314,6 +342,9 @@ impl Client {
               "usage rate limited; could not persist cooldown: {failure}"
             ));
           }
+        }
+        Ok(Fetch::Unauthorized) => {
+          error = Some("Claude rejected the renewed login; run ccusage login NAME".into());
         }
         Err(failure) => {
           error = Some(failure.to_string());
@@ -531,12 +562,7 @@ mod tests {
 
   #[test]
   fn auth_errors_and_redirects_do_not_disclose_response_body() -> Result<()> {
-    for status in [
-      "401 Unauthorized",
-      "403 Forbidden",
-      "302 Found",
-      "500 Server Error",
-    ] {
+    for status in ["403 Forbidden", "302 Found", "500 Server Error"] {
       let result = response(
         status,
         "Location: https://example.invalid/\r\n",
@@ -546,6 +572,70 @@ mod tests {
       if let Err(error) = result {
         assert!(!error.to_string().contains("TEST_SECRET"));
       }
+    }
+    Ok(())
+  }
+
+  #[test]
+  fn usage_retries_401_once_but_does_not_refresh_for_403_or_429() -> Result<()> {
+    for (statuses, succeeds, renewals) in [
+      (vec!["401 Unauthorized", "200 OK"], true, 1),
+      (vec!["401 Unauthorized", "401 Unauthorized"], false, 1),
+      (vec!["403 Forbidden"], false, 0),
+      (vec!["429 Too Many Requests"], false, 0),
+    ] {
+      let server = TcpListener::bind("127.0.0.1:0")?;
+      let endpoint = format!("http://{}/usage", server.local_addr()?);
+      server.set_nonblocking(true)?;
+      let thread = std::thread::spawn(move || -> Result<Vec<String>> {
+        let mut requests = Vec::new();
+        let start = std::time::Instant::now();
+        for status in statuses {
+          let mut stream = loop {
+            match server.accept() {
+              Ok((stream, _)) => break stream,
+              Err(error)
+                if error.kind() == std::io::ErrorKind::WouldBlock
+                  && start.elapsed() < Duration::from_secs(5) =>
+              {
+                std::thread::sleep(Duration::from_millis(10))
+              }
+              Err(error) => return Err(error.into()),
+            }
+          };
+          stream.set_read_timeout(Some(Duration::from_secs(5)))?;
+          let mut buffer = [0; 8192];
+          let received = stream.read(&mut buffer)?;
+          requests.push(String::from_utf8(buffer[..received].to_vec())?);
+          let body = r#"{"five_hour":{"utilization":42}}"#;
+          write!(
+            stream,
+            "HTTP/1.1 {status}\r\nConnection: close\r\nContent-Length: {}\r\n\r\n{body}",
+            body.len()
+          )?;
+        }
+        Ok(requests)
+      });
+      let mut renew_count = 0;
+      let outcome = fetch_authenticated(&Client::default().agent, &endpoint, 100, |rejected| {
+        let access = if let Some(rejected) = rejected {
+          assert_eq!(rejected, "OLD_ACCESS");
+          renew_count += 1;
+          "NEW_ACCESS"
+        } else {
+          "OLD_ACCESS"
+        };
+        Ok(serde_json::from_value(
+          serde_json::json!({"accessToken":access}),
+        )?)
+      });
+      let requests = thread.join().map_err(|_| "HTTP fixture panicked")??;
+      assert_eq!(renew_count, renewals);
+      assert!(requests[0].contains("Bearer OLD_ACCESS"));
+      if renewals != 0 {
+        assert!(requests[1].contains("Bearer NEW_ACCESS"));
+      }
+      assert_eq!(matches!(outcome, Ok(Fetch::Success(_))), succeeds);
     }
     Ok(())
   }

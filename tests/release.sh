@@ -252,6 +252,12 @@ release --resume 0.1.1 || { cat "$case_dir/output"; fail 'resume after tap CI'; 
 [ "$(git -C "$tap" rev-parse HEAD)" = "$released_tap" ] || fail 'tap CI resume duplicated tap commit'
 echo 'ok: Homebrew CI failure is reported and can be resumed without new commits'
 
-echo '15 release integration scenarios passed; no GitHub requests were made.'
+setup
+mkdir -p "$case_dir/Brew"
+mv "$tap" "$case_dir/Brew/homebrew-ccusage"
+tap=$case_dir/Brew/homebrew-ccusage
+sh "$source/tools/release" --dry-run 0.1.1 > "$case_dir/output" 2>&1 || { cat "$case_dir/output"; fail 'default Brew tap'; }
+assert_contains "$case_dir/output" "/Brew/homebrew-ccusage"
+echo 'ok: default tap checkout follows Brew directory layout'
 
-
+echo '16 release integration scenarios passed; no GitHub requests were made.'

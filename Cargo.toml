@@ -21,6 +21,10 @@ time = { version = "0.3", features = ["parsing", "formatting"] }
 # Claude's per-directory macOS Keychain service names.
 sha2 = "0.10"
 
+# Update existing Keychain items in place without putting secrets in process arguments.
+[target.'cfg(target_os = "macos")'.dependencies]
+security-framework = "3"
+
 [lints.rust]
 unsafe_code = "forbid"
 

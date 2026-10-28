@@ -41,6 +41,7 @@ JSON
     /bin/echo "dir=$CLAUDE_CONFIG_DIR"
     /bin/echo "api=${ANTHROPIC_API_KEY-unset}"
     /bin/echo "oauth=${CLAUDE_CODE_OAUTH_TOKEN-unset}"
+    /bin/echo "storage=${CLAUDE_SECURESTORAGE_CONFIG_DIR-unset}"
     for arg in "$@"; do /bin/echo "arg=$arg"; done
     exit 23 ;;
 esac
@@ -134,12 +135,14 @@ fn login_select_run_logout_and_argument_isolation() -> Result<()> {
     .args(["run", "--", "--config", "literal value", "--no-color"])
     .env("ANTHROPIC_API_KEY", "OTHER_ACCOUNT")
     .env("CLAUDE_CODE_OAUTH_TOKEN", "OTHER_ACCOUNT")
+    .env("CLAUDE_SECURESTORAGE_CONFIG_DIR", "OTHER_ACCOUNT")
     .output()?;
   assert_eq!(output.status.code(), Some(23));
   let text = String::from_utf8(output.stdout)?;
   assert!(text.contains("data/ccusage/profiles/work"));
   assert!(text.contains("api=unset"));
   assert!(text.contains("oauth=unset"));
+  assert!(text.contains("storage=unset"));
   assert!(text.contains("arg=--config\narg=literal value\narg=--no-color"));
   sandbox.ok(&["logout", "work"])?;
   assert!(!sandbox.run(&["run"])?.status.success());

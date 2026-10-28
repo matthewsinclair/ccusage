@@ -1,4 +1,5 @@
 pub mod auth;
+mod auth_lock;
 pub mod cli;
 pub mod config;
 pub mod display;
