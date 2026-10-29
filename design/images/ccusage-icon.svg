@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 80" role="img" aria-labelledby="title">
+  <title id="title">Ccusage</title>
+  <rect x="8" y="8" width="80" height="16" rx="4" fill="#2D7546"/>
+  <rect x="8" y="32" width="56" height="16" rx="4" fill="#D9A52D"/>
+  <rect x="8" y="56" width="32" height="16" rx="4" fill="#BE443A"/>
+</svg>
