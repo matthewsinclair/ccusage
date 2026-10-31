@@ -29,7 +29,9 @@ if [ "$mode" = publish ]; then
 fi
 stage=$(mktemp)
 trap 'rm -f "$stage" "$stage.template"; rm -rf "$stage.assets"' 0 HUP INT TERM
-git -C "$root" show "$tag:packaging/homebrew/ccusage.rb" > "$stage.template"
+# Older signed-release templates included a version already inferred from the URL.
+# Normalize only that exact redundant declaration; preserve all release pins.
+git -C "$root" show "$tag:packaging/homebrew/ccusage.rb" | sed '/^  version "@RELEASE_VERSION@"$/d' > "$stage.template"
 arm_sha=
 intel_sha=
 if grep -q '@RELEASE_ARM_SHA256@' "$stage.template"; then

@@ -180,6 +180,17 @@ assert_contains "$FIXTURE_LOG" 'gh run watch 123'
 echo 'ok: version bump, annotated tag, release wait, and pinned tap publication'
 
 setup
+sed '/^class Ccusage < Formula$/a\
+  version "@RELEASE_VERSION@"
+' "$source/packaging/homebrew/ccusage.rb" > "$source/packaging/homebrew/next.rb"
+mv "$source/packaging/homebrew/next.rb" "$source/packaging/homebrew/ccusage.rb"
+git -C "$source" add packaging/homebrew/ccusage.rb
+git -C "$source" commit -qm 'Legacy explicit version template'
+release 0.1.1 || { cat "$case_dir/output"; fail 'legacy version template'; }
+if grep -q '^  version ' "$tap/Formula/ccusage.rb"; then fail 'redundant version rendered'; fi
+echo 'ok: redundant version in older tagged templates is removed'
+
+setup
 FAIL_CI=yes
 export FAIL_CI
 if release 0.1.1; then fail 'failed CI accepted'; fi

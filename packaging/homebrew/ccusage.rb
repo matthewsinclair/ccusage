@@ -3,7 +3,6 @@
 class Ccusage < Formula
   desc "Named Claude Code accounts and a terminal usage dashboard"
   homepage "https://github.com/matthewsinclair/ccusage"
-  version "@RELEASE_VERSION@"
   license "MIT"
 
   on_macos do
