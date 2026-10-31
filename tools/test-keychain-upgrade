@@ -1,0 +1,34 @@
+#!/bin/sh
+# Real upgrade check with two signed fixture binaries and a disposable Keychain record.
+# Never reads or changes Claude credentials. Run in a normal macOS terminal.
+set -eu
+root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
+[ "$(uname -s)" = Darwin ] || { echo 'Run on macOS' >&2; exit 1; }
+stage=$(mktemp -d "${TMPDIR:-/tmp}/ccusage-keychain-upgrade.XXXXXX")
+service="com.geodica.ccusage.upgrade-fixture.$(uuidgen)"
+created=false
+cleanup() {
+  if [ "$created" = true ]; then
+    "$stage/old/probe" delete "$service" || echo "Remove leftover fixture item: $service" >&2
+  fi
+  rm -rf "$stage"
+}
+trap cleanup 0 HUP INT TERM
+identity='Developer ID Application: Geodica Pty Ltd (76BQL8L47U)'
+mkdir "$stage/old" "$stage/new"
+xcrun swiftc -warnings-as-errors -module-cache-path "$stage/modules" "$root/tests/keychain-upgrade.swift" -o "$stage/old/probe"
+xcrun swiftc -warnings-as-errors -D SECOND_BUILD -module-cache-path "$stage/modules" "$root/tests/keychain-upgrade.swift" -o "$stage/new/probe"
+for version in old new; do
+  codesign --force --sign "$identity" --identifier com.geodica.ccusage.upgrade-fixture \
+    --options runtime --timestamp "$stage/$version/probe"
+  codesign --verify --strict "$stage/$version/probe"
+  codesign -d -r- "$stage/$version/probe" > "$stage/$version.requirement" 2>&1
+  sed -n '/^designated =>/p' "$stage/$version.requirement" > "$stage/$version.dr"
+  [ -s "$stage/$version.dr" ] || { echo 'Missing designated requirement' >&2; exit 1; }
+done
+cmp "$stage/old.dr" "$stage/new.dr"
+if cmp -s "$stage/old/probe" "$stage/new/probe"; then echo 'Fixture builds must differ' >&2; exit 1; fi
+"$stage/old/probe" create "$service"
+created=true
+"$stage/new/probe" read "$service"
+echo 'Passed: a different signed build at a new path read the fixture credential without approval dialogs.'

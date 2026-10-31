@@ -1,5 +1,6 @@
 use crate::{Result, auth, config::Store, storage};
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 use std::{collections::BTreeMap, time::Duration};
 
 const ENDPOINT: &str = "https://api.anthropic.com/api/oauth/usage";
@@ -137,6 +138,11 @@ struct Cache {
   retry_at: i64,
   // Bind cache to its source directory, not merely its editable profile name.
   source: String,
+  // Identity verification is valid only for this exact token and expected email.
+  #[serde(default)]
+  credential_id: String,
+  #[serde(default)]
+  verified_email: Option<String>,
   snapshot: Option<Snapshot>,
 }
 
@@ -278,6 +284,70 @@ fn fetch_authenticated(
   }
 }
 
+fn credential_id(token: &auth::Token, expected: Option<&str>) -> String {
+  let mut digest = Sha256::new();
+  digest.update(token.access_token.as_bytes());
+  digest.update([0]);
+  digest.update(expected.unwrap_or("").to_ascii_lowercase().as_bytes());
+  format!("{:x}", digest.finalize())
+}
+
+fn check_identity(value: &serde_json::Value, expected: &str) -> Result<()> {
+  let actual = value
+    .pointer("/account/email")
+    .and_then(serde_json::Value::as_str);
+  if !actual.is_some_and(|email| email.eq_ignore_ascii_case(expected)) {
+    // Do not quote a response body or account fields in diagnostics.
+    return Err("stored Claude login does not match this profile's email; authenticate the intended account in its dedicated directory".into());
+  }
+  Ok(())
+}
+
+fn verify_identity(agent: &ureq::Agent, token: &auth::Token, expected: Option<&str>) -> Result<()> {
+  verify_identity_at(
+    agent,
+    "https://api.anthropic.com/api/oauth/profile",
+    token,
+    expected,
+  )
+}
+
+fn verify_identity_at(
+  agent: &ureq::Agent,
+  endpoint: &str,
+  token: &auth::Token,
+  expected: Option<&str>,
+) -> Result<()> {
+  let Some(expected) = expected else {
+    return Ok(());
+  };
+  let mut response = agent
+    .get(endpoint)
+    .header("Authorization", &format!("Bearer {}", token.access_token))
+    .header("anthropic-beta", "oauth-2025-04-20")
+    .header("Accept", "application/json")
+    .call()
+    .map_err(|_| "could not verify Claude account identity (network or TLS)")?;
+  if response.status().as_u16() != 200 {
+    return Err(
+      format!(
+        "could not verify Claude account identity (HTTP {})",
+        response.status().as_u16()
+      )
+      .into(),
+    );
+  }
+  let bytes = response
+    .body_mut()
+    .with_config()
+    .limit(128 * 1024)
+    .read_to_vec()
+    .map_err(|_| "could not read Claude account identity")?;
+  let value = serde_json::from_slice(&bytes)
+    .map_err(|_| "invalid Claude account identity response (contents redacted)")?;
+  check_identity(&value, expected)
+}
+
 impl Client {
   #[cfg(test)]
   pub(crate) fn agent_for_test(&self) -> ureq::Agent {
@@ -306,6 +376,23 @@ impl Client {
         ..Cache::default()
       };
     }
+    let expected = store.profile(name)?.email.as_deref();
+    let token = auth::read(&dir)?;
+    let mut verified_id = credential_id(&token, expected);
+    if cache.credential_id != verified_id {
+      let token = auth::fresh(&self.agent, &dir, None)?;
+      verify_identity(&self.agent, &token, expected)?;
+      verified_id = credential_id(&token, expected);
+      // Token rotation for the same verified account can retain its last usage.
+      // Legacy caches and anonymous profiles cannot establish that continuity.
+      let email = expected.map(str::to_ascii_lowercase);
+      if email.is_none() || cache.verified_email != email {
+        cache.snapshot = None;
+        cache.fetched_at = 0;
+      }
+      cache.verified_email = email;
+      cache.credential_id = verified_id.clone();
+    }
     let now = crate::now();
     let fresh = cache.snapshot.is_some() && (0..TTL).contains(&(now - cache.fetched_at));
     let mut error = None;
@@ -316,9 +403,25 @@ impl Client {
         crate::display::duration(cache.retry_at - now)
       ));
     } else if refresh || !fresh {
+      let mut identity_failed = false;
       let result = fetch_authenticated(&self.agent, ENDPOINT, now, |rejected| {
-        auth::fresh(&self.agent, &dir, rejected)
+        let current = auth::fresh(&self.agent, &dir, rejected)?;
+        let id = credential_id(&current, expected);
+        if id != verified_id {
+          if let Err(error) = verify_identity(&self.agent, &current, expected) {
+            identity_failed = true;
+            return Err(error);
+          }
+          verified_id = id;
+        }
+        Ok(current)
       });
+      if identity_failed {
+        return Err(
+          "could not verify the renewed login matches this profile; usage withheld".into(),
+        );
+      }
+      cache.credential_id = verified_id;
       match result {
         Ok(Fetch::Success(snapshot)) => {
           cache.snapshot = Some(snapshot);
@@ -400,6 +503,86 @@ mod tests {
     io::{Read, Write},
     net::TcpListener,
   };
+
+  #[test]
+  fn account_identity_must_match_and_errors_never_echo_response_fields() -> Result<()> {
+    check_identity(
+      &serde_json::json!({"account":{"email":"WORK@EXAMPLE.COM"}}),
+      "work@example.com",
+    )?;
+    for value in [
+      serde_json::json!({"account":{"email":"PRIVATE_OTHER_ACCOUNT"}}),
+      serde_json::json!({}),
+      serde_json::json!({"account":{"email":42}}),
+    ] {
+      let error = check_identity(&value, "work@example.com")
+        .err()
+        .ok_or("must reject mismatch")?;
+      assert!(!error.to_string().contains("PRIVATE_OTHER_ACCOUNT"));
+    }
+    let token: auth::Token = serde_json::from_value(serde_json::json!({"accessToken":"ONE"}))?;
+    let other: auth::Token = serde_json::from_value(serde_json::json!({"accessToken":"TWO"}))?;
+    assert_ne!(
+      credential_id(&token, Some("work@example.com")),
+      credential_id(&other, Some("work@example.com"))
+    );
+    assert_ne!(
+      credential_id(&token, Some("work@example.com")),
+      credential_id(&token, Some("other@example.com"))
+    );
+    assert_eq!(
+      credential_id(&token, Some("WORK@EXAMPLE.COM")),
+      credential_id(&token, Some("work@example.com"))
+    );
+    Ok(())
+  }
+
+  #[test]
+  fn identity_http_requires_success_matching_email_and_redacts_failures() -> Result<()> {
+    for (status, body, succeeds) in [
+      (
+        "200 OK",
+        r#"{"account":{"email":"work@example.com"}}"#,
+        true,
+      ),
+      ("200 OK", r#"{"account":{"email":"PRIVATE_OTHER"}}"#, false),
+      ("200 OK", "PRIVATE_INVALID_JSON", false),
+      ("401 Unauthorized", "PRIVATE_SECRET", false),
+      ("302 Found", "PRIVATE_SECRET", false),
+    ] {
+      let server = TcpListener::bind("127.0.0.1:0")?;
+      let endpoint = format!("http://{}/profile", server.local_addr()?);
+      let thread = std::thread::spawn(move || -> std::io::Result<()> {
+        let (mut stream, _) = server.accept()?;
+        stream.set_read_timeout(Some(Duration::from_secs(5)))?;
+        let mut request = [0; 4096];
+        let received = stream.read(&mut request)?;
+        let request = String::from_utf8_lossy(&request[..received]);
+        assert!(request.starts_with("GET /profile "));
+        assert!(request.contains("Bearer TEST_SECRET"));
+        write!(
+          stream,
+          "HTTP/1.1 {status}\r\nConnection: close\r\nLocation: https://example.invalid/\r\nContent-Length: {}\r\n\r\n{body}",
+          body.len()
+        )
+      });
+      let token: auth::Token =
+        serde_json::from_value(serde_json::json!({"accessToken":"TEST_SECRET"}))?;
+      let result = verify_identity_at(
+        &Client::default().agent,
+        &endpoint,
+        &token,
+        Some("work@example.com"),
+      );
+      thread.join().map_err(|_| "identity fixture panicked")??;
+      assert_eq!(result.is_ok(), succeeds);
+      if let Err(error) = result {
+        assert!(!error.to_string().contains("PRIVATE_"));
+        assert!(!error.to_string().contains("TEST_SECRET"));
+      }
+    }
+    Ok(())
+  }
 
   #[test]
   fn validates_percentages_and_optional_windows() -> Result<()> {

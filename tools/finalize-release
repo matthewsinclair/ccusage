@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+"""Sign a CI draft locally and publish only verified release assets."""
+import hashlib
+import importlib.machinery
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+
+ROOT = Path(__file__).resolve().parent
+loader = importlib.machinery.SourceFileLoader("sign_macos", str(ROOT / "sign-macos"))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+sign = importlib.util.module_from_spec(spec)
+loader.exec_module(sign)
+REPO = "matthewsinclair/ccusage"
+
+
+def command(*args):
+    return subprocess.check_output(args, text=True).strip()
+
+
+def validate_checksums(directory, tag):
+    entries = {}
+    for line in (directory / "SHA256SUMS").read_text().splitlines():
+        digest, name = line.split()
+        if name in entries or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
+            raise ValueError("Invalid release checksum manifest")
+        entries[name] = digest
+    expected = {f"ccusage-{tag}-{target}.tar.gz" for target in sign.TARGETS}
+    if set(entries) != expected:
+        raise ValueError("Unexpected or missing release archives")
+    for name, digest in entries.items():
+        if hashlib.sha256((directory / name).read_bytes()).hexdigest() != digest:
+            raise ValueError("Release archive checksum mismatch")
+    return entries
+
+
+def verify_manifest(directory, tag, entries):
+    manifest = json.loads((directory / "MACOS-SIGNING.json").read_text())
+    if (manifest.get("tag"), manifest.get("identifier"), manifest.get("team_id")) != (tag, sign.IDENTIFIER, sign.TEAM):
+        raise ValueError("Release signing identity mismatch")
+    for target in sign.TARGETS[:2]:
+        name = f"ccusage-{tag}-{target}.tar.gz"
+        if manifest["archives"][name]["sha256"] != entries[name]:
+            raise ValueError("Signed archive checksum mismatch")
+        with tempfile.TemporaryDirectory(prefix="ccusage-verify-") as temp:
+            sign.extract(directory / name, Path(temp))
+            if sign.verify(Path(temp) / "ccusage") != manifest["archives"][name]["requirement"]:
+                raise ValueError("Release designated requirement mismatch")
+
+
+def main(tag):
+    if sys.platform != "darwin":
+        raise ValueError("Finalize releases on the maintainer's Mac; signing keys stay local")
+    draft = command("gh", "release", "view", tag, "--repo", REPO, "--json", "isDraft", "--jq", ".isDraft")
+    if draft not in ("true", "false"):
+        raise ValueError("Could not determine draft status")
+    with tempfile.TemporaryDirectory(prefix="ccusage-release-assets-") as temp:
+        root = Path(temp)
+        incoming = root / "incoming"
+        incoming.mkdir()
+        patterns = [f"ccusage-{tag}-*.tar.gz", "SHA256SUMS"]
+        if draft == "false":
+            patterns.append("MACOS-SIGNING.json")
+        args = ["gh", "release", "download", tag, "--repo", REPO, "--dir", str(incoming)]
+        for pattern in patterns:
+            args += ["--pattern", pattern]
+        subprocess.run(args, check=True)
+        entries = validate_checksums(incoming, tag)
+        if draft == "false":
+            verify_manifest(incoming, tag, entries)
+            print("Published release already has verified Mac signatures")
+            return
+        output = root / "signed"
+        sign.prepare(tag, incoming, output)
+        entries = validate_checksums(output, tag)
+        verify_manifest(output, tag, entries)
+        subprocess.run(["gh", "release", "upload", tag, "--repo", REPO, "--clobber", *map(str, sorted(output.iterdir()))], check=True)
+        # Verify the uploaded bytes before publishing, including on resumed runs.
+        uploaded = root / "uploaded"
+        subprocess.run(["gh", "release", "download", tag, "--repo", REPO, "--dir", str(uploaded)], check=True)
+        entries = validate_checksums(uploaded, tag)
+        verify_manifest(uploaded, tag, entries)
+        subprocess.run(["gh", "release", "edit", tag, "--repo", REPO, "--draft=false"], check=True)
+
+
+if __name__ == "__main__":
+    try:
+        if len(sys.argv) != 2 or not sign.re.fullmatch(r"v(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)", sys.argv[1]):
+            raise ValueError("Usage: tools/finalize-release vX.Y.Z")
+        main(sys.argv[1])
+    except (ValueError, KeyError, OSError, subprocess.CalledProcessError) as error:
+        print(f"finalize-release: {error}", file=sys.stderr)
+        sys.exit(1)

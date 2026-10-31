@@ -11,7 +11,7 @@ brew install matthewsinclair/ccusage/ccusage
 ccusage doctor
 ```
 
-The Homebrew formula builds from a pinned release tag and commit on macOS and Linux. Rust is a build dependency; Claude Code must be installed separately for account operations. Prebuilt binaries for macOS (ARM64 and Intel) and Linux (ARM64 and x86-64), with checksums, are available on the [releases page](https://github.com/matthewsinclair/ccusage/releases).
+On macOS, Homebrew installs the Developer ID signed release binary and verifies its signing identity. On Linux, the formula builds from a pinned release tag and commit, with Rust as a build dependency. Claude Code must be installed separately for account operations. Prebuilt binaries for macOS (ARM64 and Intel) and Linux (ARM64 and x86-64), with checksums, are available on the [releases page](https://github.com/matthewsinclair/ccusage/releases).
 
 ## Build and try
 
@@ -85,13 +85,19 @@ email = "you@company.com"
 email = "you@example.com"
 ```
 
+For multiple accounts, keep each profile's default dedicated directory. Each account has its own persistent login, and switching accounts does not require another browser login. Reauthenticate only when the provider rejects renewal or the login has been revoked.
+
+Ccusage verifies configured profile emails against the authenticated account before accepting a new credential. Usage caches are bound to the verified credential and expected email. A different account cannot silently appear under an old profile name, including when the directory path stays the same. Cached usage still requires access to the stored credential; an unknown or mismatched login withholds usage.
+
+On macOS, Ccusage reads and updates Keychain directly. macOS may request access for Ccusage once per account when moving from an unsigned or ad hoc build to the Developer ID signed release. Choose Always Allow to remember access. Signed Mac releases retain the same application identifier and Developer ID team across updates. A locked Keychain or a recreated credential item can still require approval. This permission prompt is separate from signing in to Claude. Source builds and development builds do not provide the signed release identity.
+
 To register an existing Claude directory without copying it:
 
 ```sh
 ccusage add existing --dir ~/.claude
 ```
 
-If other tools already use a custom Claude directory, register that same directory to share its existing login. For example:
+Share an existing directory only if every tool using it will keep the same account logged in. Signing into a different account through any of those tools changes the login Ccusage sees too; Ccusage will reject usage when its configured email no longer matches. For example:
 
 ```sh
 ccusage add work --email you@company.com --dir ~/.config/claude

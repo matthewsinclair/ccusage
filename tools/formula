@@ -28,9 +28,38 @@ if [ "$mode" = publish ]; then
   output=$tap/Formula/ccusage.rb
 fi
 stage=$(mktemp)
-trap 'rm -f "$stage" "$stage.template"' 0 HUP INT TERM
+trap 'rm -f "$stage" "$stage.template"; rm -rf "$stage.assets"' 0 HUP INT TERM
 git -C "$root" show "$tag:packaging/homebrew/ccusage.rb" > "$stage.template"
-sed -e "s/@RELEASE_TAG@/$tag/g" -e "s/@RELEASE_REVISION@/$revision/g" "$stage.template" > "$stage"
+arm_sha=
+intel_sha=
+if grep -q '@RELEASE_ARM_SHA256@' "$stage.template"; then
+  [ "$(gh release view "$tag" --repo matthewsinclair/ccusage --json isDraft --jq .isDraft)" = false ] || {
+    echo "Release is still a draft; refusing to update the tap" >&2; exit 1;
+  }
+  mkdir "$stage.assets"
+  gh release download "$tag" --repo matthewsinclair/ccusage --dir "$stage.assets" --pattern SHA256SUMS --pattern MACOS-SIGNING.json
+  python3 - "$stage.assets" "$tag" > "$stage" <<'PYCODE'
+import json, re, sys
+from pathlib import Path
+root, tag = Path(sys.argv[1]), sys.argv[2]
+manifest = json.loads((root / 'MACOS-SIGNING.json').read_text())
+assert (manifest['tag'], manifest['identifier'], manifest['team_id']) == (tag, 'com.geodica.ccusage', '76BQL8L47U'), 'Signing manifest mismatch'
+checksums = {}
+for line in (root / 'SHA256SUMS').read_text().splitlines():
+    digest, name = line.split()
+    assert name not in checksums and re.fullmatch('[0-9a-f]{64}', digest), 'Invalid checksum manifest'
+    checksums[name] = digest
+for target in ['aarch64-apple-darwin', 'x86_64-apple-darwin']:
+    name = f'ccusage-{tag}-{target}.tar.gz'
+    assert manifest['archives'][name]['sha256'] == checksums[name], 'Signing checksum mismatch'
+    print(checksums[name])
+PYCODE
+  arm_sha=$(sed -n '1p' "$stage")
+  intel_sha=$(sed -n '2p' "$stage")
+fi
+sed -e "s/@RELEASE_TAG@/$tag/g" -e "s/@RELEASE_REVISION@/$revision/g" \
+  -e "s/@RELEASE_VERSION@/$version/g" -e "s/@RELEASE_ARM_SHA256@/$arm_sha/g" \
+  -e "s/@RELEASE_INTEL_SHA256@/$intel_sha/g" "$stage.template" > "$stage"
 if grep -q '@RELEASE_' "$stage"; then echo "Unresolved formula placeholder" >&2; exit 1; fi
 cat "$stage" > "$output"
 if [ "$mode" = publish ]; then

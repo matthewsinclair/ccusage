@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+"""Sign release archives locally. Private keys never leave the macOS Keychain."""
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
+
+IDENTIFIER = "com.geodica.ccusage"
+TEAM = "76BQL8L47U"
+IDENTITY = "Developer ID Application: Geodica Pty Ltd (76BQL8L47U)"
+REQUIREMENT = f'identifier "{IDENTIFIER}" and anchor apple generic and certificate leaf[subject.OU] = "{TEAM}" and certificate leaf[field.1.2.840.113635.100.6.1.13] exists'
+TARGETS = ("aarch64-apple-darwin", "x86_64-apple-darwin", "aarch64-unknown-linux-gnu", "x86_64-unknown-linux-gnu")
+FILES = {"ccusage", "LICENSE", "README.md", "ccusage-logo.svg"}
+
+
+def run(*args):
+    return subprocess.run(args, check=True, capture_output=True, text=True).stdout
+
+
+def verify(binary):
+    run("/usr/bin/codesign", "--verify", "--strict", "-R", REQUIREMENT, str(binary))
+    result = subprocess.run(["/usr/bin/codesign", "-d", "--verbose=4", "-r-", str(binary)], check=True, capture_output=True, text=True)
+    details = result.stdout + result.stderr
+    if "Timestamp=" not in details or "runtime" not in details:
+        raise ValueError("Developer ID signing requires a secure timestamp and hardened runtime")
+    requirement = next((line for line in details.splitlines() if line.startswith("designated =>")), "")
+    if not requirement or "cdhash" in requirement:
+        raise ValueError("Signature does not have a stable designated requirement")
+    return requirement
+
+
+def extract(archive, directory):
+    with tarfile.open(archive, "r:gz") as tar:
+        seen = set()
+        for member in tar.getmembers():
+            name = member.name.removeprefix("./")
+            if member.isdir() and name in ("", "."):
+                continue
+            if name not in FILES or name in seen or not member.isfile() or member.size > 128 * 1024 * 1024:
+                raise ValueError("Unexpected archive member; refusing to sign")
+            seen.add(name)
+            with tar.extractfile(member) as src, (directory / name).open("wb") as dest:
+                shutil.copyfileobj(src, dest)
+        if seen != FILES:
+            raise ValueError("Release archive is missing expected files")
+    (directory / "ccusage").chmod(0o755)
+
+
+def prepare(tag, source, output):
+    if not re.fullmatch(r"v(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)", tag):
+        raise ValueError("Expected stable release tag")
+    output.mkdir(parents=True, exist_ok=False)
+    manifest = {"tag": tag, "identifier": IDENTIFIER, "team_id": TEAM, "archives": {}}
+    requirements = []
+    for target in TARGETS:
+        name = f"ccusage-{tag}-{target}.tar.gz"
+        archive = source / name
+        if "apple" in target:
+            with tempfile.TemporaryDirectory(prefix="ccusage-sign-") as temp:
+                directory = Path(temp)
+                extract(archive, directory)
+                binary = directory / "ccusage"
+                architecture = "arm64" if target.startswith("aarch64") else "x86_64"
+                if run("/usr/bin/lipo", "-archs", str(binary)).strip() != architecture:
+                    raise ValueError("Release binary has the wrong architecture")
+                run("/usr/bin/codesign", "--force", "--sign", IDENTITY, "--identifier", IDENTIFIER, "--options", "runtime", "--timestamp", str(binary))
+                requirement = verify(binary)
+                requirements.append(requirement)
+                # Optional notarization uses a pre-existing local credential profile.
+                profile = os.environ.get("CCUSAGE_NOTARY_PROFILE")
+                if profile:
+                    zip_path = directory / "notarize.zip"
+                    run("/usr/bin/ditto", "-c", "-k", "--keepParent", str(binary), str(zip_path))
+                    result = json.loads(run("/usr/bin/xcrun", "notarytool", "submit", str(zip_path), "--keychain-profile", profile, "--wait", "--output-format", "json"))
+                    if result.get("status") != "Accepted":
+                        raise ValueError("Notarization was not accepted")
+                with tarfile.open(output / name, "w:gz") as tar:
+                    for filename in sorted(FILES):
+                        tar.add(directory / filename, arcname=filename)
+                manifest["archives"][name] = {"requirement": requirement, "notarized": bool(profile)}
+        else:
+            shutil.copyfile(archive, output / name)
+    if len(set(requirements)) != 1:
+        raise ValueError("Mac architectures do not share the same signing identity")
+    checksums = []
+    for target in TARGETS:
+        name = f"ccusage-{tag}-{target}.tar.gz"
+        digest = hashlib.sha256((output / name).read_bytes()).hexdigest()
+        checksums.append(f"{digest}  {name}\n")
+        if name in manifest["archives"]:
+            manifest["archives"][name]["sha256"] = digest
+    (output / "SHA256SUMS").write_text("".join(checksums))
+    (output / "MACOS-SIGNING.json").write_text(json.dumps(manifest, indent=2) + "\n")
+
+
+if __name__ == "__main__":
+    try:
+        if len(sys.argv) != 4:
+            raise ValueError("Usage: tools/sign-macos TAG INPUT_DIRECTORY NEW_OUTPUT_DIRECTORY")
+        if sys.platform != "darwin":
+            raise ValueError("Run signing on the maintainer's Mac")
+        prepare(sys.argv[1], Path(sys.argv[2]), Path(sys.argv[3]))
+    except (ValueError, OSError, subprocess.CalledProcessError) as error:
+        # Never print command output; signing tools may include Keychain diagnostics.
+        print(f"sign-macos: {error}", file=sys.stderr)
+        sys.exit(1)

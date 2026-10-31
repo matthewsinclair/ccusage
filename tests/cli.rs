@@ -80,7 +80,13 @@ esac
   }
   fn cached(&self, name: &str, timestamp: i64, retry_at: i64) -> Result<()> {
     let source = self.root.join("data/ccusage/profiles").join(name);
-    let cache = serde_json::json!({"fetched_at":timestamp,"retry_at":retry_at,"source":source,
+    use sha2::{Digest, Sha256};
+    storage::write_atomic(
+      &source.join(".credentials.json"),
+      br#"{"claudeAiOauth":{"accessToken":"TEST_TOKEN","expiresAt":9999999999999}}"#,
+    )?;
+    let credential_id = format!("{:x}", Sha256::digest(b"TEST_TOKEN\0test@example.com"));
+    let cache = serde_json::json!({"fetched_at":timestamp,"retry_at":retry_at,"source":source,"credential_id":credential_id,
       "snapshot":{"five_hour":{"utilization":62,"resets_at":null}}});
     storage::write_atomic(
       &self.root.join(format!("cache/ccusage/{name}.json")),
@@ -172,7 +178,7 @@ fn failed_refresh_retains_last_success_even_when_days_old() -> Result<()> {
 }
 
 #[test]
-fn fresh_cache_and_persistent_backoff_do_not_need_credentials() -> Result<()> {
+fn verified_cache_and_persistent_backoff_do_not_need_network() -> Result<()> {
   let sandbox = Sandbox::new()?;
   sandbox.setup()?;
   sandbox.cached("work", ccusage::now(), 0)?;
@@ -209,6 +215,23 @@ fn all_accounts_continue_after_one_fails_and_directory_change_invalidates_cache(
   let changed = sandbox.run(&["usage", "work", "--json"])?;
   let report: serde_json::Value = serde_json::from_slice(&changed.stdout)?;
   assert!(report[0]["snapshot"].is_null());
+  Ok(())
+}
+
+#[test]
+fn removed_credentials_cannot_display_previously_verified_usage() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  sandbox.cached("work", ccusage::now(), 0)?;
+  fs::remove_file(
+    sandbox
+      .root
+      .join("data/ccusage/profiles/work/.credentials.json"),
+  )?;
+  let output = sandbox.run(&["usage", "work", "--json"])?;
+  let reports: serde_json::Value = serde_json::from_slice(&output.stdout)?;
+  assert!(!output.status.success());
+  assert!(reports[0]["snapshot"].is_null());
   Ok(())
 }
 

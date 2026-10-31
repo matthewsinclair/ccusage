@@ -44,7 +44,7 @@ package_version() {
     END { if (found != 1) exit 1 }
   ' "$1"
 }
-for tool in git cargo gh actionlint shellcheck; do
+for tool in git cargo gh actionlint shellcheck python3; do
   command -v "$tool" >/dev/null 2>&1 || die "required maintainer tool is missing: $tool"
 done
 cd "$root"
@@ -68,14 +68,14 @@ if [ "$resume" = true ]; then
 else
   # Compare digit strings rather than overflowing shell integers.
   awk -v old="$current" -v new="$version" 'BEGIN {
-    split(old, a, "."); split(new, b, ".")
+    prerelease = old ~ /-/; split(old, a, "."); split(new, b, "."); sub(/-.*/, "", a[3])
     for (i = 1; i <= 3; i++) {
       if (length(b[i]) > length(a[i])) exit 0
       if (length(b[i]) < length(a[i])) exit 1
       if (("v" b[i]) > ("v" a[i])) exit 0
       if (("v" b[i]) < ("v" a[i])) exit 1
     }
-    exit 1
+    exit !prerelease
   }' || die "$version must be newer than $current; use --resume only for an interrupted release"
 fi
 echo "Ccusage $current -> $version"
@@ -84,7 +84,7 @@ if [ "$dry_run" = true ]; then
   echo "Would fetch both repositories and verify they are not behind or diverged."
   echo "Would update Cargo.toml/Cargo.lock, run fmt, Clippy, tests, build, and workflow/shell checks."
   echo "Would commit the version bump, create annotated tag $tag, and atomically push main and the tag."
-  echo "Would wait for the tagged GitHub build and verify all four archives and SHA256SUMS exist."
+  echo "Would wait for the tagged GitHub build, sign Mac archives locally, verify signatures and checksums, and publish the draft."
   echo "Would publish the pinned Homebrew formula and wait for its macOS/Linux tests. No files, refs, or remote state changed."
   exit 0
 fi
@@ -143,6 +143,7 @@ if [ "$resume" = false ]; then
   actionlint .github/workflows/build.yml
   shellcheck tools/release tools/formula tests/release.sh
   sh tests/release.sh
+  python3 -m unittest discover -s tests -p 'signing_test.py'
   git diff --check
   # Do not include unrelated edits that appeared while validation was running.
   unexpected=$(git status --porcelain | grep -Ev '^ M Cargo\.(toml|lock)$' || :)
@@ -184,11 +185,13 @@ wait_for_workflow() {
 phase=CI
 wait_for_workflow "$repo" build.yml "$tag" "$revision"
 assets=$(gh release view "$tag" --repo "$repo" --json assets,isDraft \
-  --jq 'if .isDraft then empty else .assets[].name end')
+  --jq '.assets[].name')
 for target in aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu; do
   printf '%s\n' "$assets" | grep -Fx "ccusage-$tag-$target.tar.gz" >/dev/null || die "release archive is missing: $target"
 done
 printf '%s\n' "$assets" | grep -Fx SHA256SUMS >/dev/null || die "release checksums are missing"
+phase="Mac signing and publication"
+"$root/tools/finalize-release" "$tag"
 phase=Homebrew
 "$root/tools/formula" publish "$tag" "$tap"
 phase="Homebrew CI"

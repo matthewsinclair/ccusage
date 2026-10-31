@@ -29,9 +29,18 @@ setup() {
     "$source/packaging/homebrew" "$tap" "$case_dir/bin" "$sandbox/empty-hooks"
   cp "$root/tools/release" "$root/tools/formula" "$source/tools/"
   cp "$root/packaging/homebrew/ccusage.rb" "$source/packaging/homebrew/"
+  cat > "$source/tools/finalize-release" <<'MOCK'
+#!/bin/sh
+set -eu
+echo "finalize-release $*" >> "$FIXTURE_LOG"
+[ "${FAIL_SIGNING:-}" != yes ]
+MOCK
+  chmod +x "$source/tools/finalize-release"
+
   printf 'exit 0\n' > "$source/tests/release.sh"
+  printf 'import unittest\nclass Fixture(unittest.TestCase):\n    def test_validation(self): pass\n' > "$source/tests/signing_test.py"
   printf 'name: fixture\n' > "$source/.github/workflows/build.yml"
-  printf '/target/\n' > "$source/.gitignore"
+  printf '/target/\n__pycache__/\n' > "$source/.gitignore"
   cat > "$source/Cargo.toml" <<'TOML'
 [package]
 name = "ccusage"
@@ -83,8 +92,30 @@ case "$1 $2" in
       *) [ "${FAIL_CI:-}" != yes ] ;;
     esac ;;
 
+  'release download')
+    tag=$3
+    while [ "$#" -gt 0 ]; do
+      if [ "$1" = --dir ]; then shift; directory=$1; fi
+      shift
+    done
+    mkdir -p "$directory"
+    python3 - "$directory" "$tag" <<'PYCODE'
+import json, pathlib, sys
+root, tag = pathlib.Path(sys.argv[1]), sys.argv[2]
+archives = {}
+lines = []
+for target in ['aarch64-apple-darwin', 'x86_64-apple-darwin']:
+    name = f'ccusage-{tag}-{target}.tar.gz'
+    digest = 'a' * 64
+    archives[name] = {'sha256': digest}
+    lines.append(f'{digest}  {name}\n')
+(root / 'SHA256SUMS').write_text(''.join(lines))
+(root / 'MACOS-SIGNING.json').write_text(json.dumps({'tag':tag, 'identifier':'com.geodica.ccusage', 'team_id':'76BQL8L47U', 'archives':archives}))
+PYCODE
+    ;;
   'release view')
     case "$*" in
+      *'--json isDraft'*) echo "${STILL_DRAFT:-false}" ;;
       *'--json url'*) echo "https://github.com/matthewsinclair/ccusage/releases/tag/$3" ;;
       *)
         for target in aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu; do
@@ -103,7 +134,7 @@ MOCK
   REAL_CARGO=$real_cargo
   PATH=$case_dir/bin:$original_path
   export FIXTURE_SOURCE FIXTURE_LOG REAL_CARGO PATH
-  unset FAIL_CARGO FAIL_CI FAIL_TAP_CI MISSING_CHECKSUM CCUSAGE_REMOTE CCUSAGE_TAP
+  unset STILL_DRAFT FAIL_SIGNING FAIL_CARGO FAIL_CI FAIL_TAP_CI MISSING_CHECKSUM CCUSAGE_REMOTE CCUSAGE_TAP
 }
 
 release() { sh "$source/tools/release" "$@" --tap "$tap" > "$case_dir/output" 2>&1; }
@@ -174,6 +205,33 @@ export MISSING_CHECKSUM
 if release 0.1.1; then fail 'missing checksums accepted'; fi
 [ "$(git --git-dir="$tap_remote" rev-parse main)" = "$initial_tap" ] || fail 'tap updated without checksums'
 echo 'ok: incomplete release assets block tap publication'
+
+setup
+STILL_DRAFT=true
+export STILL_DRAFT
+if release 0.1.1; then fail 'draft formula accepted'; fi
+[ "$(git --git-dir="$tap_remote" rev-parse main)" = "$initial_tap" ] || fail 'tap updated while release remained draft'
+echo 'ok: draft releases cannot be pinned in the public tap'
+
+setup
+sed 's/0.1.0/0.1.1-dev/' "$source/Cargo.toml" > "$source/Cargo.new"
+mv "$source/Cargo.new" "$source/Cargo.toml"
+(cd "$source" && "$real_cargo" generate-lockfile --offline --quiet)
+git -C "$source" add Cargo.toml Cargo.lock
+git -C "$source" commit -qm 'Development version'
+release --dry-run 0.1.1 || { cat "$case_dir/output"; fail 'prerelease to stable'; }
+echo 'ok: a development version can become its matching stable release'
+
+setup
+FAIL_SIGNING=yes
+export FAIL_SIGNING
+if release 0.1.1; then fail 'failed signing accepted'; fi
+[ "$(git --git-dir="$tap_remote" rev-parse main)" = "$initial_tap" ] || fail 'tap updated despite failed signing'
+assert_contains "$case_dir/output" 'stopped during Mac signing and publication'
+unset FAIL_SIGNING
+release --resume 0.1.1 || { cat "$case_dir/output"; fail 'resume after signing'; }
+echo 'ok: signing failure blocks publication and tap update; resume retries signing'
+
 
 setup
 git --git-dir="$tap_remote" config core.hooksPath "$tap_remote/hooks"
@@ -260,4 +318,4 @@ sh "$source/tools/release" --dry-run 0.1.1 > "$case_dir/output" 2>&1 || { cat "$
 assert_contains "$case_dir/output" "/Brew/homebrew-ccusage"
 echo 'ok: default tap checkout follows Brew directory layout'
 
-echo '16 release integration scenarios passed; no GitHub requests were made.'
+echo "$count release integration scenarios passed; no GitHub requests were made."

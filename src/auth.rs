@@ -129,6 +129,40 @@ fn save_keychain(
     })
 }
 
+#[cfg(target_os = "macos")]
+fn read_keychain(
+  service: &str,
+  keychains: Option<&[security_framework::os::macos::keychain::SecKeychain]>,
+) -> Result<Option<Vec<u8>>> {
+  use security_framework::item::{ItemClass, ItemSearchOptions, SearchResult};
+  let mut search = ItemSearchOptions::new();
+  search
+    .class(ItemClass::generic_password())
+    .service(service)
+    .load_data(true)
+    .limit(2);
+  if let Some(keychains) = keychains {
+    search.keychains(keychains);
+  }
+  let mut matches = match search.search() {
+    Ok(matches) => matches,
+    // errSecItemNotFound only: denied/locked access must not use an old file.
+    Err(error) if error.code() == -25300 => return Ok(None),
+    Err(_) => {
+      return Err(
+        "Keychain access failed; unlock it and allow Ccusage access to this profile".into(),
+      );
+    }
+  };
+  if matches.len() != 1 {
+    return Err("Claude Keychain item is ambiguous; refusing to select a credential".into());
+  }
+  match matches.pop() {
+    Some(SearchResult::Data(bytes)) => Ok(Some(bytes)),
+    _ => Err("could not read Claude Keychain credential (contents redacted)".into()),
+  }
+}
+
 fn read_stored(dir: &Path) -> Result<Stored> {
   #[cfg(target_os = "macos")]
   {
@@ -137,18 +171,8 @@ fn read_stored(dir: &Path) -> Result<Stored> {
       services.push("Claude Code-credentials".to_owned());
     }
     for service in services {
-      let output = Command::new("/usr/bin/security")
-        .args(["find-generic-password", "-s", &service, "-w"])
-        .output()?;
-      if output.status.success() {
-        return Stored::decode(&output.stdout, Location::Keychain(service));
-      }
-      // errSecItemNotFound. A locked/denied Keychain must not silently use an old file.
-      if output.status.code() != Some(44) {
-        return Err(
-          "Keychain access failed; unlock it and allow access to the profile's Claude credential"
-            .into(),
-        );
+      if let Some(bytes) = read_keychain(&service, None)? {
+        return Stored::decode(&bytes, Location::Keychain(service));
       }
     }
   }
@@ -746,6 +770,11 @@ mod tests {
       b"new-fixture",
       Some(std::slice::from_ref(&keychain)),
     )?;
+    assert_eq!(
+      read_keychain("ccusage-fixture", Some(std::slice::from_ref(&keychain)))?,
+      Some(b"new-fixture".to_vec())
+    );
+    assert!(read_keychain("missing-service", Some(std::slice::from_ref(&keychain)))?.is_none());
     let (bytes, item) = find_generic_password(
       Some(std::slice::from_ref(&keychain)),
       "ccusage-fixture",

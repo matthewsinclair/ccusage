@@ -55,6 +55,8 @@ jobs:
       - run: cargo fmt --check
       - name: Release helper integration tests
         run: sh tests/release.sh
+      - name: Signing pipeline regression tests
+        run: python3 -m unittest discover -s tests -p 'signing_test.py'
       - run: cargo clippy --all-targets --locked --target "${{ matrix.target }}" -- -D warnings
       - run: cargo test --locked --target "${{ matrix.target }}"
       - name: Native Keychain renewal storage test
@@ -66,7 +68,7 @@ jobs:
           TARGET: ${{ matrix.target }}
         run: |
           mkdir -p staging dist
-          cp "target/$TARGET/release/ccusage" LICENSE README.md staging/
+          cp "target/$TARGET/release/ccusage" LICENSE README.md design/icons/ccusage-logo.svg staging/
           tar -czf "dist/ccusage-v${VERSION}-${TARGET}.tar.gz" -C staging .
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -97,4 +99,4 @@ jobs:
           cd dist
           sha256sum ccusage-*.tar.gz > SHA256SUMS
           gh release create "$TAG" ccusage-*.tar.gz SHA256SUMS \
-            --verify-tag --generate-notes --title "Ccusage $TAG"
+            --draft --verify-tag --generate-notes --title "Ccusage $TAG"
