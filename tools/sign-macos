@@ -24,7 +24,7 @@ def run(*args):
 
 
 def verify(binary):
-    run("/usr/bin/codesign", "--verify", "--strict", "-R", REQUIREMENT, str(binary))
+    run("/usr/bin/codesign", "--verify", "--strict", "-R", "=" + REQUIREMENT, str(binary))
     result = subprocess.run(["/usr/bin/codesign", "-d", "--verbose=4", "-r-", str(binary)], check=True, capture_output=True, text=True)
     details = result.stdout + result.stderr
     if "Timestamp=" not in details or "runtime" not in details:

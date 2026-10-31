@@ -21,7 +21,7 @@ xcrun swiftc -warnings-as-errors -D SECOND_BUILD -module-cache-path "$stage/modu
 for version in old new; do
   codesign --force --sign "$identity" --identifier com.geodica.ccusage.upgrade-fixture \
     --options runtime --timestamp "$stage/$version/probe"
-  codesign --verify --strict "$stage/$version/probe"
+  codesign --verify --strict -R '=identifier "com.geodica.ccusage.upgrade-fixture" and anchor apple generic and certificate leaf[subject.OU] = "76BQL8L47U"' "$stage/$version/probe"
   codesign -d -r- "$stage/$version/probe" > "$stage/$version.requirement" 2>&1
   sed -n '/^designated =>/p' "$stage/$version.requirement" > "$stage/$version.dr"
   [ -s "$stage/$version.dr" ] || { echo 'Missing designated requirement' >&2; exit 1; }

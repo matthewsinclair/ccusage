@@ -43,7 +43,7 @@ class Ccusage < Formula
   end
 
   def verify_macos_signature
-    requirement = 'identifier "com.geodica.ccusage" and anchor apple generic ' \
+    requirement = '=identifier "com.geodica.ccusage" and anchor apple generic ' \
                   'and certificate leaf[subject.OU] = "76BQL8L47U" ' \
                   "and certificate leaf[field.1.2.840.113635.100.6.1.13] exists"
     system "/usr/bin/codesign", "--verify", "--strict", "-R", requirement, bin/"ccusage"

@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import tarfile
 import tempfile
+import sys
 import unittest
 from unittest.mock import patch
 
@@ -91,6 +92,17 @@ class SigningTests(unittest.TestCase):
         result = subprocess.CompletedProcess([], 0, 'designated => identifier "stable"\n', 'Timestamp=now\nflags=runtime\n')
         with patch.object(sign, 'run'), patch.object(sign.subprocess, 'run', return_value=result):
             self.assertEqual(sign.verify(Path('fixture')), 'designated => identifier "stable"')
+
+    @unittest.skipUnless(sys.platform == 'darwin', 'requires macOS requirement parser')
+    def test_real_macos_parser_accepts_verification_requirement(self):
+        # Obtain the actual -R argument used by verification, then have macOS
+        # parse it. Missing '=' is interpreted as a filename by both tools.
+        with patch.object(sign, 'run') as command, patch.object(sign.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0, 'designated => stable\n', 'Timestamp=now\nruntime\n')):
+            sign.verify(Path('fixture'))
+        args = command.call_args.args
+        requirement = args[args.index('-R') + 1]
+        with tempfile.TemporaryDirectory() as temp:
+            subprocess.run(['/usr/bin/csreq', '-r', requirement, '-b', str(Path(temp) / 'requirement')], check=True, capture_output=True)
 
     def test_draft_is_not_published_when_signing_fails(self):
         calls = []
