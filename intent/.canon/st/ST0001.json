@@ -32,7 +32,7 @@
       "seq": 3,
       "title": "Record the Keychain access decision in ARCHITECTURE.md and RULES.md",
       "scope": "S",
-      "status": "not-started",
+      "status": "wip",
       "objective": "Once ISSUE:0002 lands, record in intent/llm/ARCHITECTURE.md why ccusage reaches Claude's Keychain items only through /usr/bin/security, the way Claude Code does, and put the matching never-rule in intent/llm/RULES.md. This satisfies AC-03.1.",
       "body": "",
       "preamble": ""

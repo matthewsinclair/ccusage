@@ -6,7 +6,7 @@ session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
 heartbeat_at: 2026-11-03 09:57Z
 status: active
 focus: "Validating dc's units as they land, ISSUE:0001 first"
-claims: []
+claims: [ST0001/03]
 ---
 
 # vc (vc)

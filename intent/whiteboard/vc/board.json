@@ -8,7 +8,9 @@
     "heartbeat_at": "2026-11-03T09:57:40.343Z",
     "status": "active",
     "focus": "Validating dc's units as they land, ISSUE:0001 first",
-    "claims": [],
+    "claims": [
+      "ST0001/03"
+    ],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
   },
