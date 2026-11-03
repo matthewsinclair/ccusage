@@ -3,8 +3,9 @@
   "id": "ST0001",
   "title": "Bring Ccusage up to Intent spec",
   "slug": "bring-ccusage-up-to-intent-spec",
-  "status": "wip",
+  "status": "completed",
   "created": "2026-11-03",
+  "completed": "2026-11-03",
   "objective": "Ccusage was added to Intent on 2026-11-03 to track ISSUE:0001 to ISSUE:0003. Bring it up to the spec of an Intent project, so that every session gets the same contract, every commit passes the same gate, and the whiteboard has a declared roster.\n\n- WP01 (dc): declare the project's languages (`intent lang init rust shell`), apply Intent's Claude canon and git gate (`intent claude upgrade --apply`), resync `AGENTS.md`, drop README's stale \"Intent integration is intentionally deferred\" line, take the first `intent backup`.\n- WP02 (vc): declare the whiteboard roster (`intent/whiteboard/README.md`, register `hv`, name vc as the reader of `hv/inbox.*`) and replace the template `intent/wip.md`.\n- WP03 (vc): once ISSUE:0002 lands, record the Keychain access decision in `intent/llm/ARCHITECTURE.md` and its never-rule in `intent/llm/RULES.md`.\n\nDone when `intent doctor` is clean with no advisory, the pre-commit gate runs the critics and doctor on a real commit, and a fresh session's `/in-session` loads the Rust and shell rules and picks up the declared roster.",
   "context": "",
   "body": "",
@@ -32,7 +33,7 @@
       "seq": 3,
       "title": "Record the Keychain access decision in ARCHITECTURE.md and RULES.md",
       "scope": "S",
-      "status": "wip",
+      "status": "done",
       "objective": "Once ISSUE:0002 lands, record in intent/llm/ARCHITECTURE.md why ccusage reaches Claude's Keychain items only through /usr/bin/security, the way Claude Code does, and put the matching never-rule in intent/llm/RULES.md. This satisfies AC-03.1.",
       "body": "",
       "preamble": ""
@@ -44,7 +45,8 @@
       "text": "intent doctor reports no finding and no advisory, the stale-backup advisory included",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "intent doctor at 2026-11-03 10:01Z: 0 findings and no advisory, exit 0 (vc)"
       }
     },
     {
@@ -127,7 +129,8 @@
       "text": "intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "b2a54b1: intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the never-rules (vc)"
       }
     },
     {

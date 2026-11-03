@@ -2,7 +2,7 @@
 wp_id: WP-03
 title: Record the Keychain access decision in ARCHITECTURE.md and RULES.md
 scope: S
-status: WIP
+status: Done
 ---
 
 # WP-03: Record the Keychain access decision in ARCHITECTURE.md and RULES.md

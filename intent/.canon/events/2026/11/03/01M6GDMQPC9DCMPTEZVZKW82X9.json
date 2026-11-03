@@ -1,0 +1,14 @@
+{
+  "id": "01M6GDMQPC9DCMPTEZVZKW82X9",
+  "ts": "2026-11-03T10:00:28.108Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-03.1"
+  },
+  "payload": {
+    "evidence": "b2a54b1: intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the never-rules (vc)"
+  }
+}

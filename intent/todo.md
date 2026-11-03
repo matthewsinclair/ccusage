@@ -8,10 +8,7 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
 
 ## DOING
 
-- [-] ST0001: Bring Ccusage up to Intent spec
-  - [x] 01: Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md
-  - [x] 02: Declare the whiteboard roster and seed the project records
-  - [-] 03: Record the Keychain access decision in ARCHITECTURE.md and RULES.md
+_(none)_
 
 ## TODO
 
@@ -19,7 +16,10 @@ _(none)_
 
 ## DONE
 
-_(none)_
+- [x] ST0001: Bring Ccusage up to Intent spec
+  - [x] 01: Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md
+  - [x] 02: Declare the whiteboard roster and seed the project records
+  - [x] 03: Record the Keychain access decision in ARCHITECTURE.md and RULES.md
 
 ---
 

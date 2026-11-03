@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-03T09:53:44Z:v0.9: vc - ISSUE:0002's CI run and live check left; WP03 next"
+verblock: "2026-11-03T10:01:44Z:v0.10: vc - issue work toward 0.1.6; no open thread"
 ---
 
 # Work In Progress
@@ -8,9 +8,9 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**ST0001: Bring Ccusage up to Intent spec; WP03 (vc) is next and last**
+**Ccusage 0.1.6: ISSUE:0002's live check, then ISSUE:0006, ISSUE:0004 and ISSUE:0003; ISSUE:0005 after**
 
-dc builds and vc validates, in hv's order: ISSUE:0002, ISSUE:0006, ISSUE:0004, ISSUE:0003, ISSUE:0005.
+dc builds and vc validates, in hv's order: ISSUE:0002, ISSUE:0004, ISSUE:0003, ISSUE:0005. vc proposed ISSUE:0006 straight after ISSUE:0002, and dc holds it until hv confirms that slot.
 
 - ISSUE:0002 (high): the fix at `812264d` moves ccusage's Keychain reads and writes to `/usr/bin/security`, as Claude Code does. Left: CI on both macOS targets, which needs a push, and the live check on hv's real accounts, with hv's OK. Caution for that check: a renewal through `security` leaves the item's partition list as `apple-tool:` alone, so brew's 0.1.5 prompts on that item afterwards. Run only the fixed build, by its full path, until 0.1.6 is installed.
 - ISSUE:0006 (medium): adopt devbin. Commit hv's vendored install unedited, declare `rust` and `shell` and the real commands in `bin/.devbin/config.yaml`, and point `usage-rules.md` at `bin/devbin`. `.gitattributes` and `bin/` stay untracked until dc reaches it.
@@ -20,7 +20,7 @@ dc builds and vc validates, in hv's order: ISSUE:0002, ISSUE:0006, ISSUE:0004, I
 
 ## Active Steel Threads
 
-- ST0001: Bring Ccusage up to Intent spec. WP03 (vc) records the Keychain decision in `intent/llm/`. AC-00.1 (doctor clean, no advisory) is satisfied when the thread closes.
+None.
 
 ## Upcoming Work
 

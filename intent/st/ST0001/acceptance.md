@@ -15,7 +15,7 @@ title: Bring Ccusage up to Intent spec
 
 ### ST-level
 
-- AC-00.1 (non-test) intent doctor reports no finding and no advisory, the stale-backup advisory included -- satisfied: no
+- AC-00.1 (non-test) intent doctor reports no finding and no advisory, the stale-backup advisory included -- evidence: intent doctor at 2026-11-03 10:01Z: 0 findings and no advisory, exit 0 (vc) -- satisfied: yes
 
 ### WP-01 -- Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md (status: Done)
 
@@ -28,9 +28,9 @@ title: Bring Ccusage up to Intent spec
 - AC-02.1 (non-test) intent/whiteboard/README.md declares hv, vc and dc with their scopes and names vc as the reader of hv/inbox.*, and hv is registered -- evidence: intent/whiteboard/README.md and hv's registration, commit b79aad5 -- satisfied: yes
 - AC-02.2 (non-test) intent/wip.md carries the current focus with a verblock, not the template -- evidence: intent/wip.md, first written in commit b79aad5 -- satisfied: yes
 
-### WP-03 -- Record the Keychain access decision in ARCHITECTURE.md and RULES.md (status: WIP)
+### WP-03 -- Record the Keychain access decision in ARCHITECTURE.md and RULES.md (status: Done)
 
-- AC-03.1 (non-test) intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule -- satisfied: no
+- AC-03.1 (non-test) intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule -- evidence: b2a54b1: intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the never-rules (vc) -- satisfied: yes
 
 ### Group AC-01
 
@@ -74,7 +74,7 @@ _(no tests in this group)_
 
 _(no tests in this group)_
 
-### WP-03 -- Record the Keychain access decision in ARCHITECTURE.md and RULES.md (status: WIP)
+### WP-03 -- Record the Keychain access decision in ARCHITECTURE.md and RULES.md (status: Done)
 
 _(no tests in this group)_
 

@@ -8,9 +8,7 @@
     "heartbeat_at": "2026-11-03T09:57:40.343Z",
     "status": "active",
     "focus": "Validating dc's units as they land, ISSUE:0001 first",
-    "claims": [
-      "ST0001/03"
-    ],
+    "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
   },
@@ -54,7 +52,8 @@
       "kind": "todo",
       "seq": 1,
       "text": "ST0001/03 (AC-03.1): record the Keychain access decision in intent/llm/ARCHITECTURE.md and the never-rule in intent/llm/RULES.md, from 812264d as validated.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-03T10:01:28.234Z",
       "recorded_at": "2026-11-03T09:52:56.517Z"
     }
   ],

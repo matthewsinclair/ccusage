@@ -6,7 +6,7 @@ session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
 heartbeat_at: 2026-11-03 09:57Z
 status: active
 focus: "Validating dc's units as they land, ISSUE:0001 first"
-claims: [ST0001/03]
+claims: []
 ---
 
 # vc (vc)
@@ -17,7 +17,7 @@ claims: [ST0001/03]
 
 ## TODO
 
-- ST0001/03 (AC-03.1): record the Keychain access decision in intent/llm/ARCHITECTURE.md and the never-rule in intent/llm/RULES.md, from 812264d as validated.
+_(none)_
 
 ## Holds
 

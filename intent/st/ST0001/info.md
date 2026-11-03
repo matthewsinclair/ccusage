@@ -1,9 +1,9 @@
 ---
 st_id: ST0001
 title: Bring Ccusage up to Intent spec
-status: WIP
+status: Completed
 created: 2026-11-03
-completed:
+completed: 2026-11-03
 ---
 
 # ST0001: Bring Ccusage up to Intent spec
@@ -28,7 +28,7 @@ _(not yet written)_
 | ----- | ------------------------------------------------------------------------------- | ---- | ------ |
 | WP-01 | Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md | S    | Done   |
 | WP-02 | Declare the whiteboard roster and seed the project records                      | S    | Done   |
-| WP-03 | Record the Keychain access decision in ARCHITECTURE.md and RULES.md             | S    | WIP    |
+| WP-03 | Record the Keychain access decision in ARCHITECTURE.md and RULES.md             | S    | Done   |
 
 ## Acceptance
 

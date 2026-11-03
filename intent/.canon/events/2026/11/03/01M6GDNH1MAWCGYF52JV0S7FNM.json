@@ -1,0 +1,14 @@
+{
+  "id": "01M6GDNH1MAWCGYF52JV0S7FNM",
+  "ts": "2026-11-03T10:00:54.069Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-00.1"
+  },
+  "payload": {
+    "evidence": "intent doctor at 2026-11-03 10:0xZ: 0 findings, no advisory, exit 0 (vc)"
+  }
+}
