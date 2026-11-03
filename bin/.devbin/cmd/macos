@@ -96,10 +96,12 @@ check_sums() {
 # unpack <archive> <dir>: <dir> new and empty. Its listing must be exactly the four
 # files, each once, with a ./ root allowed; what comes out must be those four regular
 # files, one link each and at most $limit bytes. The binary comes out executable.
+# Both reads turn bsdtar's mac-ext off: with it on, as macOS has it by default, a
+# ._name AppleDouble entry is folded into the next entry as metadata and never listed.
 unpack() {
   local archive=$1 dir=$2 entry i
   local -a listed members wanted found
-  listed=("${(@f)$(bsdtar -tzf $archive 2>/dev/null)}") || die "${archive:t} cannot be listed"
+  listed=("${(@f)$(bsdtar --options '!mac-ext' -tzf $archive 2>/dev/null)}") || die "${archive:t} cannot be listed"
   for entry in $listed; do
     entry=${entry#./}
     [[ -z $entry || $entry == . ]] && continue
@@ -110,8 +112,8 @@ unpack() {
   for (( i = 1; i <= $#wanted; i++ )); do
     [[ $members[i] == "$wanted[i]" ]] || die "Unexpected release archive member in ${archive:t}"
   done
-  ( limit filesize 128m; bsdtar -xzf $archive -C $dir --no-same-owner --no-same-permissions \
-    --no-xattrs --no-mac-metadata ) >/dev/null 2>&1 || die "${archive:t} cannot be unpacked"
+  ( limit filesize 128m; bsdtar --options '!mac-ext' -xzf $archive -C $dir --no-same-owner \
+    --no-same-permissions --no-xattrs --no-mac-metadata ) >/dev/null 2>&1 || die "${archive:t} cannot be unpacked"
   found=($dir/**/*(DN))
   (( $#found == $#files )) || die "Unexpected release archive member in ${archive:t}"
   for entry in $files; do

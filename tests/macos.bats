@@ -121,12 +121,14 @@ stage() {
 }
 
 # CI's draft: each archive as `tar -czf ... -C staging .` writes it, the binary holding
-# its target's triple, and CI's sums as SHA256SUMS.ci
+# its target's triple, and CI's sums as SHA256SUMS.ci. Files made here carry
+# com.apple.provenance, and COPYFILE_DISABLE stops bsdtar adding a ._ entry for each,
+# as CI's packaging step does.
 ci_release() {
   local target
   for target in $TARGETS; do
     stage "$BATS_TEST_TMPDIR/stage-$target" "$target"
-    bsdtar -czf "$FAKE_RELEASE/ccusage-$TAG-$target.tar.gz" -C "$BATS_TEST_TMPDIR/stage-$target" .
+    COPYFILE_DISABLE=1 bsdtar -czf "$FAKE_RELEASE/ccusage-$TAG-$target.tar.gz" -C "$BATS_TEST_TMPDIR/stage-$target" .
   done
   mkdir -p "$BATS_TEST_TMPDIR/ci"
   cp "$FAKE_RELEASE"/*.tar.gz "$BATS_TEST_TMPDIR/ci/"
@@ -142,7 +144,7 @@ write_ci_sums() {
 # arm <bsdtar arguments>: the Apple silicon archive rebuilt from them, with CI's sums
 # rewritten to match, so only the archive's own checks stand in the way
 arm() {
-  bsdtar -czf "$FAKE_RELEASE/ccusage-$TAG-aarch64-apple-darwin.tar.gz" "$@"
+  COPYFILE_DISABLE=1 bsdtar -czf "$FAKE_RELEASE/ccusage-$TAG-aarch64-apple-darwin.tar.gz" "$@"
   write_ci_sums
 }
 
@@ -365,6 +367,16 @@ display() {
   : > "$FAKE_LOG"; rm "$odd/ccusage" && mkdir "$odd/ccusage"
   arm -C "$odd" LICENSE README.md ccusage ccusage-logo.svg
   finalize; refused "Unexpected release archive member"
+}
+
+@test "archives with an AppleDouble member are refused" {
+  # macOS bsdtar folds a ._name entry into the next one as Mac metadata unless its
+  # mac-ext option is off, so a listing that left it on would never show it
+  local from=$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin
+  printf 'not metadata' > "$from/._ccusage"
+  COPYFILE_DISABLE=1 arm -C "$from" LICENSE README.md ._ccusage ccusage ccusage-logo.svg
+  finalize
+  refused "Unexpected release archive member"
 }
 
 @test "bare names unpack as well as CI's ./ root" {
