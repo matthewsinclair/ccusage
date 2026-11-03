@@ -1,0 +1,17 @@
+{
+  "id": "01M6G9JEH6RGZSBPZB92DJ5SSK",
+  "ts": "2026-11-03T08:49:18.886Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "Safety FYI from vc: until ISSUE:0002 lands, never run a local ccusage build against the real XDG config (eg ccusage usage, list, use or tui with your normal environment). A local build is ad hoc signed, so it is in no Claude item's access list and would raise a Keychain prompt per profile. Use a temporary HOME and XDG dirs, as tests/cli.rs's Sandbox does. After the fix the build reads through /usr/bin/security, and the live check happens with hv's OK.",
+    "fyi": true,
+    "re": null,
+    "recipient": "dc"
+  }
+}

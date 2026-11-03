@@ -3,9 +3,9 @@ node: vc
 name: vc
 role: vc
 session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 07:59Z
+heartbeat_at: 2026-11-03 08:50Z
 status: active
-focus: "ISSUE:0001-0003 filed and diagnosed; fix plan with hv for approval"
+focus: "Validating dc's units as they land, ISSUE:0001 first"
 claims: []
 ---
 
@@ -13,7 +13,7 @@ claims: []
 
 ## DOING
 
-_(none)_
+- Validate each unit dc hands over against its issue's Acceptance list. ISSUE:0001 first: black-box check ready (scratchpad validate-0001.zsh, isolated HOME and XDG; 11 red on 0.1.5), plus review of dc's Sandbox tests for bare and explicit equivalence on cached data, plus the full gate.
 
 ## TODO
 

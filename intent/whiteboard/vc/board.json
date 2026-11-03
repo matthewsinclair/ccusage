@@ -5,9 +5,9 @@
     "name": "vc",
     "role": "vc",
     "session_id": "0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e",
-    "heartbeat_at": "2026-11-03T07:59:06.485Z",
+    "heartbeat_at": "2026-11-03T08:50:04.819Z",
     "status": "active",
-    "focus": "ISSUE:0001-0003 filed and diagnosed; fix plan with hv for approval",
+    "focus": "Validating dc's units as they land, ISSUE:0001 first",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
@@ -20,6 +20,14 @@
       "text": "Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until ISSUE:0002 ships: a ccusage renewal would strip apple-tool: from that item and every Claude Code session on it would prompt.",
       "state": "live",
       "recorded_at": "2026-11-03T07:29:21.153Z"
+    },
+    {
+      "node": "vc",
+      "kind": "doing",
+      "seq": 1,
+      "text": "Validate each unit dc hands over against its issue's Acceptance list. ISSUE:0001 first: black-box check ready (scratchpad validate-0001.zsh, isolated HOME and XDG; 11 red on 0.1.5), plus review of dc's Sandbox tests for bare and explicit equivalence on cached data, plus the full gate.",
+      "state": "live",
+      "recorded_at": "2026-11-03T08:50:04.806Z"
     }
   ],
   "sent": [
@@ -64,6 +72,13 @@
       "body": "hv ruling 2026-11-03: dc builds ISSUE:0005 after ISSUE:0003, as one PR (#15). Your queue: ISSUE:0001, ST0001/01, ISSUE:0002 (red first), ISSUE:0004, ISSUE:0003, ISSUE:0005, then hv cuts 0.1.6. ISSUE:0005 is not part of the 0.1.6 release; it ships through upstream.\n\nISSUE:0005 brief, on top of the issue body (intent issues show 0005):\n- Repo: ~/Devel/forks/claudecodeusage, outside this checkout and not an Intent project. Work on fix/account-picker (PR #15's head, 29a4db2). Bring in 4b116b9 from fix/account-identity-preview; expect conflicts with 29a4db2, since both change how the status colour follows the selection.\n- Tests: swift test (the existing parser, colour and identity tests, plus the new ones the issue names). Build: xcodebuild as in .github/workflows/test.yml. In a Debug build the code lives in ClaudeUsage.debug.dylib, not the launcher executable.\n- hv runs a local build from build/local-test-selected-colour/ (PID 12625). Hand vc a new build directory to try; never replace or stop the running copy without hv's say-so.\n- Commit to the fork's branch locally. Do not push and do not edit PR #15: vc asks hv for that at the end, because it publishes to Rich's repo.\n- Read-only stays a hard rule: no code path may refresh or write a Claude credential.",
       "fyi": false,
       "recorded_at": "2026-11-03T08:44:13.598Z"
+    },
+    {
+      "id": "01M6G9JEH6RGZSBPZB92DJ5SSM",
+      "recipient": "dc",
+      "body": "Safety FYI from vc: until ISSUE:0002 lands, never run a local ccusage build against the real XDG config (eg ccusage usage, list, use or tui with your normal environment). A local build is ad hoc signed, so it is in no Claude item's access list and would raise a Keychain prompt per profile. Use a temporary HOME and XDG dirs, as tests/cli.rs's Sandbox does. After the fix the build reads through /usr/bin/security, and the live check happens with hv's OK.",
+      "fyi": true,
+      "recorded_at": "2026-11-03T08:49:18.886Z"
     }
   ],
   "handled": []

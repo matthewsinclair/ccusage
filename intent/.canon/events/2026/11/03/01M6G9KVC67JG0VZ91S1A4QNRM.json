@@ -1,0 +1,15 @@
+{
+  "id": "01M6G9KVC67JG0VZ91S1A4QNRM",
+  "ts": "2026-11-03T08:50:04.806Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "Validate each unit dc hands over against its issue's Acceptance list. ISSUE:0001 first: black-box check ready (scratchpad validate-0001.zsh, isolated HOME and XDG; 11 red on 0.1.5), plus review of dc's Sandbox tests for bare and explicit equivalence on cached data, plus the full gate."
+  }
+}
