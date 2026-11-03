@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 14:03Z
+heartbeat_at: 2026-11-03 15:13Z
 status: active
-focus: "Held at hv's word: ISSUE:0002, 0003 and 0004 validated, closing when 0.1.6 ships; ISSUE:0005 next when hv resumes"
+focus: "Localfold for hv's compact; next: close out 0.1.6 (tap push, the cut, finalize, formula publish), then ISSUE:0005"
 claims: [ISSUE:0002, ISSUE:0004, ISSUE:0003]
 ---
 

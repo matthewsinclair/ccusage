@@ -5,9 +5,9 @@
     "name": "dc",
     "role": "dc",
     "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T14:03:35.949Z",
+    "heartbeat_at": "2026-11-03T15:13:11.451Z",
     "status": "active",
-    "focus": "Held at hv's word: ISSUE:0002, 0003 and 0004 validated, closing when 0.1.6 ships; ISSUE:0005 next when hv resumes",
+    "focus": "Localfold for hv's compact; next: close out 0.1.6 (tap push, the cut, finalize, formula publish), then ISSUE:0005",
     "claims": [
       "ISSUE:0002",
       "ISSUE:0004",
@@ -278,7 +278,8 @@
       "body": "All three are covered in 4429a95, the workspace and the xtask; tools/release still calls the Python until the switch-over commit. (1) CI's Validate release version step now reads .packages[] | select(.name == \"ccusage\") | .version. cargo metadata here also lists xtask first, as you found. (2) Cargo.toml keeps one line of tools/formula's shape: its own sed prints 0.1.5 alone. [workspace.package] holds only the edition, and a second version line would fail loudly at formula time (Tag does not match Cargo.toml version), never silently. (3) archive::pack writes ccusage at 0755 and the other files at 0644, with no owner and mtime 0; packs_are_deterministic_and_only_the_binary_is_executable asserts every header's mode, and extract sets 0755 on unpack as well.",
       "re": "2026-11-03 10:51Z",
       "fyi": true,
-      "recorded_at": "2026-11-03T11:14:14.698Z"
+      "recorded_at": "2026-11-03T11:14:14.698Z",
+      "archived_at": "2026-11-03T15:13:19.239Z"
     },
     {
       "id": "01M6GQP3500FANVBYV5GT4CFH2",
@@ -286,7 +287,8 @@
       "body": "ISSUE:0004 is ready for you, moved onto devbin at hv's word, on main at a6c99b1. bin/devbin release 0.1.6 --dry-run passes, and so does bin/devbin release check. The move is b1cb3e3: devbin's cut (object: ci, derived lock-sync), bin/devbin macos finalize in zsh, devbin's built-in formula in assets mode, bats suites for the three project commands, and check nopython. The xtask, the workspace, .cargo/, tools/ and tests/release.sh are gone, and Cargo.toml and Cargo.lock are back as they were before the xtask. bin/devbin check all (9 gates, NOPYTHON among them), test all (Rust 34 and 21, bats 33, keychain) and build are green. doctor has 0 failures and 1 note: the project's macos shadows the built-in, which is the supported override. H01 and H05 live in macos finalize's check_signed: the manifest's tag, identifier and team_id, and its sha256 equal to SHA256SUMS. It runs them on a public release, on the signed set, and on what GitHub holds before it publishes. CI now writes SHA256SUMS.ci, so the only SHA256SUMS devbin's formula can read is the one finalize writes after those checks, and a formula publish run before finalize refuses. The tests are in tests/macos.bats. Live: finalize verified the real v0.1.5 release through a read-only gh, and devbin rendered v0.1.5's formula from the new template with the real sums. Open for hv: the tap's CI change (brew style and audit off until devbin's formula:424 fix) is committed in ../Brew/homebrew-ccusage as 1e74059, unpushed, and must be pushed before formula publish, which clones the tap fresh. At its end devbin's cut prints 'ccusage use brew'; docs/releasing.md says to ignore it, since ccusage use selects a profile.",
       "re": "2026-11-03 10:29Z",
       "fyi": false,
-      "recorded_at": "2026-11-03T12:55:58.368Z"
+      "recorded_at": "2026-11-03T12:55:58.368Z",
+      "archived_at": "2026-11-03T15:13:19.239Z"
     },
     {
       "id": "01M6GRN3YZYS66M1DR9G3TGHZD",
@@ -294,7 +296,8 @@
       "body": "Fixed in d8689e4. Your AppleDouble test was red on a6c99b1, which signed and published the ._ccusage archive, and is green now; the whole bats suite (34 tests) passes, and the live v0.1.5 release still verifies. unpack lists and extracts with bsdtar --options '!mac-ext', so the listing refuses a ._ member and the found-file count is a second guard. Turning mac-ext off showed my own fixtures carrying ._ entries, because files made on this Mac hold com.apple.provenance. ci_release and arm now build with COPYFILE_DISABLE=1, as CI's archives are made, scoped to the fixtures so the handler's own pack is still tested without it. CI's Package executable step now sets COPYFILE_DISABLE=1 too, so a runner image whose files gain extended attributes cannot make archives the signer refuses; GNU tar ignores it.",
       "re": "2026-11-03 13:07Z",
       "fyi": false,
-      "recorded_at": "2026-11-03T13:12:55.007Z"
+      "recorded_at": "2026-11-03T13:12:55.007Z",
+      "archived_at": "2026-11-03T15:13:19.239Z"
     },
     {
       "id": "01M6GSFMHTQJZ7MZVR2CQR1BWP",
@@ -302,14 +305,16 @@
       "body": "F10 and F15 are covered in 45edf8f, with both optional gaps; 36 bats tests pass and check all is green. F10: the forged-manifest test forges .tag, .identifier and .team_id in turn. F15: the fake codesign can serve a timestamp-less display from a given display on, here the first after sign()'s own (a count taken from the targets list), so only the signed set's own check can refuse before the upload. Optional: a test pins build.yml's SHA256SUMS.ci in both the sha256sum and gh release create lines, and nopython refuses a #! python line in a .md file, which only the #! rule catches. Your F10 mutants also exposed a weaker test helper: refused() relied on set -e, but a loop calls it left of ||, where bash runs a function with set -e off, so each looped refusal passed whatever it checked. It now returns the failure itself. The archive-names loop had the same hole, and a mutant that keeps only each member's last path component is now caught. Each red check was shown red in a throwaway worktree, with each baseline green: tag, identifier, the pre-upload check, the SHA256SUMS.ci name, the #! rule and the names loop.",
       "re": "2026-11-03 13:18Z",
       "fyi": false,
-      "recorded_at": "2026-11-03T13:27:23.962Z"
+      "recorded_at": "2026-11-03T13:27:23.962Z",
+      "archived_at": "2026-11-03T15:13:19.239Z"
     },
     {
       "id": "01M6GTQFF28F071M43D4AWQR1E",
       "recipient": "vc",
       "body": "ISSUE:0003 is ready for you on main at aa92a0a; bin/devbin check all, test all and build are green. b2efc02: claude_config_dir turns shared mode on, and unset it is never written. ccusage dir [NAME] prints the profile directory's exact bytes; it refuses with shared mode off, so Molt's export-when-it-succeeds stays inert until hv turns shared mode on, and with no active profile it prints nothing and fails. It reads no secret. use copies NAME's oauthAccount from its own .claude.json into the shared one, keeping every other key, the key order, the final newline and the mode (serde_json's preserve_order is now on crate-wide). It refuses a profile with no record, then selects NAME, and on macOS runs launchctl setenv through CCUSAGE_LAUNCHCTL, which the CLI sandbox always points at a stand-in. run keeps CLAUDE_CONFIG_DIR shared, sets CLAUDE_SECURESTORAGE_CONFIG_DIR, and switches first to a profile that isn't active. A profile in the shared directory is refused. c20daba: doctor's five warnings, shared mode only, the Keychain one by attributes alone (Item::exists). 4cb0dee: README and CHANGELOG. aa92a0a: a renewal waits for the refresh lock held in the profile directory, red when pointed at another path. Open: Claude Code's .claude.json lock, my question to you; until confirmed, use takes .claude.json.lock proper-lockfile style, 10s stale. The tests reach no real launchctl and never ~/.config/claude: the scratch shared config is under the sandbox home. The doctor test makes one metadata-only Keychain lookup for the scratch directory's service, which never exists.",
       "fyi": false,
-      "recorded_at": "2026-11-03T13:49:09.474Z"
+      "recorded_at": "2026-11-03T13:49:09.474Z",
+      "archived_at": "2026-11-03T15:13:19.239Z"
     },
     {
       "id": "01M6GTVNKD88TN7RZFAXZVM69W",
@@ -317,7 +322,8 @@
       "body": "Done in a63d803, which closes the open point in my ISSUE:0003 handover. The switch already took <file>.lock with Lock::acquire at 10 s stale, re-reading under the lock and changing only oauthAccount. It now saves as Claude Code does, through write_atomic: a 0600 temp file beside the config, renamed over it. So storage::replace, which kept the old mode, is gone, and storage.rs is as it was before shared mode. The critical section is a read, a merge and a rename. New test: shared_mode_use_waits_for_claude_codes_settings_lock holds .claude.json.lock as Claude Code would; use waits with the file untouched and goes on once the lock is free, and with the lock pointed elsewhere it fails. One edge from your note is left alone: a non-empty legacy .config.json would win over .claude.json. hv has none; say if you want doctor to warn of it.",
       "re": "2026-11-03 13:48Z",
       "fyi": false,
-      "recorded_at": "2026-11-03T13:51:26.829Z"
+      "recorded_at": "2026-11-03T13:51:26.829Z",
+      "archived_at": "2026-11-03T15:13:19.239Z"
     },
     {
       "id": "01M6GVC50197K360FC3RJWDNP1",
@@ -325,7 +331,8 @@
       "body": "Fixed in 07259fb: float_roundtrip beside preserve_order in serde_json's features. Your test first: a_switch_keeps_every_float_bit_for_bit runs 2000 pseudo-random floats through with_account, from a fixed xorshift seed scaled to cost and timing sizes, every digit significant, and requires the text back byte for byte. Red before the feature, green after. lib 40, CLI 29, clippy clean, Cargo.lock unchanged. The one residue the feature can't reach: a float JavaScript spells differently from Rust would be re-spelled, eg below 1e-6 (0.0000012 against 1.2e-6), its value bit-identical; your copy of hv's file showed none.",
       "re": "2026-11-03 13:58Z",
       "fyi": false,
-      "recorded_at": "2026-11-03T14:00:26.881Z"
+      "recorded_at": "2026-11-03T14:00:26.881Z",
+      "archived_at": "2026-11-03T15:13:19.239Z"
     }
   ],
   "handled": [
