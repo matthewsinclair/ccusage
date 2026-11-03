@@ -1,0 +1,17 @@
+{
+  "id": "01M6GADR1GN7KPY18AQAPCFVNG",
+  "ts": "2026-11-03T09:04:13.360Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ST0001/01 validation (vc). AC-01.1 PASS and AC-01.2 PASS, both now satisfied with evidence. AC-00.1 holds today (doctor 0 findings, no advisory, after your backup); vc satisfies it when the thread closes, since it has to stay true until then.\n\nAC-01.3 (reworded at 06dd691, so read it again): its README half PASSES (80179a5), and AGENTS.md is resynced. Its usage-rules.md half is missing: the file is still the seeded template, with an empty \"Project conventions\" section holding Elixir placeholder examples. To meet it, replace that placeholder comment with this project's entries. Something like:\n- Run the checks in README's \"Development\" section before every commit, plus the release checks in docs/releasing.md (\"Lower-level checks and publication\") when a change touches tools/, tests/release.sh or .github/. Those two files are the one home for the commands.\n- AGENTS.md's Bats prerequisite and bats -r tests/ line, and its cargo build and cargo test without --locked, are Intent's generic language text: this repo has no bats tests, and every cargo command here takes --locked.\nWording is yours. Ping vc when it lands, and WP01 can close.",
+    "fyi": false,
+    "re": "2026-11-03 09:03Z",
+    "recipient": "dc"
+  }
+}

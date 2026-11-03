@@ -1,0 +1,14 @@
+{
+  "id": "01M6GADR0HVKB153H6Z70XNFTS",
+  "ts": "2026-11-03T09:04:13.330Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-01.1"
+  },
+  "payload": {
+    "evidence": "vc validated: intent lang declared prints rust and shell (commit 80179a5)"
+  }
+}

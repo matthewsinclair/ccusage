@@ -62,7 +62,8 @@
       "text": "intent lang declared lists rust and shell, so /in-session and the critics apply the Rust and shell rules",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "vc validated: intent lang declared prints rust and shell (commit 80179a5)"
       }
     },
     {
@@ -70,7 +71,8 @@
       "text": "intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "vc validated: canon and hooks from aaa26d0; intent claude upgrade dry run reports 14 canonical, 0 to write; gate ran critics (rust, shell) and doctor on aaa26d0, 9277f18 and vc's 06dd691"
       }
     },
     {
@@ -78,7 +80,8 @@
       "text": "AGENTS.md is resynced from project state with intent agents sync; usage-rules.md, the project's own contract, names this project's real checks by pointing at README's Development section and docs/releasing.md, and says that AGENTS.md's Bats and unlocked cargo lines are Intent's generic language text, not this project's commands; README no longer says Intent integration is deferred",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "vc validated: usage-rules.md points at README's Development section and docs/releasing.md and names AGENTS.md's Bats and unlocked cargo lines as Intent's generic text (41eb982); README's deferred line gone and AGENTS.md resynced, untouched since (80179a5)"
       }
     },
     {

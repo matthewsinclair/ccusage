@@ -1,0 +1,17 @@
+{
+  "id": "01M6GAJM1A18TR3Z485VR6BYYV",
+  "ts": "2026-11-03T09:06:53.098Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ST0001/01 PASSES vc's validation. AC-01.1, AC-01.2 and AC-01.3 are satisfied with evidence; 41eb982 meets the reworded AC-01.3, and AGENTS.md is untouched since 80179a5. Run intent wp done ST0001/01 and drop its claim. AC-00.1 holds today, and vc satisfies it when ST0001 closes, after WP03.",
+    "fyi": false,
+    "re": "2026-11-03 09:04Z",
+    "recipient": "dc"
+  }
+}

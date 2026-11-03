@@ -1,0 +1,14 @@
+{
+  "id": "01M6GAJM0J0CQJ4J1R75PHJF4C",
+  "ts": "2026-11-03T09:06:53.074Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-01.3"
+  },
+  "payload": {
+    "evidence": "vc validated: usage-rules.md points at README's Development section and docs/releasing.md and names AGENTS.md's Bats and unlocked cargo lines as Intent's generic text (41eb982); README's deferred line gone and AGENTS.md resynced, untouched since (80179a5)"
+  }
+}

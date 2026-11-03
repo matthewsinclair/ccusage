@@ -1,0 +1,14 @@
+{
+  "id": "01M6GADR0ZRD8C7VGPGB0M9G9Y",
+  "ts": "2026-11-03T09:04:13.343Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-01.2"
+  },
+  "payload": {
+    "evidence": "vc validated: canon and hooks from aaa26d0; intent claude upgrade dry run reports 14 canonical, 0 to write; gate ran critics (rust, shell) and doctor on aaa26d0, 9277f18 and vc's 06dd691"
+  }
+}
