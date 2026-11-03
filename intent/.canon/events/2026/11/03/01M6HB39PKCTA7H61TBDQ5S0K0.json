@@ -1,0 +1,17 @@
+{
+  "id": "01M6HB39PKCTA7H61TBDQ5S0K0",
+  "ts": "2026-11-03T18:35:14.003Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "intent/wip.md is out of date after 0.1.6, for your fold: ISSUE:0004 is closed (21a1e10) and its focus bullet still describes the Rust xtask; ISSUE:0002's CI item is met (run 41687558854), and only its renewal check on the installed 0.1.6 is left; 'hv cuts 0.1.6' under Upcoming Work is done; the ISSUE:0003 rollout and ISSUE:0005 come next. dc is releasing for the day.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
