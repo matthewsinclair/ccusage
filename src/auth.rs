@@ -739,6 +739,295 @@ mod tests {
     Ok(())
   }
 
+  /// A disposable keychain, and the `/usr/bin/security` calls Claude Code makes on it.
+  #[cfg(target_os = "macos")]
+  mod native {
+    use crate::Result;
+    use std::{
+      io::Write,
+      path::PathBuf,
+      process::{Command, Output, Stdio},
+    };
+
+    const SECURITY: &str = "/usr/bin/security";
+    const PASSWORD: &str = "fixture-password";
+
+    /// What an item's access control list allows, from `security dump-keychain -a`.
+    #[derive(Debug, Default)]
+    pub struct Access {
+      pub partitions: Vec<String>,
+      pub decrypt: Vec<String>,
+    }
+
+    /// macOS gives a keychain the login keychain's partitioned format only under
+    /// ~/Library/Keychains, so the fixture lives there. `security create-keychain`
+    /// leaves the search list alone, and the keychain is deleted on drop.
+    pub struct Keychain {
+      pub path: PathBuf,
+      id: String,
+    }
+
+    impl Keychain {
+      pub fn new() -> Result<Self> {
+        static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+        let id = format!(
+          "{}-{}",
+          std::process::id(),
+          NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+        );
+        let path = crate::config::home()?
+          .join("Library/Keychains")
+          .join(format!("ccusage-test-{id}.keychain-db"));
+        if path.exists() {
+          return Err(format!("fixture keychain already exists: {}", path.display()).into());
+        }
+        let path_text = path.to_str().ok_or("fixture keychain path is not UTF-8")?;
+        if path_text.contains(['"', '\\', '\n']) {
+          return Err("fixture keychain path cannot be quoted for security -i".into());
+        }
+        run(
+          Command::new(SECURITY)
+            .args(["create-keychain", "-p", PASSWORD])
+            .arg(&path),
+        )?;
+        let keychain = Self { path, id };
+        // No auto-lock, so nothing in the test can need an unlock prompt.
+        run(
+          Command::new(SECURITY)
+            .arg("set-keychain-settings")
+            .arg(&keychain.path),
+        )?;
+        Ok(keychain)
+      }
+
+      /// A service name no real item uses.
+      pub fn name(&self, kind: &str) -> String {
+        format!("ccusage-test-{kind}-{}", self.id)
+      }
+
+      /// `security` adds to the default keychain when the one named does not exist.
+      fn present(&self) -> Result<&str> {
+        if !self.path.is_file() {
+          return Err("fixture keychain is missing; refusing to fall back to another".into());
+        }
+        self
+          .path
+          .to_str()
+          .ok_or("fixture keychain path is not UTF-8".into())
+      }
+
+      /// Create an item as Claude Code 2.1.317 writes one: `security -i`, password as
+      /// hex on stdin.
+      pub fn add_as_claude_code(
+        &self,
+        service: &str,
+        account: &str,
+        password: &[u8],
+      ) -> Result<()> {
+        let hex: String = password.iter().map(|byte| format!("{byte:02x}")).collect();
+        let line = format!(
+          "add-generic-password -U -a \"{account}\" -s \"{service}\" -X \"{hex}\" \"{}\"\n",
+          self.present()?
+        );
+        let mut child = Command::new(SECURITY)
+          .arg("-i")
+          .stdin(Stdio::piped())
+          .stdout(Stdio::null())
+          .stderr(Stdio::null())
+          .spawn()?;
+        child
+          .stdin
+          .take()
+          .ok_or("security -i has no stdin")?
+          .write_all(line.as_bytes())?;
+        if !child.wait()?.success() {
+          return Err("security -i could not add the fixture item".into());
+        }
+        Ok(())
+      }
+
+      /// Grant this test binary access as Always Allow does: its own partition, which
+      /// it learns from a probe item it creates itself, joins the item's partitions.
+      pub fn allow_this_binary(&self, service: &str, account: &str) -> Result<()> {
+        use security_framework::os::macos::keychain::SecKeychain;
+        let probe = self.name("probe");
+        SecKeychain::open(self.present()?)?.add_generic_password(&probe, account, b"probe")?;
+        let own = self.access(&probe)?.partitions;
+        if own.is_empty() {
+          return Err("could not learn this test binary's partition".into());
+        }
+        let mut partitions = self.access(service)?.partitions;
+        partitions.extend(own);
+        run(
+          Command::new(SECURITY)
+            .args(["set-generic-password-partition-list", "-S"])
+            .arg(partitions.join(","))
+            .args(["-k", PASSWORD, "-a", account, "-s", service])
+            .arg(self.present()?),
+        )?;
+        Ok(())
+      }
+
+      /// The item's access control list, read without decrypting anything.
+      pub fn access(&self, service: &str) -> Result<Access> {
+        let dump = run(
+          Command::new(SECURITY)
+            .args(["dump-keychain", "-a"])
+            .arg(self.present()?),
+        )?;
+        access_of(&String::from_utf8(dump.stdout)?, service)
+          .ok_or_else(|| format!("no item {service} in the fixture keychain").into())
+      }
+
+      /// Read the password as Claude Code does: `find-generic-password -w`, which
+      /// prints a password with any non-printing byte as hex.
+      pub fn read_as_claude_code(&self, service: &str, account: &str) -> Result<Vec<u8>> {
+        let output = run(
+          Command::new(SECURITY)
+            .args(["find-generic-password", "-a", account, "-w", "-s", service])
+            .arg(self.present()?),
+        )?;
+        Ok(
+          output
+            .stdout
+            .strip_suffix(b"\n")
+            .unwrap_or(&output.stdout)
+            .to_vec(),
+        )
+      }
+
+      /// Whether the fixture keychain has the item, from its attributes alone.
+      pub fn holds(&self, service: &str, account: &str) -> Result<bool> {
+        let mut command = Command::new(SECURITY);
+        command
+          .args(["find-generic-password", "-a", account, "-s", service])
+          .arg(self.present()?);
+        found(command)
+      }
+    }
+
+    impl Drop for Keychain {
+      fn drop(&mut self) {
+        if let Err(error) = run(
+          Command::new(SECURITY)
+            .arg("delete-keychain")
+            .arg(&self.path),
+        ) {
+          eprintln!(
+            "could not delete fixture keychain {}: {error}",
+            self.path.display()
+          );
+        }
+      }
+    }
+
+    /// Whether any keychain in the user's search list has the item, from its
+    /// attributes alone: a write that fell back to the default keychain shows here.
+    pub fn anywhere(service: &str, account: &str) -> Result<bool> {
+      let mut command = Command::new(SECURITY);
+      command.args(["find-generic-password", "-a", account, "-s", service]);
+      found(command)
+    }
+
+    fn found(mut command: Command) -> Result<bool> {
+      // errSecItemNotFound (-25300), as security's exit status reports it.
+      const ITEM_NOT_FOUND: i32 = 44;
+      match command
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status()?
+        .code()
+      {
+        Some(0) => Ok(true),
+        Some(ITEM_NOT_FOUND) => Ok(false),
+        code => Err(format!("security find-generic-password exited with {code:?}").into()),
+      }
+    }
+
+    fn run(command: &mut Command) -> Result<Output> {
+      let output = command.stdin(Stdio::null()).output()?;
+      if !output.status.success() {
+        return Err(format!("{command:?} exited with {}", output.status).into());
+      }
+      Ok(output)
+    }
+
+    /// One item's partitions and decrypt applications from a dump-keychain -a listing.
+    fn access_of(dump: &str, service: &str) -> Option<Access> {
+      let svce = format!("\"svce\"<blob>=\"{service}\"");
+      let record = dump
+        .split("keychain: \"")
+        .find(|record| record.lines().any(|line| line.trim() == svce))?;
+      let mut access = Access::default();
+      for entry in record.split("    entry ").skip(1) {
+        let lines: Vec<&str> = entry.lines().map(str::trim).collect();
+        let authorizations = lines
+          .iter()
+          .find(|line| line.starts_with("authorizations"))?;
+        if authorizations.ends_with(": partition_id") {
+          let description = lines
+            .iter()
+            .find_map(|line| line.strip_prefix("description: "))?;
+          access.partitions = description.split(", ").map(str::to_owned).collect();
+        } else if authorizations
+          .split_whitespace()
+          .any(|word| word == "decrypt")
+        {
+          access.decrypt = lines
+            .iter()
+            .filter_map(|line| line.split_once(": "))
+            .filter(|(index, _)| index.parse::<u32>().is_ok())
+            .map(|(_, app)| {
+              app
+                .rsplit_once(" (")
+                .map_or(app, |(path, _)| path)
+                .to_owned()
+            })
+            .collect();
+        }
+      }
+      Some(access)
+    }
+  }
+
+  #[cfg(target_os = "macos")]
+  #[test]
+  #[ignore = "requires the macOS Security service; uses only a disposable keychain"]
+  fn renewal_write_keeps_claude_items_readable_by_security() -> Result<()> {
+    use security_framework::os::macos::keychain::SecKeychain;
+    // Interaction off: an in-process Keychain call fails rather than prompts.
+    let _no_prompts = SecKeychain::disable_user_interaction()?;
+    let keychain = native::Keychain::new()?;
+    let (service, account) = (keychain.name("claude"), "ccusage-fixture");
+    keychain.add_as_claude_code(
+      &service,
+      account,
+      br#"{"claudeAiOauth":{"accessToken":"OLD"}}"#,
+    )?;
+    keychain.allow_this_binary(&service, account)?;
+    let renewed = br#"{"claudeAiOauth":{"accessToken":"RENEWED"}}"#;
+    let opened = || SecKeychain::open(&keychain.path);
+    save_keychain(&service, renewed, Some(&[opened()?]))?;
+    let access = keychain.access(&service)?;
+    assert!(
+      access.partitions.iter().any(|id| id == "apple-tool:"),
+      "partitions after the renewal write: {:?}",
+      access.partitions
+    );
+    assert!(
+      access.decrypt.iter().any(|app| app == "/usr/bin/security"),
+      "decrypt access after the renewal write: {:?}",
+      access.decrypt
+    );
+    assert_eq!(keychain.read_as_claude_code(&service, account)?, renewed);
+    // Renewal only updates: a missing item stays missing, here and in the default keychain.
+    let missing = keychain.name("missing");
+    assert!(save_keychain(&missing, renewed, Some(&[opened()?])).is_err());
+    assert!(!keychain.holds(&missing, account)?);
+    assert!(!native::anywhere(&missing, account)?);
+    Ok(())
+  }
+
   #[cfg(target_os = "macos")]
   #[test]
   #[ignore = "requires the macOS Security service; uses only a disposable Keychain"]
