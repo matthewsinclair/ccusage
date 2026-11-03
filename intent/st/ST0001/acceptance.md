@@ -17,7 +17,7 @@ title: Bring Ccusage up to Intent spec
 
 - AC-00.1 (non-test) intent doctor reports no finding and no advisory, the stale-backup advisory included -- satisfied: no
 
-### WP-01 -- Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md (status: WIP)
+### WP-01 -- Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md (status: Done)
 
 - AC-01.1 (non-test) intent lang declared lists rust and shell, so /in-session and the critics apply the Rust and shell rules -- evidence: vc validated: intent lang declared prints rust and shell (commit 80179a5) -- satisfied: yes
 - AC-01.2 (non-test) intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit -- evidence: vc validated: canon and hooks from aaa26d0; intent claude upgrade dry run reports 14 canonical, 0 to write; gate ran critics (rust, shell) and doctor on aaa26d0, 9277f18 and vc's 06dd691 -- satisfied: yes
@@ -66,7 +66,7 @@ title: Bring Ccusage up to Intent spec
 
 _(no tests in this group)_
 
-### WP-01 -- Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md (status: WIP)
+### WP-01 -- Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md (status: Done)
 
 _(no tests in this group)_
 

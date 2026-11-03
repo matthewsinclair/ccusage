@@ -2,7 +2,7 @@
 wp_id: WP-01
 title: Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md
 scope: S
-status: WIP
+status: Done
 ---
 
 # WP-01: Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md

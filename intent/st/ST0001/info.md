@@ -26,7 +26,7 @@ _(not yet written)_
 
 | WP    | Title                                                                           | Size | Status      |
 | ----- | ------------------------------------------------------------------------------- | ---- | ----------- |
-| WP-01 | Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md | S    | WIP         |
+| WP-01 | Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md | S    | Done        |
 | WP-02 | Declare the whiteboard roster and seed the project records                      | S    | Done        |
 | WP-03 | Record the Keychain access decision in ARCHITECTURE.md and RULES.md             | S    | Not Started |
 

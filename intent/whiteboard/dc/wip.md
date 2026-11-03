@@ -6,7 +6,7 @@ session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
 heartbeat_at: 2026-11-03 09:03Z
 status: active
 focus: "ISSUE:0002 in progress: research Claude Code 2.1.317's Keychain calls, then the red test"
-claims: [ST0001/01, ISSUE:0002]
+claims: [ISSUE:0002]
 ---
 
 # dc (dc)
@@ -25,7 +25,7 @@ _(none)_
 
 ## Holds
 
-- ST0001/01 wp done waits for vc's verdict on AC-01.1 to AC-01.3 (AC-01.3 met by 41eb982)
+_(none)_
 
 ## Watch-outs
 
