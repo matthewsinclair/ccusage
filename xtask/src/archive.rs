@@ -144,8 +144,11 @@ mod tests {
 
   #[test]
   fn traversal_and_unknown_names_are_refused() {
+    // Each name stands in for LICENSE, so a check that read only the last component,
+    // or matched case-insensitively, would find a complete archive.
     for name in [
       "../escape",
+      "../LICENSE",
       "./../LICENSE",
       "/LICENSE",
       "sub/LICENSE",
@@ -153,8 +156,11 @@ mod tests {
       "././LICENSE",
       "license",
     ] {
-      let mut members = files();
-      members.push(Member::file(name, b"extra"));
+      let mut members: Vec<Member> = files()
+        .into_iter()
+        .filter(|member| member.name != "LICENSE")
+        .collect();
+      members.push(Member::file(name, b"LICENSE"));
       assert_eq!(refusal(&members, MEMBER_LIMIT), UNEXPECTED, "{name}");
     }
   }

@@ -119,6 +119,7 @@ mod tests {
     checksums::MISMATCH,
     fake::{Fake, ci_release, fixture_tag, signed_display, write_assets},
     manifest::IDENTITY_MISMATCH,
+    release::mac_targets,
     runner::Captured,
     sign::CODESIGN,
   };
@@ -260,10 +261,11 @@ mod tests {
   #[test]
   fn a_draft_whose_uploaded_bytes_changed_is_not_published() -> Result<()> {
     let (tag, mut fake) = draft()?;
+    // A Linux archive: no signature covers it, so only its checksum can catch this.
     fake.after_upload = |assets| {
       if let Some(bytes) = assets
         .iter_mut()
-        .find(|(name, _)| name.ends_with(".tar.gz"))
+        .find(|(name, _)| name.ends_with("-unknown-linux-gnu.tar.gz"))
         .map(|(_, bytes)| bytes)
       {
         bytes.push(0);
@@ -275,6 +277,43 @@ mod tests {
     );
     assert!(position(&fake, &["gh", "release", "upload"]).is_some());
     assert_eq!(position(&fake, &["gh", "release", "edit"]), None);
+    Ok(())
+  }
+
+  #[test]
+  fn a_draft_whose_uploaded_manifest_changed_is_not_published() -> Result<()> {
+    let (tag, mut fake) = draft()?;
+    // SHA256SUMS does not cover the manifest, so only its own checks can catch this.
+    fake.after_upload = |assets| {
+      if let Some(bytes) = assets.get_mut(MANIFEST) {
+        let changed = String::from_utf8_lossy(bytes).replace("76BQL8L47U", "0000000000");
+        *bytes = changed.into_bytes();
+      }
+    };
+    assert_eq!(
+      root_cause(finalize(&mut fake, "macos", &tag, None)),
+      IDENTITY_MISMATCH
+    );
+    assert_eq!(position(&fake, &["gh", "release", "edit"]), None);
+    Ok(())
+  }
+
+  #[test]
+  fn signed_archives_that_do_not_verify_are_never_uploaded() -> Result<()> {
+    let (tag, mut fake) = draft()?;
+    // Signing reads a display for each Mac binary; verifying the signed copies reads
+    // the next one, and this one no longer matches what signing recorded.
+    let other = Captured {
+      stdout: signed_display().stdout.replace("76BQL8L47U", "0000000000"),
+      ..signed_display()
+    };
+    let signing = mac_targets().map(|_| signed_display());
+    fake.displays = signing.chain(std::iter::once(other)).collect();
+    assert_eq!(
+      root_cause(finalize(&mut fake, "macos", &tag, None)),
+      REQUIREMENT_MISMATCH
+    );
+    assert_eq!(position(&fake, &["gh", "release", "upload"]), None);
     Ok(())
   }
 
