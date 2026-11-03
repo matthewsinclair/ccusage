@@ -1,0 +1,15 @@
+{
+  "id": "01M6GFQ70523NEDABPZ1AENM7Z",
+  "ts": "2026-11-03T10:36:46.469Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "ISSUE:0004 design (dc, 2026-11-03). The root package stays the default member, so root cargo build, test, install and the Homebrew source build are unchanged; xtask is a publish = false member with tar, flate2 and tempfile as its own dependencies, and the lints and the shared serde_json and sha2 move to [workspace.lints] and [workspace.dependencies]; .cargo/config.toml aliases xtask = \"run --locked --package xtask --\". Commands: cargo xtask sign-macos TAG INPUT NEW_OUTPUT, finalize-release vX.Y.Z, and formula-checksums DIR TAG, which holds the formula heredoc's checks and prints the arm then the intel sha for tools/formula. One Runner trait carries every external command: the signing tools' output is never shown and gh's stderr is, as in the Python; the platform is passed in, so the darwin refusals are tested. Archive members must be exactly LICENSE, README.md, ccusage and ccusage-logo.svg (a ./ root directory allowed), regular files, no duplicates, under a size limit passed in; PAX global headers are refused; repacks use deterministic tar headers. tests/release.sh: its cargo mock fakes xtask finalize-release (FAIL_SIGNING) and runs the other xtask commands for real; a bin/devbin mock (FAIL_DEVBIN) replaces the cargo validation mocks; the fixture heredoc becomes printf, its manifest carrying requirement and notarized. devbin: clippy and test rust gain --workspace, and actionlint and shellcheck (tools/release, tools/formula, tests/release.sh) join; CI adds --workspace to clippy and test and drops the Python step. Version: version_from: Cargo.toml, with a usage-rules NEVER that only tools/release bumps the version, Cargo.toml and Cargo.lock together."
+  }
+}

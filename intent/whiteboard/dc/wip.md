@@ -3,7 +3,7 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 10:29Z
+heartbeat_at: 2026-11-03 10:36Z
 status: active
 focus: "ISSUE:0004: porting the Python release tooling to a Rust xtask"
 claims: [ISSUE:0002, ISSUE:0004]
@@ -13,7 +13,7 @@ claims: [ISSUE:0002, ISSUE:0004]
 
 ## DOING
 
-- ISSUE:0004 per hv's go 2026-11-03 and vc's brief: a Rust xtask workspace member replaces tools/sign-macos, tools/finalize-release, tests/signing_test.py and the two Python heredocs, keeping every check with a test that fails without it; tools/test-keychain-upgrade and tests/keychain-upgrade.swift go; tools/release --dry-run 0.1.6 passes on the new tooling
+- ISSUE:0004 per hv's go 2026-11-03 and vc's brief (its Decision and Acceptance: intent issues show 0004): a Rust xtask workspace member replaces tools/sign-macos, tools/finalize-release, tests/signing_test.py and the formula and release.sh Python heredocs, every check keeping a test that fails without it; tools/test-keychain-upgrade and tests/keychain-upgrade.swift go; the release's validation runs bin/devbin; actionlint and the xtask's checks join config.yaml; doctor's version note is settled. State at this fold: every file read and the design settled (dc's ISSUE:0004 decision); nothing written, nothing uncommitted. Next, one commit each: (1) the workspace and the xtask with its tests; (2) tools/release, tools/formula, tests/release.sh, CI, config.yaml, docs and .gitignore moved over, the Python deleted, and the untracked tools/__pycache__ and tests/__pycache__ (bytecode of the deleted files only) removed; (3) the keychain-upgrade tooling removed; (4) version_from; then tools/release --dry-run 0.1.6, a mutation pass over every check, and the handover to vc. (edited)
 
 ## TODO
 
@@ -30,7 +30,7 @@ _(none)_
 
 ## Decisions
 
-_(none)_
+- ISSUE:0004 design (dc, 2026-11-03). The root package stays the default member, so root cargo build, test, install and the Homebrew source build are unchanged; xtask is a publish = false member with tar, flate2 and tempfile as its own dependencies, and the lints and the shared serde_json and sha2 move to [workspace.lints] and [workspace.dependencies]; .cargo/config.toml aliases xtask = "run --locked --package xtask --". Commands: cargo xtask sign-macos TAG INPUT NEW_OUTPUT, finalize-release vX.Y.Z, and formula-checksums DIR TAG, which holds the formula heredoc's checks and prints the arm then the intel sha for tools/formula. One Runner trait carries every external command: the signing tools' output is never shown and gh's stderr is, as in the Python; the platform is passed in, so the darwin refusals are tested. Archive members must be exactly LICENSE, README.md, ccusage and ccusage-logo.svg (a ./ root directory allowed), regular files, no duplicates, under a size limit passed in; PAX global headers are refused; repacks use deterministic tar headers. tests/release.sh: its cargo mock fakes xtask finalize-release (FAIL_SIGNING) and runs the other xtask commands for real; a bin/devbin mock (FAIL_DEVBIN) replaces the cargo validation mocks; the fixture heredoc becomes printf, its manifest carrying requirement and notarized. devbin: clippy and test rust gain --workspace, and actionlint and shellcheck (tools/release, tools/formula, tests/release.sh) join; CI adds --workspace to clippy and test and drops the Python step. Version: version_from: Cargo.toml, with a usage-rules NEVER that only tools/release bumps the version, Cargo.toml and Cargo.lock together.
 
 ---
 

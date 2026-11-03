@@ -1,0 +1,16 @@
+{
+  "id": "01M6GFQ6YBXR3RNHPCEXCMDKXJ",
+  "ts": "2026-11-03T10:36:46.411Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 2,
+    "text": "ISSUE:0004 per hv's go 2026-11-03 and vc's brief (its Decision and Acceptance: intent issues show 0004): a Rust xtask workspace member replaces tools/sign-macos, tools/finalize-release, tests/signing_test.py and the formula and release.sh Python heredocs, every check keeping a test that fails without it; tools/test-keychain-upgrade and tests/keychain-upgrade.swift go; the release's validation runs bin/devbin; actionlint and the xtask's checks join config.yaml; doctor's version note is settled. State at this fold: every file read and the design settled (dc's ISSUE:0004 decision); nothing written, nothing uncommitted. Next, one commit each: (1) the workspace and the xtask with its tests; (2) tools/release, tools/formula, tests/release.sh, CI, config.yaml, docs and .gitignore moved over, the Python deleted, and the untracked tools/__pycache__ and tests/__pycache__ (bytecode of the deleted files only) removed; (3) the keychain-upgrade tooling removed; (4) version_from; then tools/release --dry-run 0.1.6, a mutation pass over every check, and the handover to vc."
+  }
+}
