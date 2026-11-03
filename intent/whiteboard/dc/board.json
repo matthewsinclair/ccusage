@@ -5,11 +5,12 @@
     "name": "dc",
     "role": "dc",
     "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T10:26:37.642Z",
+    "heartbeat_at": "2026-11-03T10:29:21.606Z",
     "status": "active",
-    "focus": "Holding for hv's go on ISSUE:0004; ISSUE:0002's follow-ups and ISSUE:0006 are validated",
+    "focus": "ISSUE:0004: porting the Python release tooling to a Rust xtask",
     "claims": [
-      "ISSUE:0002"
+      "ISSUE:0002",
+      "ISSUE:0004"
     ],
     "recorded_at": "2026-11-03T07:06:26.979Z",
     "migrated_at": "2026-11-03T07:06:26.979Z"
@@ -38,7 +39,8 @@
       "kind": "todo",
       "seq": 3,
       "text": "ISSUE:0004 per vc brief 2026-11-03: Rust xtask replaces the Python release tooling, in 0.1.6",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-03T10:29:21.562Z",
       "recorded_at": "2026-11-03T08:51:35.455Z"
     },
     {
@@ -119,6 +121,14 @@
       "state": "archived",
       "archived_at": "2026-11-03T10:26:37.599Z",
       "recorded_at": "2026-11-03T10:19:00.491Z"
+    },
+    {
+      "node": "dc",
+      "kind": "doing",
+      "seq": 2,
+      "text": "ISSUE:0004 per hv's go 2026-11-03 and vc's brief: a Rust xtask workspace member replaces tools/sign-macos, tools/finalize-release, tests/signing_test.py and the two Python heredocs, keeping every check with a test that fails without it; tools/test-keychain-upgrade and tests/keychain-upgrade.swift go; tools/release --dry-run 0.1.6 passes on the new tooling",
+      "state": "live",
+      "recorded_at": "2026-11-03T10:29:21.578Z"
     }
   ],
   "sent": [

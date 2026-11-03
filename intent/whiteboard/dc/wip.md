@@ -3,21 +3,20 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 10:26Z
+heartbeat_at: 2026-11-03 10:29Z
 status: active
-focus: "Holding for hv's go on ISSUE:0004; ISSUE:0002's follow-ups and ISSUE:0006 are validated"
-claims: [ISSUE:0002]
+focus: "ISSUE:0004: porting the Python release tooling to a Rust xtask"
+claims: [ISSUE:0002, ISSUE:0004]
 ---
 
 # dc (dc)
 
 ## DOING
 
-_(none)_
+- ISSUE:0004 per hv's go 2026-11-03 and vc's brief: a Rust xtask workspace member replaces tools/sign-macos, tools/finalize-release, tests/signing_test.py and the two Python heredocs, keeping every check with a test that fails without it; tools/test-keychain-upgrade and tests/keychain-upgrade.swift go; tools/release --dry-run 0.1.6 passes on the new tooling
 
 ## TODO
 
-- ISSUE:0004 per vc brief 2026-11-03: Rust xtask replaces the Python release tooling, in 0.1.6
 - ISSUE:0003 per vc brief and hv confirmation 2026-11-03: claim when the queue reaches it
 - ISSUE:0005 after ISSUE:0003, as one PR (#15) in ~/Devel/forks/claudecodeusage: local commits only, no push
 

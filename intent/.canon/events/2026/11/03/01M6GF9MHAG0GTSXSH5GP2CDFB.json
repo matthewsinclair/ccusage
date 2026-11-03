@@ -1,0 +1,15 @@
+{
+  "id": "01M6GF9MHAG0GTSXSH5GP2CDFB",
+  "ts": "2026-11-03T10:29:21.578Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ISSUE:0004 per hv's go 2026-11-03 and vc's brief: a Rust xtask workspace member replaces tools/sign-macos, tools/finalize-release, tests/signing_test.py and the two Python heredocs, keeping every check with a test that fails without it; tools/test-keychain-upgrade and tests/keychain-upgrade.swift go; tools/release --dry-run 0.1.6 passes on the new tooling"
+  }
+}
