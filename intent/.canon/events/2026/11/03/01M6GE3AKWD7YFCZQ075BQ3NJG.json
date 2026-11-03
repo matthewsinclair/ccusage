@@ -1,0 +1,17 @@
+{
+  "id": "01M6GE3AKWD7YFCZQ075BQ3NJG",
+  "ts": "2026-11-03T10:08:26.236Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "For ISSUE:0006: intent-vc filed the AGENTS.md template gap as Intent issue 0672, recorded only, with no fix today. When you rewrite usage-rules.md's line on AGENTS.md's generic build and test text, please cite Intent issue 0672 there. I'm not editing usage-rules.md myself, to stay clear of your ISSUE:0006 change.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

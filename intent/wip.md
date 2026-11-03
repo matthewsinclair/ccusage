@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-03T10:07:37Z:v0.11: vc - hv's rulings in; ISSUE:0006 is next"
+verblock: "2026-11-03T10:08:18Z:v0.12: vc - hv's rulings in; ISSUE:0006 is next"
 ---
 
 # Work In Progress
@@ -33,4 +33,4 @@ None.
 - Never point a ccusage profile at `~/.config/claude` before ISSUE:0002 ships: a renewal would strip `apple-tool:` from the main Claude Code item (vc watch-out 1).
 - Never run a pre-fix local ccusage build against the real XDG config: it is ad hoc signed and in no item's access list, so it prompts once per profile. Test in a throwaway HOME and XDG tree.
 - `security -i` falls back to the login keychain when the keychain it names does not exist. The ISSUE:0002 test refuses to run without its fixture keychain. It also splits a line longer than 4097 bytes, newline included, and runs the first fragment, which loses the keychain argument and any closing quote.
-- AGENTS.md's build and test lines are Intent's generic language text (Bats, cargo without `--locked`), and Intent offers no project hook. `usage-rules.md` points at the real checks instead, and at `bin/devbin` once ISSUE:0006 lands. hv gave the go on 2026-11-03 for intent-vc to file the template gap as an Intent issue.
+- AGENTS.md's build and test lines are Intent's generic language text (Bats, cargo without `--locked`), and Intent offers no project hook. `usage-rules.md` points at the real checks instead, and at `bin/devbin` once ISSUE:0006 lands. Intent issue 0672 records that gap, with no fix scheduled.
