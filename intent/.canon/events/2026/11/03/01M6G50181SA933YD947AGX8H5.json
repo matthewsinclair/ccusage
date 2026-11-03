@@ -1,0 +1,15 @@
+{
+  "id": "01M6G50181SA933YD947AGX8H5",
+  "ts": "2026-11-03T07:29:21.153Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "text": "Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until ISSUE:0002 ships: a ccusage renewal would strip apple-tool: from that item and every Claude Code session on it would prompt."
+  }
+}

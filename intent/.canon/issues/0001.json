@@ -1,0 +1,11 @@
+{
+  "schema": "intent/issue@3.0",
+  "number": 1,
+  "slug": "bare-ccusage-prints-help-instead-of-the-active-a",
+  "title": "Bare ccusage prints help instead of the active account's usage",
+  "status": "open",
+  "severity": "low",
+  "created": "2026-11-03",
+  "reporter": "Matthew Sinclair",
+  "body": "## Symptom\n\n`ccusage` with no command prints the help text. Checking the active account takes `ccusage usage`, and checking every account takes `ccusage usage --all`.\n\n## Wanted\n\n- `ccusage` shows usage for the active account, exactly as `ccusage usage` does now.\n- `ccusage --all` shows every configured account, exactly as `ccusage usage --all` does now.\n- Help comes from `ccusage help` and `ccusage --help` only.\n\n## Cause\n\n`src/cli.rs:100` prints HELP when no command follows the global flags, and the global flag loop at `src/cli.rs:72` rejects `--all` as an unknown option.\n\n## Fix outline\n\n- With no command, dispatch to `usage`.\n- Let the usage flags (`--all`, `--json`, `--refresh`) end the global flag loop and fall through to `usage` when they come first, so `ccusage --all --json` composes.\n- Keep `--config`, `--no-color` and `--verbose` global. `ccusage --verbose` becomes verbose usage for the active account.\n- First run with no config: keep the actionable `no config at ...; run ccusage init` error, add a pointer to `ccusage help`, exit nonzero.\n- Update HELP (the `Usage:` line, plus a line for the bare form), README (Usage and dashboard), and the CLI tests.\n\n## Acceptance\n\n- Against the same fixture state, `ccusage --json` and `ccusage usage --json` emit the same report and exit status; likewise `ccusage --all --json` and `ccusage usage --all --json`.\n- `ccusage help` and `ccusage --help` print the help and exit 0. Bare `ccusage` never prints it.\n- Bare `ccusage` with no config exits nonzero with the init hint and the pointer to `ccusage help`.\n- Unknown commands and unknown options fail exactly as before.\n- `cargo fmt --check`, `cargo clippy --all-targets --locked -- -D warnings` and `cargo test --locked` pass.\n"
+}

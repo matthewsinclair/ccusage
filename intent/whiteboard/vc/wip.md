@@ -2,11 +2,11 @@
 node: vc
 name: vc
 role: vc
-session_id: none
-heartbeat_at: 2026-11-03 07:06Z
-status: paused
-focus: ""
-claims: []
+session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
+heartbeat_at: 2026-11-03 07:29Z
+status: active
+focus: "ISSUE:0001-0003 filed and diagnosed; fix plan with hv for approval"
+claims: [ISSUE:0001, ISSUE:0002, ISSUE:0003]
 ---
 
 # vc (vc)
@@ -25,7 +25,7 @@ _(none)_
 
 ## Watch-outs
 
-_(none)_
+- Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until ISSUE:0002 ships: a ccusage renewal would strip apple-tool: from that item and every Claude Code session on it would prompt.
 
 ## Decisions
 

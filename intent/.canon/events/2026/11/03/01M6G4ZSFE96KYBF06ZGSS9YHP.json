@@ -1,0 +1,15 @@
+{
+  "id": "01M6G4ZSFE96KYBF06ZGSS9YHP",
+  "ts": "2026-11-03T07:29:13.198Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0003"
+  },
+  "payload": {
+    "severity": "medium",
+    "title": "engineering.01 appears twice in Claude Usage: two separate logins of one account"
+  }
+}

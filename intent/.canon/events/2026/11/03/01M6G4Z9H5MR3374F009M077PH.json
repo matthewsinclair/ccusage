@@ -1,0 +1,15 @@
+{
+  "id": "01M6G4Z9H5MR3374F009M077PH",
+  "ts": "2026-11-03T07:28:56.869Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0002"
+  },
+  "payload": {
+    "severity": "high",
+    "title": "Token renewal strips apple-tool: from Claude's Keychain items, so security prompts after every renewal"
+  }
+}

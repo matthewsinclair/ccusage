@@ -4,14 +4,28 @@
     "moniker": "vc",
     "name": "vc",
     "role": "vc",
-    "heartbeat_at": "2026-11-03T07:06:28.739Z",
-    "status": "paused",
-    "focus": "",
-    "claims": [],
+    "session_id": "0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e",
+    "heartbeat_at": "2026-11-03T07:29:21.164Z",
+    "status": "active",
+    "focus": "ISSUE:0001-0003 filed and diagnosed; fix plan with hv for approval",
+    "claims": [
+      "ISSUE:0001",
+      "ISSUE:0002",
+      "ISSUE:0003"
+    ],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
   },
-  "items": [],
+  "items": [
+    {
+      "node": "vc",
+      "kind": "watchout",
+      "seq": 1,
+      "text": "Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until ISSUE:0002 ships: a ccusage renewal would strip apple-tool: from that item and every Claude Code session on it would prompt.",
+      "state": "live",
+      "recorded_at": "2026-11-03T07:29:21.153Z"
+    }
+  ],
   "sent": [],
   "handled": []
 }
