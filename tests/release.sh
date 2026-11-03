@@ -115,8 +115,10 @@ case "$1 $2" in
           archives="$archives${archives:+,}\"$name\":{\"requirement\":\"designated => fixture\",\"notarized\":false,\"sha256\":\"$digest\"}" ;;
       esac
     done
-    printf '{"tag":"%s","identifier":"com.geodica.ccusage","team_id":"76BQL8L47U","archives":{%s}}\n' \
-      "$tag" "$archives" > "$directory/MACOS-SIGNING.json"
+    team=76BQL8L47U
+    [ "${FORGED_MANIFEST:-}" != yes ] || team=0000000000
+    printf '{"tag":"%s","identifier":"com.geodica.ccusage","team_id":"%s","archives":{%s}}\n' \
+      "$tag" "$team" "$archives" > "$directory/MACOS-SIGNING.json"
     ;;
   'release view')
     case "$*" in
@@ -138,7 +140,7 @@ MOCK
   REAL_ROOT=$root
   PATH=$case_dir/bin:$original_path
   export FIXTURE_SOURCE FIXTURE_LOG REAL_CARGO REAL_ROOT PATH
-  unset STILL_DRAFT FAIL_SIGNING FAIL_DEVBIN FAIL_CI FAIL_TAP_CI MISSING_CHECKSUM CCUSAGE_REMOTE CCUSAGE_TAP
+  unset STILL_DRAFT FAIL_SIGNING FAIL_DEVBIN FAIL_CI FAIL_TAP_CI MISSING_CHECKSUM FORGED_MANIFEST CCUSAGE_REMOTE CCUSAGE_TAP
 }
 
 release() { sh "$source/tools/release" "$@" --tap "$tap" > "$case_dir/output" 2>&1; }
@@ -228,6 +230,14 @@ export MISSING_CHECKSUM
 if release 0.1.1; then fail 'missing checksums accepted'; fi
 [ "$(git --git-dir="$tap_remote" rev-parse main)" = "$initial_tap" ] || fail 'tap updated without checksums'
 echo 'ok: incomplete release assets block tap publication'
+
+setup
+FORGED_MANIFEST=yes
+export FORGED_MANIFEST
+if release 0.1.1; then fail 'forged signing manifest accepted'; fi
+[ "$(git --git-dir="$tap_remote" rev-parse main)" = "$initial_tap" ] || fail 'tap updated from a forged signing manifest'
+assert_contains "$case_dir/output" 'stopped during Homebrew'
+echo 'ok: a signing manifest that disagrees with the release blocks the tap update'
 
 setup
 STILL_DRAFT=true
