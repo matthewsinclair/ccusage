@@ -14,18 +14,21 @@ devbin_version: "^0.1.19"
 
 # This file is the one home of Ccusage's checks; README, docs/releasing.md and
 # usage-rules.md say to run them through bin/devbin. Every cargo line takes
-# --locked, so a check never rewrites Cargo.lock.
+# --locked, so a check never rewrites Cargo.lock. Clippy and the Rust suite
+# take --workspace to reach the xtask, the release tooling; build stays the
+# ccusage package alone. Every cargo test takes --no-fail-fast, so one failing
+# target never hides another.
 commands:
   build:
     run: cargo build --release --locked
   check:
     options:
       clippy:
-        run: cargo clippy --all-targets --locked -- -D warnings
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
   test:
     options:
       rust:
-        run: cargo test --locked
+        run: cargo test --workspace --locked --no-fail-fast
       # The shell slot runs the release tooling's integration suite, which is
       # plain sh with mocked GitHub; Ccusage has no Bats tests.
       shell:
@@ -36,7 +39,7 @@ commands:
       # its own disposable keychain under ~/Library/Keychains.
       keychain:
         summary: Renewal write against a disposable keychain
-        run: cargo test --locked renewal_write_keeps_claude_items_readable_by_security -- --ignored
+        run: cargo test --locked --no-fail-fast renewal_write_keeps_claude_items_readable_by_security -- --ignored
         grammar: cargo
         log: true
         platforms:

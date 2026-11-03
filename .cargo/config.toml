@@ -1,0 +1,3 @@
+# `cargo xtask <command>` runs the release tooling, the xtask workspace member.
+[alias]
+xtask = "run --locked --package xtask --"

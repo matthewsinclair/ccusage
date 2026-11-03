@@ -1,0 +1,22 @@
+[package]
+name = "xtask"
+edition.workspace = true
+publish = false
+description = "Ccusage's release tooling: signs, verifies and publishes a release; never ships"
+
+[dependencies]
+# Each error says which step failed.
+anyhow = "1"
+# MACOS-SIGNING.json.
+serde.workspace = true
+serde_json.workspace = true
+# SHA256SUMS.
+sha2.workspace = true
+# Release archives: unpacked to sign, repacked with deterministic headers.
+tar = { version = "0.4", default-features = false }
+flate2 = "1"
+# Signing and verification work in directories removed when they end.
+tempfile = "3"
+
+[lints]
+workspace = true

@@ -1,0 +1,29 @@
+Executable=/opt/homebrew/Cellar/ccusage/0.1.5/bin/ccusage
+Identifier=com.geodica.ccusage
+Format=Mach-O thin (arm64)
+CodeDirectory v=20500 size=7583 flags=0x10000(runtime) hashes=231+2 location=embedded
+VersionPlatform=1
+VersionMin=720896
+VersionSDK=984320
+Hash type=sha256 size=32
+CandidateCDHash sha256=0509a96c0991831c182058c8c8f4f4ccd433a87c
+CandidateCDHashFull sha256=0509a96c0991831c182058c8c8f4f4ccd433a87c284a9af04903ab5a7dcfe2e9
+Hash choices=sha256
+CMSDigest=0509a96c0991831c182058c8c8f4f4ccd433a87c284a9af04903ab5a7dcfe2e9
+CMSDigestType=2
+Executable Segment base=0
+Executable Segment limit=2768896
+Executable Segment flags=0x1
+Page size=16384
+CDHash=0509a96c0991831c182058c8c8f4f4ccd433a87c
+Signature size=9051
+Authority=Developer ID Application: Geodica Pty Ltd (76BQL8L47U)
+Authority=Developer ID Certification Authority
+Authority=Apple Root CA
+Timestamp=31 Oct 2026 at 22:57:07
+Info.plist=not bound
+TeamIdentifier=76BQL8L47U
+Runtime Version=15.5.0
+Sealed Resources=none
+Total signatures=1
+Chosen signature=1
