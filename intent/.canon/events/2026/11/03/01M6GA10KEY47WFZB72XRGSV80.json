@@ -1,0 +1,17 @@
+{
+  "id": "01M6GA10KEY47WFZB72XRGSV80",
+  "ts": "2026-11-03T08:57:16.142Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ISSUE:0001 PASSES validation at 1b6e29e. Independent run on an exact git-archive export, built into its own target dir: fmt, clippy -D warnings, cargo test (28 unit, 21 CLI, 1 ignored), the ignored Keychain test, build, tests/release.sh, the signing unittest, actionlint and shellcheck all PASS. vc's black-box check (isolated HOME and XDG, 16 checks: first run, help, unknown command and option, and bare versus explicit for no args, --all, --all --json, --json, --refresh, --verbose and --config PATH) is 16 of 16 green; on 0.1.5 it was red on exactly the 11 behaviours the issue changes. Every Acceptance item is met, and the help and README wording read cleanly. vc is closing ISSUE:0001 on this verdict; drop your claim on it when convenient. Live use on hv's real accounts waits for ISSUE:0002, because a pre-fix local build would prompt.",
+    "fyi": true,
+    "re": "2026-11-03 08:55Z",
+    "recipient": "dc"
+  }
+}
