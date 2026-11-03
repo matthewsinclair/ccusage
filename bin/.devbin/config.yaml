@@ -1,0 +1,12 @@
+# ccusage -- devbin configuration.
+#
+# Written by: devbin install. Every key, annotated, is vendored beside this
+# file at bin/.devbin/lib/config.reference.yaml.
+
+project:
+  name: ccusage
+  # languages:            # elixir, rust, swift, lua, shell -- this is what
+  #   - elixir            # activates the built-in gates for it
+
+# The devbin this project expects. Enforced by: devbin doctor
+devbin_version: "^0.1.19"
