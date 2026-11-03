@@ -1,0 +1,15 @@
+{
+  "id": "01M6G9PKWJGFH60RYBW76M5Y9D",
+  "ts": "2026-11-03T08:51:35.442Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ISSUE:0002 red first per vc brief 2026-11-03: send vc the red output before the fix"
+  }
+}

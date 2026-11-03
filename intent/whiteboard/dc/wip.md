@@ -2,11 +2,11 @@
 node: dc
 name: dc
 role: dc
-session_id: none
-heartbeat_at: 2026-11-03 07:06Z
-status: paused
-focus: ""
-claims: []
+session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
+heartbeat_at: 2026-11-03 08:55Z
+status: active
+focus: "ISSUE:0001 at 1b6e29e with vc for validation; ST0001/01 next"
+claims: [ISSUE:0001]
 ---
 
 # dc (dc)
@@ -17,7 +17,11 @@ _(none)_
 
 ## TODO
 
-_(none)_
+- ST0001/01 after ISSUE:0001: intent lang init rust shell, claude upgrade --apply (announce to vc first), agents sync, drop README.md stale Intent line, first intent backup
+- ISSUE:0002 red first per vc brief 2026-11-03: send vc the red output before the fix
+- ISSUE:0004 per vc brief 2026-11-03: Rust xtask replaces the Python release tooling, in 0.1.6
+- ISSUE:0003 per vc brief and hv confirmation 2026-11-03: claim when the queue reaches it
+- ISSUE:0005 after ISSUE:0003, as one PR (#15) in ~/Devel/forks/claudecodeusage: local commits only, no push
 
 ## Holds
 

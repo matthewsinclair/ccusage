@@ -1,0 +1,15 @@
+{
+  "id": "01M6G9PKWZW9X3Y8XFB7928KK7",
+  "ts": "2026-11-03T08:51:35.455Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ISSUE:0004 per vc brief 2026-11-03: Rust xtask replaces the Python release tooling, in 0.1.6"
+  }
+}

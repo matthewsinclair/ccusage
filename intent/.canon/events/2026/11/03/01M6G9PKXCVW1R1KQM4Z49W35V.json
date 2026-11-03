@@ -1,0 +1,15 @@
+{
+  "id": "01M6G9PKXCVW1R1KQM4Z49W35V",
+  "ts": "2026-11-03T08:51:35.468Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ISSUE:0003 per vc brief and hv confirmation 2026-11-03: claim when the queue reaches it"
+  }
+}

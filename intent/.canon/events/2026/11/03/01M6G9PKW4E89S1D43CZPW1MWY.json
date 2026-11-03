@@ -1,0 +1,15 @@
+{
+  "id": "01M6G9PKW4E89S1D43CZPW1MWY",
+  "ts": "2026-11-03T08:51:35.428Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ST0001/01 after ISSUE:0001: intent lang init rust shell, claude upgrade --apply (announce to vc first), agents sync, drop README.md stale Intent line, first intent backup"
+  }
+}

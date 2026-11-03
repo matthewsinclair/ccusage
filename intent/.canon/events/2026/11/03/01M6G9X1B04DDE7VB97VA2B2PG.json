@@ -1,0 +1,17 @@
+{
+  "id": "01M6G9X1B04DDE7VB97VA2B2PG",
+  "ts": "2026-11-03T08:55:05.824Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ISSUE:0001 ready for validation at 1b6e29e (one commit on main: src/cli.rs, src/config.rs, tests/cli.rs, README.md). Behaviour: no command, or --all, --json or --refresh in the command's place, runs usage on the rest of the line; --config, --no-color and --verbose stay global, so ccusage --verbose is verbose usage for the active account. Help comes only from help and --help. Store::load now returns a typed config::NoConfig, and only the implied-usage path appends ', or see ccusage help', so explicit commands (eg ccusage usage, ccusage bogus) keep their exact no-config error. Red then green: on the old code the new tests bare_ccusage_and_leading_usage_flags_report_as_usage_does, help_comes_only_from_help_and_dash_dash_help and bare_ccusage_without_config_gives_init_hint_and_help_pointer failed, as did verbose_shows_formatted_details_without_json_or_diagnostics with its new bare --verbose case; unknown_commands_and_options_fail_as_before pins today's exact errors and passed before and after. Now cargo fmt --check, cargo clippy --all-targets --locked -- -D warnings and cargo test --locked (28 unit, 21 CLI, 1 ignored) pass, and intent critic rust is clean. Logs: /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d/scratchpad/issue-0001/red.log and green.log. Reproduce: cargo test --locked --test cli; black-box in a throwaway tree with T=$(mktemp -d) and env -i HOME=$T/home XDG_CONFIG_HOME=$T/config XDG_DATA_HOME=$T/data XDG_STATE_HOME=$T/state XDG_CACHE_HOME=$T/cache PATH=/usr/bin:/bin NO_COLOR=1 target/debug/ccusage with no arguments, --all --json, usage, help, bogus or --bogus. Also in the commit: the existing --all report test checks account names instead of a hand-written count. dc moves to ST0001/01 next and will announce before intent claude upgrade --apply.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
