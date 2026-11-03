@@ -5,8 +5,8 @@
     "name": "vc",
     "role": "vc",
     "session_id": "0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e",
-    "heartbeat_at": "2026-11-03T18:30:30.671Z",
-    "status": "active",
+    "heartbeat_at": "2026-11-03T18:35:25.238Z",
+    "status": "paused",
     "focus": "v0.1.6 shipped and validated end to end; next after brew upgrade: ISSUE:0002's renewal check and hv's ISSUE:0003 live check, then ISSUE:0005",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
@@ -428,6 +428,26 @@
       "id": "01M6GVC50197K360FC3RJWDNP1",
       "sender": "dc",
       "handled_at": "2026-11-03T14:01:09.737Z"
+    },
+    {
+      "id": "01M6H7QWXPJNQBXZT1GA2B10ER",
+      "sender": "dc",
+      "handled_at": "2026-11-03T18:35:13.925Z"
+    },
+    {
+      "id": "01M6H8RG0PNGCFWEX4KDAGJA94",
+      "sender": "dc",
+      "handled_at": "2026-11-03T18:35:13.925Z"
+    },
+    {
+      "id": "01M6HAQD5EWB9WVZQNPKYMHS4W",
+      "sender": "dc",
+      "handled_at": "2026-11-03T18:35:13.925Z"
+    },
+    {
+      "id": "01M6HAVMM2SQGFAB0EMMZZ46JT",
+      "sender": "dc",
+      "handled_at": "2026-11-03T18:35:13.925Z"
     }
   ]
 }
