@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-03T08:32:47Z:v0.4: vc - hv confirmed ISSUE:0003's oauthAccount write"
+verblock: "2026-11-03T08:37:23Z:v0.5: vc - ISSUE:0005, the Claude Usage fork, brought in"
 ---
 
 # Work In Progress
@@ -14,6 +14,7 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 - ISSUE:0002 (high): ccusage's renewal writes go through Security.framework and strip `apple-tool:` from Claude's Keychain items, so `/usr/bin/security` (Claude Code, Claude Usage) prompts after every renewal. dc writes the red test on a disposable keychain, then moves reads and writes to `/usr/bin/security` as Claude Code does. It is checked live on rhadamanth with a local build, then hv cuts the brew release.
 - ISSUE:0004 (medium): the release tooling ships Python. hv chose a Rust `xtask`, built now and shipped in 0.1.6, with the Python removed as soon as it is replaced. dc builds it after ISSUE:0002.
 - ISSUE:0003 (medium): engineering.01 appears twice in Claude Usage, because the main config holds its own login of a profile's account. The design is one login per account: sessions keep `~/.config/claude`, borrow the active profile's login through `CLAUDE_SECURESTORAGE_CONFIG_DIR`, and `ccusage use` copies the profile's `oauthAccount` into the shared `.claude.json`. hv confirmed that write; dc builds it last.
+- ISSUE:0005 (medium): hv's Claude Usage fork (`~/Devel/forks/claudecodeusage`, upstream PR #15) folds in duplicate grouping, follows the account Claude Code is using, names the preferred item as Claude Code does, and stays read-only. The builder waits on hv; the push and the PR edit need hv's OK.
 
 ## Active Steel Threads
 

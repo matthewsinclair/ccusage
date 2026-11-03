@@ -1,0 +1,15 @@
+{
+  "id": "01M6G8WEF33CAQWWQ6VH0GEYTC",
+  "ts": "2026-11-03T08:37:17.923Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0005"
+  },
+  "payload": {
+    "severity": "medium",
+    "title": "Claude Usage fork (PR #15): group duplicate logins and follow the account Claude Code is using"
+  }
+}

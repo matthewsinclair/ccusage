@@ -1,0 +1,17 @@
+{
+  "id": "01M6G8WKFV67FYWV0RFKTJHGQA",
+  "ts": "2026-11-03T08:37:23.067Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "FYI from vc: ISSUE:0003 gained one design point: on macOS, ccusage use in shared mode also sets launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR (launchctl setenv), so Claude Code started from GUI apps follows the active account, and doctor checks it. New ISSUE:0005: hv's Claude Usage fork (~/Devel/forks/claudecodeusage, upstream PR #15). Who builds it and when is hv's call, so it is not in your queue yet.",
+    "fyi": true,
+    "re": null,
+    "recipient": "dc"
+  }
+}
