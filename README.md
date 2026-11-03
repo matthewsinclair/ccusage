@@ -62,6 +62,26 @@ claude() { command ccusage run -- "$@"; }
 
 The function requires `ccusage` on `PATH`. Without it, plain `claude` continues using its normal configuration. The wrapper uses the default Ccusage config or `CCUSAGE_CONFIG`; a one-off `--config` flag is not embedded into the printed function.
 
+### Shared mode
+
+By default each profile is a whole Claude config directory, so a session's settings, history and projects belong to the profile it runs. Shared mode keeps one Claude config directory for every session instead, and gives each session the active profile's login. Each account then has one login, in its profile, and Claude's own config holds none. Turn it on with a top-level key in the config, before any `[profiles]` table:
+
+```toml
+claude_config_dir = "~/.config/claude"
+```
+
+In shared mode:
+
+- `ccusage use NAME` selects NAME and copies its account record (`oauthAccount`, which Claude Code shows as the session's account) from NAME's own `.claude.json` into the shared one, changing no other key. It refuses a profile that has no record yet; `ccusage login NAME` writes one. On macOS it also sets launchd's `CLAUDE_SECURESTORAGE_CONFIG_DIR`, so Claude Code started from a GUI app follows the active account too. New sessions use NAME, and running ones switch when they are restarted.
+- `ccusage run [NAME]` launches Claude with the shared config and NAME's login, switching to NAME first when it is not the active profile.
+- `ccusage dir [NAME]` prints the active or named profile's directory, for a launcher to export. It prints nothing and fails when shared mode is off or no profile is active, so a launcher can use it unconditionally:
+
+```sh
+dir=$(ccusage dir 2>/dev/null) && export CLAUDE_CONFIG_DIR=~/.config/claude CLAUDE_SECURESTORAGE_CONFIG_DIR="$dir"
+```
+
+`ccusage login NAME` still signs in within the profile's own directory. `ccusage doctor` warns when the shared config still holds a login of its own, when its account record is not the active profile's, when `CLAUDE_SECURESTORAGE_CONFIG_DIR` or launchd's value names no profile or another one, and when a profile directory has no entry in the config. A profile may not use the shared directory as its own.
+
 ## Configuration and XDG paths
 
 Ccusage follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir/latest/) on macOS and Linux. Empty or relative `XDG_*_HOME` overrides are ignored.
