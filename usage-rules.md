@@ -19,5 +19,6 @@ This is Ccusage's own hand-authored contract, not the `usage_rules` Hex library'
 - Never edit `status:` fields in a thread's frontmatter; use the `intent st` and `intent wp` lifecycle verbs.
 - Never wrap lines in markdown files by hand.
 - Never edit devbin's vendored runtime: `bin/devbin`, `bin/.devbin/lib/` and `bin/.devbin/manifest.sha256`. `bin/devbin upgrade` replaces it, and `bin/devbin doctor` checks it against the manifest. The project's own devbin files are `bin/.devbin/config.yaml` and any handler in `bin/.devbin/cmd/`.
+- Never change the version with `bin/devbin version set`, `bump` or `sync`: they write `Cargo.toml` alone. `tools/release` is the one step that changes it, in `Cargo.toml` and `Cargo.lock` together.
 
 <!-- Add project-specific NEVER DOs here. -->

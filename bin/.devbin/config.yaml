@@ -8,6 +8,10 @@ project:
   languages:
     - rust
     - shell
+  # Cargo.toml's [package] version is the project's. tools/release is the one
+  # step that changes it, with Cargo.lock; `bin/devbin version set`, `bump` and
+  # `sync` would write Cargo.toml alone, so usage-rules.md rules them out.
+  version_from: Cargo.toml
 
 # The devbin this project expects. Enforced by: devbin doctor
 devbin_version: "^0.1.19"
