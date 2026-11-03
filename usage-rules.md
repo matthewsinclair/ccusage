@@ -6,9 +6,9 @@ This is Ccusage's own hand-authored contract, not the `usage_rules` Hex library'
 
 ## Project conventions
 
-- Before a commit, run the checks in README's Development section; their cargo commands take `--locked`.
-- When release tooling, packaging or CI changes, also run the checks in `docs/releasing.md`: its release integration suite and its lower-level checks.
-- AGENTS.md's Bats prerequisite, `bats -r tests/`, and unlocked `cargo test` and `cargo build` are Intent's generic language text, not this project's commands. Ccusage has no Bats tests.
+- Before a commit, run `bin/devbin check all`, `bin/devbin test all` and `bin/devbin build`. `bin/.devbin/config.yaml` is the one home of those checks, and every cargo command in it takes `--locked`.
+- When release tooling, packaging or CI changes, also run the two checks `docs/releasing.md` lists that devbin does not hold: the signing tests and actionlint.
+- AGENTS.md's Bats prerequisite, `bats -r tests/`, and unlocked `cargo test` and `cargo build` are Intent's generic language text, not this project's commands. Ccusage has no Bats tests; its checks are the `bin/devbin` commands above.
 
 ## NEVER DO
 
@@ -18,5 +18,6 @@ This is Ccusage's own hand-authored contract, not the `usage_rules` Hex library'
 - Never create steel thread or work package directories by hand; use `intent st new` and `intent wp new`.
 - Never edit `status:` fields in a thread's frontmatter; use the `intent st` and `intent wp` lifecycle verbs.
 - Never wrap lines in markdown files by hand.
+- Never edit devbin's vendored runtime: `bin/devbin`, `bin/.devbin/lib/` and `bin/.devbin/manifest.sha256`. `bin/devbin upgrade` replaces it, and `bin/devbin doctor` checks it against the manifest. The project's own devbin files are `bin/.devbin/config.yaml` and any handler in `bin/.devbin/cmd/`.
 
 <!-- Add project-specific NEVER DOs here. -->

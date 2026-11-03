@@ -7,3 +7,6 @@ intent/.cache/
 
 # Intent's store snapshots and text exports: per-machine, never committed.
 intent/.backup/
+
+# bin/devbin's sealed gate verdicts, written per run under tmp/<command>/.
+/tmp/

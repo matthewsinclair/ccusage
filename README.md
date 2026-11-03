@@ -141,11 +141,12 @@ This initial version targets Claude subscription accounts on macOS and Linux. Co
 ## Development
 
 ```sh
-cargo fmt --check
-cargo clippy --all-targets --locked -- -D warnings
-cargo test --locked
-cargo build --release --locked
+bin/devbin check all
+bin/devbin test all
+bin/devbin build
 ```
+
+`bin/devbin` is the vendored devbin launcher, and `bin/.devbin/config.yaml` holds the project's checks. `check all` runs `cargo fmt --check`, Clippy with warnings as errors and devbin's read-only gates. `test all` runs the Cargo suites, the release tooling's integration suite (`test shell`) and, on macOS, the disposable-keychain renewal test (`test keychain`). `build` makes the release build. Every cargo command takes `--locked`. Each gate seals its verdict under `tmp/`, and `bin/devbin help --why` says what is active here. devbin needs bash 5 or later, and `bin/devbin doctor` checks the install.
 
 Tests use local HTTP fixtures and temporary XDG directories. A fake Claude executable verifies login, selection, logout, environment isolation, and argument/exit-code forwarding without using real accounts. Other checks cover stale-cache fallback, cooldown persistence, config validation, and storage permissions. Real browser login and live usage need verification with an account you explicitly configure.
 

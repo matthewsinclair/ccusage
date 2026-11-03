@@ -12,7 +12,7 @@ tools/release 0.1.2
 
 Pass the new stable version without a leading `v`. The command updates Cargo.toml and Cargo.lock, runs fmt, Clippy, tests, the release build, actionlint, shellcheck, and release-helper integration tests, then commits the version bump. It creates an annotated tag and atomically pushes the source `main` branch and tag. It waits for the exact tag/commit's GitHub Actions run to succeed, downloads the draft archives, signs both Mac architectures locally, verifies the uploaded signatures and checksums, publishes the draft, updates/pushes the pinned Homebrew formula, and waits for the tap’s macOS/Linux Homebrew tests. It does not install or uninstall anything locally.
 
-Required maintainer tools: Git, Cargo/Rust, authenticated `gh`, `actionlint`, `shellcheck`, and Python 3. Final publication runs on macOS using the existing `Developer ID Application: Geodica Pty Ltd (76BQL8L47U)` identity in the maintainer's Keychain. The private key is never exported or uploaded to GitHub. CI creates a draft; a signing or verification failure leaves it private and blocks the tap update.
+Required maintainer tools: Git, Cargo/Rust, authenticated `gh`, `actionlint`, `shellcheck`, Python 3, and bash 5 or later for `bin/devbin`. Final publication runs on macOS using the existing `Developer ID Application: Geodica Pty Ltd (76BQL8L47U)` identity in the maintainer's Keychain. The private key is never exported or uploaded to GitHub. CI creates a draft; a signing or verification failure leaves it private and blocks the tap update.
 
 Before the first signed release, run `tools/test-keychain-upgrade` from a normal terminal. It signs two different fixture builds, creates a uniquely named disposable record in the login Keychain with the first, and reads it from the second at a new path with interaction disabled. It fails rather than opening an access approval dialog for the upgraded build. It deletes that fixture record on exit and never uses Claude credentials. Both Swift builds treat warnings as errors. This requires access to the macOS Security service and Apple's secure timestamp service.
 
@@ -46,30 +46,23 @@ Resume does not bump the version or create another source commit. It retries the
 
 A local validation failure occurs before any release commit/tag/push, and leaves version edits for inspection. Review and fix them, or restore only Cargo.toml/Cargo.lock before retrying; the helper does not discard changes automatically. Normal exits and signals remove its lock. After a forced kill/crash, check that no release process is running before removing a stale lock at the path reported by the command.
 
-The integration suite uses temporary Git repositories and real atomic/local pushes, with mocked GitHub and validation commands. It tests successful releases, failures, read-only previews, version validation, branch/dirty-tree guards, asset checks, locking, and recovery without contacting GitHub:
+The integration suite uses temporary Git repositories and real atomic/local pushes, with mocked GitHub and validation commands. It tests successful releases, failures, read-only previews, version validation, branch/dirty-tree guards, asset checks, locking, and recovery without contacting GitHub. devbin runs it as `test shell`:
 
 ```sh
-sh tests/release.sh
+bin/devbin test shell
 ```
 
 ## Lower-level checks and publication
 
 ```sh
-cargo fmt --check
-cargo clippy --all-targets --locked -- -D warnings
-cargo test --locked
-cargo build --release --locked
+bin/devbin check all
+bin/devbin test all
+bin/devbin build
 python3 -m unittest discover -s tests -p 'signing_test.py'
 actionlint .github/workflows/build.yml
 ```
 
-On macOS, also test renewal against a disposable keychain (no real account credentials are used):
-
-```sh
-cargo test --locked renewal_write_keeps_claude_items_readable_by_security -- --ignored
-```
-
-It creates a keychain under `~/Library/Keychains`, the only place macOS gives one the login keychain's partitioned format, adds an item there as Claude Code does, and checks that ccusage's renewal write keeps `apple-tool:` and `/usr/bin/security` on it and never creates a missing item. The keychain is never added to the search list and is deleted when the test ends. This test needs access to the macOS Security service and may fail to create its disposable keychain inside an agent sandbox. A Keychain dialog while it runs means `security` has lost access to the fixture item, which is the fault this test exists to catch: deny it so the test fails, because Always Allow would change the item's access and could hide the fault. Both macOS CI targets run it explicitly.
+The three `bin/devbin` commands run the checks `bin/.devbin/config.yaml` holds, as README's Development section describes; the signing tests and actionlint run directly. On macOS, `test all` also runs `test keychain`, which tests renewal against a disposable keychain (no real account credentials are used). It creates a keychain under `~/Library/Keychains`, the only place macOS gives one the login keychain's partitioned format, adds an item there as Claude Code does, and checks that ccusage's renewal write keeps `apple-tool:` and `/usr/bin/security` on it and never creates a missing item. The keychain is never added to the search list and is deleted when the test ends. This test needs access to the macOS Security service and may fail to create its disposable keychain inside an agent sandbox. A Keychain dialog while it runs means `security` has lost access to the fixture item, which is the fault this test exists to catch: deny it so the test fails, because Always Allow would change the item's access and could hide the fault. Both macOS CI targets run it explicitly.
 
 Commit and push the release changes to `main`, and wait for the Build and release workflow to pass on all four platforms. Then create and push an annotated release tag:
 

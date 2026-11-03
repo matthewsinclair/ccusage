@@ -5,8 +5,39 @@
 
 project:
   name: ccusage
-  # languages:            # elixir, rust, swift, lua, shell -- this is what
-  #   - elixir            # activates the built-in gates for it
+  languages:
+    - rust
+    - shell
 
 # The devbin this project expects. Enforced by: devbin doctor
 devbin_version: "^0.1.19"
+
+# This file is the one home of Ccusage's checks; README, docs/releasing.md and
+# usage-rules.md say to run them through bin/devbin. Every cargo line takes
+# --locked, so a check never rewrites Cargo.lock.
+commands:
+  build:
+    run: cargo build --release --locked
+  check:
+    options:
+      clippy:
+        run: cargo clippy --all-targets --locked -- -D warnings
+  test:
+    options:
+      rust:
+        run: cargo test --locked
+      # The shell slot runs the release tooling's integration suite, which is
+      # plain sh with mocked GitHub; Ccusage has no Bats tests.
+      shell:
+        summary: Release tooling integration suite, GitHub mocked
+        run: sh tests/release.sh
+        grammar: generic
+      # The ignored renewal test needs the macOS Security service and makes
+      # its own disposable keychain under ~/Library/Keychains.
+      keychain:
+        summary: Renewal write against a disposable keychain
+        run: cargo test --locked renewal_write_keeps_claude_items_readable_by_security -- --ignored
+        grammar: cargo
+        log: true
+        platforms:
+          - macos
