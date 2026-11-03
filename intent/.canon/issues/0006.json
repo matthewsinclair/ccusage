@@ -3,9 +3,10 @@
   "number": 6,
   "slug": "adopt-devbin-commit-hv-s-vendored-install-and-de",
   "title": "Adopt devbin: commit hv's vendored install and declare Ccusage's languages and commands",
-  "status": "open",
+  "status": "closed",
   "severity": "medium",
   "created": "2026-11-03",
+  "closed": "2026-11-03",
   "reporter": "Matthew Sinclair",
   "body": "## Context\n\nIn the estate, devbin is how a project builds and tests. hv vendored devbin 0.1.19 into Ccusage on 2026-11-03 with `devbin install`. That added `bin/devbin`, 87 files under `bin/.devbin/`, a starter `bin/.devbin/config.yaml`, `bin/.devbin/manifest.sha256` and `.gitattributes`, all still uncommitted. `bin/devbin doctor` passes all 14 checks, with notes: the starter config declares no languages, and `build` has nothing to run.\n\n## Wanted\n\n- Commit hv's install as vendored, unedited.\n- Declare the project in `bin/.devbin/config.yaml`: languages `rust` and `shell`, so devbin's built-in gates apply, and commands for the project's real checks. Those are the cargo commands, all with `--locked` (fmt, clippy with `-D warnings`, test, release build), and `sh tests/release.sh`. Once ISSUE:0004 lands they also include the `xtask` checks that replace the Python ones. Keep one home for each command: devbin's config becomes it, and README's Development section and `docs/releasing.md` say to run `bin/devbin`.\n- `usage-rules.md` points at `bin/devbin` for the checks, in place of README and `docs/releasing.md` (it replaces the AC-01.3 pointer), and keeps the note that AGENTS.md's Bats and unlocked cargo lines are Intent's generic text.\n- The pre-commit gate runs the shell critic on staged shell files, so committing the vendored files must not need a `--no-verify`. If the critic flags vendored devbin code, exclude `bin/.devbin/` through the project's critic configuration with a stated reason, rather than editing vendored files.\n\n## Acceptance\n\n- `bin/devbin doctor` reports no note about commands with nothing to run.\n- `bin/devbin` runs every check the project names, and they pass at HEAD.\n- `devbin`'s manifest still verifies, so no vendored file was edited.\n- The vendored files went through the pre-commit gate.\n"
 }

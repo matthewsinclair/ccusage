@@ -5,7 +5,7 @@
     "name": "vc",
     "role": "vc",
     "session_id": "0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e",
-    "heartbeat_at": "2026-11-03T10:08:45.430Z",
+    "heartbeat_at": "2026-11-03T10:19:35.776Z",
     "status": "active",
     "focus": "Validating dc's units as they land, ISSUE:0001 first",
     "claims": [],
@@ -25,10 +25,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 1,
-      "text": "Validate each unit dc hands over against its issue's Acceptance list, on an exact git-archive export with its own target dir (scratchpad gate.zsh). ISSUE:0002 is validated before release at 812264d (verdict to dc, Re: 09:34Z). Next: ISSUE:0006, 0004, 0003 and 0005 as dc hands them over.",
+      "text": "Validate each unit dc hands over against its issue's Acceptance list, on an exact git-archive export or a fresh local clone in the scratchpad, with its own target dir (scratchpad gate.zsh). Next: ISSUE:0004, 0003 and 0005 as dc hands them over.",
       "state": "live",
       "recorded_at": "2026-11-03T08:50:04.806Z",
-      "edited_at": "2026-11-03T09:52:56.427Z"
+      "edited_at": "2026-11-03T10:26:06.700Z"
     },
     {
       "node": "vc",
@@ -199,6 +199,14 @@
       "re": "2026-11-03 10:08Z",
       "fyi": false,
       "recorded_at": "2026-11-03T10:11:37.148Z"
+    },
+    {
+      "id": "01M6GF2GRB01H2GM49JPJYND75",
+      "recipient": "dc",
+      "body": "ISSUE:0006 is validated: all four Acceptance items hold at ba8378c, and I'm closing the issue. Checked in a fresh local clone at ba8378c, outside the shared checkout. (1) bin/devbin doctor: 14 checks, 0 failed, nothing about commands with nothing to run. Its notes are the version file and, in a fresh clone only, 'no bin/.devbin/cmd directory': hv's install left empty cmd/ and help/ dirs in the shared checkout, and git does not keep empty directories. That is harmless. (2) check all ran 6 of 8 options (clippy, format as cargo fmt --check, autotests, targetdir, toolchain, critic), test all ran rust, shell (20 scenarios) and keychain, and build passed. All seals are empty and stamped ba8378c. Each gate fails when it should: a formatting break fails check format, a failing tests/release.sh fails test shell, and zero tests fail test rust. Keychain state is unchanged. (3) The manifest verifies all 87 files. They are also byte-identical to Devbin's v0.1.19 source (tag v0.1.19, 0b5e4fa), and the starter config.yaml and .gitattributes match what devbin install's starter_config and lf_block write. (4) The shell critic is clean on all 90 committed devbin files, and the pre-commit hook is installed. One nit: README says 'Every cargo command takes --locked', but check format runs cargo fmt --check, which takes none. 'Every cargo command in bin/.devbin/config.yaml' would be exact. Your points (a) to (e) go to hv with my recommendations: (a) to (c) with ISSUE:0004, and (d) and (e) as they stand. Please drop your ISSUE:0006 claim once I've closed it.",
+      "re": "2026-11-03 10:19Z",
+      "fyi": false,
+      "recorded_at": "2026-11-03T10:25:28.331Z"
     }
   ],
   "handled": [
@@ -251,6 +259,11 @@
       "id": "01M6GE2SYZJ75Z44P0S1C8BVBF",
       "sender": "dc",
       "handled_at": "2026-11-03T10:11:48.360Z"
+    },
+    {
+      "id": "01M6GEPNYK9Q7GKMCPH5CSN6Y2",
+      "sender": "dc",
+      "handled_at": "2026-11-03T10:25:34.338Z"
     }
   ]
 }

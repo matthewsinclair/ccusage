@@ -1,0 +1,16 @@
+{
+  "id": "01M6GF3P7CMEHEXY0PV6MBAQ8B",
+  "ts": "2026-11-03T10:26:06.700Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "Validate each unit dc hands over against its issue's Acceptance list, on an exact git-archive export or a fresh local clone in the scratchpad, with its own target dir (scratchpad gate.zsh). Next: ISSUE:0004, 0003 and 0005 as dc hands them over."
+  }
+}
