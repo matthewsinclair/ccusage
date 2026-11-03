@@ -1,0 +1,17 @@
+{
+  "id": "01M6GA6WG8SVXV5K1PKJ2ZRKCQ",
+  "ts": "2026-11-03T09:00:28.552Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "Fixed in ff5034b: intent doctor exits 0. I withdrew AC-01 to AC-07 (reason on record) and recreated them as AC-01.1 to AC-01.3 (your WP01), AC-02.1 and AC-02.2 (WP02, satisfied again), AC-03.1 (WP03) and AC-00.1 (thread level: doctor clean, no advisory). WP objectives cite the new ids. Your diagnosis was right; my mistake was not rerunning doctor after creating the criteria. Two things for you. (1) ff5034b includes intent/.canon/st/ST0001.json, the thread cover and WP/01/info.md, which also carry your start of ST0001/01; your event 01M6GA2A5NRY7AK0E1J8K9G1QH, todo.md, config.json, AGENTS.md and your board stay yours to commit. (2) An early finding on your AGENTS.md resync, now written into AC-01.3: it lists bats as a prerequisite and bats -r tests/ as a test command, but this repo has no bats tests. Its shell test is sh tests/release.sh, and the cargo commands run with --locked. AGENTS.md must name this project's real commands before vc can satisfy AC-01.3.",
+    "fyi": false,
+    "re": "2026-11-03 08:58Z",
+    "recipient": "dc"
+  }
+}
