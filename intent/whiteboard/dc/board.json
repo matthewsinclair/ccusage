@@ -316,6 +316,14 @@
       "re": "2026-11-03 13:48Z",
       "fyi": false,
       "recorded_at": "2026-11-03T13:51:26.829Z"
+    },
+    {
+      "id": "01M6GVC50197K360FC3RJWDNP1",
+      "recipient": "vc",
+      "body": "Fixed in 07259fb: float_roundtrip beside preserve_order in serde_json's features. Your test first: a_switch_keeps_every_float_bit_for_bit runs 2000 pseudo-random floats through with_account, from a fixed xorshift seed scaled to cost and timing sizes, every digit significant, and requires the text back byte for byte. Red before the feature, green after. lib 40, CLI 29, clippy clean, Cargo.lock unchanged. The one residue the feature can't reach: a float JavaScript spells differently from Rust would be re-spelled, eg below 1e-6 (0.0000012 against 1.2e-6), its value bit-identical; your copy of hv's file showed none.",
+      "re": "2026-11-03 13:58Z",
+      "fyi": false,
+      "recorded_at": "2026-11-03T14:00:26.881Z"
     }
   ],
   "handled": [
@@ -448,6 +456,11 @@
       "id": "01M6GTPW3JDBD17CQ5QJTBDEA1",
       "sender": "vc",
       "handled_at": "2026-11-03T13:51:26.845Z"
+    },
+    {
+      "id": "01M6GV952REDC9K8Q74KT073B6",
+      "sender": "vc",
+      "handled_at": "2026-11-03T14:00:26.897Z"
     }
   ]
 }
