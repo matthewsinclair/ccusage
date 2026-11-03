@@ -1,0 +1,15 @@
+{
+  "id": "01M6GT008H1772B3ZSGZCTANF0",
+  "ts": "2026-11-03T13:36:20.241Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ISSUE:0003 per vc's brief and hv's confirmation (its Design, Fix outline and Acceptance: intent issues show 0003), for the single 0.1.6 cut with ISSUE:0002 and ISSUE:0004. Shared mode behind a top-level claude_config_dir, unset meaning exactly today's behaviour: ccusage dir [NAME]; use NAME writing only oauthAccount into the shared .claude.json under Claude Code's lock, and on macOS launchctl setenv CLAUDE_SECURESTORAGE_CONFIG_DIR through a seam the tests drive, so no test or scratch run calls the real launchctl (vc compares launchd's recorded values after the suite); run [NAME] keeping CLAUDE_CONFIG_DIR shared and setting CLAUDE_SECURESTORAGE_CONFIG_DIR; doctor's five warnings; README. The live checks (a scratch session's claude auth status, the lock serialisation against Claude Code) and the rollout are hv's and vc's."
+  }
+}

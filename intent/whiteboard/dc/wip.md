@@ -6,18 +6,17 @@ session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
 heartbeat_at: 2026-11-03 13:35Z
 status: active
 focus: "ISSUE:0003 next, for the single 0.1.6 cut; ISSUE:0002 and ISSUE:0004 held until 0.1.6 ships"
-claims: [ISSUE:0002, ISSUE:0004]
+claims: [ISSUE:0002, ISSUE:0004, ISSUE:0003]
 ---
 
 # dc (dc)
 
 ## DOING
 
-_(none)_
+- ISSUE:0003 per vc's brief and hv's confirmation (its Design, Fix outline and Acceptance: intent issues show 0003), for the single 0.1.6 cut with ISSUE:0002 and ISSUE:0004. Shared mode behind a top-level claude_config_dir, unset meaning exactly today's behaviour: ccusage dir [NAME]; use NAME writing only oauthAccount into the shared .claude.json under Claude Code's lock, and on macOS launchctl setenv CLAUDE_SECURESTORAGE_CONFIG_DIR through a seam the tests drive, so no test or scratch run calls the real launchctl (vc compares launchd's recorded values after the suite); run [NAME] keeping CLAUDE_CONFIG_DIR shared and setting CLAUDE_SECURESTORAGE_CONFIG_DIR; doctor's five warnings; README. The live checks (a scratch session's claude auth status, the lock serialisation against Claude Code) and the rollout are hv's and vc's.
 
 ## TODO
 
-- ISSUE:0003 per vc brief and hv confirmation 2026-11-03: claim when the queue reaches it. hv via vc: one 0.1.6 cut carries ISSUE:0002, 0004 and 0003 together, no split releases. In shared mode ccusage use runs launchctl setenv CLAUDE_SECURESTORAGE_CONFIG_DIR: give use a seam the tests drive, so no test and no scratch run calls the real launchctl; vc recorded launchd's values (CLAUDE_CONFIG_DIR=/Users/matts/.config/claude, CLAUDE_SECURESTORAGE_CONFIG_DIR unset) and compares them after the suite. (edited)
 - ISSUE:0005 after ISSUE:0003, as one PR (#15) in ~/Devel/forks/claudecodeusage: local commits only, no push
 
 ## Holds
