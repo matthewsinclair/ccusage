@@ -6,14 +6,9 @@ This is Ccusage's own hand-authored contract, not the `usage_rules` Hex library'
 
 ## Project conventions
 
-<!--
-Project-specific DO / NEVER rules. Terse and imperative. Examples:
-
-- Use `mix format` before every commit.
-- Tests live beside modules (`lib/foo/bar.ex` -> `test/foo/bar_test.exs`).
-- Never commit directly to `main`; open a PR.
-- Business logic lives in service modules, not in controllers or LiveViews.
--->
+- Before a commit, run the checks in README's Development section; their cargo commands take `--locked`.
+- When release tooling, packaging or CI changes, also run the checks in `docs/releasing.md`: its release integration suite and its lower-level checks.
+- AGENTS.md's Bats prerequisite, `bats -r tests/`, and unlocked `cargo test` and `cargo build` are Intent's generic language text, not this project's commands. Ccusage has no Bats tests.
 
 ## NEVER DO
 
