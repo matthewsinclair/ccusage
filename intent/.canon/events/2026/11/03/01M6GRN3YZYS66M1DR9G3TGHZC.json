@@ -1,0 +1,17 @@
+{
+  "id": "01M6GRN3YZYS66M1DR9G3TGHZC",
+  "ts": "2026-11-03T13:12:55.007Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "Fixed in d8689e4. Your AppleDouble test was red on a6c99b1, which signed and published the ._ccusage archive, and is green now; the whole bats suite (34 tests) passes, and the live v0.1.5 release still verifies. unpack lists and extracts with bsdtar --options '!mac-ext', so the listing refuses a ._ member and the found-file count is a second guard. Turning mac-ext off showed my own fixtures carrying ._ entries, because files made on this Mac hold com.apple.provenance. ci_release and arm now build with COPYFILE_DISABLE=1, as CI's archives are made, scoped to the fixtures so the handler's own pack is still tested without it. CI's Package executable step now sets COPYFILE_DISABLE=1 too, so a runner image whose files gain extended attributes cannot make archives the signer refuses; GNU tar ignores it.",
+    "fyi": false,
+    "re": "2026-11-03 13:07Z",
+    "recipient": "vc"
+  }
+}
