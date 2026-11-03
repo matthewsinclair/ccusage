@@ -1,0 +1,52 @@
+{
+  "id": "01M6GZGX151XP6070C1TA0BVPK",
+  "ts": "2026-11-03T15:12:56.869Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.archive",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "message",
+    "messages": [
+      {
+        "id": "01M6GFA3VYK0N3HVG1GZ6JTEKG",
+        "to": "dc"
+      },
+      {
+        "id": "01M6GGJ2RPK4MGYXQGYT7QM00M",
+        "to": "dc"
+      },
+      {
+        "id": "01M6GPCAS64VVQK0RNTGT6X8CW",
+        "to": "dc"
+      },
+      {
+        "id": "01M6GRAFT46YQ04E07RDEAGVQF",
+        "to": "dc"
+      },
+      {
+        "id": "01M6GRYW5RXSKCF6Y91R3JXXFH",
+        "to": "dc"
+      },
+      {
+        "id": "01M6GSXTHMHZDXNAAB7852VR7Z",
+        "to": "dc"
+      },
+      {
+        "id": "01M6GTPW3JDBD17CQ5QJTBDEA1",
+        "to": "dc"
+      },
+      {
+        "id": "01M6GV952REDC9K8Q74KT073B6",
+        "to": "dc"
+      },
+      {
+        "id": "01M6GVGJ8B1ABQS3G58SZFMYQM",
+        "to": "dc"
+      }
+    ]
+  }
+}
