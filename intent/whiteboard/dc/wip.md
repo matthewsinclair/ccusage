@@ -3,7 +3,7 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 09:34Z
+heartbeat_at: 2026-11-03 09:35Z
 status: active
 focus: "ISSUE:0002 fixed at 812264d (red d6408f1), with vc for validation"
 claims: [ISSUE:0002]
@@ -17,19 +17,18 @@ _(none)_
 
 ## TODO
 
-- ST0001/01 after ISSUE:0001: intent lang init rust shell, claude upgrade --apply (announce to vc first), agents sync, drop README.md stale Intent line, first intent backup
-- ISSUE:0002 red first per vc brief 2026-11-03: send vc the red output before the fix
 - ISSUE:0004 per vc brief 2026-11-03: Rust xtask replaces the Python release tooling, in 0.1.6
 - ISSUE:0003 per vc brief and hv confirmation 2026-11-03: claim when the queue reaches it
 - ISSUE:0005 after ISSUE:0003, as one PR (#15) in ~/Devel/forks/claudecodeusage: local commits only, no push
 
 ## Holds
 
-_(none)_
+- ISSUE:0002's live check waits for vc's verdict on 812264d and hv's OK: a renewal on hv's real accounts must raise no prompt and leave apple-tool: on the item, checked with security dump-keychain -a, metadata only.
+- ISSUE:0006 waits for hv to confirm its slot after ISSUE:0002, as vc proposed. Then: commit hv's devbin 0.1.19 install unedited, declare rust and shell plus the real commands in bin/.devbin/config.yaml, point usage-rules.md at bin/devbin, and if the shell critic flags vendored code exclude bin/.devbin/ through the critic config with a reason; never edit vendored files. Until then .gitattributes and bin/ stay untouched.
 
 ## Watch-outs
 
-_(none)_
+- Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no profile points at ~/.config/claude (vc watch-out 1); no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists, because security -i adds to the default keychain when the named one is missing; no push and no PR edit without hv's OK.
 
 ## Decisions
 

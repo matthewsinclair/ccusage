@@ -5,7 +5,7 @@
     "name": "dc",
     "role": "dc",
     "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T09:34:04.088Z",
+    "heartbeat_at": "2026-11-03T09:35:59.282Z",
     "status": "active",
     "focus": "ISSUE:0002 fixed at 812264d (red d6408f1), with vc for validation",
     "claims": [
@@ -20,7 +20,8 @@
       "kind": "todo",
       "seq": 1,
       "text": "ST0001/01 after ISSUE:0001: intent lang init rust shell, claude upgrade --apply (announce to vc first), agents sync, drop README.md stale Intent line, first intent backup",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-03T09:36:34.213Z",
       "recorded_at": "2026-11-03T08:51:35.428Z"
     },
     {
@@ -28,7 +29,8 @@
       "kind": "todo",
       "seq": 2,
       "text": "ISSUE:0002 red first per vc brief 2026-11-03: send vc the red output before the fix",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-03T09:36:34.226Z",
       "recorded_at": "2026-11-03T08:51:35.442Z"
     },
     {
@@ -72,6 +74,30 @@
       "state": "archived",
       "archived_at": "2026-11-03T09:10:51.437Z",
       "recorded_at": "2026-11-03T09:04:38.345Z"
+    },
+    {
+      "node": "dc",
+      "kind": "watchout",
+      "seq": 1,
+      "text": "Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no profile points at ~/.config/claude (vc watch-out 1); no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists, because security -i adds to the default keychain when the named one is missing; no push and no PR edit without hv's OK.",
+      "state": "live",
+      "recorded_at": "2026-11-03T09:36:34.240Z"
+    },
+    {
+      "node": "dc",
+      "kind": "hold",
+      "seq": 3,
+      "text": "ISSUE:0002's live check waits for vc's verdict on 812264d and hv's OK: a renewal on hv's real accounts must raise no prompt and leave apple-tool: on the item, checked with security dump-keychain -a, metadata only.",
+      "state": "live",
+      "recorded_at": "2026-11-03T09:36:34.254Z"
+    },
+    {
+      "node": "dc",
+      "kind": "hold",
+      "seq": 4,
+      "text": "ISSUE:0006 waits for hv to confirm its slot after ISSUE:0002, as vc proposed. Then: commit hv's devbin 0.1.19 install unedited, declare rust and shell plus the real commands in bin/.devbin/config.yaml, point usage-rules.md at bin/devbin, and if the shell critic flags vendored code exclude bin/.devbin/ through the critic config with a reason; never edit vendored files. Until then .gitattributes and bin/ stay untouched.",
+      "state": "live",
+      "recorded_at": "2026-11-03T09:36:34.268Z"
     }
   ],
   "sent": [
@@ -80,21 +106,24 @@
       "recipient": "vc",
       "body": "ISSUE:0001 ready for validation at 1b6e29e (one commit on main: src/cli.rs, src/config.rs, tests/cli.rs, README.md). Behaviour: no command, or --all, --json or --refresh in the command's place, runs usage on the rest of the line; --config, --no-color and --verbose stay global, so ccusage --verbose is verbose usage for the active account. Help comes only from help and --help. Store::load now returns a typed config::NoConfig, and only the implied-usage path appends ', or see ccusage help', so explicit commands (eg ccusage usage, ccusage bogus) keep their exact no-config error. Red then green: on the old code the new tests bare_ccusage_and_leading_usage_flags_report_as_usage_does, help_comes_only_from_help_and_dash_dash_help and bare_ccusage_without_config_gives_init_hint_and_help_pointer failed, as did verbose_shows_formatted_details_without_json_or_diagnostics with its new bare --verbose case; unknown_commands_and_options_fail_as_before pins today's exact errors and passed before and after. Now cargo fmt --check, cargo clippy --all-targets --locked -- -D warnings and cargo test --locked (28 unit, 21 CLI, 1 ignored) pass, and intent critic rust is clean. Logs: /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d/scratchpad/issue-0001/red.log and green.log. Reproduce: cargo test --locked --test cli; black-box in a throwaway tree with T=$(mktemp -d) and env -i HOME=$T/home XDG_CONFIG_HOME=$T/config XDG_DATA_HOME=$T/data XDG_STATE_HOME=$T/state XDG_CACHE_HOME=$T/cache PATH=/usr/bin:/bin NO_COLOR=1 target/debug/ccusage with no arguments, --all --json, usage, help, bogus or --bogus. Also in the commit: the existing --all report test checks account names instead of a hand-written count. dc moves to ST0001/01 next and will announce before intent claude upgrade --apply.",
       "fyi": false,
-      "recorded_at": "2026-11-03T08:55:05.824Z"
+      "recorded_at": "2026-11-03T08:55:05.824Z",
+      "archived_at": "2026-11-03T09:36:44.467Z"
     },
     {
       "id": "01M6GA3G97S3FV8M0TBDT6GF3A",
       "recipient": "vc",
       "body": "ST0001's criterion ids make intent doctor exit 1, and that blocks ST0001/01's gate install. Doctor reports 4 model-inconsistent findings: AC-04 belongs to WP-04, which ST0001 does not have, and likewise AC-05, AC-06 and AC-07. Intent reads a criterion id as AC-<gg>.<n>, where gg is the work package seq, or 00 for a thread-level criterion (group_seq and the 'belongs to WP' check in native/rust/crates/intentsvcs/src/doctor.rs; withdrawn and descoped criteria are exempt, and so is group 00). So WP02's AC-04 and AC-05 read as WP-04 and WP-05, WP03's AC-06 as WP-06, and the thread-level AC-07 as WP-07. AC-01 to AC-03 pass only by coincidence: AC-02 and AC-03 are WP01's but read as WP02's and WP03's. They are your criteria, so I have not touched them. A CLI-only fix: withdraw AC-04 to AC-07 with a reason and recreate them as AC-02.1, AC-02.2, AC-03.1 and AC-00.1, re-satisfying the two WP02 rows with their evidence; for honest grouping, do the same for AC-01 to AC-03 as AC-01.1 to AC-01.3. While doctor exits 1, intent claude upgrade --apply would install a pre-commit gate that refuses every commit, yours included, so I am holding --apply and doing the rest of ST0001/01 now: languages declared (rust, shell), then agents sync, README's stale Intent line and the first backup. Tell me when doctor is clean and I will announce, then apply. The report-only run shows apply writes .claude/settings.json, .mcp.json, AGENTS.md, usage-rules.md, .intent_critic.yml and the pre-commit, post-merge, post-checkout and post-rewrite hooks; no existing hook is overwritten.",
       "fyi": false,
-      "recorded_at": "2026-11-03T08:58:37.736Z"
+      "recorded_at": "2026-11-03T08:58:37.736Z",
+      "archived_at": "2026-11-03T09:36:44.467Z"
     },
     {
       "id": "01M6GA9JN7TT7W5KNF9ABBJNGW",
       "recipient": "vc",
       "body": "dc is applying intent claude upgrade --apply in this checkout now (ST0001/01). It writes .claude/settings.json (SessionStart context, the strict UserPromptSubmit gate that blocks a session's first prompt until /in-session runs, the Stop reminder, and a deny on editing AGENTS.md), .mcp.json (Intent's MCP server), AGENTS.md, usage-rules.md, .intent_critic.yml and the pre-commit, post-merge, post-checkout and post-rewrite git hooks. From then on every commit here runs the gate: the shipped guards, intent critic on the staged rust and shell files, and intent doctor; a finding, a refusing guard or a doctor exit 1 refuses the commit. The gate body runs from /Users/matts/Devel/prj/Intent, not brew's 3.2.8.",
       "fyi": true,
-      "recorded_at": "2026-11-03T09:01:56.775Z"
+      "recorded_at": "2026-11-03T09:01:56.775Z",
+      "archived_at": "2026-11-03T09:36:44.467Z"
     },
     {
       "id": "01M6GA9JN7TT7W5KNF9ABBJNGX",
@@ -108,21 +137,24 @@
       "recipient": "vc",
       "body": "ST0001/01 is ready for validation except AC-01.3's AGENTS.md half, which waits on the commands question I raised. Commits: 80179a5 (rust and shell declared, AGENTS.md resynced, README's stale Intent line dropped), 176f3b6 (dc's start event and todo view), aaa26d0 (intent claude upgrade --apply: .claude/settings.json, .mcp.json, .intent_critic.yml and the seeded usage-rules.md, plus the pre-commit, post-merge, post-checkout and post-rewrite hooks in .git/hooks, none of which replaced an existing hook) and 9277f18 (the announce). Evidence. AC-01.1: intent lang declared prints rust and shell. AC-01.2: aaa26d0 and 9277f18 both went through the gate, which printed 'guards: 5 ran, 1 skipped (not applicable)', 'intent critic gate: 2 of 2 declared language(s) enforced (rust shell)' and 'intent doctor gate: estate clean' (log: /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d/scratchpad/gate-first-commit.log). Neither staged a .rs or shell file, so ISSUE:0002's first commit will be the first where the critics read code. AC-00.1: intent backup created intent/.backup/db/2026-11-03T09-02-46-909Z.db and pruned the older one, and intent doctor now reports 0 findings with no advisory, exit 0. AC-01.3's README half is in 80179a5. dc holds intent wp done ST0001/01 until AC-01.3 is settled and moves to ISSUE:0002 now.",
       "fyi": false,
-      "recorded_at": "2026-11-03T09:03:12.322Z"
+      "recorded_at": "2026-11-03T09:03:12.322Z",
+      "archived_at": "2026-11-03T09:36:44.467Z"
     },
     {
       "id": "01M6GAEGEPXDH4YAEZ568MQBEH",
       "recipient": "vc",
       "body": "ST0001/01 is complete. 41eb982 meets the reworded AC-01.3: usage-rules.md's Project conventions point at README's Development section (cargo commands with --locked) and docs/releasing.md (its release integration suite and lower-level checks) without copying either, and say AGENTS.md's Bats prerequisite, bats -r tests/ and unlocked cargo test and cargo build are Intent's generic language text; AGENTS.md is as intent agents sync generated it. AC-01.1, AC-01.2 and AC-00.1's evidence is in my earlier entry, and 41eb982 went through the gate as well (critics enforced for rust and shell, doctor estate clean). I will run intent wp done ST0001/01 on your verdict.",
       "fyi": false,
-      "recorded_at": "2026-11-03T09:04:38.358Z"
+      "recorded_at": "2026-11-03T09:04:38.358Z",
+      "archived_at": "2026-11-03T09:36:44.467Z"
     },
     {
       "id": "01M6GBQ6C3AG88JXAKBPK63V1V",
       "recipient": "vc",
       "body": "ISSUE:0002 red, before the fix: d6408f1 adds renewal_write_keeps_claude_items_readable_by_security (ignored; CI still runs the old test). Reproduce: cargo test --locked --lib renewal_write_keeps_claude_items_readable_by_security -- --ignored. Output on rhadamanth: panicked at src/auth.rs:1012:5, 'partitions after the renewal write: [\"cdhash:9dbfbfa21ae33cd8278abc0e0757b53168ec83a7\"]'. Before that write the item's partitions were apple-tool: plus the test binary's own cdhash; ccusage's in-process write reset them to the writer's partition alone, so it fails on the partition assertion, not on access. Log: /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d/scratchpad/issue-0002/red.log. Research findings (Claude Code 2.1.317 binary, read-only, and experiments on disposable keychains). (1) Service: 'Claude Code' + OAUTH_FILE_SUFFIX + '-credentials' + '-' + the first 8 hex of sha256 over NFC(CLAUDE_SECURESTORAGE_CONFIG_DIR) when set, else over NFC(CLAUDE_CONFIG_DIR as given, unresolved); account: $USER, else os.userInfo().username, and claude-code-user when the name has a character outside [a-zA-Z0-9._-]; stdin limit: the whole security -i line, newline included, at most 4032 characters (security itself splits lines near 4096); exit 44 is errSecItemNotFound and 36 errSecInteractionNotAllowed; 2 s timeout per call. (2) A keychain created outside ~/Library/Keychains is version 256 with no partition list at all, so the fixture keychain lives in ~/Library/Keychains as ccusage-test-<pid>-<n>.keychain-db; create-keychain leaves the search list alone and the fixture is deleted on drop. (3) A write through security -i also resets the partitions to its writer's, apple-tool:, which is why writing through security keeps the items readable. (4) find-generic-password -w prints the password as hex when any byte is non-printing, eg a non-ASCII character in the JSON, so the reader decodes both. (5) security's stderr echoes the hex of a line it cannot parse, so ccusage never shows security's output. (6) There is no security command to add an app to an existing item's decrypt ACL, and the write path needs only the partition (the encrypt entry allows any app), so the test grants the partition alone. (7) Safety incident, contained: security -i add-generic-password with a keychain path that does not exist silently adds to the default keychain. My first experiment did that, putting one fake item (service ccusage-exp-51447, account fixture-user, one 0x00 byte) into hv's login keychain at 09:17Z by its own creation date. I deleted that exact item at once (lookup now exits 44). No real item was read or changed, and find-generic-password does not fall back. Every write since checks that its keychain file exists, and the fix's update-only lookup refuses before any write to a keychain that is not there. Next, the fix: /usr/bin/security for read and write, NFC service names (unicode-normalization, macOS only), and security-framework only as a macOS dev-dependency for the test. I carry on unless you say wait.",
       "fyi": false,
-      "recorded_at": "2026-11-03T09:26:51.523Z"
+      "recorded_at": "2026-11-03T09:26:51.523Z",
+      "archived_at": "2026-11-03T09:36:44.467Z"
     },
     {
       "id": "01M6GC4CS9S350APE96ZFRXMVA",
@@ -132,5 +164,71 @@
       "recorded_at": "2026-11-03T09:34:04.073Z"
     }
   ],
-  "handled": []
+  "handled": [
+    {
+      "id": "01M6G5YE5J6MYTFBRX03B37XX2",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6G619SZPPFZ6K989DCCB5ZH",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6G6YJ5BTT41KXD47B38PNJV",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6G8M3XZRTS0F26ZT4B05MAP",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6G8WKFV67FYWV0RFKTJHGQB",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6G994CY0ZF0TY0GN2PW809C",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6G9JEH6RGZSBPZB92DJ5SSM",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6GA10KEY47WFZB72XRGSV81",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6GA6WG8SVXV5K1PKJ2ZRKCR",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6GAB7JN7TA4AFRPNVYWJ8Q4",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6GADR1GN7KPY18AQAPCFVNH",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6GAJM1A18TR3Z485VR6BYYW",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6GBTBSVCNTAJJVX5KPZ8C36",
+      "sender": "vc",
+      "handled_at": "2026-11-03T09:36:44.453Z"
+    }
+  ]
 }

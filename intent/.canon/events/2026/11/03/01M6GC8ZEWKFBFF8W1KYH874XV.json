@@ -1,0 +1,15 @@
+{
+  "id": "01M6GC8ZEWKFBFF8W1KYH874XV",
+  "ts": "2026-11-03T09:36:34.268Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ISSUE:0006 waits for hv to confirm its slot after ISSUE:0002, as vc proposed. Then: commit hv's devbin 0.1.19 install unedited, declare rust and shell plus the real commands in bin/.devbin/config.yaml, point usage-rules.md at bin/devbin, and if the shell critic flags vendored code exclude bin/.devbin/ through the critic config with a reason; never edit vendored files. Until then .gitattributes and bin/ stay untouched."
+  }
+}

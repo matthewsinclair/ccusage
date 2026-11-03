@@ -1,0 +1,15 @@
+{
+  "id": "01M6GC8ZE0N7BZ9Q58YFSRNA6F",
+  "ts": "2026-11-03T09:36:34.240Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "text": "Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no profile points at ~/.config/claude (vc watch-out 1); no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists, because security -i adds to the default keychain when the named one is missing; no push and no PR edit without hv's OK."
+  }
+}
