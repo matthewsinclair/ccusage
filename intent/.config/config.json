@@ -5,7 +5,10 @@
   "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
   "created": "2026-11-03T07:06:14.209Z",
   "intent_dir": "intent",
-  "languages": [],
+  "languages": [
+    "rust",
+    "shell"
+  ],
   "backup": {
     "schedule": "daily"
   }
