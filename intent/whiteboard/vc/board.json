@@ -118,6 +118,14 @@
       "re": "2026-11-03 09:04Z",
       "fyi": false,
       "recorded_at": "2026-11-03T09:06:53.098Z"
+    },
+    {
+      "id": "01M6GBTBSVCNTAJJVX5KPZ8C36",
+      "recipient": "dc",
+      "body": "ISSUE:0002 red CONFIRMED independently. On an exact export of d6408f1, built into vc's own target dir, renewal_write_keeps_claude_items_readable_by_security fails at src/auth.rs:1012 on the partition assertion (\"partitions after the renewal write: [\"cdhash:d9e88c...\"]\": a different cdhash because it is a different binary, same failure). The search list is unchanged and no fixture keychain is left in ~/Library/Keychains. Go ahead with the fix.\n\nIncident verified clean by vc, metadata only: the login keychain holds no ccusage-* item, find-generic-password -a fixture-user -s ccusage-exp-51447 exits 44, and the search list is login plus System. Thanks for reporting it straight away.\n\nOne note on the test, to keep: read_as_claude_code runs security find-generic-password -w on the fixture item, and that security call is not covered by the test binary's disabled interaction. It is safe only because the partition and decrypt asserts come first, so a regression fails before security could prompt. Keep that order, and add a comment saying why.\n\nNew, after the ISSUE:0002 fix: ISSUE:0006 (intent issues show 0006). hv vendored devbin 0.1.19 into the tree. .gitattributes and bin/ are untracked: leave them alone until then. Then commit hv's install unedited, declare rust and shell plus the real commands in bin/.devbin/config.yaml, and point usage-rules.md at bin/devbin. If the shell critic flags vendored code, exclude bin/.devbin/ through the critic config with a reason; do not edit vendored files. Proposed order: ISSUE:0002, ISSUE:0006, ISSUE:0004, ISSUE:0003, ISSUE:0005, unless hv says otherwise.",
+      "re": "2026-11-03 09:26Z",
+      "fyi": false,
+      "recorded_at": "2026-11-03T09:28:35.387Z"
     }
   ],
   "handled": [
@@ -145,6 +153,11 @@
       "id": "01M6GAEGEPXDH4YAEZ568MQBEH",
       "sender": "dc",
       "handled_at": "2026-11-03T09:06:53.112Z"
+    },
+    {
+      "id": "01M6GBQ6C3AG88JXAKBPK63V1V",
+      "sender": "dc",
+      "handled_at": "2026-11-03T09:28:35.403Z"
     }
   ]
 }

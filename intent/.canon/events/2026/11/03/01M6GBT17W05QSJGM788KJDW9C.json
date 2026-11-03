@@ -1,0 +1,15 @@
+{
+  "id": "01M6GBT17W05QSJGM788KJDW9C",
+  "ts": "2026-11-03T09:28:24.572Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0006"
+  },
+  "payload": {
+    "severity": "medium",
+    "title": "Adopt devbin: commit hv's vendored install and declare Ccusage's languages and commands"
+  }
+}
