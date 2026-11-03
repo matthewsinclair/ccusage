@@ -613,6 +613,43 @@ mod tests {
     Ok(())
   }
 
+  /// In shared mode Claude Code locks a login in CLAUDE_SECURESTORAGE_CONFIG_DIR, the
+  /// profile's directory, which is where a renewal takes its refresh lock. While Claude
+  /// Code holds it, the renewal waits, then uses the login Claude Code wrote.
+  #[test]
+  fn a_renewal_waits_for_a_refresh_lock_claude_code_holds() -> Result<()> {
+    use std::time::Duration;
+    let fixture = Fixture::new()?;
+    let held = crate::auth_lock::Lock::acquire(
+      fixture.dir.join(".oauth_refresh.lock"),
+      Duration::from_secs(60),
+    )?;
+    let (finished, done) = std::sync::mpsc::channel();
+    std::thread::scope(|scope| -> Result<()> {
+      scope.spawn(|| {
+        // Nothing listens there, so a renewal that skipped the lock fails at once.
+        let renewed = fixture
+          .fresh("http://127.0.0.1:1", None)
+          .map(|token| token.access_token);
+        let _ = finished.send(renewed);
+      });
+      assert!(
+        done.recv_timeout(Duration::from_millis(500)).is_err(),
+        "the renewal went ahead while Claude Code held the lock"
+      );
+      fixture.write(
+        serde_json::json!({"claudeAiOauth": {"accessToken": "CLAUDE_RENEWED",
+        "refreshToken": "CLAUDE_REFRESH", "expiresAt": 9_999_999_999_999_i64}}),
+      )?;
+      drop(held);
+      let renewed = done
+        .recv_timeout(Duration::from_secs(10))
+        .map_err(|_| "the renewal did not finish once the lock was free")??;
+      assert_eq!(renewed, "CLAUDE_RENEWED");
+      Ok(())
+    })
+  }
+
   #[test]
   fn successful_refresh_does_not_overwrite_a_concurrent_login() -> Result<()> {
     let fixture = Fixture::new()?;
