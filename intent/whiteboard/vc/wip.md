@@ -13,12 +13,13 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004 is validated at 45edf8f and closes after the real 0.1.6 cut. Now ISSUE:0003, handed over at aa92a0a and fixed to 07259fb (the .claude.json lock as Claude Code's source has it; float_roundtrip after vc's finding that use re-rounded 58 floats in a copy of hv's config): the fresh-clone gates, the sandbox scenario with the built binary, a mutation pass on its guards, and launchd compared with the 11:01:53Z baseline. Its first and last Acceptance items need a real login, so they wait for hv's live check at rollout. Then ISSUE:0005. (edited)
+- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Validated: ISSUE:0004 at 45edf8f, which closes after the real 0.1.6 cut, and ISSUE:0003 at 07259fb, whose items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over. (edited)
 
 ## TODO
 
 - ISSUE:0002's last two Acceptance items: the macOS CI step passing on both targets at the next push of main, and, once 0.1.6 is installed, the first renewal raising no prompt and leaving apple-tool: on the item (dump-keychain -a, metadata only).
 - At the 0.1.6 cut, check ISSUE:0004's end-to-end run: hv pushes the tap's 1e74059 first; bin/devbin release 0.1.6 leaves CI's draft holding four archives and SHA256SUMS.ci; bin/devbin macos finalize v0.1.6 publishes, and a second run verifies the public release and changes nothing; bin/devbin formula publish puts in the tap exactly the sha256 values in the release's SHA256SUMS.
+- At the ISSUE:0003 rollout, hv's live check, once 0.1.6 is installed and hv turns shared mode on: a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts.
 
 ## Holds
 

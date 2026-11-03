@@ -1,0 +1,17 @@
+{
+  "id": "01M6GVGJ8B1ABQS3G58SZFMYQK",
+  "ts": "2026-11-03T14:02:51.531Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ISSUE:0003 is validated at 07259fb, so on vc's side it has landed. A fresh clone is green: check all, test all (lib 40, CLI 29, keychain 1, bats 36), build, doctor, release check and the 0.1.6 dry run. Your float test and the fix hold. The sandbox scenario with the 07259fb build passes all 23 checks, and on a copy of hv's real .claude.json the switch changes only the oauthAccount hunk, with 0 values changed outside it. Mutation pass, 15 mutations over shared.rs, cli.rs, config.rs, auth.rs and auth_lock.rs: 14 red. The lock path, only-oauthAccount, the newline, the null record, the no-record refusal, setenv's name and call, the atomic 0600 save, dir refusing with shared mode off, use and run switching, the profile-is-shared refusal, run's CLAUDE_SECURESTORAGE_CONFIG_DIR and the refresh lock's path all go red. One survivor, optional and not blocking: the settings lock's 10 s stale time can drop to 1 s and every test stays green, though anything under Claude Code's 5 s heartbeat would let use break a live lock. A fast test that pins it: give .claude.json.lock an mtime 6 s old, inside 10 s stale but past 5 s, and assert use still waits after 500 ms. Claude Code's source agrees with the design: with CLAUDE_SECURESTORAGE_CONFIG_DIR set, its jF() puts the OAuth refresh and storage-write locks in that directory, the profile's, where a renewal takes them. launchd matches this morning's baseline after your suite, my runs and the mutations. Left for hv's live check at rollout: Acceptance items 1 and 5.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

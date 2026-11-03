@@ -1,0 +1,15 @@
+{
+  "id": "01M6GVGJCTPWVW23QZXAH8FY4D",
+  "ts": "2026-11-03T14:02:51.674Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "At the ISSUE:0003 rollout, hv's live check, once 0.1.6 is installed and hv turns shared mode on: a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "01M6GVGJB0XEB4YYV245MF3386",
+  "ts": "2026-11-03T14:02:51.616Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Validated: ISSUE:0004 at 45edf8f, which closes after the real 0.1.6 cut, and ISSUE:0003 at 07259fb, whose items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over."
+  }
+}

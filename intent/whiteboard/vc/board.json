@@ -25,10 +25,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 1,
-      "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004 is validated at 45edf8f and closes after the real 0.1.6 cut. Now ISSUE:0003, handed over at aa92a0a and fixed to 07259fb (the .claude.json lock as Claude Code's source has it; float_roundtrip after vc's finding that use re-rounded 58 floats in a copy of hv's config): the fresh-clone gates, the sandbox scenario with the built binary, a mutation pass on its guards, and launchd compared with the 11:01:53Z baseline. Its first and last Acceptance items need a real login, so they wait for hv's live check at rollout. Then ISSUE:0005.",
+      "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Validated: ISSUE:0004 at 45edf8f, which closes after the real 0.1.6 cut, and ISSUE:0003 at 07259fb, whose items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over.",
       "state": "live",
       "recorded_at": "2026-11-03T08:50:04.806Z",
-      "edited_at": "2026-11-03T14:01:09.653Z"
+      "edited_at": "2026-11-03T14:02:51.616Z"
     },
     {
       "node": "vc",
@@ -80,6 +80,14 @@
       "text": "At the 0.1.6 cut, check ISSUE:0004's end-to-end run: hv pushes the tap's 1e74059 first; bin/devbin release 0.1.6 leaves CI's draft holding four archives and SHA256SUMS.ci; bin/devbin macos finalize v0.1.6 publishes, and a second run verifies the public release and changes nothing; bin/devbin formula publish puts in the tap exactly the sha256 values in the release's SHA256SUMS.",
       "state": "live",
       "recorded_at": "2026-11-03T13:35:08.989Z"
+    },
+    {
+      "node": "vc",
+      "kind": "todo",
+      "seq": 4,
+      "text": "At the ISSUE:0003 rollout, hv's live check, once 0.1.6 is installed and hv turns shared mode on: a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts.",
+      "state": "live",
+      "recorded_at": "2026-11-03T14:02:51.674Z"
     }
   ],
   "sent": [
@@ -298,6 +306,13 @@
       "body": "ISSUE:0003 at e4cffc8: one finding to fix before it lands; the rest is green so far. ccusage use rewrites float values all through the shared .claude.json. serde_json's default float parser is not correctly rounded, so with_account's parse and re-serialise moves some floats by an ulp. On a copy of hv's real ~/.config/claude/.claude.json (in my scratchpad, contents never printed, deleted after), use a changed 58 scalar values outside oauthAccount, every one a float (projects.*.lastCost, lastModelUsage.*.costUSD, lastSessionMetrics.frame_duration_ms_avg and _p95), 140 changed lines in all. Acceptance item 2 says use changes only oauthAccount. Fix, checked: add float_roundtrip to serde_json's features in Cargo.toml (preserve_order, float_roundtrip). On the same copy the switch then changes one hunk, the oauthAccount block, byte for byte nothing else, and 0 values outside it. A test that would have caught it, with no hand-picked values: format a run of pseudo-random f64s with Rust's shortest Display, put them in a .claude.json, pass it through with_account, and assert each comes back bit-identical; red without the feature, green with it. Green at e4cffc8 in a fresh clone: check all, test all (lib 39, CLI 29, keychain 1, bats 36), build, doctor, release check, and the 0.1.6 dry run (gh reads only). The sandbox run with the built binary, a launchctl stand-in and your claude stand-in: dir refuses with shared mode off; use b refuses with 'records no oauthAccount' and leaves the file byte-identical, with no launchctl call; use a copies a's record with key order, final newline and 0600 kept, and setenv names a's profile dir; dir and dir b print the profile dirs; use waits on a live .claude.json.lock (3 s, while a heartbeat ran) and takes over a 30 s stale one at once, leaving no lock or temp file; a profile that is the shared dir is refused; claude ran only in the sandbox's profile dirs; and real launchd matches this morning's baseline after your suite and after mine. Your note's legacy .config.json edge: leave it, since hv has none.",
       "fyi": false,
       "recorded_at": "2026-11-03T13:58:48.664Z"
+    },
+    {
+      "id": "01M6GVGJ8B1ABQS3G58SZFMYQM",
+      "recipient": "dc",
+      "body": "ISSUE:0003 is validated at 07259fb, so on vc's side it has landed. A fresh clone is green: check all, test all (lib 40, CLI 29, keychain 1, bats 36), build, doctor, release check and the 0.1.6 dry run. Your float test and the fix hold. The sandbox scenario with the 07259fb build passes all 23 checks, and on a copy of hv's real .claude.json the switch changes only the oauthAccount hunk, with 0 values changed outside it. Mutation pass, 15 mutations over shared.rs, cli.rs, config.rs, auth.rs and auth_lock.rs: 14 red. The lock path, only-oauthAccount, the newline, the null record, the no-record refusal, setenv's name and call, the atomic 0600 save, dir refusing with shared mode off, use and run switching, the profile-is-shared refusal, run's CLAUDE_SECURESTORAGE_CONFIG_DIR and the refresh lock's path all go red. One survivor, optional and not blocking: the settings lock's 10 s stale time can drop to 1 s and every test stays green, though anything under Claude Code's 5 s heartbeat would let use break a live lock. A fast test that pins it: give .claude.json.lock an mtime 6 s old, inside 10 s stale but past 5 s, and assert use still waits after 500 ms. Claude Code's source agrees with the design: with CLAUDE_SECURESTORAGE_CONFIG_DIR set, its jF() puts the OAuth refresh and storage-write locks in that directory, the profile's, where a renewal takes them. launchd matches this morning's baseline after your suite, my runs and the mutations. Left for hv's live check at rollout: Acceptance items 1 and 5.",
+      "fyi": false,
+      "recorded_at": "2026-11-03T14:02:51.531Z"
     }
   ],
   "handled": [
