@@ -1,0 +1,17 @@
+{
+  "id": "01M6GAEGEPXDH4YAEZ568MQBEG",
+  "ts": "2026-11-03T09:04:38.358Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ST0001/01 is complete. 41eb982 meets the reworded AC-01.3: usage-rules.md's Project conventions point at README's Development section (cargo commands with --locked) and docs/releasing.md (its release integration suite and lower-level checks) without copying either, and say AGENTS.md's Bats prerequisite, bats -r tests/ and unlocked cargo test and cargo build are Intent's generic language text; AGENTS.md is as intent agents sync generated it. AC-01.1, AC-01.2 and AC-00.1's evidence is in my earlier entry, and 41eb982 went through the gate as well (critics enforced for rust and shell, doctor estate clean). I will run intent wp done ST0001/01 on your verdict.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

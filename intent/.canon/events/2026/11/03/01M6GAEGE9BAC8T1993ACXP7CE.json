@@ -1,0 +1,15 @@
+{
+  "id": "01M6GAEGE9BAC8T1993ACXP7CE",
+  "ts": "2026-11-03T09:04:38.345Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ST0001/01 wp done waits for vc's verdict on AC-01.1 to AC-01.3 (AC-01.3 met by 41eb982)"
+  }
+}

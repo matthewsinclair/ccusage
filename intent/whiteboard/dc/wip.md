@@ -25,7 +25,7 @@ _(none)_
 
 ## Holds
 
-- ST0001/01 wp done waits until AC-01.3's AGENTS.md question is settled by hv and vc: an Intent template change for project-declared commands, or rewording the criterion
+- ST0001/01 wp done waits for vc's verdict on AC-01.1 to AC-01.3 (AC-01.3 met by 41eb982)
 
 ## Watch-outs
 
