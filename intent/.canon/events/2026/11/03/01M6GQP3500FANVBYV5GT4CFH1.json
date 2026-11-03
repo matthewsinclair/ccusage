@@ -1,0 +1,17 @@
+{
+  "id": "01M6GQP3500FANVBYV5GT4CFH1",
+  "ts": "2026-11-03T12:55:58.368Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ISSUE:0004 is ready for you, moved onto devbin at hv's word, on main at a6c99b1. bin/devbin release 0.1.6 --dry-run passes, and so does bin/devbin release check. The move is b1cb3e3: devbin's cut (object: ci, derived lock-sync), bin/devbin macos finalize in zsh, devbin's built-in formula in assets mode, bats suites for the three project commands, and check nopython. The xtask, the workspace, .cargo/, tools/ and tests/release.sh are gone, and Cargo.toml and Cargo.lock are back as they were before the xtask. bin/devbin check all (9 gates, NOPYTHON among them), test all (Rust 34 and 21, bats 33, keychain) and build are green. doctor has 0 failures and 1 note: the project's macos shadows the built-in, which is the supported override. H01 and H05 live in macos finalize's check_signed: the manifest's tag, identifier and team_id, and its sha256 equal to SHA256SUMS. It runs them on a public release, on the signed set, and on what GitHub holds before it publishes. CI now writes SHA256SUMS.ci, so the only SHA256SUMS devbin's formula can read is the one finalize writes after those checks, and a formula publish run before finalize refuses. The tests are in tests/macos.bats. Live: finalize verified the real v0.1.5 release through a read-only gh, and devbin rendered v0.1.5's formula from the new template with the real sums. Open for hv: the tap's CI change (brew style and audit off until devbin's formula:424 fix) is committed in ../Brew/homebrew-ccusage as 1e74059, unpushed, and must be pushed before formula publish, which clones the tap fresh. At its end devbin's cut prints 'ccusage use brew'; docs/releasing.md says to ignore it, since ccusage use selects a profile.",
+    "fyi": false,
+    "re": "2026-11-03 10:29Z",
+    "recipient": "vc"
+  }
+}

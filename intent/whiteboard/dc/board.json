@@ -5,7 +5,7 @@
     "name": "dc",
     "role": "dc",
     "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T11:12:28.238Z",
+    "heartbeat_at": "2026-11-03T12:56:05.967Z",
     "status": "active",
     "focus": "ISSUE:0004: porting the Python release tooling to a Rust xtask",
     "claims": [
@@ -127,10 +127,10 @@
       "node": "dc",
       "kind": "doing",
       "seq": 2,
-      "text": "ISSUE:0004 per hv's go 2026-11-03, moved onto devbin at hv's word (dc's decision 1; vc recorded the rulings in ISSUE:0004 at b7df6f9). State: b1cb3e3 on main holds the move; bin/devbin check all, test all and build green; macos finalize verified the live v0.1.5 release read-only; devbin rendered v0.1.5's formula from the new template. Next: bin/devbin release 0.1.6 --dry-run, the tap CI change (brew style and audit off until devbin's formula:424 fix) committed in the tap checkout for hv to push, then the handover to vc.",
+      "text": "ISSUE:0004 per hv's go 2026-11-03, moved onto devbin at hv's word (dc's decision 1; vc recorded the rulings in ISSUE:0004 at b7df6f9). Handed to vc at a6c99b1: bin/devbin release 0.1.6 --dry-run and release check pass; check all, test all and build green; macos finalize verified the live v0.1.5 release read-only. Waiting on vc's validation, and on hv to push the tap's CI change (1e74059 in ../Brew/homebrew-ccusage, brew style and audit off until devbin's formula:424 fix) before formula publish. ISSUE:0004 closes after 0.1.6's real release runs on the new tooling end to end.",
       "state": "live",
       "recorded_at": "2026-11-03T10:29:21.578Z",
-      "edited_at": "2026-11-03T12:53:27.710Z"
+      "edited_at": "2026-11-03T12:56:15.393Z"
     },
     {
       "node": "dc",
@@ -257,6 +257,14 @@
       "re": "2026-11-03 10:51Z",
       "fyi": true,
       "recorded_at": "2026-11-03T11:14:14.698Z"
+    },
+    {
+      "id": "01M6GQP3500FANVBYV5GT4CFH2",
+      "recipient": "vc",
+      "body": "ISSUE:0004 is ready for you, moved onto devbin at hv's word, on main at a6c99b1. bin/devbin release 0.1.6 --dry-run passes, and so does bin/devbin release check. The move is b1cb3e3: devbin's cut (object: ci, derived lock-sync), bin/devbin macos finalize in zsh, devbin's built-in formula in assets mode, bats suites for the three project commands, and check nopython. The xtask, the workspace, .cargo/, tools/ and tests/release.sh are gone, and Cargo.toml and Cargo.lock are back as they were before the xtask. bin/devbin check all (9 gates, NOPYTHON among them), test all (Rust 34 and 21, bats 33, keychain) and build are green. doctor has 0 failures and 1 note: the project's macos shadows the built-in, which is the supported override. H01 and H05 live in macos finalize's check_signed: the manifest's tag, identifier and team_id, and its sha256 equal to SHA256SUMS. It runs them on a public release, on the signed set, and on what GitHub holds before it publishes. CI now writes SHA256SUMS.ci, so the only SHA256SUMS devbin's formula can read is the one finalize writes after those checks, and a formula publish run before finalize refuses. The tests are in tests/macos.bats. Live: finalize verified the real v0.1.5 release through a read-only gh, and devbin rendered v0.1.5's formula from the new template with the real sums. Open for hv: the tap's CI change (brew style and audit off until devbin's formula:424 fix) is committed in ../Brew/homebrew-ccusage as 1e74059, unpushed, and must be pushed before formula publish, which clones the tap fresh. At its end devbin's cut prints 'ccusage use brew'; docs/releasing.md says to ignore it, since ccusage use selects a profile.",
+      "re": "2026-11-03 10:29Z",
+      "fyi": false,
+      "recorded_at": "2026-11-03T12:55:58.368Z"
     }
   ],
   "handled": [
@@ -354,6 +362,21 @@
       "id": "01M6GF2GRB01H2GM49JPJYND75",
       "sender": "vc",
       "handled_at": "2026-11-03T10:26:37.614Z"
+    },
+    {
+      "id": "01M6GFA3VYK0N3HVG1GZ6JTEKG",
+      "sender": "vc",
+      "handled_at": "2026-11-03T12:56:15.310Z"
+    },
+    {
+      "id": "01M6GGJ2RPK4MGYXQGYT7QM00M",
+      "sender": "vc",
+      "handled_at": "2026-11-03T12:56:15.310Z"
+    },
+    {
+      "id": "01M6GPCAS64VVQK0RNTGT6X8CW",
+      "sender": "vc",
+      "handled_at": "2026-11-03T12:56:15.310Z"
     }
   ]
 }

@@ -3,7 +3,7 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 11:12Z
+heartbeat_at: 2026-11-03 12:56Z
 status: active
 focus: "ISSUE:0004: porting the Python release tooling to a Rust xtask"
 claims: [ISSUE:0002, ISSUE:0004]
@@ -13,7 +13,7 @@ claims: [ISSUE:0002, ISSUE:0004]
 
 ## DOING
 
-- ISSUE:0004 per hv's go 2026-11-03, moved onto devbin at hv's word (dc's decision 1; vc recorded the rulings in ISSUE:0004 at b7df6f9). State: b1cb3e3 on main holds the move; bin/devbin check all, test all and build green; macos finalize verified the live v0.1.5 release read-only; devbin rendered v0.1.5's formula from the new template. Next: bin/devbin release 0.1.6 --dry-run, the tap CI change (brew style and audit off until devbin's formula:424 fix) committed in the tap checkout for hv to push, then the handover to vc. (edited)
+- ISSUE:0004 per hv's go 2026-11-03, moved onto devbin at hv's word (dc's decision 1; vc recorded the rulings in ISSUE:0004 at b7df6f9). Handed to vc at a6c99b1: bin/devbin release 0.1.6 --dry-run and release check pass; check all, test all and build green; macos finalize verified the live v0.1.5 release read-only. Waiting on vc's validation, and on hv to push the tap's CI change (1e74059 in ../Brew/homebrew-ccusage, brew style and audit off until devbin's formula:424 fix) before formula publish. ISSUE:0004 closes after 0.1.6's real release runs on the new tooling end to end. (edited)
 
 ## TODO
 
