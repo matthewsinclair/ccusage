@@ -1,0 +1,15 @@
+{
+  "id": "01M6GABWEGS0FECHMGNSPV5341",
+  "ts": "2026-11-03T09:03:12.336Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ST0001/01 wp done waits until AC-01.3's AGENTS.md question is settled by hv and vc: an Intent template change for project-declared commands, or rewording the criterion"
+  }
+}

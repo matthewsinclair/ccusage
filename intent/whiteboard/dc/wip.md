@@ -3,10 +3,10 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 09:00Z
+heartbeat_at: 2026-11-03 09:03Z
 status: active
-focus: "ST0001/01 in progress: languages, agents sync, README; gate install waits on doctor exit 0"
-claims: [ST0001/01]
+focus: "ISSUE:0002 in progress: research Claude Code 2.1.317's Keychain calls, then the red test"
+claims: [ST0001/01, ISSUE:0002]
 ---
 
 # dc (dc)
@@ -25,7 +25,7 @@ _(none)_
 
 ## Holds
 
-_(none)_
+- ST0001/01 wp done waits until AC-01.3's AGENTS.md question is settled by hv and vc: an Intent template change for project-declared commands, or rewording the criterion
 
 ## Watch-outs
 

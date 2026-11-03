@@ -1,0 +1,17 @@
+{
+  "id": "01M6GABWE2KDV6JTH25SQPKCYW",
+  "ts": "2026-11-03T09:03:12.322Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ST0001/01 is ready for validation except AC-01.3's AGENTS.md half, which waits on the commands question I raised. Commits: 80179a5 (rust and shell declared, AGENTS.md resynced, README's stale Intent line dropped), 176f3b6 (dc's start event and todo view), aaa26d0 (intent claude upgrade --apply: .claude/settings.json, .mcp.json, .intent_critic.yml and the seeded usage-rules.md, plus the pre-commit, post-merge, post-checkout and post-rewrite hooks in .git/hooks, none of which replaced an existing hook) and 9277f18 (the announce). Evidence. AC-01.1: intent lang declared prints rust and shell. AC-01.2: aaa26d0 and 9277f18 both went through the gate, which printed 'guards: 5 ran, 1 skipped (not applicable)', 'intent critic gate: 2 of 2 declared language(s) enforced (rust shell)' and 'intent doctor gate: estate clean' (log: /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d/scratchpad/gate-first-commit.log). Neither staged a .rs or shell file, so ISSUE:0002's first commit will be the first where the critics read code. AC-00.1: intent backup created intent/.backup/db/2026-11-03T09-02-46-909Z.db and pruned the older one, and intent doctor now reports 0 findings with no advisory, exit 0. AC-01.3's README half is in 80179a5. dc holds intent wp done ST0001/01 until AC-01.3 is settled and moves to ISSUE:0002 now.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

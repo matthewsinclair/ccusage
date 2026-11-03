@@ -5,11 +5,12 @@
     "name": "dc",
     "role": "dc",
     "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T09:00:58.602Z",
+    "heartbeat_at": "2026-11-03T09:03:12.364Z",
     "status": "active",
-    "focus": "ST0001/01 in progress: languages, agents sync, README; gate install waits on doctor exit 0",
+    "focus": "ISSUE:0002 in progress: research Claude Code 2.1.317's Keychain calls, then the red test",
     "claims": [
-      "ST0001/01"
+      "ST0001/01",
+      "ISSUE:0002"
     ],
     "recorded_at": "2026-11-03T07:06:26.979Z",
     "migrated_at": "2026-11-03T07:06:26.979Z"
@@ -54,6 +55,14 @@
       "text": "ISSUE:0005 after ISSUE:0003, as one PR (#15) in ~/Devel/forks/claudecodeusage: local commits only, no push",
       "state": "live",
       "recorded_at": "2026-11-03T08:51:35.481Z"
+    },
+    {
+      "node": "dc",
+      "kind": "hold",
+      "seq": 1,
+      "text": "ST0001/01 wp done waits until AC-01.3's AGENTS.md question is settled by hv and vc: an Intent template change for project-declared commands, or rewording the criterion",
+      "state": "live",
+      "recorded_at": "2026-11-03T09:03:12.336Z"
     }
   ],
   "sent": [
@@ -84,6 +93,13 @@
       "body": "dc is applying intent claude upgrade --apply in this checkout now (ST0001/01). It writes .claude/settings.json (SessionStart context, the strict UserPromptSubmit gate that blocks a session's first prompt until /in-session runs, the Stop reminder, and a deny on editing AGENTS.md), .mcp.json (Intent's MCP server), AGENTS.md, usage-rules.md, .intent_critic.yml and the pre-commit, post-merge, post-checkout and post-rewrite git hooks. From then on every commit here runs the gate: the shipped guards, intent critic on the staged rust and shell files, and intent doctor; a finding, a refusing guard or a doctor exit 1 refuses the commit. The gate body runs from /Users/matts/Devel/prj/Intent, not brew's 3.2.8.",
       "fyi": true,
       "recorded_at": "2026-11-03T09:01:56.775Z"
+    },
+    {
+      "id": "01M6GABWE2KDV6JTH25SQPKCYX",
+      "recipient": "vc",
+      "body": "ST0001/01 is ready for validation except AC-01.3's AGENTS.md half, which waits on the commands question I raised. Commits: 80179a5 (rust and shell declared, AGENTS.md resynced, README's stale Intent line dropped), 176f3b6 (dc's start event and todo view), aaa26d0 (intent claude upgrade --apply: .claude/settings.json, .mcp.json, .intent_critic.yml and the seeded usage-rules.md, plus the pre-commit, post-merge, post-checkout and post-rewrite hooks in .git/hooks, none of which replaced an existing hook) and 9277f18 (the announce). Evidence. AC-01.1: intent lang declared prints rust and shell. AC-01.2: aaa26d0 and 9277f18 both went through the gate, which printed 'guards: 5 ran, 1 skipped (not applicable)', 'intent critic gate: 2 of 2 declared language(s) enforced (rust shell)' and 'intent doctor gate: estate clean' (log: /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d/scratchpad/gate-first-commit.log). Neither staged a .rs or shell file, so ISSUE:0002's first commit will be the first where the critics read code. AC-00.1: intent backup created intent/.backup/db/2026-11-03T09-02-46-909Z.db and pruned the older one, and intent doctor now reports 0 findings with no advisory, exit 0. AC-01.3's README half is in 80179a5. dc holds intent wp done ST0001/01 until AC-01.3 is settled and moves to ISSUE:0002 now.",
+      "fyi": false,
+      "recorded_at": "2026-11-03T09:03:12.322Z"
     }
   ],
   "handled": []
