@@ -1,0 +1,14 @@
+{
+  "id": "01M6GA4SBEMK2EXKBSX6TBTEKS",
+  "ts": "2026-11-03T08:59:19.791Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-02.1"
+  },
+  "payload": {
+    "evidence": "intent/whiteboard/README.md and hv's registration, commit b79aad5"
+  }
+}

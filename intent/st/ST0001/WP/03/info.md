@@ -9,7 +9,7 @@ status: Not Started
 
 ## Objective
 
-Once ISSUE:0002 lands, record in intent/llm/ARCHITECTURE.md why ccusage reaches Claude's Keychain items only through /usr/bin/security, the way Claude Code does, and put the matching never-rule in intent/llm/RULES.md. This satisfies AC-06.
+Once ISSUE:0002 lands, record in intent/llm/ARCHITECTURE.md why ccusage reaches Claude's Keychain items only through /usr/bin/security, the way Claude Code does, and put the matching never-rule in intent/llm/RULES.md. This satisfies AC-03.1.
 
 ## Acceptance
 

@@ -2,14 +2,14 @@
 wp_id: WP-01
 title: Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md
 scope: S
-status: Not Started
+status: WIP
 ---
 
 # WP-01: Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md
 
 ## Objective
 
-Declare rust and shell with `intent lang init rust shell`. Apply Intent's Claude canon and git gate with `intent claude upgrade --apply` (.claude/settings.json, .mcp.json, usage-rules.md, .intent_critic.yml, and the pre-commit, post-merge, post-checkout and post-rewrite hooks). Resync AGENTS.md with `intent agents sync`, drop README's "Intent integration is intentionally deferred" line, and take the first `intent backup`. This satisfies AC-01, AC-02, AC-03 and the backup half of AC-07. The gate body runs from the install pointer (/Users/matts/Devel/prj/Intent), not the brew binary, as `intent claude upgrade` reports.
+Declare rust and shell with `intent lang init rust shell`. Apply Intent's Claude canon and git gate with `intent claude upgrade --apply` (.claude/settings.json, .mcp.json, usage-rules.md, .intent_critic.yml, and the pre-commit, post-merge, post-checkout and post-rewrite hooks). Resync AGENTS.md with `intent agents sync`, drop README's "Intent integration is intentionally deferred" line, and take the first `intent backup`. This satisfies AC-01.1, AC-01.2 and AC-01.3, and the backup half of AC-00.1. The gate body runs from the install pointer (/Users/matts/Devel/prj/Intent), not the brew binary, as `intent claude upgrade` reports.
 
 ## Acceptance
 

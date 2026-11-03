@@ -1,0 +1,14 @@
+{
+  "id": "01M6GA4SBXG3678NQ8BS98K920",
+  "ts": "2026-11-03T08:59:19.806Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-02.2"
+  },
+  "payload": {
+    "evidence": "intent/wip.md, first written in commit b79aad5"
+  }
+}

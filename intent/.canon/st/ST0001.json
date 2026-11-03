@@ -14,8 +14,8 @@
       "seq": 1,
       "title": "Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md",
       "scope": "S",
-      "status": "not-started",
-      "objective": "Declare rust and shell with `intent lang init rust shell`. Apply Intent's Claude canon and git gate with `intent claude upgrade --apply` (.claude/settings.json, .mcp.json, usage-rules.md, .intent_critic.yml, and the pre-commit, post-merge, post-checkout and post-rewrite hooks). Resync AGENTS.md with `intent agents sync`, drop README's \"Intent integration is intentionally deferred\" line, and take the first `intent backup`. This satisfies AC-01, AC-02, AC-03 and the backup half of AC-07. The gate body runs from the install pointer (/Users/matts/Devel/prj/Intent), not the brew binary, as `intent claude upgrade` reports.",
+      "status": "wip",
+      "objective": "Declare rust and shell with `intent lang init rust shell`. Apply Intent's Claude canon and git gate with `intent claude upgrade --apply` (.claude/settings.json, .mcp.json, usage-rules.md, .intent_critic.yml, and the pre-commit, post-merge, post-checkout and post-rewrite hooks). Resync AGENTS.md with `intent agents sync`, drop README's \"Intent integration is intentionally deferred\" line, and take the first `intent backup`. This satisfies AC-01.1, AC-01.2 and AC-01.3, and the backup half of AC-00.1. The gate body runs from the install pointer (/Users/matts/Devel/prj/Intent), not the brew binary, as `intent claude upgrade` reports.",
       "body": "",
       "preamble": ""
     },
@@ -24,7 +24,7 @@
       "title": "Declare the whiteboard roster and seed the project records",
       "scope": "S",
       "status": "done",
-      "objective": "Declare the whiteboard roster in intent/whiteboard/README.md (hv, vc and dc, with vc the named reader of hv/inbox.*), register hv, and replace the template intent/wip.md with the current focus. This satisfies AC-04 and AC-05.",
+      "objective": "Declare the whiteboard roster in intent/whiteboard/README.md (hv, vc and dc, with vc the named reader of hv/inbox.*), register hv, and replace the template intent/wip.md with the current focus. This satisfies AC-02.1 and AC-02.2.",
       "body": "",
       "preamble": ""
     },
@@ -33,15 +33,49 @@
       "title": "Record the Keychain access decision in ARCHITECTURE.md and RULES.md",
       "scope": "S",
       "status": "not-started",
-      "objective": "Once ISSUE:0002 lands, record in intent/llm/ARCHITECTURE.md why ccusage reaches Claude's Keychain items only through /usr/bin/security, the way Claude Code does, and put the matching never-rule in intent/llm/RULES.md. This satisfies AC-06.",
+      "objective": "Once ISSUE:0002 lands, record in intent/llm/ARCHITECTURE.md why ccusage reaches Claude's Keychain items only through /usr/bin/security, the way Claude Code does, and put the matching never-rule in intent/llm/RULES.md. This satisfies AC-03.1.",
       "body": "",
       "preamble": ""
     }
   ],
   "criteria": [
     {
+      "id": "AC-00.1",
+      "text": "intent doctor reports no finding and no advisory, the stale-backup advisory included",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
       "id": "AC-01",
       "text": "intent lang declared lists rust and shell, so /in-session and the critics apply the Rust and shell rules (WP01)",
+      "kind": "non-test",
+      "state": {
+        "is": "withdrawn",
+        "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+        "by": "vc"
+      }
+    },
+    {
+      "id": "AC-01.1",
+      "text": "intent lang declared lists rust and shell, so /in-session and the critics apply the Rust and shell rules",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-01.2",
+      "text": "intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-01.3",
+      "text": "AGENTS.md is resynced from project state and names this project's real build and test commands (the cargo commands with --locked, and sh tests/release.sh, not bats), and README no longer says Intent integration is deferred",
       "kind": "non-test",
       "state": {
         "is": "unsatisfied"
@@ -52,12 +86,42 @@
       "text": "intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit (WP01)",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "withdrawn",
+        "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+        "by": "vc"
+      }
+    },
+    {
+      "id": "AC-02.1",
+      "text": "intent/whiteboard/README.md declares hv, vc and dc with their scopes and names vc as the reader of hv/inbox.*, and hv is registered",
+      "kind": "non-test",
+      "state": {
+        "is": "satisfied",
+        "evidence": "intent/whiteboard/README.md and hv's registration, commit b79aad5"
+      }
+    },
+    {
+      "id": "AC-02.2",
+      "text": "intent/wip.md carries the current focus with a verblock, not the template",
+      "kind": "non-test",
+      "state": {
+        "is": "satisfied",
+        "evidence": "intent/wip.md, first written in commit b79aad5"
       }
     },
     {
       "id": "AC-03",
       "text": "AGENTS.md is resynced from project state, and README no longer says Intent integration is deferred (WP01)",
+      "kind": "non-test",
+      "state": {
+        "is": "withdrawn",
+        "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+        "by": "vc"
+      }
+    },
+    {
+      "id": "AC-03.1",
+      "text": "intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule",
       "kind": "non-test",
       "state": {
         "is": "unsatisfied"
@@ -68,8 +132,9 @@
       "text": "intent/whiteboard/README.md declares hv, vc and dc with their scopes and names vc as the reader of hv/inbox.*, and hv is registered (WP02)",
       "kind": "non-test",
       "state": {
-        "is": "satisfied",
-        "evidence": "intent/whiteboard/README.md; intent wb status lists hv (Hypervisor, hypervisor)"
+        "is": "withdrawn",
+        "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+        "by": "vc"
       }
     },
     {
@@ -77,8 +142,9 @@
       "text": "intent/wip.md carries the current focus with a verblock, not the template (WP02)",
       "kind": "non-test",
       "state": {
-        "is": "satisfied",
-        "evidence": "intent/wip.md v0.2, 2026-11-03T07:48:41Z"
+        "is": "withdrawn",
+        "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+        "by": "vc"
       }
     },
     {
@@ -86,7 +152,9 @@
       "text": "intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule (WP03)",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "withdrawn",
+        "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+        "by": "vc"
       }
     },
     {
@@ -94,7 +162,9 @@
       "text": "intent doctor reports no finding and no advisory, the stale-backup advisory included",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "withdrawn",
+        "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+        "by": "vc"
       }
     }
   ]

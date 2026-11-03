@@ -9,7 +9,7 @@ status: Done
 
 ## Objective
 
-Declare the whiteboard roster in intent/whiteboard/README.md (hv, vc and dc, with vc the named reader of hv/inbox.*), register hv, and replace the template intent/wip.md with the current focus. This satisfies AC-04 and AC-05.
+Declare the whiteboard roster in intent/whiteboard/README.md (hv, vc and dc, with vc the named reader of hv/inbox.*), register hv, and replace the template intent/wip.md with the current focus. This satisfies AC-02.1 and AC-02.2.
 
 ## Acceptance
 

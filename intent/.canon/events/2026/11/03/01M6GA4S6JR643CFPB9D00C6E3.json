@@ -1,0 +1,14 @@
+{
+  "id": "01M6GA4S6JR643CFPB9D00C6E3",
+  "ts": "2026-11-03T08:59:19.635Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.withdraw",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-04"
+  },
+  "payload": {
+    "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks"
+  }
+}

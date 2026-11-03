@@ -13,35 +13,70 @@ title: Bring Ccusage up to Intent spec
 
 ## Acceptance Criteria
 
+### ST-level
+
+- AC-00.1 (non-test) intent doctor reports no finding and no advisory, the stale-backup advisory included -- satisfied: no
+
+### WP-01 -- Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md (status: WIP)
+
+- AC-01.1 (non-test) intent lang declared lists rust and shell, so /in-session and the critics apply the Rust and shell rules -- satisfied: no
+- AC-01.2 (non-test) intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit -- satisfied: no
+- AC-01.3 (non-test) AGENTS.md is resynced from project state and names this project's real build and test commands (the cargo commands with --locked, and sh tests/release.sh, not bats), and README no longer says Intent integration is deferred -- satisfied: no
+
+### WP-02 -- Declare the whiteboard roster and seed the project records (status: Done)
+
+- AC-02.1 (non-test) intent/whiteboard/README.md declares hv, vc and dc with their scopes and names vc as the reader of hv/inbox.*, and hv is registered -- evidence: intent/whiteboard/README.md and hv's registration, commit b79aad5 -- satisfied: yes
+- AC-02.2 (non-test) intent/wip.md carries the current focus with a verblock, not the template -- evidence: intent/wip.md, first written in commit b79aad5 -- satisfied: yes
+
+### WP-03 -- Record the Keychain access decision in ARCHITECTURE.md and RULES.md (status: Not Started)
+
+- AC-03.1 (non-test) intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule -- satisfied: no
+
 ### Group AC-01
 
-- AC-01 (non-test) intent lang declared lists rust and shell, so /in-session and the critics apply the Rust and shell rules (WP01) -- satisfied: no
+- AC-01 (non-test) intent lang declared lists rust and shell, so /in-session and the critics apply the Rust and shell rules (WP01) -- WITHDRAWN: renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks (by vc)
 
 ### Group AC-02
 
-- AC-02 (non-test) intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit (WP01) -- satisfied: no
+- AC-02 (non-test) intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit (WP01) -- WITHDRAWN: renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks (by vc)
 
 ### Group AC-03
 
-- AC-03 (non-test) AGENTS.md is resynced from project state, and README no longer says Intent integration is deferred (WP01) -- satisfied: no
+- AC-03 (non-test) AGENTS.md is resynced from project state, and README no longer says Intent integration is deferred (WP01) -- WITHDRAWN: renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks (by vc)
 
 ### Group AC-04
 
-- AC-04 (non-test) intent/whiteboard/README.md declares hv, vc and dc with their scopes and names vc as the reader of hv/inbox.*, and hv is registered (WP02) -- evidence: intent/whiteboard/README.md; intent wb status lists hv (Hypervisor, hypervisor) -- satisfied: yes
+- AC-04 (non-test) intent/whiteboard/README.md declares hv, vc and dc with their scopes and names vc as the reader of hv/inbox.*, and hv is registered (WP02) -- WITHDRAWN: renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks (by vc)
 
 ### Group AC-05
 
-- AC-05 (non-test) intent/wip.md carries the current focus with a verblock, not the template (WP02) -- evidence: intent/wip.md v0.2, 2026-11-03T07:48:41Z -- satisfied: yes
+- AC-05 (non-test) intent/wip.md carries the current focus with a verblock, not the template (WP02) -- WITHDRAWN: renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks (by vc)
 
 ### Group AC-06
 
-- AC-06 (non-test) intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule (WP03) -- satisfied: no
+- AC-06 (non-test) intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule (WP03) -- WITHDRAWN: renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks (by vc)
 
 ### Group AC-07
 
-- AC-07 (non-test) intent doctor reports no finding and no advisory, the stale-backup advisory included -- satisfied: no
+- AC-07 (non-test) intent doctor reports no finding and no advisory, the stale-backup advisory included -- WITHDRAWN: renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks (by vc)
 
 ## Acceptance Tests
+
+### ST-level
+
+_(no tests in this group)_
+
+### WP-01 -- Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md (status: WIP)
+
+_(no tests in this group)_
+
+### WP-02 -- Declare the whiteboard roster and seed the project records (status: Done)
+
+_(no tests in this group)_
+
+### WP-03 -- Record the Keychain access decision in ARCHITECTURE.md and RULES.md (status: Not Started)
+
+_(no tests in this group)_
 
 ### Group AC-01
 
