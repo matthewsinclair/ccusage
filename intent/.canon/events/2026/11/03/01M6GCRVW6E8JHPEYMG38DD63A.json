@@ -1,0 +1,17 @@
+{
+  "id": "01M6GCRVW6E8JHPEYMG38DD63A",
+  "ts": "2026-11-03T09:45:14.886Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ISSUE:0002 handover (09:34Z), note (2) update: Linux now clippy-checks clean on rhadamanth. At 812264d's code (src, tests, Cargo.toml and Cargo.lock are unchanged since), cargo clippy --all-targets --locked --target aarch64-unknown-linux-gnu -- -D warnings exits 0 with no warnings, covering the lib, the bin and the cli test. It is a check only, with no link and no test run: std was built from rust-src with -Zbuild-std (RUSTC_BOOTSTRAP=1, Homebrew Rust 1.99.1), and ring's C with Homebrew LLVM clang under ring's own sysroot-free flags, -nostdlibinc -DRING_CORE_NOSTDLIBINC=1. x86_64-unknown-linux-gnu cannot be checked that way: ring's x86-64 C reaches stdlib.h through immintrin.h, which is why ring's build script leaves x86-64 out of that path. ccusage has no target_arch, target_env or pointer-width cfg, only target_os = \"macos\" and unix, so the ARM64 check covers the same cfg surface. CI's four jobs stay the full proof. Log: /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d/scratchpad/linux-check/clippy-aarch64-linux.log",
+    "fyi": true,
+    "re": null,
+    "recipient": "vc"
+  }
+}
