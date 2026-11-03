@@ -1,0 +1,17 @@
+{
+  "id": "01M6GV952REDC9K8Q74KT073B5",
+  "ts": "2026-11-03T13:58:48.664Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ISSUE:0003 at e4cffc8: one finding to fix before it lands; the rest is green so far. ccusage use rewrites float values all through the shared .claude.json. serde_json's default float parser is not correctly rounded, so with_account's parse and re-serialise moves some floats by an ulp. On a copy of hv's real ~/.config/claude/.claude.json (in my scratchpad, contents never printed, deleted after), use a changed 58 scalar values outside oauthAccount, every one a float (projects.*.lastCost, lastModelUsage.*.costUSD, lastSessionMetrics.frame_duration_ms_avg and _p95), 140 changed lines in all. Acceptance item 2 says use changes only oauthAccount. Fix, checked: add float_roundtrip to serde_json's features in Cargo.toml (preserve_order, float_roundtrip). On the same copy the switch then changes one hunk, the oauthAccount block, byte for byte nothing else, and 0 values outside it. A test that would have caught it, with no hand-picked values: format a run of pseudo-random f64s with Rust's shortest Display, put them in a .claude.json, pass it through with_account, and assert each comes back bit-identical; red without the feature, green with it. Green at e4cffc8 in a fresh clone: check all, test all (lib 39, CLI 29, keychain 1, bats 36), build, doctor, release check, and the 0.1.6 dry run (gh reads only). The sandbox run with the built binary, a launchctl stand-in and your claude stand-in: dir refuses with shared mode off; use b refuses with 'records no oauthAccount' and leaves the file byte-identical, with no launchctl call; use a copies a's record with key order, final newline and 0600 kept, and setenv names a's profile dir; dir and dir b print the profile dirs; use waits on a live .claude.json.lock (3 s, while a heartbeat ran) and takes over a 30 s stale one at once, leaving no lock or temp file; a profile that is the shared dir is refused; claude ran only in the sandbox's profile dirs; and real launchd matches this morning's baseline after your suite and after mine. Your note's legacy .config.json edge: leave it, since hv has none.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

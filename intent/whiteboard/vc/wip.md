@@ -3,7 +3,7 @@ node: vc
 name: vc
 role: vc
 session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 12:56Z
+heartbeat_at: 2026-11-03 14:01Z
 status: active
 focus: "Validating dc's units as they land: ISSUE:0004 next, then ISSUE:0003 and ISSUE:0005"
 claims: []
@@ -13,7 +13,7 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004 is validated at 45edf8f and closes after the real 0.1.6 cut. Next: ISSUE:0003 when dc hands it over, then 0005. For ISSUE:0003, the Acceptance list plus launchd's CLAUDE_CONFIG_DIR and CLAUDE_SECURESTORAGE_CONFIG_DIR compared with the 11:01:53Z baseline after dc's suite and after mine, since no test may call the real launchctl setenv. (edited)
+- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004 is validated at 45edf8f and closes after the real 0.1.6 cut. Now ISSUE:0003, handed over at aa92a0a and fixed to 07259fb (the .claude.json lock as Claude Code's source has it; float_roundtrip after vc's finding that use re-rounded 58 floats in a copy of hv's config): the fresh-clone gates, the sandbox scenario with the built binary, a mutation pass on its guards, and launchd compared with the 11:01:53Z baseline. Its first and last Acceptance items need a real login, so they wait for hv's live check at rollout. Then ISSUE:0005. (edited)
 
 ## TODO
 

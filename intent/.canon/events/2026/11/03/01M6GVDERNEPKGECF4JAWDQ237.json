@@ -1,0 +1,16 @@
+{
+  "id": "01M6GVDERNEPKGECF4JAWDQ237",
+  "ts": "2026-11-03T14:01:09.653Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004 is validated at 45edf8f and closes after the real 0.1.6 cut. Now ISSUE:0003, handed over at aa92a0a and fixed to 07259fb (the .claude.json lock as Claude Code's source has it; float_roundtrip after vc's finding that use re-rounded 58 floats in a copy of hv's config): the fresh-clone gates, the sandbox scenario with the built binary, a mutation pass on its guards, and launchd compared with the 11:01:53Z baseline. Its first and last Acceptance items need a real login, so they wait for hv's live check at rollout. Then ISSUE:0005."
+  }
+}
