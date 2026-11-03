@@ -102,6 +102,20 @@ impl Drop for Sandbox {
   }
 }
 
+/// The account names a JSON usage report covers, in report order.
+fn names(reports: &serde_json::Value) -> Result<Vec<&str>> {
+  reports
+    .as_array()
+    .ok_or("expected a JSON report array")?
+    .iter()
+    .map(|report| {
+      report["name"]
+        .as_str()
+        .ok_or_else(|| "report without a name".into())
+    })
+    .collect()
+}
+
 #[test]
 fn xdg_paths_and_no_overwrite() -> Result<()> {
   let sandbox = Sandbox::new()?;
@@ -205,7 +219,7 @@ fn all_accounts_continue_after_one_fails_and_directory_change_invalidates_cache(
   let output = sandbox.run(&["usage", "--all", "--json"])?;
   assert!(!output.status.success());
   let report: serde_json::Value = serde_json::from_slice(&output.stdout)?;
-  assert_eq!(report.as_array().map(Vec::len), Some(2));
+  assert_eq!(names(&report)?, ["personal", "work"]);
   assert!(report[0]["error"].is_string());
   assert!(report[1]["snapshot"].is_object());
   fs::write(
@@ -330,9 +344,11 @@ fn verbose_shows_formatted_details_without_json_or_diagnostics() -> Result<()> {
   let default = sandbox.ok(&["usage", "work"])?;
   assert!(default.contains("Fable"));
   assert!(!default.contains("WEEKLY BREAKDOWN"));
+  sandbox.ok(&["use", "work"])?;
   for args in [
     vec!["--verbose", "usage", "work"],
     vec!["usage", "work", "--verbose"],
+    vec!["--verbose"],
   ] {
     let output = sandbox.run(&args)?;
     assert!(output.status.success());
@@ -346,6 +362,99 @@ fn verbose_shows_formatted_details_without_json_or_diagnostics() -> Result<()> {
     assert!(!text.contains('{'));
     assert!(!text.contains("\"utilization\""));
   }
+  Ok(())
+}
+
+#[test]
+fn bare_ccusage_and_leading_usage_flags_report_as_usage_does() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  sandbox.ok(&["add", "personal"])?;
+  sandbox.cached("work", ccusage::now(), 0)?;
+  sandbox.ok(&["use", "work"])?;
+  for (bare, explicit) in [
+    (vec!["--json"], vec!["usage", "--json"]),
+    (vec!["--all", "--json"], vec!["usage", "--all", "--json"]),
+  ] {
+    let (bare, explicit) = (sandbox.run(&bare)?, sandbox.run(&explicit)?);
+    assert_eq!(bare.status.code(), explicit.status.code());
+    assert_eq!(bare.stdout, explicit.stdout);
+    assert_eq!(bare.stderr, explicit.stderr);
+  }
+  let active: serde_json::Value = serde_json::from_str(&sandbox.ok(&["--json"])?)?;
+  assert_eq!(names(&active)?, ["work"]);
+  assert_eq!(active[0]["snapshot"]["five_hour"]["utilization"], 62);
+  let all = sandbox.run(&["--all", "--json"])?;
+  assert_eq!(
+    names(&serde_json::from_slice(&all.stdout)?)?,
+    ["personal", "work"]
+  );
+  Ok(())
+}
+
+#[test]
+fn help_comes_only_from_help_and_dash_dash_help() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let help = sandbox.ok(&["help"])?;
+  assert_eq!(sandbox.ok(&["--help"])?, help);
+  let synopsis = help
+    .lines()
+    .find(|line| line.starts_with("Usage:"))
+    .ok_or("help has no Usage: line")?;
+  let first_run = sandbox.run(&[])?;
+  assert!(!first_run.status.success());
+  assert!(first_run.stdout.is_empty());
+  sandbox.setup()?;
+  sandbox.cached("work", ccusage::now(), 0)?;
+  sandbox.ok(&["use", "work"])?;
+  let bare = sandbox.ok(&[])?;
+  assert!(!bare.contains(synopsis));
+  assert!(bare.contains("62%"));
+  Ok(())
+}
+
+#[test]
+fn bare_ccusage_without_config_gives_init_hint_and_help_pointer() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let config = sandbox.root.join("config/ccusage/config.toml");
+  let expected = format!(
+    "ccusage: no config at {}; run ccusage init, or see ccusage help\n",
+    config.display()
+  );
+  for args in [vec![], vec!["--all", "--json"]] {
+    let output = sandbox.run(&args)?;
+    assert!(!output.status.success(), "{args:?}");
+    assert!(output.stdout.is_empty(), "{args:?}");
+    assert_eq!(String::from_utf8(output.stderr)?, expected, "{args:?}");
+  }
+  assert!(!sandbox.root.join("config").exists());
+  Ok(())
+}
+
+#[test]
+fn unknown_commands_and_options_fail_as_before() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let config = sandbox.root.join("config/ccusage/config.toml");
+  let no_config = format!(
+    "ccusage: no config at {}; run ccusage init\n",
+    config.display()
+  );
+  let unknown_option = "ccusage: unknown option: --bogus\n";
+  let failure = |args: &[&str]| -> Result<String> {
+    let output = sandbox.run(args)?;
+    assert!(!output.status.success(), "{args:?}");
+    assert!(output.stdout.is_empty(), "{args:?}");
+    Ok(String::from_utf8(output.stderr)?)
+  };
+  assert_eq!(failure(&["bogus"])?, no_config);
+  assert_eq!(failure(&["--bogus"])?, unknown_option);
+  assert_eq!(failure(&["--no-color", "--bogus"])?, unknown_option);
+  sandbox.setup()?;
+  assert_eq!(
+    failure(&["bogus"])?,
+    "ccusage: unknown command: bogus; see ccusage help\n"
+  );
+  assert_eq!(failure(&["--bogus"])?, unknown_option);
   Ok(())
 }
 

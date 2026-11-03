@@ -120,14 +120,15 @@ New directories use mode `0700` and Ccusage files use `0600` on Unix. Existing d
 ## Usage and dashboard
 
 ```sh
+ccusage
+ccusage --all
+ccusage --all --json
 ccusage usage work
-ccusage usage --all
-ccusage usage --all --json
 ccusage usage work --refresh
 ccusage tui
 ```
 
-`usage` without a name queries the selected account. Every successful fetch is persisted with its retrieval timestamp. Cached results are reused for five minutes. `--refresh` bypasses that freshness cache, but respects an active rate-limit cooldown. A failed request keeps the last successful data indefinitely and displays `as of TIMESTAMP`, its age, and the error. A reset countdown reaching `due` does not imply the stored percentage has refreshed. A successful newer fetch replaces the old data. Login and logout invalidate that profile's cache to avoid displaying usage from an earlier login.
+`ccusage` with no command runs `usage`, and `--all`, `--json` or `--refresh` may take the command's place, so `ccusage --all --json` is `ccusage usage --all --json`. `usage` without a name, like bare `ccusage`, queries the selected account. `ccusage help` and `ccusage --help` print the help. Every successful fetch is persisted with its retrieval timestamp. Cached results are reused for five minutes. `--refresh` bypasses that freshness cache, but respects an active rate-limit cooldown. A failed request keeps the last successful data indefinitely and displays `as of TIMESTAMP`, its age, and the error. A reset countdown reaching `due` does not imply the stored percentage has refreshed. A successful newer fetch replaces the old data. Login and logout invalidate that profile's cache to avoid displaying usage from an earlier login.
 
 The undocumented `GET https://api.anthropic.com/api/oauth/usage` endpoint reports subscription percentages and reset times. This integration may need updating when Anthropic changes its API. It performs no model inference. It uses HTTPS with certificate verification, rejects redirects, has a 15-second request timeout, and limits response size. HTTP 429 responses persist a cooldown of at least 30 minutes, extended by a longer numeric `Retry-After`. No retry loop runs automatically.
 

@@ -29,6 +29,22 @@ pub struct Store {
   pub config: Config,
 }
 
+/// No config file exists yet; `ccusage init` creates one.
+#[derive(Debug)]
+pub struct NoConfig(PathBuf);
+
+impl std::fmt::Display for NoConfig {
+  fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    write!(
+      formatter,
+      "no config at {}; run ccusage init",
+      self.0.display()
+    )
+  }
+}
+
+impl std::error::Error for NoConfig {}
+
 pub fn valid_name(name: &str) -> bool {
   !name.is_empty()
     && name.len() <= 64
@@ -98,8 +114,7 @@ pub fn absolute(path: &Path) -> Result<PathBuf> {
 impl Store {
   pub fn load(path: PathBuf) -> Result<Self> {
     let path = absolute(&path)?;
-    let bytes = storage::read_optional(&path)?
-      .ok_or_else(|| format!("no config at {}; run ccusage init", path.display()))?;
+    let bytes = storage::read_optional(&path)?.ok_or_else(|| NoConfig(path.clone()))?;
     // Decoder diagnostics may quote a misplaced secret from the source text.
     let config: Config = toml::from_str(std::str::from_utf8(&bytes)?)
       .map_err(|_| "invalid Ccusage config; check TOML syntax and supported profile fields (contents redacted)")?;

@@ -8,8 +8,10 @@ use std::path::PathBuf;
 
 const HELP: &str = "Ccusage — named Claude Code accounts and plan usage
 
-Usage: ccusage [--config PATH] [--no-color] [--verbose] COMMAND
+Usage: ccusage [--config PATH] [--no-color] [--verbose] [COMMAND]
 
+  (no command) [--all] [--json] [--refresh]
+                               Show plan usage; same as ccusage usage
   init                         Create an empty XDG config (never overwrite)
   add NAME [--email EMAIL] [--dir PATH]
                                Register a profile; optionally use an existing Claude directory
@@ -31,6 +33,9 @@ Config: $XDG_CONFIG_HOME/ccusage/config.toml (default ~/.config/ccusage/config.t
 Overrides: CCUSAGE_CONFIG or --config PATH. Also honors XDG_DATA_HOME,
 XDG_STATE_HOME, XDG_CACHE_HOME and NO_COLOR. Usage is cached for five minutes.
 The usage endpoint is undocumented and may change. No model inference is made.";
+
+/// Usage flags that may stand where the command would, which then runs usage.
+const USAGE_FLAGS: &[&str] = &["--all", "--json", "--refresh"];
 
 fn argument(args: &mut Vec<String>, flag: &str) -> Result<Option<String>> {
   if let Some(index) = args.iter().position(|arg| arg == flag) {
@@ -94,14 +99,19 @@ pub fn run(mut args: Vec<String>) -> Result<()> {
         println!("ccusage {}", env!("CARGO_PKG_VERSION"));
         return Ok(());
       }
+      flag if USAGE_FLAGS.contains(&flag) => break,
       _ => return Err(format!("unknown option: {}", args[0]).into()),
     }
   }
-  if args.is_empty() {
-    println!("{HELP}");
-    return Ok(());
-  }
-  let command = args.remove(0);
+  // No command, or a usage flag in its place, runs usage on the rest of the line.
+  let implied = args
+    .first()
+    .is_none_or(|arg| USAGE_FLAGS.contains(&arg.as_str()));
+  let command = if implied {
+    "usage".to_owned()
+  } else {
+    args.remove(0)
+  };
   if verbose && command != "usage" {
     return Err(
       "--verbose is available for usage commands; try ccusage usage --all --verbose".into(),
@@ -169,7 +179,13 @@ pub fn run(mut args: Vec<String>) -> Result<()> {
     }
     return Ok(());
   }
-  let mut store = Store::load(path)?;
+  let mut store = match Store::load(path) {
+    // Bare ccusage is where a first run starts, so it also points to the help.
+    Err(error) if implied && error.is::<config::NoConfig>() => {
+      return Err(format!("{error}, or see ccusage help").into());
+    }
+    loaded => loaded?,
+  };
   match command.as_str() {
     "add" => {
       let email = argument(&mut args, "--email")?;
