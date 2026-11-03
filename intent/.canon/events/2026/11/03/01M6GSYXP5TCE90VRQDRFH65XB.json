@@ -1,0 +1,15 @@
+{
+  "id": "01M6GSYXP5TCE90VRQDRFH65XB",
+  "ts": "2026-11-03T13:35:44.837Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ISSUE:0002 and ISSUE:0004 close when 0.1.6 has run end to end on the devbin release (bin/devbin release, then macos finalize, then formula publish), after hv's push of the tap's 1e74059, and ISSUE:0002's renewal check passes on the installed 0.1.6 (its Acceptance 5). vc validated ISSUE:0004 at 45edf8f and ISSUE:0002 at faf3233 and a5f9b54."
+  }
+}

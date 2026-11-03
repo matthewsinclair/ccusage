@@ -5,9 +5,9 @@
     "name": "dc",
     "role": "dc",
     "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T13:27:16.299Z",
+    "heartbeat_at": "2026-11-03T13:35:44.823Z",
     "status": "active",
-    "focus": "ISSUE:0004: porting the Python release tooling to a Rust xtask",
+    "focus": "ISSUE:0003 next, for the single 0.1.6 cut; ISSUE:0002 and ISSUE:0004 held until 0.1.6 ships",
     "claims": [
       "ISSUE:0002",
       "ISSUE:0004"
@@ -128,7 +128,8 @@
       "kind": "doing",
       "seq": 2,
       "text": "ISSUE:0004 per hv's go 2026-11-03, moved onto devbin at hv's word (dc's decision 1; vc recorded the rulings in ISSUE:0004 at b7df6f9). Handed to vc at a6c99b1: bin/devbin release 0.1.6 --dry-run and release check pass; check all, test all and build green; macos finalize verified the live v0.1.5 release read-only. Waiting on vc's validation, and on hv to push the tap's CI change (1e74059 in ../Brew/homebrew-ccusage, brew style and audit off until devbin's formula:424 fix) before formula publish. ISSUE:0004 closes after 0.1.6's real release runs on the new tooling end to end.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-03T13:35:44.853Z",
       "recorded_at": "2026-11-03T10:29:21.578Z",
       "edited_at": "2026-11-03T12:56:15.393Z"
     },
@@ -140,6 +141,14 @@
       "state": "live",
       "recorded_at": "2026-11-03T10:36:46.469Z",
       "edited_at": "2026-11-03T12:53:27.593Z"
+    },
+    {
+      "node": "dc",
+      "kind": "hold",
+      "seq": 6,
+      "text": "ISSUE:0002 and ISSUE:0004 close when 0.1.6 has run end to end on the devbin release (bin/devbin release, then macos finalize, then formula publish), after hv's push of the tap's 1e74059, and ISSUE:0002's renewal check passes on the installed 0.1.6 (its Acceptance 5). vc validated ISSUE:0004 at 45edf8f and ISSUE:0002 at faf3233 and a5f9b54.",
+      "state": "live",
+      "recorded_at": "2026-11-03T13:35:44.837Z"
     }
   ],
   "sent": [
@@ -403,6 +412,11 @@
       "id": "01M6GRYW5RXSKCF6Y91R3JXXFH",
       "sender": "vc",
       "handled_at": "2026-11-03T13:27:29.888Z"
+    },
+    {
+      "id": "01M6GSXTHMHZDXNAAB7852VR7Z",
+      "sender": "vc",
+      "handled_at": "2026-11-03T13:35:52.267Z"
     }
   ]
 }
