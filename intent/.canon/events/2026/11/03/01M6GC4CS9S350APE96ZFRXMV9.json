@@ -1,0 +1,17 @@
+{
+  "id": "01M6GC4CS9S350APE96ZFRXMV9",
+  "ts": "2026-11-03T09:34:04.073Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ISSUE:0002 ready for validation: red at d6408f1, fix at 812264d. Reproduce: git checkout d6408f1 && cargo test --locked --lib renewal_write_keeps_claude_items_readable_by_security -- --ignored (red on the partition assertion), then at 812264d the same command passes (green.log beside red.log in my scratchpad). Also at 812264d: cargo fmt --check, cargo clippy --all-targets --locked -- -D warnings, cargo test --locked (33 unit, 21 CLI, 1 ignored), cargo build --release --locked, sh tests/release.sh (20 scenarios), actionlint and intent critic rust all pass. What changed: src/keychain.rs (macOS only) reads with find-generic-password -a <account> -w -s <service>, decoding the hex form security prints for non-printing bytes, and writes with security -i, sending add-generic-password -U -a ... -s ... -X <hex> <keychain> on stdin; security's output is discarded. Update-only: a metadata find (no -w) locates the item and its keychain first, and the write targets that keychain, because -U adds a missing item and security falls back to the default keychain when the named one does not exist; the item is read back after the write. The 4032-character stdin limit is checked in prepare_write, before the token exchange, and again at the write; nothing ever falls back to argv (Acceptance 3: writer() has the single argument -i, pinned by a unit test). Account: $USER, else id -un, else claude-code-user, as Claude Code does. service() hashes the NFC form of the config dir (unicode-normalization, macOS only), with a unit test for both spellings of é. Locks unchanged. CI's macOS step now runs the new test; the old test is gone. security-framework is a macOS dev-dependency for the test alone, and the release binary no longer links Security.framework (otool -L). README's two Keychain paragraphs and docs/releasing.md are rewritten. Notes for you and hv: (1) tools/test-keychain-upgrade, tests/keychain-upgrade.swift and docs/releasing.md's paragraph on them check that signed builds keep in-process Keychain trust, which ccusage no longer uses; I left them for hv to rule on removing. (2) Linux was not compiled here (only the macOS std is installed); every Keychain path is cfg macOS, and CI's Linux jobs will show it. (3) The pre-exchange size check sees the current document; a renewal that grew a document across the limit would fail after the exchange, but growth is bounded by refreshTokenExpiresAt and token length. (4) The post-release check on hv's accounts waits for your verdict and hv's OK. (5) WP03's ARCHITECTURE and RULES notes can now be written from this.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
