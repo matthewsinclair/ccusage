@@ -55,8 +55,6 @@ jobs:
       - run: cargo fmt --check
       - name: Release helper integration tests
         run: sh tests/release.sh
-      - name: Signing pipeline regression tests
-        run: python3 -m unittest discover -s tests -p 'signing_test.py'
       - run: cargo clippy --workspace --all-targets --locked --target "${{ matrix.target }}" -- -D warnings
       - run: cargo test --workspace --locked --no-fail-fast --target "${{ matrix.target }}"
       - name: Native Keychain renewal storage test

@@ -201,13 +201,14 @@ mod tests {
   }
 
   #[test]
-  fn manifests_read_as_the_python_tooling_wrote_them() -> Result<()> {
+  fn manifests_keep_the_format_published_releases_carry() -> Result<()> {
     let tag = fixture_tag()?;
     let (_, manifest) = release(&tag);
     let work = tempfile::tempdir()?;
     manifest.write(work.path())?;
     assert_eq!(Manifest::read(work.path())?, manifest);
-    // json.dumps(manifest, indent=2) plus a newline, as tools/sign-macos wrote it.
+    // The layout v0.1.4 and v0.1.5 were published with, by the tooling the xtask
+    // replaced: two-space indents, these keys in this order, and a final newline.
     let arm = format!("ccusage-{tag}-aarch64-apple-darwin.tar.gz");
     let intel = format!("ccusage-{tag}-x86_64-apple-darwin.tar.gz");
     let sha = |name: &str| {

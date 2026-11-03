@@ -1,5 +1,6 @@
 #!/bin/sh
-# Real local Git pushes; mocked GitHub/Cargo validation. No external publication.
+# Real local Git pushes. GitHub, bin/devbin and Mac signing are mocked; cargo xtask's
+# other commands run for real, from this repository. No external publication.
 set -eu
 root=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 real_cargo=$(command -v cargo)
@@ -25,22 +26,18 @@ setup() {
   tap=$case_dir/homebrew-ccusage
   source_remote=$case_dir/source.git
   tap_remote=$case_dir/tap.git
-  mkdir -p "$source/tools" "$source/src" "$source/tests" "$source/.github/workflows" \
-    "$source/packaging/homebrew" "$tap" "$case_dir/bin" "$sandbox/empty-hooks"
+  mkdir -p "$source/tools" "$source/src" "$source/bin" "$source/packaging/homebrew" \
+    "$tap" "$case_dir/bin" "$sandbox/empty-hooks"
   cp "$root/tools/release" "$root/tools/formula" "$source/tools/"
   cp "$root/packaging/homebrew/ccusage.rb" "$source/packaging/homebrew/"
-  cat > "$source/tools/finalize-release" <<'MOCK'
+  cat > "$source/bin/devbin" <<'MOCK'
 #!/bin/sh
 set -eu
-echo "finalize-release $*" >> "$FIXTURE_LOG"
-[ "${FAIL_SIGNING:-}" != yes ]
+echo "devbin $*" >> "$FIXTURE_LOG"
+[ "${FAIL_DEVBIN:-}" != "$1" ]
 MOCK
-  chmod +x "$source/tools/finalize-release"
-
-  printf 'exit 0\n' > "$source/tests/release.sh"
-  printf 'import unittest\nclass Fixture(unittest.TestCase):\n    def test_validation(self): pass\n' > "$source/tests/signing_test.py"
-  printf 'name: fixture\n' > "$source/.github/workflows/build.yml"
-  printf '/target/\n__pycache__/\n' > "$source/.gitignore"
+  chmod +x "$source/bin/devbin"
+  printf '/target/\n' > "$source/.gitignore"
   cat > "$source/Cargo.toml" <<'TOML'
 [package]
 name = "ccusage"
@@ -71,9 +68,13 @@ TOML
 #!/bin/sh
 set -eu
 echo "cargo $*" >> "$FIXTURE_LOG"
-if [ "$1" = update ]; then exec "$REAL_CARGO" "$@"; fi
-if [ "${FAIL_CARGO:-}" = "$1" ]; then exit 7; fi
-exit 0
+case "$1 ${2:-}" in
+  'update '*) exec "$REAL_CARGO" "$@" ;;
+  # Signing needs the maintainer's Developer ID, so finalizing is faked.
+  'xtask finalize-release') [ "${FAIL_SIGNING:-}" != yes ] ;;
+  'xtask '*) cd "$REAL_ROOT" && exec "$REAL_CARGO" "$@" ;;
+  *) echo "Unexpected cargo invocation" >&2; exit 2 ;;
+esac
 MOCK
   cat > "$case_dir/bin/gh" <<'MOCK'
 #!/bin/sh
@@ -99,19 +100,23 @@ case "$1 $2" in
       shift
     done
     mkdir -p "$directory"
-    python3 - "$directory" "$tag" <<'PYCODE'
-import json, pathlib, sys
-root, tag = pathlib.Path(sys.argv[1]), sys.argv[2]
-archives = {}
-lines = []
-for target in ['aarch64-apple-darwin', 'x86_64-apple-darwin']:
-    name = f'ccusage-{tag}-{target}.tar.gz'
-    digest = 'a' * 64
-    archives[name] = {'sha256': digest}
-    lines.append(f'{digest}  {name}\n')
-(root / 'SHA256SUMS').write_text(''.join(lines))
-(root / 'MACOS-SIGNING.json').write_text(json.dumps({'tag':tag, 'identifier':'com.geodica.ccusage', 'team_id':'76BQL8L47U', 'archives':archives}))
-PYCODE
+    # A published release's checksums and signing manifest. Each archive's digest is
+    # its position, zero-padded to SHA-256's 64 hex digits.
+    : > "$directory/SHA256SUMS"
+    archives=
+    index=0
+    for target in aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu; do
+      index=$((index + 1))
+      digest=$(printf '%064d' "$index")
+      name=ccusage-$tag-$target.tar.gz
+      printf '%s  %s\n' "$digest" "$name" >> "$directory/SHA256SUMS"
+      case "$target" in
+        *-apple-darwin)
+          archives="$archives${archives:+,}\"$name\":{\"requirement\":\"designated => fixture\",\"notarized\":false,\"sha256\":\"$digest\"}" ;;
+      esac
+    done
+    printf '{"tag":"%s","identifier":"com.geodica.ccusage","team_id":"76BQL8L47U","archives":{%s}}\n' \
+      "$tag" "$archives" > "$directory/MACOS-SIGNING.json"
     ;;
   'release view')
     case "$*" in
@@ -126,15 +131,14 @@ PYCODE
   *) echo "Unexpected gh invocation" >&2; exit 2 ;;
 esac
 MOCK
-  printf '#!/bin/sh\nexit 0\n' > "$case_dir/bin/actionlint"
-  cp "$case_dir/bin/actionlint" "$case_dir/bin/shellcheck"
   chmod +x "$case_dir/bin/"* "$source/tools/"*
   FIXTURE_SOURCE=$source
   FIXTURE_LOG=$case_dir/events
   REAL_CARGO=$real_cargo
+  REAL_ROOT=$root
   PATH=$case_dir/bin:$original_path
-  export FIXTURE_SOURCE FIXTURE_LOG REAL_CARGO PATH
-  unset STILL_DRAFT FAIL_SIGNING FAIL_CARGO FAIL_CI FAIL_TAP_CI MISSING_CHECKSUM CCUSAGE_REMOTE CCUSAGE_TAP
+  export FIXTURE_SOURCE FIXTURE_LOG REAL_CARGO REAL_ROOT PATH
+  unset STILL_DRAFT FAIL_SIGNING FAIL_DEVBIN FAIL_CI FAIL_TAP_CI MISSING_CHECKSUM CCUSAGE_REMOTE CCUSAGE_TAP
 }
 
 release() { sh "$source/tools/release" "$@" --tap "$tap" > "$case_dir/output" 2>&1; }
@@ -175,8 +179,14 @@ assert_contains "$tap/Formula/ccusage.rb" "$release_commit"
 assert_contains "$tap/Formula/ccusage.rb" 'v0.1.1'
 [ "$(git --git-dir="$tap_remote" rev-parse main)" = "$(git -C "$tap" rev-parse HEAD)" ] || fail 'tap not pushed'
 [ -z "$(git -C "$source" status --porcelain)" ] || fail 'release left source dirty'
-assert_contains "$FIXTURE_LOG" 'cargo clippy --all-targets --locked -- -D warnings'
+[ "$(grep '^devbin ' "$FIXTURE_LOG")" = "$(printf 'devbin check all\ndevbin test all\ndevbin build')" ] ||
+  fail 'validation is not bin/devbin check all, test all and build'
 assert_contains "$FIXTURE_LOG" 'gh run watch 123'
+# The gh mock's digests are each archive's position: Apple silicon first, then Intel.
+arm_pin=$(sed -n '/aarch64-apple-darwin\.tar\.gz"$/{n;p;}' "$tap/Formula/ccusage.rb")
+intel_pin=$(sed -n '/x86_64-apple-darwin\.tar\.gz"$/{n;p;}' "$tap/Formula/ccusage.rb")
+[ "$arm_pin" = "      sha256 \"$(printf '%064d' 1)\"" ] || fail "Apple silicon pin: $arm_pin"
+[ "$intel_pin" = "      sha256 \"$(printf '%064d' 2)\"" ] || fail "Intel pin: $intel_pin"
 echo 'ok: version bump, annotated tag, release wait, and pinned tap publication'
 
 setup
@@ -201,14 +211,16 @@ release --resume 0.1.1 || { cat "$case_dir/output"; fail 'resume after CI'; }
 [ "$(git -C "$source" rev-parse HEAD)" = "$release_commit" ] || fail 'resume created another source commit'
 echo 'ok: CI failure blocks the tap; resume preserves the release commit'
 
-setup
-FAIL_CARGO=clippy
-export FAIL_CARGO
-if release 0.1.1; then fail 'failed local validation accepted'; fi
-no_tag
-[ "$(git -C "$source" rev-parse HEAD)" = "$initial_source" ] || fail 'commit despite failed validation'
-assert_contains "$case_dir/output" 'stopped during validation'
-echo 'ok: local validation failure creates no commit or tag'
+for step in check test build; do
+  setup
+  FAIL_DEVBIN=$step
+  export FAIL_DEVBIN
+  if release 0.1.1; then fail "failed bin/devbin $step accepted"; fi
+  no_tag
+  [ "$(git -C "$source" rev-parse HEAD)" = "$initial_source" ] || fail "commit despite failed bin/devbin $step"
+  assert_contains "$case_dir/output" 'stopped during validation'
+done
+echo 'ok: a failed bin/devbin check, test or build creates no commit or tag'
 
 setup
 MISSING_CHECKSUM=yes

@@ -7,7 +7,7 @@ This is Ccusage's own hand-authored contract, not the `usage_rules` Hex library'
 ## Project conventions
 
 - Before a commit, run `bin/devbin check all`, `bin/devbin test all` and `bin/devbin build`. `bin/.devbin/config.yaml` is the one home of those checks, and every cargo command in it takes `--locked`.
-- When release tooling, packaging or CI changes, also run the two checks `docs/releasing.md` lists that devbin does not hold: the signing tests and actionlint.
+- Release logic that needs more than POSIX sh goes in the `xtask` workspace member, run as `cargo xtask`, with its tests beside it.
 - AGENTS.md's Bats prerequisite, `bats -r tests/`, and unlocked `cargo test` and `cargo build` are Intent's generic language text, not this project's commands; Intent issue 0672 records that gap in AGENTS.md's template. Ccusage has no Bats tests; its checks are the `bin/devbin` commands above.
 
 ## NEVER DO

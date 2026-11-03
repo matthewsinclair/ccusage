@@ -44,7 +44,7 @@ package_version() {
     END { if (found != 1) exit 1 }
   ' "$1"
 }
-for tool in git cargo gh actionlint shellcheck python3; do
+for tool in git cargo gh; do
   command -v "$tool" >/dev/null 2>&1 || die "required maintainer tool is missing: $tool"
 done
 cd "$root"
@@ -82,7 +82,7 @@ echo "Ccusage $current -> $version"
 echo "Source remote: $remote; tap checkout: $tap"
 if [ "$dry_run" = true ]; then
   echo "Would fetch both repositories and verify they are not behind or diverged."
-  echo "Would update Cargo.toml/Cargo.lock, run fmt, Clippy, tests, build, and workflow/shell checks."
+  echo "Would update Cargo.toml/Cargo.lock, then run bin/devbin check all, test all and build."
   echo "Would commit the version bump, create annotated tag $tag, and atomically push main and the tag."
   echo "Would wait for the tagged GitHub build, sign Mac archives locally, verify signatures and checksums, and publish the draft."
   echo "Would publish the pinned Homebrew formula and wait for its macOS/Linux tests. No files, refs, or remote state changed."
@@ -136,14 +136,10 @@ if [ "$resume" = false ]; then
   stage=
   cargo update --workspace --offline
   phase=validation
-  cargo fmt --check
-  cargo clippy --all-targets --locked -- -D warnings
-  cargo test --locked
-  cargo build --release --locked
-  actionlint .github/workflows/build.yml
-  shellcheck tools/release tools/formula tests/release.sh
-  sh tests/release.sh
-  python3 -m unittest discover -s tests -p 'signing_test.py'
+  # bin/.devbin/config.yaml holds the checks; the release runs them, never a copy.
+  "$root/bin/devbin" check all
+  "$root/bin/devbin" test all
+  "$root/bin/devbin" build
   git diff --check
   # Do not include unrelated edits that appeared while validation was running.
   unexpected=$(git status --porcelain | grep -Ev '^ M Cargo\.(toml|lock)$' || :)
@@ -191,7 +187,7 @@ for target in aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu
 done
 printf '%s\n' "$assets" | grep -Fx SHA256SUMS >/dev/null || die "release checksums are missing"
 phase="Mac signing and publication"
-"$root/tools/finalize-release" "$tag"
+cargo xtask finalize-release "$tag"
 phase=Homebrew
 "$root/tools/formula" publish "$tag" "$tap"
 phase="Homebrew CI"

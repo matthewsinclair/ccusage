@@ -25,6 +25,14 @@ commands:
     options:
       clippy:
         run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      actionlint:
+        summary: The build and release workflow
+        run: actionlint .github/workflows/build.yml
+        log: true
+      shellcheck:
+        summary: The release scripts and their integration suite
+        run: shellcheck tools/release tools/formula tests/release.sh
+        log: true
   test:
     options:
       rust:

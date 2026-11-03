@@ -146,11 +146,11 @@ bin/devbin test all
 bin/devbin build
 ```
 
-`bin/devbin` is the vendored devbin launcher, and `bin/.devbin/config.yaml` holds the project's checks. `check all` runs `cargo fmt --check`, Clippy with warnings as errors and devbin's read-only gates. `test all` runs the Cargo suites, the release tooling's integration suite (`test shell`) and, on macOS, the disposable-keychain renewal test (`test keychain`). `build` makes the release build. Every cargo command in `bin/.devbin/config.yaml` takes `--locked`. Each gate seals its verdict under `tmp/`, and `bin/devbin help --why` says what is active here. devbin needs bash 5 or later, and `bin/devbin doctor` checks the install.
+`bin/devbin` is the vendored devbin launcher, and `bin/.devbin/config.yaml` holds the project's checks. `check all` runs `cargo fmt --check`, Clippy with warnings as errors, actionlint on the workflow, shellcheck on the release scripts and devbin's read-only gates. `test all` runs the Cargo suites of ccusage and the xtask, the release tooling's integration suite (`test shell`) and, on macOS, the disposable-keychain renewal test (`test keychain`). `build` makes the release build. Every cargo command in `bin/.devbin/config.yaml` takes `--locked`. Each gate seals its verdict under `tmp/`, and `bin/devbin help --why` says what is active here. devbin needs bash 5 or later, and `bin/devbin doctor` checks the install.
 
 Tests use local HTTP fixtures and temporary XDG directories. A fake Claude executable verifies login, selection, logout, environment isolation, and argument/exit-code forwarding without using real accounts. Other checks cover stale-cache fallback, cooldown persistence, config validation, and storage permissions. Real browser login and live usage need verification with an account you explicitly configure.
 
-Code is split into configuration, credential access, storage, usage retrieval, terminal rendering, and CLI coordination. Dependency purposes are documented beside their entries in `Cargo.toml`. Formatting uses two spaces. Unsafe Rust is forbidden; Clippy denies `unwrap` and `expect`. Cargo.lock is retained for reproducible application builds.
+Code is split into configuration, credential access, storage, usage retrieval, terminal rendering, and CLI coordination. The release tooling that signs, verifies and publishes a release is the `xtask` workspace member, run as `cargo xtask`, which never ships; [docs/releasing.md](docs/releasing.md) describes it. Dependency purposes are documented beside their entries in each `Cargo.toml`. Formatting uses two spaces. Unsafe Rust is forbidden; Clippy denies `unwrap` and `expect`. Cargo.lock is retained for reproducible application builds.
 
 ## Detailed output
 
