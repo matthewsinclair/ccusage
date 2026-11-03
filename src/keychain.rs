@@ -143,6 +143,20 @@ impl Item<'_> {
     Ok(())
   }
 
+  /// Whether the item exists, from its attributes alone: its secret is never read.
+  pub fn exists(&self) -> Result<bool> {
+    let status = self
+      .find(false)
+      .stdout(Stdio::null())
+      .status()
+      .map_err(|_| "could not run /usr/bin/security to look for Claude's Keychain item")?;
+    match status.code() {
+      Some(0) => Ok(true),
+      Some(ITEM_NOT_FOUND) => Ok(false),
+      _ => Err("could not search the Keychain for Claude's item".into()),
+    }
+  }
+
   /// The keychain file holding the item, found from its attributes alone.
   fn locate(&self) -> Result<PathBuf> {
     let output = self

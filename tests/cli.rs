@@ -760,3 +760,68 @@ fn a_profile_in_the_shared_config_directory_is_refused() -> Result<()> {
   assert!(String::from_utf8(output.stderr)?.contains("uses the shared Claude config directory"));
   Ok(())
 }
+
+#[test]
+fn shared_mode_doctor_warns_of_each_way_sessions_can_drift() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  sandbox.ok(&["use", "work"])?;
+  let clean = sandbox.ok(&["doctor"])?;
+  assert!(clean.contains("OK   Shared mode: sessions use"), "{clean}");
+  assert!(clean.contains("records work's account"), "{clean}");
+  assert!(!clean.contains("WARN"), "{clean}");
+  if cfg!(target_os = "macos") {
+    assert!(clean.contains("launchd gives GUI-started Claude Code the active profile's login"));
+  }
+  fs::write(shared.join(".claude.json"), SHARED_SETTINGS)?;
+  storage::write_atomic(&shared.join(".credentials.json"), b"{}")?;
+  fs::create_dir_all(sandbox.root.join("data/ccusage/profiles/engineering03"))?;
+  fs::write(
+    sandbox.root.join("launchd-CLAUDE_SECURESTORAGE_CONFIG_DIR"),
+    "/elsewhere",
+  )?;
+  let output = sandbox
+    .command()
+    .arg("doctor")
+    .env("CLAUDE_SECURESTORAGE_CONFIG_DIR", "/nowhere")
+    .output()?;
+  // Warnings only: sessions still start while any of these stands.
+  assert!(output.status.success());
+  let drift = String::from_utf8(output.stdout)?;
+  for warning in [
+    "does not record work's account; run ccusage use work",
+    "holds a login of its own",
+    "engineering03 has no profile in the config",
+    "CLAUDE_SECURESTORAGE_CONFIG_DIR=/nowhere names no profile's directory",
+  ] {
+    assert!(drift.contains(warning), "{warning}: {drift}");
+  }
+  if cfg!(target_os = "macos") {
+    assert!(
+      drift.contains(
+        "launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR=/elsewhere names no profile's directory"
+      ),
+      "{drift}"
+    );
+  }
+  Ok(())
+}
+
+#[test]
+fn doctor_is_unchanged_with_shared_mode_off() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  fs::create_dir_all(sandbox.root.join("data/ccusage/profiles/engineering03"))?;
+  let output = sandbox
+    .command()
+    .arg("doctor")
+    .env("CLAUDE_SECURESTORAGE_CONFIG_DIR", "/nowhere")
+    .output()?;
+  let text = String::from_utf8(output.stdout)?;
+  assert!(
+    !text.contains("Shared mode") && !text.contains("engineering03") && !text.contains("/nowhere"),
+    "{text}"
+  );
+  assert!(sandbox.launchctl()?.is_empty());
+  Ok(())
+}
