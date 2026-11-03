@@ -47,6 +47,8 @@ unplant() {
     "tools/helper|tools/helper:1: |#!/usr/bin/env python3|print(1)" # nopython: a plant, never run
     "tools/run-it|tools/run-it:2: |#!/bin/sh|uv run thing" # nopython: a plant, never run
     "src/words.rs|src/words.rs:1: |// see python3 -m json.tool" # nopython: a plant, never run
+    # Markdown is outside the word rule, so only the #! rule can refuse this one
+    "notes/run.md|notes/run.md:1: |#!/usr/bin/env python3|print(1)" # nopython: a plant, never run
   )
   local row path names
   local -a lines

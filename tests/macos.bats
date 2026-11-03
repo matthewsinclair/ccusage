@@ -16,13 +16,18 @@ setup() {
   FAKE_LOG=$BATS_TEST_TMPDIR/log
   FAKE_DISPLAY_OUT=$ROOT/tests/fixtures/codesign-v0.1.5.stdout
   FAKE_DISPLAY_ERR=$ROOT/tests/fixtures/codesign-v0.1.5.stderr
+  # How many signatures the fake codesign has displayed
+  FAKE_DISPLAYS=$BATS_TEST_TMPDIR/displays
   mkdir -p "$FAKE_BIN" "$FAKE_RELEASE"
   : > "$FAKE_LOG"
   write_fakes
   ci_release
   unset CI CCUSAGE_NOTARY_PROFILE CCUSAGE_MACOS_MEMBER_LIMIT
-  export FAKE_RELEASE FAKE_LOG FAKE_DISPLAY_OUT FAKE_DISPLAY_ERR PATH="$FAKE_BIN:$PATH"
+  export FAKE_RELEASE FAKE_LOG FAKE_DISPLAY_OUT FAKE_DISPLAY_ERR FAKE_DISPLAYS PATH="$FAKE_BIN:$PATH"
 }
+
+# How many Mac archives a release signs, one signature display each
+macs() { echo "$TARGETS" | tr ' ' '\n' | grep -c apple-darwin; }
 
 write_fakes() {
   cat > "$FAKE_BIN/gh" <<'FAKE'
@@ -74,10 +79,16 @@ case "$1" in
     printf '\nsigned by the fake codesign' >> "$binary" ;;
   --verify) grep -q 'signed by the fake codesign' "$binary" ;;
   -d)
-    out=$FAKE_DISPLAY_OUT
+    shown=$(( $(cat "$FAKE_DISPLAYS" 2>/dev/null || echo 0) + 1 ))
+    echo "$shown" > "$FAKE_DISPLAYS"
+    out=$FAKE_DISPLAY_OUT err=$FAKE_DISPLAY_ERR
     case "$(head -c 32 "$binary")" in x86_64-apple-darwin*) out=${FAKE_DISPLAY_OUT_X86:-$out} ;; esac
+    # From display FAKE_DISPLAY_ERR_FROM on, the details are FAKE_DISPLAY_ERR_LATER's
+    if [ -n "${FAKE_DISPLAY_ERR_FROM:-}" ] && [ "$shown" -ge "$FAKE_DISPLAY_ERR_FROM" ]; then
+      err=$FAKE_DISPLAY_ERR_LATER
+    fi
     cat "$out"
-    cat "$FAKE_DISPLAY_ERR" >&2 ;;
+    cat "$err" >&2 ;;
   *) exit 2 ;;
 esac
 FAKE
@@ -165,9 +176,11 @@ absent() {
   fi
 }
 
-# refused <message>: the run failed, saying so, before anything was signed
+# refused <message>: the run failed, saying so, before anything was signed. Each step
+# returns its own failure: called left of ||, as a loop calls it, a function runs with
+# set -e off, so a failing first step would not stop it.
 refused() {
-  failed "$1"
+  failed "$1" || return 1
   absent '^codesign --force'
 }
 
@@ -237,12 +250,32 @@ display() {
   absent '^codesign --force'
 }
 
-@test "a public release whose manifest names another team is refused" {
+@test "a public release whose manifest names another tag, identifier or team is refused" {
   finalize
-  sed -i '' 's/76BQL8L47U/0000000000/' "$FAKE_RELEASE/MACOS-SIGNING.json"
-  : > "$FAKE_LOG"
-  FAKE_DRAFT=false finalize
-  refused "Release signing identity mismatch"
+  [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+  local signed=$BATS_TEST_TMPDIR/signed.json forged
+  cp "$FAKE_RELEASE/MACOS-SIGNING.json" "$signed"
+  for forged in '.tag = "v0.0.1"' '.identifier = "com.example.ccusage"' '.team_id = "0000000000"'; do
+    jq "$forged" "$signed" > "$FAKE_RELEASE/MACOS-SIGNING.json"
+    : > "$FAKE_LOG"
+    FAKE_DRAFT=false finalize
+    refused "Release signing identity mismatch" || { echo "for $forged"; return 1; }
+  done
+}
+
+@test "signed archives that do not verify are never uploaded" {
+  # Signing reads one display per Mac binary. Every display after those has no
+  # timestamp, so only the signed set's own check, before the upload, can refuse first.
+  FAKE_DISPLAY_ERR_FROM=$(( $(macs) + 1 )) FAKE_DISPLAY_ERR_LATER=$(display "$FAKE_DISPLAY_ERR" '/^Timestamp=/d') finalize
+  failed "requires a secure timestamp"
+  absent '^gh release upload'
+}
+
+@test "CI names its sums SHA256SUMS.ci, so devbin's formula cannot render from an unsigned draft" {
+  local workflow=$ROOT/.github/workflows/build.yml
+  grep -qF 'sha256sum ccusage-*.tar.gz > SHA256SUMS.ci' "$workflow"
+  # The draft's upload: archives, then CI's sums, on gh release create's line
+  grep -qF 'ccusage-*.tar.gz SHA256SUMS.ci' "$workflow"
 }
 
 @test "a public release whose manifest sha256 disagrees with SHA256SUMS is refused" {
