@@ -37,6 +37,24 @@ pub fn create_config(path: &Path, bytes: &[u8]) -> Result<()> {
 pub fn write_atomic(path: &Path, bytes: &[u8]) -> Result<()> {
   let parent = path.parent().ok_or("state path has no parent")?;
   private_dir(parent)?;
+  stage(path, bytes, 0o600)
+}
+
+/// Replace an existing file another program owns, as write_atomic does, keeping the
+/// mode that program gave it.
+pub fn replace(path: &Path, bytes: &[u8]) -> Result<()> {
+  #[cfg(unix)]
+  let mode = {
+    use std::os::unix::fs::PermissionsExt;
+    fs::metadata(path)?.permissions().mode() & 0o7777
+  };
+  #[cfg(not(unix))]
+  let mode = 0o600;
+  stage(path, bytes, mode)
+}
+
+fn stage(path: &Path, bytes: &[u8], mode: u32) -> Result<()> {
+  let parent = path.parent().ok_or("state path has no parent")?;
   let stamp = std::time::SystemTime::now()
     .duration_since(std::time::UNIX_EPOCH)?
     .as_nanos();
@@ -47,9 +65,17 @@ pub fn write_atomic(path: &Path, bytes: &[u8]) -> Result<()> {
     #[cfg(unix)]
     {
       use std::os::unix::fs::OpenOptionsExt;
-      options.mode(0o600);
+      options.mode(mode);
     }
     let mut file = options.open(&temp)?;
+    #[cfg(unix)]
+    {
+      use std::os::unix::fs::PermissionsExt;
+      // The process umask can narrow a created file's mode, so it is set again.
+      file.set_permissions(fs::Permissions::from_mode(mode))?;
+    }
+    #[cfg(not(unix))]
+    let _ = mode;
     file.write_all(bytes)?;
     file.sync_all()?;
     fs::rename(&temp, path)?;

@@ -19,7 +19,10 @@ Usage: ccusage [--config PATH] [--no-color] [--verbose] [COMMAND]
   logout NAME                  Sign out this profile through Claude
   list                         Show profiles and local credential status
   use NAME                     Select the account for future ccusage run launches
+                               (in shared mode, for new Claude sessions too)
   run [NAME] [-- CLAUDE_ARGS…]  Launch Claude with the selected profile
+  dir [NAME]                   In shared mode, print the active or named profile's
+                               directory, for CLAUDE_SECURESTORAGE_CONFIG_DIR
   usage [NAME | --all] [--json] [--refresh] [--verbose]
                                Show plan usage (default: active account)
   tui [--demo]                 Interactive account dashboard (demo works without setup)
@@ -256,8 +259,37 @@ pub fn run(mut args: Vec<String>) -> Result<()> {
     "use" => {
       let name = one(&args)?;
       auth::read(&store.profile_dir(name)?)?;
-      store.activate(name)?;
-      println!("Active: {name}. Future ccusage run launches use this account.");
+      if store.shared_dir()?.is_some() {
+        crate::shared::switch(&store, name)?;
+        println!(
+          "Active: {name}. New Claude sessions use this account; running ones switch when restarted."
+        );
+      } else {
+        store.activate(name)?;
+        println!("Active: {name}. Future ccusage run launches use this account.");
+      }
+    }
+    "dir" => {
+      if args.len() > 1 {
+        return Err("dir accepts one profile name; see ccusage help".into());
+      }
+      if store.shared_dir()?.is_none() {
+        return Err(
+          "shared mode is off; set claude_config_dir in the config to use ccusage dir".into(),
+        );
+      }
+      let name = store.select(args.first().map(String::as_str))?;
+      let dir = store.profile_dir(&name)?;
+      // The exact bytes Claude Code hashes into the login's Keychain name.
+      #[cfg(unix)]
+      {
+        use std::{io::Write, os::unix::ffi::OsStrExt};
+        let mut out = std::io::stdout().lock();
+        out.write_all(dir.as_os_str().as_bytes())?;
+        out.write_all(b"\n")?;
+      }
+      #[cfg(not(unix))]
+      println!("{}", dir.display());
     }
     "run" => {
       let name = if args.first().is_some_and(|arg| !arg.starts_with('-')) {
@@ -272,7 +304,16 @@ pub fn run(mut args: Vec<String>) -> Result<()> {
       let dir = store.profile_dir(&name)?;
       // Require an authenticated slot: an accidental fresh login must be explicit.
       auth::read(&dir)?;
-      let mut child = auth::command(&dir);
+      let mut child = match store.shared_dir()? {
+        Some(shared) => {
+          // The shared config's account record must match the login it is given.
+          if store.active()?.as_deref() != Some(name.as_str()) {
+            crate::shared::switch(&store, &name)?;
+          }
+          auth::shared_command(&shared, &dir)
+        }
+        None => auth::command(&dir),
+      };
       child.args(args);
       #[cfg(unix)]
       {

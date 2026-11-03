@@ -10,6 +10,9 @@ use std::{
 };
 
 static NEXT: AtomicU64 = AtomicU64::new(0);
+/// A shared config's .claude.json, as Claude Code lays one out, recording the main
+/// config's own account.
+const SHARED_SETTINGS: &str = "{\n  \"numStartups\": 3,\n  \"oauthAccount\": {\n    \"emailAddress\": \"main@example.com\"\n  },\n  \"theme\": \"dark\"\n}\n";
 struct Sandbox {
   root: PathBuf,
 }
@@ -48,6 +51,20 @@ esac
 "##;
     fs::write(root.join("bin/claude"), script)?;
     fs::set_permissions(root.join("bin/claude"), fs::Permissions::from_mode(0o700))?;
+    // launchctl stand-in: no test may reach launchd, so every command names this one.
+    let launchctl = r#"#!/bin/sh
+here=$(/usr/bin/dirname "$0")
+/bin/echo "$*" >> "$here/../launchctl.log"
+case "$1" in
+  setenv) /usr/bin/printf '%s' "$3" > "$here/../launchd-$2" ;;
+  getenv) /bin/cat "$here/../launchd-$2" 2>/dev/null; /bin/echo ;;
+esac
+"#;
+    fs::write(root.join("bin/launchctl"), launchctl)?;
+    fs::set_permissions(
+      root.join("bin/launchctl"),
+      fs::Permissions::from_mode(0o700),
+    )?;
     Ok(Self { root })
   }
   fn command(&self) -> Command {
@@ -59,9 +76,42 @@ esac
       .env("XDG_STATE_HOME", self.root.join("state"))
       .env("XDG_CACHE_HOME", self.root.join("cache"))
       .env("PATH", self.root.join("bin"))
+      .env("CCUSAGE_LAUNCHCTL", self.root.join("bin/launchctl"))
       .env_remove("CCUSAGE_CONFIG")
       .env("NO_COLOR", "1");
     command
+  }
+  /// Shared mode on, at a scratch shared config whose .claude.json has Claude Code's
+  /// shape and records another account; `work` logged in with its own record.
+  fn shared(&self) -> Result<PathBuf> {
+    self.setup()?;
+    let shared = self.root.join("home/.config/claude");
+    fs::create_dir_all(&shared)?;
+    fs::write(shared.join(".claude.json"), SHARED_SETTINGS)?;
+    let config = self.root.join("config/ccusage/config.toml");
+    let text = fs::read_to_string(&config)?;
+    storage::write_atomic(
+      &config,
+      format!("claude_config_dir = \"{}\"\n{text}", shared.display()).as_bytes(),
+    )?;
+    self.login_with_record("work", "u-work", "test@example.com")?;
+    Ok(shared)
+  }
+  /// Log `name` in, as Claude Code would, with an oauthAccount record of its own.
+  fn login_with_record(&self, name: &str, uuid: &str, email: &str) -> Result<()> {
+    self.ok(&["login", name])?;
+    let record = serde_json::json!({"oauthAccount": {"accountUuid": uuid, "emailAddress": email}});
+    fs::write(
+      self.profile(name).join(".claude.json"),
+      serde_json::to_vec(&record)?,
+    )?;
+    Ok(())
+  }
+  fn profile(&self, name: &str) -> PathBuf {
+    self.root.join("data/ccusage/profiles").join(name)
+  }
+  fn launchctl(&self) -> Result<String> {
+    Ok(fs::read_to_string(self.root.join("launchctl.log")).unwrap_or_default())
   }
   fn run(&self, args: &[&str]) -> Result<Output> {
     Ok(self.command().args(args).output()?)
@@ -579,5 +629,134 @@ fn doctor_fails_when_claude_is_missing_or_private_files_are_insecure() -> Result
   let output = sandbox.run(&["doctor"])?;
   assert!(!output.status.success());
   assert!(String::from_utf8(output.stdout)?.contains("Cannot run claude from PATH"));
+  Ok(())
+}
+
+#[test]
+fn shared_mode_dir_prints_the_login_directory_only_when_shared_mode_is_on() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  sandbox.ok(&["login", "work"])?;
+  sandbox.ok(&["use", "work"])?;
+  let off = sandbox.run(&["dir"])?;
+  assert!(!off.status.success() && off.stdout.is_empty());
+  assert!(String::from_utf8(off.stderr)?.contains("shared mode is off"));
+  let sandbox = Sandbox::new()?;
+  sandbox.shared()?;
+  // No active profile: an empty value would mean ~/.claude to Claude Code.
+  let none = sandbox.run(&["dir"])?;
+  assert!(!none.status.success() && none.stdout.is_empty());
+  sandbox.ok(&["use", "work"])?;
+  let dir = format!("{}\n", sandbox.profile("work").display());
+  assert_eq!(sandbox.ok(&["dir"])?, dir);
+  assert_eq!(sandbox.ok(&["dir", "work"])?, dir);
+  assert!(!sandbox.run(&["dir", "work", "extra"])?.status.success());
+  Ok(())
+}
+
+#[test]
+fn shared_mode_use_copies_only_the_account_record_and_points_launchd() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  let settings = shared.join(".claude.json");
+  fs::set_permissions(&settings, fs::Permissions::from_mode(0o644))?;
+  let said = sandbox.ok(&["use", "work"])?;
+  assert!(said.contains("New Claude sessions use this account"));
+  assert_eq!(
+    fs::read_to_string(&settings)?,
+    "{\n  \"numStartups\": 3,\n  \"oauthAccount\": {\n    \"accountUuid\": \"u-work\",\n    \"emailAddress\": \"test@example.com\"\n  },\n  \"theme\": \"dark\"\n}\n"
+  );
+  assert_eq!(fs::metadata(&settings)?.permissions().mode() & 0o777, 0o644);
+  assert!(!shared.join(".claude.json.lock").exists());
+  assert_eq!(
+    fs::read_to_string(sandbox.root.join("state/ccusage/active.json"))?,
+    "\"work\""
+  );
+  let launchd = sandbox.launchctl()?;
+  if cfg!(target_os = "macos") {
+    assert_eq!(
+      launchd,
+      format!(
+        "setenv CLAUDE_SECURESTORAGE_CONFIG_DIR {}\n",
+        sandbox.profile("work").display()
+      )
+    );
+  } else {
+    assert!(launchd.is_empty());
+  }
+  Ok(())
+}
+
+#[test]
+fn shared_mode_use_refuses_a_profile_without_an_account_record() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  fs::remove_file(sandbox.profile("work").join(".claude.json"))?;
+  let output = sandbox.run(&["use", "work"])?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stderr)?.contains("records no oauthAccount"));
+  assert_eq!(
+    fs::read_to_string(shared.join(".claude.json"))?,
+    SHARED_SETTINGS
+  );
+  assert!(!sandbox.root.join("state/ccusage/active.json").exists());
+  assert!(sandbox.launchctl()?.is_empty());
+  Ok(())
+}
+
+#[test]
+fn shared_mode_run_borrows_the_profile_login_and_switches_first() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  sandbox.ok(&["add", "home"])?;
+  sandbox.login_with_record("home", "u-home", "home@example.com")?;
+  sandbox.ok(&["use", "work"])?;
+  let output = sandbox
+    .command()
+    .args(["run"])
+    .env("CLAUDE_SECURESTORAGE_CONFIG_DIR", "OTHER_ACCOUNT")
+    .output()?;
+  assert_eq!(output.status.code(), Some(23));
+  let text = String::from_utf8(output.stdout)?;
+  assert!(
+    text.contains(&format!("dir={}\n", shared.display())),
+    "{text}"
+  );
+  assert!(
+    text.contains(&format!("storage={}\n", sandbox.profile("work").display())),
+    "{text}"
+  );
+  // A profile that is not active is switched to first, so the record matches the login.
+  let output = sandbox.run(&["run", "home"])?;
+  let text = String::from_utf8(output.stdout)?;
+  assert!(
+    text.contains(&format!("storage={}\n", sandbox.profile("home").display())),
+    "{text}"
+  );
+  assert_eq!(
+    fs::read_to_string(sandbox.root.join("state/ccusage/active.json"))?,
+    "\"home\""
+  );
+  assert!(fs::read_to_string(shared.join(".claude.json"))?.contains("\"u-home\""));
+  Ok(())
+}
+
+#[test]
+fn a_profile_in_the_shared_config_directory_is_refused() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  let config = sandbox.root.join("config/ccusage/config.toml");
+  let text = fs::read_to_string(&config)?;
+  storage::write_atomic(
+    &config,
+    format!(
+      "{text}\n[profiles.main]\nconfig_dir = \"{}\"\n",
+      shared.display()
+    )
+    .as_bytes(),
+  )?;
+  let output = sandbox.run(&["list"])?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stderr)?.contains("uses the shared Claude config directory"));
   Ok(())
 }

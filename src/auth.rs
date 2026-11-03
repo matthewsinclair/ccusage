@@ -310,9 +310,25 @@ fn renew(agent: &ureq::Agent, endpoint: &str, stored: &Stored) -> Result<Renewal
   }
 }
 
+/// Claude with `dir` as its config directory, where its login lives too.
 pub fn command(dir: &Path) -> Command {
-  let mut command = Command::new("claude");
+  let mut command = claude();
   command.env("CLAUDE_CONFIG_DIR", dir);
+  command
+}
+
+/// Claude in shared mode: the shared config directory, with `dir`'s login. Claude
+/// Code then reads, renews and locks that login in `dir`.
+pub fn shared_command(shared: &Path, dir: &Path) -> Command {
+  let mut command = claude();
+  command
+    .env("CLAUDE_CONFIG_DIR", shared)
+    .env("CLAUDE_SECURESTORAGE_CONFIG_DIR", dir);
+  command
+}
+
+fn claude() -> Command {
+  let mut command = Command::new("claude");
   // An inherited auth override must never make a named profile use another account.
   for key in [
     "ANTHROPIC_API_KEY",

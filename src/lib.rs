@@ -8,6 +8,7 @@ pub mod doctor;
 mod keychain;
 #[cfg(test)]
 mod loopback;
+pub mod shared;
 pub mod storage;
 pub mod usage;
 

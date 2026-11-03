@@ -9,6 +9,10 @@ use std::{
 #[derive(Default, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Config {
+  /// Set, it turns on shared mode: sessions keep this Claude config directory and
+  /// borrow the active profile's login. Unset, ccusage behaves as it always has.
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub claude_config_dir: Option<PathBuf>,
   #[serde(default)]
   pub profiles: BTreeMap<String, Profile>,
 }
@@ -136,13 +140,42 @@ impl Store {
     };
     // Sharing a credential directory would silently alias two named accounts.
     let mut dirs = BTreeMap::new();
+    let shared = store.shared_dir()?;
     for name in store.config.profiles.keys() {
       let dir = store.profile_dir(name)?;
+      // The shared config's own login is the one shared mode retires, so no profile
+      // may be it.
+      if shared.as_ref() == Some(&dir) {
+        return Err(
+          format!("profile {name} uses the shared Claude config directory; give it its own").into(),
+        );
+      }
       if let Some(other) = dirs.insert(dir, name) {
         return Err(format!("profiles {other} and {name} use the same config directory").into());
       }
     }
     Ok(store)
+  }
+
+  /// The shared Claude config directory when shared mode is on, resolved as a
+  /// profile's config_dir is.
+  pub fn shared_dir(&self) -> Result<Option<PathBuf>> {
+    self
+      .config
+      .claude_config_dir
+      .as_deref()
+      .map(|path| existing(self.configured(path)?))
+      .transpose()
+  }
+
+  /// A directory the config names: absolute or from ~ as written, else from the
+  /// config's own directory.
+  fn configured(&self, path: &Path) -> Result<PathBuf> {
+    if path.is_absolute() || path.starts_with("~") {
+      absolute(path)
+    } else {
+      absolute(&self.root.join(path))
+    }
   }
 
   pub fn profile(&self, name: &str) -> Result<&Profile> {
@@ -154,17 +187,12 @@ impl Store {
   }
 
   pub fn profile_dir(&self, name: &str) -> Result<PathBuf> {
-    let profile = self.profile(name)?;
-    let path = match &profile.config_dir {
-      Some(path) if path.is_absolute() || path.starts_with("~") => absolute(path)?,
-      Some(path) => absolute(&self.root.join(path))?,
+    // Claude Code names a login's Keychain item after this path, so it must never move.
+    let path = match &self.profile(name)?.config_dir {
+      Some(path) => self.configured(path)?,
       None => self.data.join("profiles").join(name),
     };
-    if path.exists() {
-      Ok(path.canonicalize()?)
-    } else {
-      Ok(path)
-    }
+    existing(path)
   }
 
   pub fn save(&self) -> Result<()> {
@@ -190,6 +218,15 @@ impl Store {
     .ok_or("no active profile; run ccusage use NAME")?;
     self.profile(&selected)?;
     Ok(selected)
+  }
+}
+
+/// The canonical form of a directory that exists, and the path as given otherwise.
+fn existing(path: PathBuf) -> Result<PathBuf> {
+  if path.exists() {
+    Ok(path.canonicalize()?)
+  } else {
+    Ok(path)
   }
 }
 
