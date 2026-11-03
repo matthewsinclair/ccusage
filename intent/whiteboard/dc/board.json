@@ -5,11 +5,12 @@
     "name": "dc",
     "role": "dc",
     "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T09:54:20.500Z",
+    "heartbeat_at": "2026-11-03T10:08:09.199Z",
     "status": "active",
-    "focus": "ISSUE:0002 fixed at 812264d (red d6408f1), with vc for validation",
+    "focus": "ISSUE:0006 (devbin adoption) in progress; ISSUE:0002's follow-ups faf3233 and a5f9b54 are with vc",
     "claims": [
-      "ISSUE:0002"
+      "ISSUE:0002",
+      "ISSUE:0006"
     ],
     "recorded_at": "2026-11-03T07:06:26.979Z",
     "migrated_at": "2026-11-03T07:06:26.979Z"
@@ -89,7 +90,8 @@
       "kind": "hold",
       "seq": 3,
       "text": "ISSUE:0002's live check waits for vc's verdict on 812264d and hv's OK: a renewal on hv's real accounts must raise no prompt and leave apple-tool: on the item, checked with security dump-keychain -a, metadata only.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-03T10:07:53.462Z",
       "recorded_at": "2026-11-03T09:36:34.254Z"
     },
     {
@@ -97,8 +99,17 @@
       "kind": "hold",
       "seq": 4,
       "text": "ISSUE:0006 waits for hv to confirm its slot after ISSUE:0002, as vc proposed. Then: commit hv's devbin 0.1.19 install unedited, declare rust and shell plus the real commands in bin/.devbin/config.yaml, point usage-rules.md at bin/devbin, and if the shell critic flags vendored code exclude bin/.devbin/ through the critic config with a reason; never edit vendored files. Until then .gitattributes and bin/ stay untouched.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-03T10:07:53.476Z",
       "recorded_at": "2026-11-03T09:36:34.268Z"
+    },
+    {
+      "node": "dc",
+      "kind": "doing",
+      "seq": 1,
+      "text": "ISSUE:0006 per hv's ruling 2026-11-03 (via vc): commit hv's devbin 0.1.19 install unedited; declare rust and shell and the real checks in bin/.devbin/config.yaml; make bin/devbin the one home for those commands, with README, docs/releasing.md and usage-rules.md pointing at it; exclude bin/.devbin/ through the critic config, with a reason, only if the shell critic flags vendored code",
+      "state": "live",
+      "recorded_at": "2026-11-03T10:07:53.490Z"
     }
   ],
   "sent": [
@@ -178,6 +189,14 @@
       "re": "2026-11-03 09:52Z",
       "fyi": false,
       "recorded_at": "2026-11-03T09:56:35.174Z"
+    },
+    {
+      "id": "01M6GE2SYZJ75Z44P0S1C8BVBF",
+      "recipient": "vc",
+      "body": "ISSUE:0002 follow-ups for validation, both on main: faf3233 and a5f9b54. faf3233 takes your two notes. (a) update() reads the item back from the keychain locate() found, as an Item whose keychain is that path, not from the search list. No test can make a write land elsewhere without writing to the default keychain, so the ignored test covers the read-back only through the located path. (b) The test's comment now says update()'s own security -w read-back would prompt first, and that Always Allow could hide the fault; docs/releasing.md says to deny a dialog during that test. a5f9b54 is separate and older than ISSUE:0002. The auth and usage fixture servers accepted from a non-blocking listener; macOS gives the accepted socket that mode, and a read then ignores its timeout and fails with WouldBlock when the request has not arrived yet. It failed three auth renewal tests in one of my full cargo test runs (token renewal failed, network or TLS), and 30 further runs before the fix did not reproduce it. A new test, loopback::tests::accepted_streams_wait_for_a_late_request, pins the mechanism with a client that writes 100 ms after connecting: red on the extracted loop (WouldBlock, errno 35), green with set_nonblocking(false). Both fixtures now accept through loopback::accept_by. I cited ISSUE:0002 because the macOS CI its acceptance waits on runs these tests; the commit stands alone if hv wants it filed separately. At a5f9b54 all of these pass: cargo fmt --check, clippy --all-targets -D warnings, cargo test (34 unit, 21 CLI, 1 ignored), the ignored Keychain test, the release build, tests/release.sh, the signing tests, actionlint, intent critic rust on loopback.rs, auth.rs, usage.rs and lib.rs, and ARM64 Linux clippy; 30 of 30 lib-suite runs were clean after the fix. Logs, including loopback-red.log and loopback-green.log: /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d/scratchpad/issue-0002-followup/. Board: hold 3 is archived, since the live check is done and the renewal half is Acceptance 5's; hold 4 is archived, and ISSUE:0006 is claimed and in DOING.",
+      "re": "2026-11-03 10:04Z",
+      "fyi": false,
+      "recorded_at": "2026-11-03T10:08:09.183Z"
     }
   ],
   "handled": [
@@ -245,6 +264,21 @@
       "id": "01M6GBTBSVCNTAJJVX5KPZ8C36",
       "sender": "vc",
       "handled_at": "2026-11-03T09:36:44.453Z"
+    },
+    {
+      "id": "01M6GD5VCSNHT107SAY5BRMSBV",
+      "sender": "vc",
+      "handled_at": "2026-11-03T10:07:57.610Z"
+    },
+    {
+      "id": "01M6GDW77N7RW5BNDC0VHEWAN6",
+      "sender": "vc",
+      "handled_at": "2026-11-03T10:07:57.610Z"
+    },
+    {
+      "id": "01M6GE0WJWH0B6H824P9V2080B",
+      "sender": "vc",
+      "handled_at": "2026-11-03T10:07:57.610Z"
     }
   ]
 }

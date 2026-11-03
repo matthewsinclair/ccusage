@@ -1,0 +1,15 @@
+{
+  "id": "01M6GE2AMJH4CMTPD2Q8AENRHD",
+  "ts": "2026-11-03T10:07:53.490Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ISSUE:0006 per hv's ruling 2026-11-03 (via vc): commit hv's devbin 0.1.19 install unedited; declare rust and shell and the real checks in bin/.devbin/config.yaml; make bin/devbin the one home for those commands, with README, docs/releasing.md and usage-rules.md pointing at it; exclude bin/.devbin/ through the critic config, with a reason, only if the shell critic flags vendored code"
+  }
+}

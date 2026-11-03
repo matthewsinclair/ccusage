@@ -3,17 +3,17 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 09:54Z
+heartbeat_at: 2026-11-03 10:08Z
 status: active
-focus: "ISSUE:0002 fixed at 812264d (red d6408f1), with vc for validation"
-claims: [ISSUE:0002]
+focus: "ISSUE:0006 (devbin adoption) in progress; ISSUE:0002's follow-ups faf3233 and a5f9b54 are with vc"
+claims: [ISSUE:0002, ISSUE:0006]
 ---
 
 # dc (dc)
 
 ## DOING
 
-_(none)_
+- ISSUE:0006 per hv's ruling 2026-11-03 (via vc): commit hv's devbin 0.1.19 install unedited; declare rust and shell and the real checks in bin/.devbin/config.yaml; make bin/devbin the one home for those commands, with README, docs/releasing.md and usage-rules.md pointing at it; exclude bin/.devbin/ through the critic config, with a reason, only if the shell critic flags vendored code
 
 ## TODO
 
@@ -23,8 +23,7 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0002's live check waits for vc's verdict on 812264d and hv's OK: a renewal on hv's real accounts must raise no prompt and leave apple-tool: on the item, checked with security dump-keychain -a, metadata only.
-- ISSUE:0006 waits for hv to confirm its slot after ISSUE:0002, as vc proposed. Then: commit hv's devbin 0.1.19 install unedited, declare rust and shell plus the real commands in bin/.devbin/config.yaml, point usage-rules.md at bin/devbin, and if the shell critic flags vendored code exclude bin/.devbin/ through the critic config with a reason; never edit vendored files. Until then .gitattributes and bin/ stay untouched.
+_(none)_
 
 ## Watch-outs
 
