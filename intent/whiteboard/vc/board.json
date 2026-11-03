@@ -25,10 +25,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 1,
-      "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0004 on devbin, then 0003 and 0005. For ISSUE:0004: bin/devbin check all, test all and build, and bin/devbin release 0.1.6 --dry-run; no Python, tools/, xtask or Cargo workspace left; the macos handler's bats tests, and its checks run against the real v0.1.5 assets and my 12 faulted copies with gh shimmed so nothing reaches GitHub; bin/devbin formula render against the same copies; a targeted mutation pass on the zsh checks.",
+      "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004 is validated at 45edf8f and closes after the real 0.1.6 cut. Next: ISSUE:0003 when dc hands it over, then 0005. For ISSUE:0003, the Acceptance list plus launchd's CLAUDE_CONFIG_DIR and CLAUDE_SECURESTORAGE_CONFIG_DIR compared with the 11:01:53Z baseline after dc's suite and after mine, since no test may call the real launchctl setenv.",
       "state": "live",
       "recorded_at": "2026-11-03T08:50:04.806Z",
-      "edited_at": "2026-11-03T12:33:09.859Z"
+      "edited_at": "2026-11-03T13:35:08.936Z"
     },
     {
       "node": "vc",
@@ -72,6 +72,14 @@
       "text": "Check that the tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Released when: the devbin vendored in bin/.devbin carries the fix for lib/cmd/formula:424.",
       "state": "live",
       "recorded_at": "2026-11-03T12:33:09.913Z"
+    },
+    {
+      "node": "vc",
+      "kind": "todo",
+      "seq": 3,
+      "text": "At the 0.1.6 cut, check ISSUE:0004's end-to-end run: hv pushes the tap's 1e74059 first; bin/devbin release 0.1.6 leaves CI's draft holding four archives and SHA256SUMS.ci; bin/devbin macos finalize v0.1.6 publishes, and a second run verifies the public release and changes nothing; bin/devbin formula publish puts in the tap exactly the sha256 values in the release's SHA256SUMS.",
+      "state": "live",
+      "recorded_at": "2026-11-03T13:35:08.989Z"
     }
   ],
   "sent": [
@@ -269,6 +277,13 @@
       "body": "ISSUE:0004 at d8689e4: the fix is confirmed, and two small tests remain before Acceptance item 2 holds. Confirmed: green in a fresh clone (check all, test all with 34 bats, build, doctor, release check, the 0.1.6 dry run with gh reads only, the 0.1.5 dry run refused); my S05 copy of v0.1.5 is now refused as 'Unexpected release archive member'; reverting the fix (mac-ext on for both reads) goes red, and so does dropping the repack's COPYFILE_DISABLE, --no-xattrs and --no-mac-metadata, which a6c99b1 let through. Mutation pass, 55 mutations over macos, nopython, the formula template and build.yml. Two Python checks have no test that fails without them: (1) F10, the manifest's tag and identifier: drop either from check_signed's jq and the suite stays green, since only team_id is tested. Turning the team test into a loop over jq '.tag = \"v0.0.1\"', '.identifier = \"com.example.ccusage\"' and '.team_id = \"0000000000\"' covers all three. (2) F15, the check of the signed set before upload: drop 'check_sums $signed; check_signed $signed' and the suite stays green, because the post-upload check then refuses before publish. A test needs the signed set to fail only that check, eg the fake codesign serving a display with no Timestamp= line from its first display after sign()'s own verifies, asserting failed 'requires a secure timestamp' and absent '^gh release upload'. Redundant guards, no action: the listing count and the found count (dropping both goes red on the too-many test), the two mac-ext reads, and the missing-manifest-entry message. Optional nits, not blocking: nothing pins build.yml's SHA256SUMS.ci name, which the formula-before-finalize refusal rests on (revert it to SHA256SUMS and every check stays green); nopython's #! rule has no case the word rule does not also catch (eg a #! python line in a .md file). Send me the commit and I will rerun those mutations straight away.",
       "fyi": false,
       "recorded_at": "2026-11-03T13:18:14.712Z"
+    },
+    {
+      "id": "01M6GSXTHMHZDXNAAB7852VR7Z",
+      "recipient": "dc",
+      "body": "ISSUE:0004 is validated at 45edf8f, so on vc's side it has landed. A fresh clone is green: check all, test all (36 bats tests, none failing), build, doctor (0 failed, the shadowing note only) and release check. bin/devbin release 0.1.6 --dry-run passes with gh reads only (auth status, release view), and the 0.1.5 dry run is refused. No Python, tools/, xtask, .cargo, workspace or keychain-upgrade file is left, actionlint is in check all, and the tree is clean after the runs. Real data: the v0.1.5 release verifies, and all 12 faulted copies are refused at the check meant for each. formula render v0.1.5 gives the tap's exact arm and Intel sha256, and a CI-only draft is refused. Mutation pass: 47 mutations over macos, nopython, the formula template and build.yml, 42 red. Each of the 5 survivors has a second guard, and each pair goes red when both are removed: the two member counts and the two mac-ext reads. A missing manifest entry is also refused by the sha256 and requirement checks. Left for the close: the real 0.1.6 cut end to end, and hv's push of the tap's 1e74059 before formula publish. ISSUE:0003 is next. FYI: your board's focus line still names the Rust xtask.",
+      "fyi": false,
+      "recorded_at": "2026-11-03T13:35:08.852Z"
     }
   ],
   "handled": [

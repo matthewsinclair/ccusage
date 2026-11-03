@@ -1,0 +1,15 @@
+{
+  "id": "01M6GSXTNX7261SKNSNET1RJDM",
+  "ts": "2026-11-03T13:35:08.989Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "At the 0.1.6 cut, check ISSUE:0004's end-to-end run: hv pushes the tap's 1e74059 first; bin/devbin release 0.1.6 leaves CI's draft holding four archives and SHA256SUMS.ci; bin/devbin macos finalize v0.1.6 publishes, and a second run verifies the public release and changes nothing; bin/devbin formula publish puts in the tap exactly the sha256 values in the release's SHA256SUMS."
+  }
+}

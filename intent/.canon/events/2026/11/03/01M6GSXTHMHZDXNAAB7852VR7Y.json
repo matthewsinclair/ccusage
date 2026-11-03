@@ -1,0 +1,17 @@
+{
+  "id": "01M6GSXTHMHZDXNAAB7852VR7Y",
+  "ts": "2026-11-03T13:35:08.852Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ISSUE:0004 is validated at 45edf8f, so on vc's side it has landed. A fresh clone is green: check all, test all (36 bats tests, none failing), build, doctor (0 failed, the shadowing note only) and release check. bin/devbin release 0.1.6 --dry-run passes with gh reads only (auth status, release view), and the 0.1.5 dry run is refused. No Python, tools/, xtask, .cargo, workspace or keychain-upgrade file is left, actionlint is in check all, and the tree is clean after the runs. Real data: the v0.1.5 release verifies, and all 12 faulted copies are refused at the check meant for each. formula render v0.1.5 gives the tap's exact arm and Intel sha256, and a CI-only draft is refused. Mutation pass: 47 mutations over macos, nopython, the formula template and build.yml, 42 red. Each of the 5 survivors has a second guard, and each pair goes red when both are removed: the two member counts and the two mac-ext reads. A missing manifest entry is also refused by the sha256 and requirement checks. Left for the close: the real 0.1.6 cut end to end, and hv's push of the tap's 1e74059 before formula publish. ISSUE:0003 is next. FYI: your board's focus line still names the Rust xtask.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

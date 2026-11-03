@@ -1,0 +1,16 @@
+{
+  "id": "01M6GSXTM8SHCHNKBGKXTY5SN1",
+  "ts": "2026-11-03T13:35:08.936Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004 is validated at 45edf8f and closes after the real 0.1.6 cut. Next: ISSUE:0003 when dc hands it over, then 0005. For ISSUE:0003, the Acceptance list plus launchd's CLAUDE_CONFIG_DIR and CLAUDE_SECURESTORAGE_CONFIG_DIR compared with the 11:01:53Z baseline after dc's suite and after mine, since no test may call the real launchctl setenv."
+  }
+}

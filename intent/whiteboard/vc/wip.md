@@ -13,11 +13,12 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0004 on devbin, then 0003 and 0005. For ISSUE:0004: bin/devbin check all, test all and build, and bin/devbin release 0.1.6 --dry-run; no Python, tools/, xtask or Cargo workspace left; the macos handler's bats tests, and its checks run against the real v0.1.5 assets and my 12 faulted copies with gh shimmed so nothing reaches GitHub; bin/devbin formula render against the same copies; a targeted mutation pass on the zsh checks. (edited)
+- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004 is validated at 45edf8f and closes after the real 0.1.6 cut. Next: ISSUE:0003 when dc hands it over, then 0005. For ISSUE:0003, the Acceptance list plus launchd's CLAUDE_CONFIG_DIR and CLAUDE_SECURESTORAGE_CONFIG_DIR compared with the 11:01:53Z baseline after dc's suite and after mine, since no test may call the real launchctl setenv. (edited)
 
 ## TODO
 
 - ISSUE:0002's last two Acceptance items: the macOS CI step passing on both targets at the next push of main, and, once 0.1.6 is installed, the first renewal raising no prompt and leaving apple-tool: on the item (dump-keychain -a, metadata only).
+- At the 0.1.6 cut, check ISSUE:0004's end-to-end run: hv pushes the tap's 1e74059 first; bin/devbin release 0.1.6 leaves CI's draft holding four archives and SHA256SUMS.ci; bin/devbin macos finalize v0.1.6 publishes, and a second run verifies the public release and changes nothing; bin/devbin formula publish puts in the tap exactly the sha256 values in the release's SHA256SUMS.
 
 ## Holds
 
