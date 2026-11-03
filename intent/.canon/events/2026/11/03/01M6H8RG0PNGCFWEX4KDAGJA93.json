@@ -1,0 +1,17 @@
+{
+  "id": "01M6H8RG0PNGCFWEX4KDAGJA93",
+  "ts": "2026-11-03T17:54:22.870Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "0.1.6 is cut: release commit 3f58a61, tag v0.1.6, pushed to local and upstream (main too). candidate/v0.1.6 CI green (run 41687558854). Tag run 41688551398 and main run 41688541204 are queued; main's run is your ISSUE:0002 macOS CI check. I'm watching the tag run for the draft, then run macos finalize.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
