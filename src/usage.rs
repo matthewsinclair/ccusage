@@ -769,23 +769,11 @@ mod tests {
     ] {
       let server = TcpListener::bind("127.0.0.1:0")?;
       let endpoint = format!("http://{}/usage", server.local_addr()?);
-      server.set_nonblocking(true)?;
       let thread = std::thread::spawn(move || -> Result<Vec<String>> {
         let mut requests = Vec::new();
-        let start = std::time::Instant::now();
+        let deadline = std::time::Instant::now() + Duration::from_secs(5);
         for status in statuses {
-          let mut stream = loop {
-            match server.accept() {
-              Ok((stream, _)) => break stream,
-              Err(error)
-                if error.kind() == std::io::ErrorKind::WouldBlock
-                  && start.elapsed() < Duration::from_secs(5) =>
-              {
-                std::thread::sleep(Duration::from_millis(10))
-              }
-              Err(error) => return Err(error.into()),
-            }
-          };
+          let mut stream = crate::loopback::accept_by(&server, deadline)?;
           stream.set_read_timeout(Some(Duration::from_secs(5)))?;
           let mut buffer = [0; 8192];
           let received = stream.read(&mut buffer)?;

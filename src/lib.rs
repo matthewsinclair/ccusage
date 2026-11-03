@@ -6,6 +6,8 @@ pub mod display;
 pub mod doctor;
 #[cfg(target_os = "macos")]
 mod keychain;
+#[cfg(test)]
+mod loopback;
 pub mod storage;
 pub mod usage;
 

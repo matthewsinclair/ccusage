@@ -431,21 +431,9 @@ mod tests {
     use std::time::{Duration, Instant};
     let server = std::net::TcpListener::bind("127.0.0.1:0")?;
     let endpoint = format!("http://{}/token", server.local_addr()?);
-    server.set_nonblocking(true)?;
     let thread = std::thread::spawn(move || -> Result<String> {
-      let start = Instant::now();
-      let mut stream = loop {
-        match server.accept() {
-          Ok((stream, _)) => break stream,
-          Err(e)
-            if e.kind() == std::io::ErrorKind::WouldBlock
-              && start.elapsed() < Duration::from_secs(5) =>
-          {
-            std::thread::sleep(Duration::from_millis(10))
-          }
-          Err(e) => return Err(e.into()),
-        }
-      };
+      let deadline = Instant::now() + Duration::from_secs(5);
+      let mut stream = crate::loopback::accept_by(&server, deadline)?;
       stream.set_read_timeout(Some(Duration::from_secs(5)))?;
       let mut request = Vec::new();
       let mut chunk = [0; 4096];
