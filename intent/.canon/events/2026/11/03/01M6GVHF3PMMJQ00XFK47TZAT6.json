@@ -1,0 +1,16 @@
+{
+  "id": "01M6GVHF3PMMJQ00XFK47TZAT6",
+  "ts": "2026-11-03T14:03:21.078Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ISSUE:0003 per vc's brief and hv's confirmation, for the single 0.1.6 cut. Handed to vc on main: b2efc02 (claude_config_dir, dir, use, run), c20daba (doctor's warnings), 4cb0dee (README, CHANGELOG), aa92a0a (the refresh-lock wait test), a63d803 (Claude Code's .claude.json lock, read by vc from 2.1.317's source; the save at 0600 as Claude Code's; the settings-lock wait test), and 07259fb (vc's float finding: serde_json's float_roundtrip, so a switch changes only oauthAccount; a 2000-float byte-for-byte test). check all, test all and build green. Held at hv's word, with everything committed, until hv resumes; vc's verdict on ISSUE:0003 is pending, and the live checks and rollout are hv's and vc's."
+  }
+}

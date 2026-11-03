@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 13:51Z
+heartbeat_at: 2026-11-03 14:03Z
 status: active
-focus: "ISSUE:0003 next, for the single 0.1.6 cut; ISSUE:0002 and ISSUE:0004 held until 0.1.6 ships"
+focus: "Held at hv's word: ISSUE:0002, 0003 and 0004 validated, closing when 0.1.6 ships; ISSUE:0005 next when hv resumes"
 claims: [ISSUE:0002, ISSUE:0004, ISSUE:0003]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0002, ISSUE:0004, ISSUE:0003]
 
 ## DOING
 
-- ISSUE:0003 per vc's brief and hv's confirmation, for the single 0.1.6 cut. Handed to vc on main at a63d803: b2efc02 (claude_config_dir, dir, use, run), c20daba (doctor's warnings), 4cb0dee (README, CHANGELOG), aa92a0a (the refresh-lock wait test), and a63d803 (Claude Code's .claude.json lock as vc read it from 2.1.317's source, the save at 0600 as Claude Code's, and the settings-lock wait test). check all, test all and build green. The live checks (a scratch session's claude auth status, Claude Code's side of the lock) and the rollout are hv's and vc's. (edited)
+_(none)_
 
 ## TODO
 
@@ -21,7 +21,7 @@ claims: [ISSUE:0002, ISSUE:0004, ISSUE:0003]
 
 ## Holds
 
-- ISSUE:0002 and ISSUE:0004 close when 0.1.6 has run end to end on the devbin release (bin/devbin release, then macos finalize, then formula publish), after hv's push of the tap's 1e74059, and ISSUE:0002's renewal check passes on the installed 0.1.6 (its Acceptance 5). vc validated ISSUE:0004 at 45edf8f and ISSUE:0002 at faf3233 and a5f9b54.
+- ISSUE:0002, ISSUE:0003 and ISSUE:0004 close when 0.1.6 has run end to end on the devbin release (bin/devbin release, then macos finalize, then formula publish), after hv's push of the tap's 1e74059; ISSUE:0002's renewal check passes on the installed 0.1.6 (its Acceptance 5); and ISSUE:0003's Acceptance items 1 and 5 pass hv's live check at rollout. vc validated ISSUE:0002 at faf3233 and a5f9b54, ISSUE:0004 at 45edf8f, and ISSUE:0003 at 07259fb. Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant. (edited)
 
 ## Watch-outs
 

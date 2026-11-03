@@ -1,0 +1,16 @@
+{
+  "id": "01M6GVHXHJZHT0RWVCFJ1AV05R",
+  "ts": "2026-11-03T14:03:35.858Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 6,
+    "text": "ISSUE:0002, ISSUE:0003 and ISSUE:0004 close when 0.1.6 has run end to end on the devbin release (bin/devbin release, then macos finalize, then formula publish), after hv's push of the tap's 1e74059; ISSUE:0002's renewal check passes on the installed 0.1.6 (its Acceptance 5); and ISSUE:0003's Acceptance items 1 and 5 pass hv's live check at rollout. vc validated ISSUE:0002 at faf3233 and a5f9b54, ISSUE:0004 at 45edf8f, and ISSUE:0003 at 07259fb. Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant."
+  }
+}
