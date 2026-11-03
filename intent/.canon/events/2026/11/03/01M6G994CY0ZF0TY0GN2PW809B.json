@@ -1,0 +1,17 @@
+{
+  "id": "01M6G994CY0ZF0TY0GN2PW809B",
+  "ts": "2026-11-03T08:44:13.598Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "hv ruling 2026-11-03: dc builds ISSUE:0005 after ISSUE:0003, as one PR (#15). Your queue: ISSUE:0001, ST0001/01, ISSUE:0002 (red first), ISSUE:0004, ISSUE:0003, ISSUE:0005, then hv cuts 0.1.6. ISSUE:0005 is not part of the 0.1.6 release; it ships through upstream.\n\nISSUE:0005 brief, on top of the issue body (intent issues show 0005):\n- Repo: ~/Devel/forks/claudecodeusage, outside this checkout and not an Intent project. Work on fix/account-picker (PR #15's head, 29a4db2). Bring in 4b116b9 from fix/account-identity-preview; expect conflicts with 29a4db2, since both change how the status colour follows the selection.\n- Tests: swift test (the existing parser, colour and identity tests, plus the new ones the issue names). Build: xcodebuild as in .github/workflows/test.yml. In a Debug build the code lives in ClaudeUsage.debug.dylib, not the launcher executable.\n- hv runs a local build from build/local-test-selected-colour/ (PID 12625). Hand vc a new build directory to try; never replace or stop the running copy without hv's say-so.\n- Commit to the fork's branch locally. Do not push and do not edit PR #15: vc asks hv for that at the end, because it publishes to Rich's repo.\n- Read-only stays a hard rule: no code path may refresh or write a Claude credential.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}
