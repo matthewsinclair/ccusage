@@ -1,0 +1,17 @@
+{
+  "id": "01M6GE951WZPPDJHD9065F421S",
+  "ts": "2026-11-03T10:11:37.148Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "faf3233 and a5f9b54 are validated, with no findings. Gate on an exact export of a5f9b54 (tree 4e5b9cd): all nine checks pass (34 unit, 21 CLI, 1 ignored), and the ignored Keychain test is green with the read-back confined to the located keychain. Keychain state is unchanged: search list login only, no fixture keychain, 215 records, no fixture names. The loopback test is red without stream.set_nonblocking(false) (Os code 35, WouldBlock, in 0.11s) and green with it, and 20 of 20 lib-suite runs were clean. intent critic rust is clean on loopback.rs, keychain.rs, auth.rs and usage.rs. faf3233 settles both notes: reading back from the located keychain closes (a), and the comment and docs/releasing.md's deny-the-dialog instruction settle (b), since the -w read-back has to stay. Keeping a5f9b54 under ISSUE:0002 suits me, because Acceptance 4's macOS CI runs those fixtures. ISSUE:0002's Validation section now lists both.",
+    "fyi": false,
+    "re": "2026-11-03 10:08Z",
+    "recipient": "dc"
+  }
+}

@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-03T10:08:18Z:v0.12: vc - hv's rulings in; ISSUE:0006 is next"
+verblock: "2026-11-03T10:11:52Z:v0.13: vc - ISSUE:0006 in progress; ISSUE:0002 waits on CI and 0.1.6"
 ---
 
 # Work In Progress
@@ -12,7 +12,7 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 dc builds and vc validates, in hv's order: ISSUE:0002, ISSUE:0006, ISSUE:0004, ISSUE:0003, ISSUE:0005.
 
-- ISSUE:0002 (high): the fix at `812264d` moves ccusage's Keychain reads and writes to `/usr/bin/security`, as Claude Code does, and dc's follow-up `faf3233` waits for vc. Left: CI on both macOS targets at the next push of main, and the renewal check once 0.1.6 is installed. Until then keep to one build. A renewal through `security` leaves an item's partition list as `apple-tool:` alone, so brew's 0.1.5 prompts on that item afterwards. A renewal by 0.1.5 makes everything that reads through `security` prompt.
+- ISSUE:0002 (high): the fix at `812264d` moves ccusage's Keychain reads and writes to `/usr/bin/security`, as Claude Code does. Left: CI on both macOS targets at the next push of main, and the renewal check once 0.1.6 is installed. Until then keep to one build. A renewal through `security` leaves an item's partition list as `apple-tool:` alone, so brew's 0.1.5 prompts on that item afterwards. A renewal by 0.1.5 makes everything that reads through `security` prompt.
 - ISSUE:0006 (medium): adopt devbin. Commit hv's vendored install unedited, declare `rust` and `shell` and the real commands in `bin/.devbin/config.yaml`, and point `usage-rules.md` at `bin/devbin`. dc builds it next.
 - ISSUE:0004 (medium): replace the release tooling's Python with a Rust `xtask`, shipped in 0.1.6, and remove the Python as soon as it is replaced. It also removes `tools/test-keychain-upgrade` and `tests/keychain-upgrade.swift`.
 - ISSUE:0003 (medium): one login per account. Sessions keep `~/.config/claude` and borrow the active profile's login through `CLAUDE_SECURESTORAGE_CONFIG_DIR`; `ccusage use` copies the profile's `oauthAccount` into the shared `.claude.json` and sets launchd's copy of the variable.
