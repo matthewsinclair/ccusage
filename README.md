@@ -146,11 +146,11 @@ bin/devbin test all
 bin/devbin build
 ```
 
-`bin/devbin` is the vendored devbin launcher, and `bin/.devbin/config.yaml` holds the project's checks. `check all` runs `cargo fmt --check`, Clippy with warnings as errors, actionlint on the workflow, shellcheck on the release scripts and devbin's read-only gates. `test all` runs the Cargo suites of ccusage and the xtask, the release tooling's integration suite (`test shell`) and, on macOS, the disposable-keychain renewal test (`test keychain`). `build` makes the release build. Every cargo command in `bin/.devbin/config.yaml` takes `--locked`. Each gate seals its verdict under `tmp/`, and `bin/devbin help --why` says what is active here. devbin needs bash 5 or later, and `bin/devbin doctor` checks the install.
+`bin/devbin` is the vendored devbin launcher, and `bin/.devbin/config.yaml` holds the project's checks. `check all` runs `cargo fmt --check`, Clippy with warnings as errors, actionlint on the workflow, shellcheck on the bats suites, `check nopython` and devbin's read-only gates. `test all` runs the Cargo suites and, on macOS, the bats suites for the project commands in `bin/.devbin/cmd/` (`test shell`) and the disposable-keychain renewal test (`test keychain`). `build` makes the release build. Every cargo command in `bin/.devbin/config.yaml` takes `--locked`. Each gate seals its verdict under `tmp/`, and `bin/devbin help --why` says what is active here. devbin needs bash 5 or later, and `bin/devbin doctor` checks the install.
 
 Tests use local HTTP fixtures and temporary XDG directories. A fake Claude executable verifies login, selection, logout, environment isolation, and argument/exit-code forwarding without using real accounts. Other checks cover stale-cache fallback, cooldown persistence, config validation, and storage permissions. Real browser login and live usage need verification with an account you explicitly configure.
 
-Code is split into configuration, credential access, storage, usage retrieval, terminal rendering, and CLI coordination. The release tooling that signs, verifies and publishes a release is the `xtask` workspace member, run as `cargo xtask`, which never ships; [docs/releasing.md](docs/releasing.md) describes it. Dependency purposes are documented beside their entries in each `Cargo.toml`. Formatting uses two spaces. Unsafe Rust is forbidden; Clippy denies `unwrap` and `expect`. Cargo.lock is retained for reproducible application builds.
+Code is split into configuration, credential access, storage, usage retrieval, terminal rendering, and CLI coordination. Releases run through devbin: `bin/devbin release`, `bin/devbin macos finalize` and `bin/devbin formula publish`, which [docs/releasing.md](docs/releasing.md) describes. Dependency purposes are documented beside their entries in `Cargo.toml`. Formatting uses two spaces. Unsafe Rust is forbidden; Clippy denies `unwrap` and `expect`. Cargo.lock is retained for reproducible application builds.
 
 ## Detailed output
 
@@ -172,6 +172,6 @@ The parser uses the canonical `limits` array when present, including model displ
 
 `design/icons/ccusage-logo.svg` contains three plain horizontal bars on a transparent background: long green at the top, medium amber in the middle, and short red at the bottom.
 
-## Maintainer release command
+## Maintainer release commands
 
-From a clean `main` checkout, with the tap at `../Brew/homebrew-ccusage` (or set `CCUSAGE_TAP`), run `tools/release 0.1.2` to bump the version, validate, commit/tag/push, wait for the GitHub release, and update the Homebrew tap. Use `tools/release --dry-run 0.1.2` to preview, or `--resume 0.1.1` to recover an interrupted publication. This does not install or uninstall local packages. See [releasing](docs/releasing.md) for prerequisites and recovery details.
+From a clean `main` checkout on the maintainer's Mac, `bin/devbin release 0.1.6` bumps the version, runs the gates and CI, then tags and pushes; `bin/devbin macos finalize v0.1.6` signs the Mac archives and publishes the release; and `bin/devbin formula publish` updates the Homebrew tap. `bin/devbin release 0.1.6 --dry-run` previews the cut, and running a command again continues it from where it stopped. None of them installs or uninstalls local packages. See [releasing](docs/releasing.md) for prerequisites and recovery details.

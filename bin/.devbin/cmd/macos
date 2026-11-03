@@ -1,0 +1,295 @@
+#!/usr/bin/env zsh
+# devbin: summary = sign CI's two Mac release archives with the Developer ID, verify what GitHub then holds, and publish the draft
+# devbin: group = Ship
+#
+# `bin/devbin macos` for Ccusage, a project handler cut down from Pplr's. It
+# replaces devbin's built-in macos, which signs a .app only.
+#
+#   bin/devbin macos finalize <tag>   CI's draft for <tag> holds the four archives and
+#                                     SHA256SUMS.ci. Sign its two Mac archives here, upload
+#                                     them with SHA256SUMS and MACOS-SIGNING.json, download
+#                                     everything again and verify it, then drop
+#                                     SHA256SUMS.ci and publish the draft. A release
+#                                     already public is verified and left alone.
+#
+# An archive is unpacked only when it holds exactly LICENSE, README.md, ccusage and
+# ccusage-logo.svg, each once and each a regular file, named bare or under a ./ root
+# directory. Its binary must be its target's architecture, and each signature must
+# carry the hardened runtime, a secure timestamp and a designated requirement with
+# no cdhash. With CCUSAGE_NOTARY_PROFILE naming a notarytool profile on this Mac,
+# each signed binary must also be notarized. The facts it signs and checks with
+# live once, in packaging/macos/signing.
+#
+# IT RUNS ON THE MAINTAINER'S MAC ONLY. It refuses on CI ($CI set) and off macOS,
+# and before it signs, when the Developer ID identity is not in the keychain. It
+# never prints what a signing tool printed: that can carry Keychain diagnostics.
+
+emulate -L zsh
+setopt err_exit no_unset pipe_fail
+
+root=${0:A:h:h:h:h}
+cd $root
+signing=packaging/macos/signing
+repo=matthewsinclair/ccusage
+files=(LICENSE README.md ccusage ccusage-logo.svg)
+targets=(aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu)
+mac_targets=(${(M)targets:#*-apple-darwin})
+# What lipo -archs prints for each Mac target's binary
+typeset -A arch=(aarch64-apple-darwin arm64 x86_64-apple-darwin x86_64)
+# The largest member it unpacks; a test may lower it, never raise it
+max=$(( 128 * 1024 * 1024 ))
+limit=${CCUSAGE_MACOS_MEMBER_LIMIT:-$max}
+[[ $limit == <-> ]] && (( limit <= max )) || limit=$max
+tag=
+work=
+# Set here, not in a function: zsh runs a function's EXIT trap when the function returns
+trap '[[ -z $work ]] || rm -rf -- $work' EXIT
+
+die() { print -u2 -r -- "macos: $*"; exit 1 }
+step() { print -r -- "-- $*" }
+
+# A fact from packaging/macos/signing, by key
+fact() {
+  local line=${(M)${(f)"$(<$signing)"}:#$1=*}
+  [[ -n $line ]] || die "$signing has no $1"
+  print -r -- ${line#$1=}
+}
+
+guard() {
+  [[ -z ${CI:-} ]] || die "refusing to run on CI: signing happens on the maintainer's Mac only"
+  [[ $(uname) == Darwin ]] || die "signing needs macOS"
+}
+
+require_identity() {
+  local identity=$(fact identity) identities
+  identities=$(security find-identity -v -p codesigning 2>/dev/null) || identities=
+  [[ $identities == *"\"$identity\""* ]] || die "the signing identity is not in this keychain: $identity"
+}
+
+sha() { shasum -a 256 -- $1 | cut -d' ' -f1 }
+
+# check_sums <dir>: SHA256SUMS there names exactly this release's four archives, each
+# once, each by a lowercase SHA-256 its file in <dir> has. Leaves them in $sums.
+typeset -gA sums
+check_sums() {
+  local dir=$1 line t
+  local -a fields expected
+  [[ -f $dir/SHA256SUMS ]] || die "the release has no SHA256SUMS"
+  sums=()
+  while IFS= read -r line || [[ -n $line ]]; do
+    fields=(${=line})
+    (( $#fields == 2 )) || die "Invalid release checksum manifest"
+    [[ $fields[1] =~ '^[0-9a-f]{64}$' && $fields[2] =~ '^[A-Za-z0-9._-]+$' ]] ||
+      die "Invalid release checksum manifest"
+    (( ! ${+sums[$fields[2]]} )) || die "Invalid release checksum manifest"
+    sums[$fields[2]]=$fields[1]
+  done < $dir/SHA256SUMS
+  for t in $targets; do expected+=(ccusage-$tag-$t.tar.gz); done
+  # Sorted into arrays first: in [[ ]] a nested expansion is one word before (o) sees it
+  local -a named=(${(ok)sums}) wanted=(${(o)expected})
+  [[ "${(j: :)named}" == "${(j: :)wanted}" ]] || die "Unexpected or missing release archives"
+  for t in $expected; do
+    [[ $(sha $dir/$t) == "$sums[$t]" ]] || die "Release archive checksum mismatch"
+  done
+}
+
+# unpack <archive> <dir>: <dir> new and empty. Its listing must be exactly the four
+# files, each once, with a ./ root allowed; what comes out must be those four regular
+# files, one link each and at most $limit bytes. The binary comes out executable.
+unpack() {
+  local archive=$1 dir=$2 entry i
+  local -a listed members wanted found
+  listed=("${(@f)$(bsdtar -tzf $archive 2>/dev/null)}") || die "${archive:t} cannot be listed"
+  for entry in $listed; do
+    entry=${entry#./}
+    [[ -z $entry || $entry == . ]] && continue
+    members+=($entry)
+  done
+  members=(${(o)members}) wanted=(${(o)files})
+  (( $#members == $#wanted )) || die "Unexpected release archive member in ${archive:t}"
+  for (( i = 1; i <= $#wanted; i++ )); do
+    [[ $members[i] == "$wanted[i]" ]] || die "Unexpected release archive member in ${archive:t}"
+  done
+  ( limit filesize 128m; bsdtar -xzf $archive -C $dir --no-same-owner --no-same-permissions \
+    --no-xattrs --no-mac-metadata ) >/dev/null 2>&1 || die "${archive:t} cannot be unpacked"
+  found=($dir/**/*(DN))
+  (( $#found == $#files )) || die "Unexpected release archive member in ${archive:t}"
+  for entry in $files; do
+    [[ -f $dir/$entry && ! -h $dir/$entry ]] || die "Unexpected release archive member in ${archive:t}"
+    [[ $(stat -f %l $dir/$entry) == 1 ]] || die "Unexpected release archive member in ${archive:t}"
+    (( $(stat -f %z $dir/$entry) <= limit )) || die "Unexpected release archive member in ${archive:t}"
+  done
+  chmod 755 $dir/ccusage
+}
+
+# A CodeDirectory line whose flags name the runtime, as in
+# CodeDirectory v=20500 size=7583 flags=0x10000(runtime) hashes=231+2 location=embedded
+hardened() {
+  local line field
+  local -a names
+  for line in "$@"; do
+    [[ $line == 'CodeDirectory '* ]] || continue
+    for field in ${=line}; do
+      [[ $field == flags=*\(*\) ]] || continue
+      names=(${(s:,:)${${field#*\(}%\)}})
+      (( ${names[(Ie)runtime]} )) && return 0
+    done
+  done
+  return 1
+}
+
+# verify <binary>: it meets the Geodica requirement, and its signature carries a secure
+# timestamp, the hardened runtime and a stable designated requirement, left in $REPLY.
+verify() {
+  local binary=$1 out designated
+  local -a lines
+  codesign --verify --strict -R "=$(fact requirement)" $binary >/dev/null 2>&1 ||
+    die "${binary:t} does not meet the Geodica Developer ID requirement"
+  # codesign -d prints the designated requirement on stdout, the details on stderr
+  out=$(codesign -d --verbose=4 -r- $binary 2>$work/display) || die "codesign cannot display ${binary:t}'s signature"
+  lines=("${(@f)out}" "${(@f)$(<$work/display)}")
+  (( ${lines[(I)Timestamp=*]} )) || die "Developer ID signing requires a secure timestamp"
+  hardened $lines || die "Developer ID signing requires the hardened runtime"
+  for designated in $lines ''; do [[ $designated == 'designated =>'* ]] && break; done
+  [[ -n $designated && $designated != *cdhash* ]] || die "Signature does not have a stable designated requirement"
+  REPLY=$designated
+}
+
+# Submit a signed binary with a notarytool profile already on this Mac; no
+# notarization credential is exported.
+notarize() {
+  local binary=$1 zip=${1:h}/notarize.zip answer verdict
+  ditto -c -k --keepParent $binary $zip >/dev/null 2>&1 || die "ditto could not zip ${binary:t} for notarization"
+  answer=$(xcrun notarytool submit $zip --keychain-profile $CCUSAGE_NOTARY_PROFILE --wait --output-format json 2>/dev/null) ||
+    die "notarytool could not submit ${binary:t}"
+  verdict=$(jq -r '.status // empty' <<<$answer 2>/dev/null) || verdict=
+  [[ $verdict == Accepted ]] || die "Notarization was not accepted"
+  rm -f -- $zip
+}
+
+# sign <binary> <arch>: lipo shows it is <arch>; sign it with the Developer ID and verify
+# it, leaving its designated requirement in $REPLY.
+sign() {
+  local binary=$1 reported
+  reported=$(lipo -archs $binary 2>/dev/null) || die "lipo cannot read ${binary:t}"
+  [[ ${reported//[[:space:]]/} == "$2" ]] || die "Release binary has the wrong architecture"
+  codesign --force --sign "$(fact identity)" --identifier "$(fact identifier)" --options runtime --timestamp \
+    $binary >/dev/null 2>&1 || die "codesign could not sign ${binary:t}"
+  verify $binary
+  [[ -z ${CCUSAGE_NOTARY_PROFILE:-} ]] || notarize $binary
+}
+
+# sign_release <in> <out>: <out> must not exist. Copy each Linux archive as it is, sign
+# each Mac one, then write SHA256SUMS and MACOS-SIGNING.json last, so a failed run
+# leaves neither.
+sign_release() {
+  local in=$1 out=$2 t name unpacked notarized=false archives='{}'
+  local -A requirement_of
+  mkdir -- $out || die "$out exists already"
+  for t in $targets; do
+    name=ccusage-$tag-$t.tar.gz
+    if (( ! ${+arch[$t]} )); then
+      cp -- $in/$name $out/$name
+      continue
+    fi
+    step "signing $name"
+    unpacked=$(mktemp -d $work/unpacked.XXXXXX)
+    unpack $in/$name $unpacked
+    sign $unpacked/ccusage $arch[$t]
+    requirement_of[$name]=$REPLY
+    COPYFILE_DISABLE=1 bsdtar -czf $out/$name --uid 0 --gid 0 --uname '' --gname '' --no-xattrs \
+      --no-mac-metadata -C $unpacked $files >/dev/null 2>&1 || die "cannot pack $name"
+  done
+  local -a distinct=(${(u)requirement_of})
+  (( $#distinct == 1 )) || die "Mac architectures do not share the same signing identity"
+  for t in $targets; do
+    name=ccusage-$tag-$t.tar.gz
+    print -r -- "$(sha $out/$name)  $name" >> $out/SHA256SUMS
+  done
+  [[ -z ${CCUSAGE_NOTARY_PROFILE:-} ]] || notarized=true
+  for t in $mac_targets; do
+    name=ccusage-$tag-$t.tar.gz
+    archives=$(jq -n --argjson a $archives --arg n $name --arg r $requirement_of[$name] \
+      --argjson z $notarized --arg s "$(sha $out/$name)" '$a + {($n): {requirement: $r, notarized: $z, sha256: $s}}')
+  done
+  jq -n --arg tag $tag --arg id "$(fact identifier)" --arg team "$(fact team)" --argjson archives $archives \
+    '{tag: $tag, identifier: $id, team_id: $team, archives: $archives}' > $out/MACOS-SIGNING.json
+}
+
+# check_signed <dir>: MACOS-SIGNING.json there is this release's and the Geodica team's,
+# each Mac archive has the checksum SHA256SUMS gives it, and its binary still verifies
+# with the designated requirement the manifest recorded.
+check_signed() {
+  local dir=$1 manifest=$1/MACOS-SIGNING.json t name recorded unpacked
+  [[ -f $manifest ]] || die "the release has no MACOS-SIGNING.json"
+  jq -e --arg tag $tag --arg id "$(fact identifier)" --arg team "$(fact team)" \
+    '.tag == $tag and .identifier == $id and .team_id == $team' $manifest >/dev/null 2>&1 ||
+    die "Release signing identity mismatch"
+  for t in $mac_targets; do
+    name=ccusage-$tag-$t.tar.gz
+    recorded=$(jq -r --arg n $name '.archives[$n].sha256 // empty' $manifest 2>/dev/null) || recorded=
+    [[ -n $recorded ]] || die "MACOS-SIGNING.json does not sign $name"
+    [[ $recorded == "$sums[$name]" ]] || die "Signed archive checksum mismatch"
+    unpacked=$(mktemp -d $work/verified.XXXXXX)
+    unpack $dir/$name $unpacked
+    verify $unpacked/ccusage
+    [[ $REPLY == "$(jq -r --arg n $name '.archives[$n].requirement' $manifest)" ]] ||
+      die "Release designated requirement mismatch"
+  done
+}
+
+cmd_finalize() {
+  (( $# == 1 )) || die "usage: bin/devbin macos finalize <tag>"
+  tag=$1
+  [[ $tag =~ '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' ]] ||
+    die "expected a stable release tag such as v0.1.0, not $tag"
+  local draft incoming signed uploaded
+  draft=$(gh release view $tag --repo $repo --json isDraft --jq .isDraft) || die "gh cannot read $tag's release"
+  [[ $draft == true || $draft == false ]] || die "Could not determine draft status"
+  [[ $draft == false ]] || require_identity
+  work=$(mktemp -d "${TMPDIR:-/tmp}/ccusage-release-assets.XXXXXX")
+  incoming=$work/incoming
+  mkdir -- $incoming
+  local -a patterns=(--pattern "ccusage-$tag-*.tar.gz" --pattern SHA256SUMS)
+  # CI names its sums SHA256SUMS.ci, so devbin's formula, which reads SHA256SUMS, cannot
+  # render from a draft: SHA256SUMS is this command's alone, written once the manifest
+  # binds it. A draft that has one is a run whose publish did not finish.
+  if [[ $draft == true ]]; then patterns+=(--pattern SHA256SUMS.ci); else patterns+=(--pattern MACOS-SIGNING.json); fi
+  gh release download $tag --repo $repo --dir $incoming $patterns || die "gh could not download $tag's assets"
+  if [[ $draft == true && ! -e $incoming/SHA256SUMS ]]; then
+    [[ -f $incoming/SHA256SUMS.ci ]] || die "the draft has neither CI's SHA256SUMS.ci nor a SHA256SUMS"
+    mv -- $incoming/SHA256SUMS.ci $incoming/SHA256SUMS
+  fi
+  check_sums $incoming
+  if [[ $draft == false ]]; then
+    check_signed $incoming
+    print -r -- "macos: $tag is public already, and its Mac signatures verify"
+    return 0
+  fi
+  signed=$work/signed
+  sign_release $incoming $signed
+  check_sums $signed
+  check_signed $signed
+  gh release upload $tag --repo $repo --clobber $signed/*(.on) || die "gh could not upload $tag's signed assets"
+  # What GitHub now holds is verified before anything is published, on a resumed run too
+  uploaded=$work/uploaded
+  gh release download $tag --repo $repo --dir $uploaded || die "gh could not download $tag's uploaded assets"
+  check_sums $uploaded
+  check_signed $uploaded
+  # CI's sums no longer match the signed Mac archives, so they do not ship
+  if [[ -e $uploaded/SHA256SUMS.ci ]]; then
+    gh release delete-asset $tag SHA256SUMS.ci --repo $repo --yes >/dev/null ||
+      die "gh could not remove CI's SHA256SUMS.ci from $tag"
+  fi
+  gh release edit $tag --repo $repo --draft=false >/dev/null || die "gh could not publish $tag"
+  print -r -- "macos: published $tag with verified Mac signatures"
+}
+
+guard
+sub=${1:-}
+(( $# )) && shift
+case $sub in
+  finalize) cmd_finalize "$@" ;;
+  ""|-h|--help) sed -n '7,12p' ${0:A} | sed 's/^# \{0,1\}//' ;;
+  *) die "unknown step: $sub (finalize)" ;;
+esac

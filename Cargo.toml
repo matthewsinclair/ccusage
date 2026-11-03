@@ -1,15 +1,15 @@
 [package]
 name = "ccusage"
 version = "0.1.5"
-edition.workspace = true
+edition = "2024"
 license = "MIT"
 repository = "https://github.com/matthewsinclair/ccusage"
 description = "Named Claude Code accounts and a compact terminal usage dashboard"
 
 [dependencies]
 # Native credential files, usage responses, and persisted state.
-serde.workspace = true
-serde_json.workspace = true
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 # Human-editable profile configuration.
 toml = "0.9"
 # Blocking HTTPS; no async runtime or model SDK.
@@ -19,7 +19,7 @@ crossterm = "0.29"
 # ISO-8601 reset times from the usage API.
 time = { version = "0.3", features = ["parsing", "formatting"] }
 # Claude's per-directory macOS Keychain service names and usage-cache credential IDs.
-sha2.workspace = true
+sha2 = "0.10"
 
 # Claude Code hashes the NFC form of a config directory for its Keychain service names.
 [target.'cfg(target_os = "macos")'.dependencies]
@@ -29,28 +29,10 @@ unicode-normalization = "0.1"
 [target.'cfg(target_os = "macos")'.dev-dependencies]
 security-framework = "3"
 
-[lints]
-workspace = true
-
-# The release tooling is the xtask member, run as `cargo xtask` (.cargo/config.toml). It
-# never ships: this package stays the default member, so cargo build, test and install
-# here mean ccusage alone.
-[workspace]
-members = ["xtask"]
-
-[workspace.package]
-edition = "2024"
-
-# Dependencies ccusage and the xtask share; each member says what it uses them for.
-[workspace.dependencies]
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-sha2 = "0.10"
-
-[workspace.lints.rust]
+[lints.rust]
 unsafe_code = "forbid"
 
-[workspace.lints.clippy]
+[lints.clippy]
 unwrap_used = "deny"
 expect_used = "deny"
 

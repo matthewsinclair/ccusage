@@ -2,7 +2,8 @@ name: Build and release
 
 on:
   push:
-    branches: [main]
+    # candidate/<tag> is where bin/devbin release asks CI before it tags
+    branches: [main, "candidate/**"]
     tags: ["v*"]
   pull_request:
   workflow_dispatch:
@@ -53,10 +54,8 @@ jobs:
           fi
           echo "VERSION=$version" >> "$GITHUB_ENV"
       - run: cargo fmt --check
-      - name: Release helper integration tests
-        run: sh tests/release.sh
-      - run: cargo clippy --workspace --all-targets --locked --target "${{ matrix.target }}" -- -D warnings
-      - run: cargo test --workspace --locked --no-fail-fast --target "${{ matrix.target }}"
+      - run: cargo clippy --all-targets --locked --target "${{ matrix.target }}" -- -D warnings
+      - run: cargo test --locked --no-fail-fast --target "${{ matrix.target }}"
       - name: Native Keychain renewal storage test
         if: runner.os == 'macOS'
         run: cargo test --locked --no-fail-fast --target "${{ matrix.target }}" renewal_write_keeps_claude_items_readable_by_security -- --ignored
@@ -95,6 +94,8 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           cd dist
-          sha256sum ccusage-*.tar.gz > SHA256SUMS
-          gh release create "$TAG" ccusage-*.tar.gz SHA256SUMS \
+          # SHA256SUMS.ci, not SHA256SUMS: bin/devbin formula reads SHA256SUMS, which
+          # only bin/devbin macos finalize writes, once the Mac archives are signed.
+          sha256sum ccusage-*.tar.gz > SHA256SUMS.ci
+          gh release create "$TAG" ccusage-*.tar.gz SHA256SUMS.ci \
             --draft --verify-tag --generate-notes --title "Ccusage $TAG"

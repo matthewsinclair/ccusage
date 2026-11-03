@@ -1,0 +1,71 @@
+#!/usr/bin/env zsh
+# devbin: summary = no Python in what the repository tracks (ISSUE:0004); check nopython runs it sealed
+# devbin: group = Check
+#
+# Refuse Python in what this repository commits (ISSUE:0004, and the
+# user-scope rule that no repository ships Python). It reads the files git
+# tracks, as staged, and refuses:
+#   - a *.py file, or a file whose #! line names Python;
+#   - outside the Markdown and intent/, the whole lowercase word python,
+#     python3, uv or uvx, as a script, test or workflow that runs one would
+#     name it, unless the line says why it names one: "nopython: <why>".
+# It prints the paths and line numbers it refuses, never the lines, and leaves
+# out its own file, which must name the words.
+#
+# Exit status: 0 nothing refused, 1 something refused, 2 git could not answer.
+
+emulate -L zsh
+setopt err_exit no_unset pipe_fail
+
+self=bin/.devbin/cmd/nopython
+words=(python python3 uv uvx)
+
+top=$(git rev-parse --show-toplevel 2>/dev/null) || {
+  print -u2 "nopython: not in a git checkout, so nothing was checked"
+  exit 2
+}
+cd $top
+
+# git grep over the index: its exit 1 is "no match", anything above an error
+grep_index() {
+  local out rc=0
+  out=$(git grep --cached -I "$@") || rc=$?
+  if (( rc > 1 )); then
+    print -u2 "nopython: git grep failed (exit $rc), so nothing was checked"
+    exit 2
+  fi
+  print -rn -- $out
+}
+
+typeset -a refused
+
+# Python files: by name, then by a #! first line
+for file in ${(f)"$(git ls-files -- '*.py')"}; do
+  refused+=("$file: a Python file")
+done
+for file in ${(f)"$(grep_index -l -E '^#!.*python' -- .)"}; do
+  first=$(git show ":$file" | head -n 1 || true)
+  if [[ $first == '#!'*python* ]]; then
+    refused+=("$file:1: a Python #! line")
+  fi
+done
+
+# The words, line by line: "path NUL line NUL text"
+typeset -a pattern
+for word in $words; do pattern+=(-e $word); done
+marked=0
+for hit in ${(f)"$(grep_index -z -n -w $pattern -- . ':!*.md' ':!intent/' ":!$self")"}; do
+  parts=("${(@0)hit}")
+  if [[ $parts[3] =~ 'nopython: [^[:space:]]' ]]; then
+    (( marked += 1 ))
+  else
+    refused+=("$parts[1]:$parts[2]: names python, python3, uv or uvx with no nopython: reason")
+  fi
+done
+
+tracked=$(git ls-files | wc -l | tr -d ' ')
+if (( ${#refused} )); then
+  print -u2 -l -- "nopython: REFUSED: ${#refused} finding(s) in $tracked tracked file(s):" "  "${^refused}
+  exit 1
+fi
+print "nopython: no Python in $tracked tracked file(s); $marked line(s) name a word with a nopython: reason"

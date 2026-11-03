@@ -1,0 +1,8 @@
+# How Ccusage's macOS binary is signed: the one place these facts live.
+# bin/.devbin/cmd/macos signs and checks with them, and tests/macos.bats holds
+# packaging/homebrew/ccusage.rb's copy of the requirement equal to this one.
+# key=value lines.
+identity=Developer ID Application: Geodica Pty Ltd (76BQL8L47U)
+team=76BQL8L47U
+identifier=com.geodica.ccusage
+requirement=identifier "com.geodica.ccusage" and anchor apple generic and certificate leaf[subject.OU] = "76BQL8L47U" and certificate leaf[field.1.2.840.113635.100.6.1.13] exists

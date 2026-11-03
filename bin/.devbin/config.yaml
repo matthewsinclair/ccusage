@@ -8,45 +8,51 @@ project:
   languages:
     - rust
     - shell
-  # Cargo.toml's [package] version is the project's. tools/release is the one
-  # step that changes it, with Cargo.lock; `bin/devbin version set`, `bump` and
-  # `sync` would write Cargo.toml alone, so usage-rules.md rules them out.
+  # Cargo.toml's [package] version is the project's. bin/devbin release is the
+  # one step that changes it, its derived: lock-sync bringing Cargo.lock along;
+  # `bin/devbin version set`, `bump` and `sync` would write Cargo.toml alone, so
+  # usage-rules.md rules them out.
   version_from: Cargo.toml
 
 # The devbin this project expects. Enforced by: devbin doctor
 devbin_version: "^0.1.19"
 
-# This file is the one home of Ccusage's checks; README, docs/releasing.md and
-# usage-rules.md say to run them through bin/devbin. Every cargo line takes
-# --locked, so a check never rewrites Cargo.lock. Clippy and the Rust suite
-# take --workspace to reach the xtask, the release tooling; build stays the
-# ccusage package alone. Every cargo test takes --no-fail-fast, so one failing
-# target never hides another.
+# This file is the one home of Ccusage's checks and release; README,
+# docs/releasing.md and usage-rules.md say to run them through bin/devbin. Every
+# cargo line takes --locked, so a check never rewrites Cargo.lock, and every
+# cargo test takes --no-fail-fast, so one failing target never hides another.
+# The project commands, macos, lock-sync and nopython, are in bin/.devbin/cmd/.
 commands:
   build:
     run: cargo build --release --locked
   check:
     options:
       clippy:
-        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+        run: cargo clippy --all-targets --locked -- -D warnings
       actionlint:
         summary: The build and release workflow
         run: actionlint .github/workflows/build.yml
         log: true
       shellcheck:
-        summary: The release scripts and their integration suite
-        run: shellcheck tools/release tools/formula tests/release.sh
+        summary: The bats suites
+        run: shellcheck tests/*.bats
         log: true
+      nopython:
+        summary: No Python in what the repository tracks (ISSUE:0004)
+        run: bin/.devbin/cmd/nopython
+        grammar: generic
+        log: NOPYTHON
   test:
     options:
       rust:
-        run: cargo test --workspace --locked --no-fail-fast
-      # The shell slot runs the release tooling's integration suite, which is
-      # plain sh with mocked GitHub; Ccusage has no Bats tests.
+        run: cargo test --locked --no-fail-fast
+      # The shell slot is devbin's own, bats tests: the macos and lock-sync
+      # project commands and the nopython check. The signer is the maintainer's
+      # Mac's alone, and its suite leans on macOS's bsdtar, stat and csreq.
       shell:
-        summary: Release tooling integration suite, GitHub mocked
-        run: sh tests/release.sh
-        grammar: generic
+        summary: The bats suites for the project commands
+        platforms:
+          - macos
       # The ignored renewal test needs the macOS Security service and makes
       # its own disposable keychain under ~/Library/Keychains.
       keychain:
@@ -56,3 +62,45 @@ commands:
         log: true
         platforms:
           - macos
+  release:
+    enabled: true
+  formula:
+    enabled: true
+
+# The cut: the version stamped into Cargo.toml and Cargo.lock, the CHANGELOG note
+# dated, the gates and CI on candidate/<tag> green, then the tag and the push.
+# CI's tag run makes the release object, a draft holding the four archives and
+# SHA256SUMS.ci. Then, by hand and in this order: bin/devbin macos finalize <tag>
+# signs the Mac archives and publishes the draft, and bin/devbin formula publish
+# brings the tap to it. No after:, since formula publish needs the signed release.
+release:
+  repo: matthewsinclair/ccusage
+  remotes:
+    - local
+    - upstream
+  branch: main
+  notes:
+    kind: changelog
+  derived:
+    - bin/devbin lock-sync
+  gates:
+    - check all
+    - test all
+    - build
+    - doctor
+  ci:
+    workflow: build.yml
+  object: ci
+  object_wait: 40m
+
+# The Homebrew formula: the signed Mac archives on macOS, and a build from the
+# tag's commit on Linux, from the template packaging/homebrew/ccusage.rb. The tap
+# is named because its remote goes through hv's ssh host alias.
+formula:
+  mode: assets
+  tap: git@github.com-matthewsinclair:matthewsinclair/homebrew-ccusage.git
+  assets:
+    - "ccusage-v{version}-aarch64-apple-darwin.tar.gz"
+    - "ccusage-v{version}-x86_64-apple-darwin.tar.gz"
+  bin:
+    - ccusage

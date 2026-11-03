@@ -1,56 +1,57 @@
 # Releasing Ccusage
 
-The application version is in `Cargo.toml`; keep `Cargo.lock` in sync. Use stable release tags of the form `v0.1.0`. Tags must match the package version. The canonical Homebrew formula template lives at `packaging/homebrew/ccusage.rb`; do not hand-edit version pins in the tap.
-
-## One command
-
-From a clean Ccusage checkout on `main`, with the `../Brew/homebrew-ccusage` checkout also clean:
+A release runs through devbin, in three commands, from a clean checkout on `main` on the maintainer's Mac:
 
 ```sh
-tools/release 0.1.2
+bin/devbin release 0.1.6
+bin/devbin macos finalize v0.1.6
+bin/devbin formula publish
 ```
 
-Pass the new stable version without a leading `v`. The command updates Cargo.toml and Cargo.lock, runs `bin/devbin check all`, `bin/devbin test all` and `bin/devbin build`, then commits the version bump. It creates an annotated tag and atomically pushes the source `main` branch and tag. It waits for the exact tag/commit's GitHub Actions run to succeed. Then `cargo xtask finalize-release` downloads the draft archives, signs both Mac architectures locally, verifies the uploaded signatures and checksums, and publishes the draft. Last, the command updates/pushes the pinned Homebrew formula and waits for the tap’s macOS/Linux Homebrew tests. It does not install or uninstall anything locally.
+The version lives in `Cargo.toml`, and `bin/devbin release` is the one step that changes it. Tags are stable and annotated, of the form `v0.1.6`, and must match the package version. The release's notes are its section of `CHANGELOG.md`: open `## [0.1.6] - unreleased` there before the cut, and the cut dates it. `bin/.devbin/config.yaml` declares the release in its `release:` and `formula:` blocks, and `bin/devbin release check` prints that declaration.
 
-Required maintainer tools: Git, Cargo/Rust, authenticated `gh`, and what `bin/devbin`'s checks run: bash 5 or later, `actionlint`, `shellcheck`, and `intent` with `jq` for `check critic`. Final publication runs on macOS using the existing `Developer ID Application: Geodica Pty Ltd (76BQL8L47U)` identity in the maintainer's Keychain. The private key is never exported or uploaded to GitHub. CI creates a draft; a signing or verification failure leaves it private and blocks the tap update.
+## 1. The cut
 
-Signing, by `cargo xtask sign-macos` or as the same step of `cargo xtask finalize-release`, uses identifier `com.geodica.ccusage`, hardened runtime, a secure timestamp, and the fixed Geodica Developer ID team. It rejects ad hoc signatures, archive members other than the four expected files, wrong architectures, differing designated requirements, and a missing timestamp or hardened runtime. `MACOS-SIGNING.json` binds the signed Mac archives to their checksums and signing identity. Homebrew installs those bytes on macOS and verifies the certificate requirement during install and test. Linux retains source builds.
+`bin/devbin release 0.1.6` (or `--patch`, `--minor`, `--major`) asks once, then does the rest under that one yes. It stamps the version into `Cargo.toml`, runs `bin/devbin lock-sync` to bring `Cargo.lock` along, dates the note and makes the release commit. Then it runs every leg together: the gates (`check all`, `test all`, `build` and `doctor`) on the release commit here, and the Build and release workflow on the release commit pushed to `candidate/v0.1.6`. Once every leg is green it makes the annotated tag, pushes the commit and the tag to `local` and `upstream`, and deletes the candidate branch. Nothing is tagged while any leg is red.
 
-Optional notarization: set `CCUSAGE_NOTARY_PROFILE` to an existing local `notarytool` credential profile before release. The helper submits each signed Mac binary and requires Accepted status. No notarization credentials are exported. The manifest records whether notarization was performed. Code signing and notarization are distinct; signed-only releases must not be described as notarized.
+CI's run on the tag then builds the four archives (Apple silicon and Intel macOS, x86-64 and ARM64 Linux) and makes the release object: a private draft holding them and `SHA256SUMS.ci`. The cut waits for that draft (`object: ci`), and ends there.
 
- The active GitHub account needs push access to both repositories. The source remote defaults to `upstream` when present, otherwise `origin`. The tap defaults to the `../Brew/homebrew-ccusage` directory. To use different local names/locations:
+Preview a cut without stamping, committing, tagging, pushing or running a gate:
 
 ```sh
-tools/release 0.1.2 --remote origin --tap /path/to/homebrew-ccusage
+bin/devbin release 0.1.6 --dry-run
 ```
 
-`CCUSAGE_REMOTE` and `CCUSAGE_TAP` provide the same defaults. The command verifies the source remote and tap repository identities, fetches both repositories, refuses a source branch that is behind/diverged, and fast-forwards the tap when possible. It permits local source commits ahead of GitHub, which are included in the atomic push. It never force-pushes or rewrites an existing tag. A per-checkout release lock prevents concurrent invocations.
+A cut that stops partway is continued by running the same command again: each step checks whether it is done already, and a stamp, commit or gate already done reads `already`. `bin/devbin release status v0.1.6` shows where a release stands. A red candidate leaves nothing tagged. Fix what the run names, then run it again. A code defect after the tag needs a new patch release, since a tag is never moved.
 
-Preview without editing versions, running validation, contacting GitHub, or publishing:
+At its end devbin prints a note to run `brew upgrade ccusage`, then `ccusage use brew`. Ignore the second half: `ccusage use` selects an account profile, and Ccusage has no dev, opt and brew switch.
+
+## 2. Mac signing and publication
+
+`bin/devbin macos finalize v0.1.6` signs the draft's two Mac archives with the existing `Developer ID Application: Geodica Pty Ltd (76BQL8L47U)` identity in the maintainer's Keychain. The private key is never exported or uploaded to GitHub. The command refuses on CI, off macOS, and without that identity in the keychain.
+
+It downloads the draft's archives and `SHA256SUMS.ci`, and checks each archive against those sums. It unpacks a Mac archive only when its listing is exactly `LICENSE`, `README.md`, `ccusage` and `ccusage-logo.svg`, each once and each a regular file, named bare or under a `./` root. Each binary must be its target's architecture. It signs with identifier `com.geodica.ccusage`, the hardened runtime and a secure timestamp. Each signature must then meet the Geodica requirement in `packaging/macos/signing`, carry the timestamp and the runtime flag, and have a designated requirement with no cdhash, and both architectures must share it. It repacks each Mac archive with no owner in its headers, and copies the Linux archives as they are. It writes `SHA256SUMS` over all four and `MACOS-SIGNING.json`, which binds each Mac archive's checksum and designated requirement to the release's tag, identifier and team. Then it uploads them, downloads everything again and verifies it all, removes `SHA256SUMS.ci` and publishes the draft. Any failure leaves the draft private.
+
+The signing facts (identity, team, identifier and requirement) live once, in `packaging/macos/signing`. The formula repeats the requirement, and `tests/macos.bats` fails when the two differ.
+
+Optional notarization: set `CCUSAGE_NOTARY_PROFILE` to an existing local `notarytool` credential profile before finalizing. Each signed binary is then submitted, and the run stops unless Apple answers Accepted. No notarization credential is exported. The manifest records whether notarization ran. Code signing and notarization are distinct, so a signed-only release is never described as notarized.
+
+Run against a release that is public already, `macos finalize` verifies its checksums, its manifest and both Mac signatures, and changes nothing. A run whose publish did not finish is finished by running it again: it takes the draft's own `SHA256SUMS` in place of CI's.
+
+## 3. The Homebrew tap
+
+`bin/devbin formula publish` renders the formula for the newest release from `packaging/homebrew/ccusage.rb`, clones the tap (`matthewsinclair/homebrew-ccusage`) fresh, and commits and pushes the formula once you say yes. It reads each Mac archive's checksum from the release's `SHA256SUMS`, which only `macos finalize` writes. So a publish run before finalizing has no sums to read, and refuses. A tap that carries the render already is left as it is. Preview a render with `bin/devbin formula render v0.1.6 /tmp/ccusage.rb`.
+
+On macOS the formula installs the signed architecture-specific archive into the keg's `libexec`, links `ccusage` into `bin`, and checks the signing requirement during install and test. On Linux it builds from the release tag and its commit, with Rust as a build dependency. It does not require Claude during installation, and changes no account files or shell startup files. Homebrew tests use fixture data and a temporary configuration directory, without credentials or live usage requests. Users install with:
 
 ```sh
-tools/release --dry-run 0.1.2
+brew install matthewsinclair/ccusage/ccusage
+ccusage doctor
 ```
 
-The preview still requires clean local checkouts and installed maintainer tools. It describes the intended steps; it does not assert that remote permissions or CI will pass.
+The tap's CI runs `brew install` and `brew test` on macOS and Linux. Its `brew style` and `brew audit --strict` steps are off until devbin's formula render stops writing a header line longer than brew style allows (devbin `lib/cmd/formula:424`); they come back with that fix.
 
-If publication was interrupted after the version commit, resolve the network/CI/tap failure and continue from the same release commit:
-
-```sh
-tools/release --resume 0.1.2
-```
-
-Resume does not bump the version or create another source commit. It retries the atomic push, waits for the existing workflow, verifies assets, retries the tap update, including a tap commit whose earlier push failed, and waits for Homebrew CI. It does not automatically rerun failed CI: inspect the failure and rerun the job in GitHub when appropriate. A code defect requires a new patch release, not moving a published tag. If the checkout has advanced beyond the tagged release commit, use the lower-level formula publisher below for a tap-only repair.
-
-A local validation failure occurs before any release commit/tag/push, and leaves version edits for inspection. Review and fix them, or restore only Cargo.toml/Cargo.lock before retrying; the helper does not discard changes automatically. Normal exits and signals remove its lock. After a forced kill/crash, check that no release process is running before removing a stale lock at the path reported by the command.
-
-The integration suite uses temporary Git repositories and real atomic/local pushes. GitHub, `bin/devbin` and `cargo xtask finalize-release` are mocked, and `cargo xtask formula-checksums` runs for real against the mocked release's checksums and manifest. It tests successful releases, failures, read-only previews, version validation, branch/dirty-tree guards, asset checks, locking, and recovery without contacting GitHub. devbin runs it as `test shell`:
-
-```sh
-bin/devbin test shell
-```
-
-## Lower-level checks and publication
+## Checks
 
 ```sh
 bin/devbin check all
@@ -58,35 +59,10 @@ bin/devbin test all
 bin/devbin build
 ```
 
-These run every check `bin/.devbin/config.yaml` holds, as README's Development section describes. `check all` includes actionlint on the workflow and shellcheck on the release scripts, and `test all`'s Rust suite covers the xtask's archive, checksum, manifest and signing tests. On macOS, `test all` also runs `test keychain`, which tests renewal against a disposable keychain (no real account credentials are used). It creates a keychain under `~/Library/Keychains`, the only place macOS gives one the login keychain's partitioned format, adds an item there as Claude Code does, and checks that ccusage's renewal write keeps `apple-tool:` and `/usr/bin/security` on it and never creates a missing item. The keychain is never added to the search list and is deleted when the test ends. This test needs access to the macOS Security service and may fail to create its disposable keychain inside an agent sandbox. A Keychain dialog while it runs means `security` has lost access to the fixture item, which is the fault this test exists to catch: deny it so the test fails, because Always Allow would change the item's access and could hide the fault. Both macOS CI targets run it explicitly.
+These run every check `bin/.devbin/config.yaml` holds, as README's Development section describes, and the cut runs them as its gates. `check all` includes actionlint on the workflow, shellcheck on the bats suites, and `check nopython`, which refuses any Python the repository tracks. On macOS, `test all` also runs `test shell`, the bats suites for the project commands in `bin/.devbin/cmd/` (`macos`, `lock-sync` and `nopython`) against stand-ins for `gh`, `codesign`, `lipo` and `notarytool`, so they sign, upload and publish nothing.
 
-Commit and push the release changes to `main`, and wait for the Build and release workflow to pass on all four platforms. Then create and push an annotated release tag:
+On macOS, `test all` runs `test keychain` too, which tests renewal against a disposable keychain (no real account credentials are used). It creates a keychain under `~/Library/Keychains`, the only place macOS gives one the login keychain's partitioned format, adds an item there as Claude Code does, and checks that ccusage's renewal write keeps `apple-tool:` and `/usr/bin/security` on it and never creates a missing item. The keychain is never added to the search list and is deleted when the test ends. This test needs access to the macOS Security service and may fail to create its disposable keychain inside an agent sandbox. A Keychain dialog while it runs means `security` has lost access to the fixture item, which is the fault this test exists to catch: deny it so the test fails, because Always Allow would change the item's access and could hide the fault. Both macOS CI targets run it explicitly.
 
-```sh
-git tag -a v0.1.0 -m 'Ccusage v0.1.0'
-git push upstream v0.1.0
-```
+Required maintainer tools: Git, Cargo/Rust, authenticated `gh` with push access to both repositories, bash 5 or later for `bin/devbin`, zsh, `jq`, bats, `actionlint`, `shellcheck`, and `intent` for `check critic`.
 
-The tagged workflow validates the version, tests and builds native binaries for Apple Silicon macOS, Intel macOS, x86-64 Linux, and ARM64 Linux. It uploads four `.tar.gz` archives and initial `SHA256SUMS` to a private draft only after every build succeeds. Run `cargo xtask finalize-release vX.Y.Z` locally (normally invoked by `tools/release`) to sign both Mac archives, regenerate checksums, verify the uploaded bytes, and publish. Resuming an already public release verifies its existing signatures without replacing assets. It needs only the repository-scoped GitHub Actions token; third-party actions are pinned to commit SHAs. An existing release is not overwritten automatically.
-
-Linux release binaries use glibc: x86-64 is built on Ubuntu 22.04, ARM64 on Ubuntu 24.04. For other compatible Linux distributions, building locally or using the source-building Homebrew formula avoids depending on the release binary's glibc baseline. Windows is not a release target.
-
-## Homebrew tap
-
-Once the tag is public, publish the exact tag and commit to the existing tap checkout:
-
-```sh
-tools/formula render v0.1.0 /tmp/ccusage.rb
-tools/formula publish v0.1.0 /path/to/homebrew-ccusage
-```
-
-`render` reads the template and package version from the tag itself. `publish` checks the clean tap checkout is on main and points to `matthewsinclair/homebrew-ccusage`, verifies the public source tag's commit, renders the formula, and commits/pushes only that formula. It uses the maintainer's existing `gh` and Git authentication; no cross-repository workflow secret is needed. It never force-pushes or updates a tag. Tap README and CI changes are ordinary reviewed Git changes.
-
-The formula installs the signed architecture-specific release archive on macOS, pinned by SHA256 from the verified signing manifest. It builds from the pinned tag and commit using Rust on Linux. It supports Homebrew on macOS and Linux. Users install with:
-
-```sh
-brew install matthewsinclair/ccusage/ccusage
-ccusage doctor
-```
-
-The formula installs the binary and logo, does not require Claude during installation, and does not change account files or shell startup files. Install Claude Code separately for live account operations. Homebrew tests use fixture data and a temporary configuration directory, without credentials or live usage requests.
+CI runs the same Rust checks per target on all four platforms, on pushes to `main` and `candidate/**`, on tags and on pull requests. It needs only the repository-scoped GitHub Actions token, and its third-party actions are pinned to commit SHAs. Linux release binaries use glibc: x86-64 is built on Ubuntu 22.04, ARM64 on Ubuntu 24.04. For other compatible Linux distributions, building locally or using the source-building Homebrew formula avoids depending on the release binary's glibc baseline. Windows is not a release target.

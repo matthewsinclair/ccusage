@@ -7,8 +7,8 @@ This is Ccusage's own hand-authored contract, not the `usage_rules` Hex library'
 ## Project conventions
 
 - Before a commit, run `bin/devbin check all`, `bin/devbin test all` and `bin/devbin build`. `bin/.devbin/config.yaml` is the one home of those checks, and every cargo command in it takes `--locked`.
-- Release logic that needs more than POSIX sh goes in the `xtask` workspace member, run as `cargo xtask`, with its tests beside it.
-- AGENTS.md's Bats prerequisite, `bats -r tests/`, and unlocked `cargo test` and `cargo build` are Intent's generic language text, not this project's commands; Intent issue 0672 records that gap in AGENTS.md's template. Ccusage has no Bats tests; its checks are the `bin/devbin` commands above.
+- Developer tooling is devbin's: a project command in `bin/.devbin/cmd/`, run as `bin/devbin <command>`, with a bats suite in `tests/`. The release is `bin/devbin release`, `bin/devbin macos finalize` and `bin/devbin formula publish`, as `docs/releasing.md` describes.
+- AGENTS.md's `bats -r tests/`, and its unlocked `cargo test` and `cargo build`, are Intent's generic language text, not this project's commands; Intent issue 0672 records that gap in AGENTS.md's template. The bats suites run as `bin/devbin test shell`, and every check runs through the `bin/devbin` commands above.
 
 ## NEVER DO
 
@@ -19,6 +19,7 @@ This is Ccusage's own hand-authored contract, not the `usage_rules` Hex library'
 - Never edit `status:` fields in a thread's frontmatter; use the `intent st` and `intent wp` lifecycle verbs.
 - Never wrap lines in markdown files by hand.
 - Never edit devbin's vendored runtime: `bin/devbin`, `bin/.devbin/lib/` and `bin/.devbin/manifest.sha256`. `bin/devbin upgrade` replaces it, and `bin/devbin doctor` checks it against the manifest. The project's own devbin files are `bin/.devbin/config.yaml` and any handler in `bin/.devbin/cmd/`.
-- Never change the version with `bin/devbin version set`, `bump` or `sync`: they write `Cargo.toml` alone. `tools/release` is the one step that changes it, in `Cargo.toml` and `Cargo.lock` together.
+- Never change the version with `bin/devbin version set`, `bump` or `sync`: they write `Cargo.toml` alone. `bin/devbin release` is the one step that changes it, its `derived:` step `bin/devbin lock-sync` bringing `Cargo.lock` along.
+- Never add a developer script or tool outside devbin: no `tools/` directory, no Python, and no bespoke task runner such as a `cargo xtask`. `bin/devbin check nopython` refuses Python.
 
 <!-- Add project-specific NEVER DOs here. -->
