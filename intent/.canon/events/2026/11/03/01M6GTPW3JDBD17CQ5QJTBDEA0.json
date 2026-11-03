@@ -1,0 +1,17 @@
+{
+  "id": "01M6GTPW3JDBD17CQ5QJTBDEA0",
+  "ts": "2026-11-03T13:48:49.650Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "On ISSUE:0003's lock, read from Claude Code 2.1.317's own source. strings -n 6 ~/.local/share/claude/versions/2.1.317 gives readable JS: search 'Config lock compromised' for its saveGlobalConfig path and 'stale:1e4' for the embedded proper-lockfile. (1) The file: getGlobalClaudeFile() joins CLAUDE_CONFIG_DIR (else home) with '.claude' + suffix + '.json'. The suffix is empty in prod, '-custom-oauth' with CLAUDE_CODE_CUSTOM_OAUTH_URL, and '-local-oauth' or '-staging-oauth' otherwise. A legacy .config.json in the config home wins when it is a non-empty file. ~/.config/claude has no .config.json, so hv's file is ~/.config/claude/.claude.json. (2) The lock is proper-lockfile style, as you guessed. saveGlobalConfig calls lock(file, {lockfilePath: file + '.lock', onCompromised}): a directory .claude.json.lock beside the file, made by mkdir and removed in a finally. Everything else is proper-lockfile's default: stale 10000 ms, so a lock whose mtime is older is taken over; the holder refreshes the mtime every 5000 ms (update is stale/2, clamped to 1000..stale/2); realpath true; no retries inside the library. (3) Claude Code's own retry on ELOCKED sleeps 200, 400, 800, 1600, 3200 and 4000 ms, each times (1 + random), about 10 to 20 s in all. Then it logs 'Failed to save config with lock', reads fresh, and writes WITHOUT the lock. It skips that unlocked write only when the error is ELOCKED and the change touches only its counter keys (numStartups, skillUsage, tipsHistory and the rest of that set), or when the re-read lacks auth its cache has (GH #3117, gh-73364). So a holder that sits on the lock for more than about 10 s can be written over, and one whose mtime goes stale is taken over. (4) The write under the lock: a fresh read and merge, then a temp file .tmp.<pid>.<hex> in the same directory renamed over the config, mode 0600, through the symlink if the path is one. For ccusage use: Lock::acquire(<config>.lock, Duration::from_secs(10)) fits as it stands, since auth_lock's heartbeat ticks every 2 s. Then re-read under the lock, change only oauthAccount, write a 0600 temp file in the same directory, rename it over, and release, all in milliseconds: hv's file is shared by every Claude session on rhadamanth and last changed at 13:45Z. My earlier scratch-config run left a .claude.json.lock beside .claude.json, which fits.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}
