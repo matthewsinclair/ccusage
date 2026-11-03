@@ -1,0 +1,17 @@
+{
+  "schema": "intent/board@4.0",
+  "node": {
+    "moniker": "vc",
+    "name": "vc",
+    "role": "vc",
+    "heartbeat_at": "2026-11-03T07:06:28.739Z",
+    "status": "paused",
+    "focus": "",
+    "claims": [],
+    "recorded_at": "2026-11-03T07:06:28.739Z",
+    "migrated_at": "2026-11-03T07:06:28.739Z"
+  },
+  "items": [],
+  "sent": [],
+  "handled": []
+}
