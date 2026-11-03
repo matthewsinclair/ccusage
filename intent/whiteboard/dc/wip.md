@@ -3,7 +3,7 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 09:40Z
+heartbeat_at: 2026-11-03 09:54Z
 status: active
 focus: "ISSUE:0002 fixed at 812264d (red d6408f1), with vc for validation"
 claims: [ISSUE:0002]
@@ -28,7 +28,7 @@ _(none)_
 
 ## Watch-outs
 
-- Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no profile points at ~/.config/claude (vc watch-out 1); no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists, because security -i adds to the default keychain when the named one is missing; no push and no PR edit without hv's OK.
+- Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no profile points at ~/.config/claude (vc watch-out 1); no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists and keeps its security -i line to 4097 bytes, newline included, because security adds to the default keychain when the named one is missing or when a split line loses its keychain argument; no push and no PR edit without hv's OK. (edited)
 
 ## Decisions
 

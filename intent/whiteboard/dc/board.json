@@ -5,7 +5,7 @@
     "name": "dc",
     "role": "dc",
     "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T09:40:35.808Z",
+    "heartbeat_at": "2026-11-03T09:54:20.500Z",
     "status": "active",
     "focus": "ISSUE:0002 fixed at 812264d (red d6408f1), with vc for validation",
     "claims": [
@@ -79,9 +79,10 @@
       "node": "dc",
       "kind": "watchout",
       "seq": 1,
-      "text": "Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no profile points at ~/.config/claude (vc watch-out 1); no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists, because security -i adds to the default keychain when the named one is missing; no push and no PR edit without hv's OK.",
+      "text": "Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no profile points at ~/.config/claude (vc watch-out 1); no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists and keeps its security -i line to 4097 bytes, newline included, because security adds to the default keychain when the named one is missing or when a split line loses its keychain argument; no push and no PR edit without hv's OK.",
       "state": "live",
-      "recorded_at": "2026-11-03T09:36:34.240Z"
+      "recorded_at": "2026-11-03T09:36:34.240Z",
+      "edited_at": "2026-11-03T09:56:48.412Z"
     },
     {
       "node": "dc",
@@ -169,6 +170,14 @@
       "body": "ISSUE:0002 handover (09:34Z), note (2) update: Linux now clippy-checks clean on rhadamanth. At 812264d's code (src, tests, Cargo.toml and Cargo.lock are unchanged since), cargo clippy --all-targets --locked --target aarch64-unknown-linux-gnu -- -D warnings exits 0 with no warnings, covering the lib, the bin and the cli test. It is a check only, with no link and no test run: std was built from rust-src with -Zbuild-std (RUSTC_BOOTSTRAP=1, Homebrew Rust 1.99.1), and ring's C with Homebrew LLVM clang under ring's own sysroot-free flags, -nostdlibinc -DRING_CORE_NOSTDLIBINC=1. x86_64-unknown-linux-gnu cannot be checked that way: ring's x86-64 C reaches stdlib.h through immintrin.h, which is why ring's build script leaves x86-64 out of that path. ccusage has no target_arch, target_env or pointer-width cfg, only target_os = \"macos\" and unix, so the ARM64 check covers the same cfg surface. CI's four jobs stay the full proof. Log: /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d/scratchpad/linux-check/clippy-aarch64-linux.log",
       "fyi": true,
       "recorded_at": "2026-11-03T09:45:14.886Z"
+    },
+    {
+      "id": "01M6GDDM76SERCRAC1RV7S9G91",
+      "recipient": "vc",
+      "body": "ISSUE:0002: both probe items are deleted from login.keychain-db. Before deleting, a metadata-only scan (security dump-keychain without -d, printing only records whose acct is fixture-user or ccusage-fixture, or whose svce is len<n>, ccusage-exp-<n>, svc-a or ccusage-test-*) found exactly two of the 217 records: svce len4100 and len8000, acct fixture-user, cdat and mdat 20261103091748Z. They came from experiment.zsh's line-length loop (3900, 4100 and 8000 hex digits); len3900 fit, went to the disposable keychain and was deleted with it. I deleted each with security delete-generic-password -a fixture-user -s <svc> naming login.keychain-db (both exit 0). Lookups by the same attributes now exit 44, the scan counts 215 records and 0 fixture matches. experiment2.zsh and experiment3.zsh only sent short lines to keychain files they had checked exist, so nothing else could have fallen back. Your two notes: I am taking both as one small follow-up commit, which I will hand to you. (a) update() reads back from the keychain locate() found. (b) The test comment says update()'s own -w read-back would prompt first, and docs/releasing.md says to deny a dialog during that test. My watch-out 1 now names the second fallback: a security -i line over 4097 bytes, newline included, loses its keychain argument.",
+      "re": "2026-11-03 09:52Z",
+      "fyi": false,
+      "recorded_at": "2026-11-03T09:56:35.174Z"
     }
   ],
   "handled": [

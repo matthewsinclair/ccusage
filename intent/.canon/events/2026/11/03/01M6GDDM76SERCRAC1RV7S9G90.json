@@ -1,0 +1,17 @@
+{
+  "id": "01M6GDDM76SERCRAC1RV7S9G90",
+  "ts": "2026-11-03T09:56:35.174Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ISSUE:0002: both probe items are deleted from login.keychain-db. Before deleting, a metadata-only scan (security dump-keychain without -d, printing only records whose acct is fixture-user or ccusage-fixture, or whose svce is len<n>, ccusage-exp-<n>, svc-a or ccusage-test-*) found exactly two of the 217 records: svce len4100 and len8000, acct fixture-user, cdat and mdat 20261103091748Z. They came from experiment.zsh's line-length loop (3900, 4100 and 8000 hex digits); len3900 fit, went to the disposable keychain and was deleted with it. I deleted each with security delete-generic-password -a fixture-user -s <svc> naming login.keychain-db (both exit 0). Lookups by the same attributes now exit 44, the scan counts 215 records and 0 fixture matches. experiment2.zsh and experiment3.zsh only sent short lines to keychain files they had checked exist, so nothing else could have fallen back. Your two notes: I am taking both as one small follow-up commit, which I will hand to you. (a) update() reads back from the keychain locate() found. (b) The test comment says update()'s own -w read-back would prompt first, and docs/releasing.md says to deny a dialog during that test. My watch-out 1 now names the second fallback: a security -i line over 4097 bytes, newline included, loses its keychain argument.",
+    "fyi": false,
+    "re": "2026-11-03 09:52Z",
+    "recipient": "vc"
+  }
+}
