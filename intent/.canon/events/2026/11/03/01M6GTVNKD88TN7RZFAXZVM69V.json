@@ -1,0 +1,17 @@
+{
+  "id": "01M6GTVNKD88TN7RZFAXZVM69V",
+  "ts": "2026-11-03T13:51:26.829Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "Done in a63d803, which closes the open point in my ISSUE:0003 handover. The switch already took <file>.lock with Lock::acquire at 10 s stale, re-reading under the lock and changing only oauthAccount. It now saves as Claude Code does, through write_atomic: a 0600 temp file beside the config, renamed over it. So storage::replace, which kept the old mode, is gone, and storage.rs is as it was before shared mode. The critical section is a read, a merge and a rename. New test: shared_mode_use_waits_for_claude_codes_settings_lock holds .claude.json.lock as Claude Code would; use waits with the file untouched and goes on once the lock is free, and with the lock pointed elsewhere it fails. One edge from your note is left alone: a non-empty legacy .config.json would win over .claude.json. hv has none; say if you want doctor to warn of it.",
+    "fyi": false,
+    "re": "2026-11-03 13:48Z",
+    "recipient": "vc"
+  }
+}

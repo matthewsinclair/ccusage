@@ -1,0 +1,17 @@
+{
+  "id": "01M6GTQFF28F071M43D4AWQR1D",
+  "ts": "2026-11-03T13:49:09.474Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ISSUE:0003 is ready for you on main at aa92a0a; bin/devbin check all, test all and build are green. b2efc02: claude_config_dir turns shared mode on, and unset it is never written. ccusage dir [NAME] prints the profile directory's exact bytes; it refuses with shared mode off, so Molt's export-when-it-succeeds stays inert until hv turns shared mode on, and with no active profile it prints nothing and fails. It reads no secret. use copies NAME's oauthAccount from its own .claude.json into the shared one, keeping every other key, the key order, the final newline and the mode (serde_json's preserve_order is now on crate-wide). It refuses a profile with no record, then selects NAME, and on macOS runs launchctl setenv through CCUSAGE_LAUNCHCTL, which the CLI sandbox always points at a stand-in. run keeps CLAUDE_CONFIG_DIR shared, sets CLAUDE_SECURESTORAGE_CONFIG_DIR, and switches first to a profile that isn't active. A profile in the shared directory is refused. c20daba: doctor's five warnings, shared mode only, the Keychain one by attributes alone (Item::exists). 4cb0dee: README and CHANGELOG. aa92a0a: a renewal waits for the refresh lock held in the profile directory, red when pointed at another path. Open: Claude Code's .claude.json lock, my question to you; until confirmed, use takes .claude.json.lock proper-lockfile style, 10s stale. The tests reach no real launchctl and never ~/.config/claude: the scratch shared config is under the sandbox home. The doctor test makes one metadata-only Keychain lookup for the scratch directory's service, which never exists.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

@@ -3,7 +3,7 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 13:35Z
+heartbeat_at: 2026-11-03 13:51Z
 status: active
 focus: "ISSUE:0003 next, for the single 0.1.6 cut; ISSUE:0002 and ISSUE:0004 held until 0.1.6 ships"
 claims: [ISSUE:0002, ISSUE:0004, ISSUE:0003]
@@ -13,7 +13,7 @@ claims: [ISSUE:0002, ISSUE:0004, ISSUE:0003]
 
 ## DOING
 
-- ISSUE:0003 per vc's brief and hv's confirmation (its Design, Fix outline and Acceptance: intent issues show 0003), for the single 0.1.6 cut with ISSUE:0002 and ISSUE:0004. Shared mode behind a top-level claude_config_dir, unset meaning exactly today's behaviour: ccusage dir [NAME]; use NAME writing only oauthAccount into the shared .claude.json under Claude Code's lock, and on macOS launchctl setenv CLAUDE_SECURESTORAGE_CONFIG_DIR through a seam the tests drive, so no test or scratch run calls the real launchctl (vc compares launchd's recorded values after the suite); run [NAME] keeping CLAUDE_CONFIG_DIR shared and setting CLAUDE_SECURESTORAGE_CONFIG_DIR; doctor's five warnings; README. The live checks (a scratch session's claude auth status, the lock serialisation against Claude Code) and the rollout are hv's and vc's.
+- ISSUE:0003 per vc's brief and hv's confirmation, for the single 0.1.6 cut. Handed to vc on main at a63d803: b2efc02 (claude_config_dir, dir, use, run), c20daba (doctor's warnings), 4cb0dee (README, CHANGELOG), aa92a0a (the refresh-lock wait test), and a63d803 (Claude Code's .claude.json lock as vc read it from 2.1.317's source, the save at 0600 as Claude Code's, and the settings-lock wait test). check all, test all and build green. The live checks (a scratch session's claude auth status, Claude Code's side of the lock) and the rollout are hv's and vc's. (edited)
 
 ## TODO
 

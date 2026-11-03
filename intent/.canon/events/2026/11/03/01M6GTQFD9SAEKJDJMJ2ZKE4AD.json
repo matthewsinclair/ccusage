@@ -1,0 +1,16 @@
+{
+  "id": "01M6GTQFD9SAEKJDJMJ2ZKE4AD",
+  "ts": "2026-11-03T13:49:09.418Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ISSUE:0003 per vc's brief and hv's confirmation, for the single 0.1.6 cut. Handed to vc on main at a63d803: b2efc02 (claude_config_dir, dir, use, run), c20daba (doctor's warnings), 4cb0dee (README, CHANGELOG), aa92a0a (the refresh-lock wait test), and a63d803 (Claude Code's .claude.json lock as vc read it from 2.1.317's source, the save at 0600 as Claude Code's, and the settings-lock wait test). check all, test all and build green. The live checks (a scratch session's claude auth status, Claude Code's side of the lock) and the rollout are hv's and vc's."
+  }
+}
