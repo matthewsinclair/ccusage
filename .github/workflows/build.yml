@@ -61,7 +61,7 @@ jobs:
       - run: cargo test --locked --target "${{ matrix.target }}"
       - name: Native Keychain renewal storage test
         if: runner.os == 'macOS'
-        run: cargo test --locked --target "${{ matrix.target }}" native_keychain_updates_existing_item_without_plaintext_fallback -- --ignored
+        run: cargo test --locked --target "${{ matrix.target }}" renewal_write_keeps_claude_items_readable_by_security -- --ignored
       - run: cargo build --release --locked --target "${{ matrix.target }}"
       - name: Package executable
         env:

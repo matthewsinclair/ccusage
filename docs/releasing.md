@@ -63,13 +63,13 @@ python3 -m unittest discover -s tests -p 'signing_test.py'
 actionlint .github/workflows/build.yml
 ```
 
-On macOS, also test updates against a disposable Keychain (no real account credentials are used):
+On macOS, also test renewal against a disposable keychain (no real account credentials are used):
 
 ```sh
-cargo test --locked native_keychain_updates_existing_item_without_plaintext_fallback -- --ignored
+cargo test --locked renewal_write_keeps_claude_items_readable_by_security -- --ignored
 ```
 
-This test needs access to the macOS Security service and may fail to create its disposable Keychain inside an agent sandbox. Both macOS CI targets run it explicitly.
+It creates a keychain under `~/Library/Keychains`, the only place macOS gives one the login keychain's partitioned format, adds an item there as Claude Code does, and checks that ccusage's renewal write keeps `apple-tool:` and `/usr/bin/security` on it and never creates a missing item. The keychain is never added to the search list and is deleted when the test ends. This test needs access to the macOS Security service and may fail to create its disposable keychain inside an agent sandbox. Both macOS CI targets run it explicitly.
 
 Commit and push the release changes to `main`, and wait for the Build and release workflow to pass on all four platforms. Then create and push an annotated release tag:
 

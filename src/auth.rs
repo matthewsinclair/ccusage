@@ -1,6 +1,5 @@
 use crate::{Result, config::Store, storage};
 use serde::Deserialize;
-use sha2::{Digest, Sha256};
 use std::{path::Path, process::Command};
 
 // Deliberately no Debug/Serialize: tokens must never enter diagnostics or caches.
@@ -16,14 +15,6 @@ pub struct Token {
 struct Credentials {
   #[serde(rename = "claudeAiOauth")]
   oauth: Option<Token>,
-}
-
-pub fn keychain_service(dir: &Path) -> String {
-  let digest = Sha256::digest(dir.as_os_str().as_encoded_bytes());
-  format!(
-    "Claude Code-credentials-{:02x}{:02x}{:02x}{:02x}",
-    digest[0], digest[1], digest[2], digest[3]
-  )
 }
 
 fn parse(bytes: &[u8]) -> Result<Token> {
@@ -50,7 +41,10 @@ struct Stored {
 enum Location {
   File(std::path::PathBuf),
   #[cfg(target_os = "macos")]
-  Keychain(String),
+  Keychain {
+    service: String,
+    account: String,
+  },
 }
 
 impl Stored {
@@ -65,114 +59,56 @@ impl Stored {
     })
   }
 
+  fn bytes(&self) -> Result<Vec<u8>> {
+    serde_json::to_vec(&self.document).map_err(|_| "could not encode Claude credentials".into())
+  }
+
   fn prepare_write(&self) -> Result<()> {
     #[cfg(target_os = "macos")]
-    if let Location::Keychain(service) = &self.location {
-      // Discover access/ambiguity errors before consuming a rotating token.
-      keychain_item(service, None)?;
+    if let Location::Keychain { service, account } = &self.location {
+      // A missing item, refused access or an oversized document must surface before
+      // the renewal consumes a rotating refresh token.
+      crate::keychain::Item {
+        service,
+        account,
+        keychain: None,
+      }
+      .check(&self.bytes()?)?;
     }
     Ok(())
   }
 
   fn save(&self) -> Result<()> {
-    let bytes = serde_json::to_vec(&self.document)
-      .map_err(|_| "could not encode renewed Claude credentials")?;
+    let bytes = self.bytes()?;
     match &self.location {
       Location::File(path) => storage::write_atomic(path, &bytes),
       #[cfg(target_os = "macos")]
-      Location::Keychain(service) => save_keychain(service, &bytes, None),
+      Location::Keychain { service, account } => crate::keychain::Item {
+        service,
+        account,
+        keychain: None,
+      }
+      .update(&bytes),
     }
-  }
-}
-
-#[cfg(target_os = "macos")]
-fn keychain_item(
-  service: &str,
-  keychains: Option<&[security_framework::os::macos::keychain::SecKeychain]>,
-) -> Result<security_framework::os::macos::keychain_item::SecKeychainItem> {
-  use security_framework::item::{ItemClass, ItemSearchOptions, Reference, SearchResult};
-  let mut search = ItemSearchOptions::new();
-  search
-    .class(ItemClass::generic_password())
-    .service(service)
-    .load_refs(true)
-    .limit(2);
-  if let Some(keychains) = keychains {
-    search.keychains(keychains);
-  }
-  let mut matches = search.search().map_err(
-    |_| "could not open Claude Keychain item for renewal; unlock Keychain and allow Ccusage access",
-  )?;
-  if matches.len() != 1 {
-    return Err(
-      "Claude Keychain item is missing or ambiguous; credentials were not overwritten".into(),
-    );
-  }
-  if let Some(SearchResult::Ref(Reference::KeychainItem(item))) = matches.pop() {
-    Ok(item)
-  } else {
-    Err("could not update the existing Claude Keychain item".into())
-  }
-}
-
-#[cfg(target_os = "macos")]
-fn save_keychain(
-  service: &str,
-  bytes: &[u8],
-  keychains: Option<&[security_framework::os::macos::keychain::SecKeychain]>,
-) -> Result<()> {
-  keychain_item(service, keychains)?
-    .set_password(bytes)
-    .map_err(|_| {
-      "could not save renewed Claude credentials in Keychain; unlock it and allow Ccusage access"
-        .into()
-    })
-}
-
-#[cfg(target_os = "macos")]
-fn read_keychain(
-  service: &str,
-  keychains: Option<&[security_framework::os::macos::keychain::SecKeychain]>,
-) -> Result<Option<Vec<u8>>> {
-  use security_framework::item::{ItemClass, ItemSearchOptions, SearchResult};
-  let mut search = ItemSearchOptions::new();
-  search
-    .class(ItemClass::generic_password())
-    .service(service)
-    .load_data(true)
-    .limit(2);
-  if let Some(keychains) = keychains {
-    search.keychains(keychains);
-  }
-  let mut matches = match search.search() {
-    Ok(matches) => matches,
-    // errSecItemNotFound only: denied/locked access must not use an old file.
-    Err(error) if error.code() == -25300 => return Ok(None),
-    Err(_) => {
-      return Err(
-        "Keychain access failed; unlock it and allow Ccusage access to this profile".into(),
-      );
-    }
-  };
-  if matches.len() != 1 {
-    return Err("Claude Keychain item is ambiguous; refusing to select a credential".into());
-  }
-  match matches.pop() {
-    Some(SearchResult::Data(bytes)) => Ok(Some(bytes)),
-    _ => Err("could not read Claude Keychain credential (contents redacted)".into()),
   }
 }
 
 fn read_stored(dir: &Path) -> Result<Stored> {
   #[cfg(target_os = "macos")]
   {
-    let mut services = vec![keychain_service(dir)];
+    let account = crate::keychain::account();
+    let mut services = vec![crate::keychain::service(dir)];
     if dir == crate::config::home()?.join(".claude") {
       services.push("Claude Code-credentials".to_owned());
     }
     for service in services {
-      if let Some(bytes) = read_keychain(&service, None)? {
-        return Stored::decode(&bytes, Location::Keychain(service));
+      let item = crate::keychain::Item {
+        service: &service,
+        account: &account,
+        keychain: None,
+      };
+      if let Some(bytes) = item.read()? {
+        return Stored::decode(&bytes, Location::Keychain { service, account });
       }
     }
   }
@@ -439,17 +375,6 @@ mod tests {
     let error =
       parse(br#"{"claudeAiOauth":{"accessToken":"TOP_SECRET","expiresAt":"TOP_SECRET"}}"#).err();
     assert!(error.is_some_and(|error| !error.to_string().contains("TOP_SECRET")));
-  }
-  #[test]
-  fn directory_keys_are_stable_and_separate() {
-    assert_eq!(
-      keychain_service(Path::new("/tmp/a")),
-      "Claude Code-credentials-d9b741ea"
-    );
-    assert_ne!(
-      keychain_service(Path::new("/tmp/a")),
-      keychain_service(Path::new("/tmp/b"))
-    );
   }
   struct Fixture {
     dir: std::path::PathBuf,
@@ -1006,8 +931,16 @@ mod tests {
     )?;
     keychain.allow_this_binary(&service, account)?;
     let renewed = br#"{"claudeAiOauth":{"accessToken":"RENEWED"}}"#;
-    let opened = || SecKeychain::open(&keychain.path);
-    save_keychain(&service, renewed, Some(&[opened()?]))?;
+    // ccusage's renewal write, confined to the fixture keychain.
+    crate::keychain::Item {
+      service: &service,
+      account,
+      keychain: Some(&keychain.path),
+    }
+    .update(renewed)?;
+    // The asserts come before the security -w read: had the write dropped apple-tool:,
+    // that read would raise a password dialog, and turning interaction off here cannot
+    // stop a dialog in another process.
     let access = keychain.access(&service)?;
     assert!(
       access.partitions.iter().any(|id| id == "apple-tool:"),
@@ -1022,58 +955,15 @@ mod tests {
     assert_eq!(keychain.read_as_claude_code(&service, account)?, renewed);
     // Renewal only updates: a missing item stays missing, here and in the default keychain.
     let missing = keychain.name("missing");
-    assert!(save_keychain(&missing, renewed, Some(&[opened()?])).is_err());
+    let refused = crate::keychain::Item {
+      service: &missing,
+      account,
+      keychain: Some(&keychain.path),
+    }
+    .update(renewed);
+    assert!(refused.is_err());
     assert!(!keychain.holds(&missing, account)?);
     assert!(!native::anywhere(&missing, account)?);
-    Ok(())
-  }
-
-  #[cfg(target_os = "macos")]
-  #[test]
-  #[ignore = "requires the macOS Security service; uses only a disposable Keychain"]
-  fn native_keychain_updates_existing_item_without_plaintext_fallback() -> Result<()> {
-    use security_framework::os::macos::{
-      keychain::CreateOptions, passwords::find_generic_password,
-    };
-    let fixture = Fixture::new()?;
-    let path = fixture.dir.join("fixture.keychain");
-    struct Cleanup(std::path::PathBuf);
-    impl Drop for Cleanup {
-      fn drop(&mut self) {
-        let _ = Command::new("/usr/bin/security")
-          .arg("delete-keychain")
-          .arg(&self.0)
-          .output();
-      }
-    }
-    let _cleanup = Cleanup(path.clone());
-    let keychain = CreateOptions::new()
-      .password("fixture-password")
-      .create(&path)
-      .map_err(|error| format!("create disposable Keychain: {error}"))?;
-    keychain
-      .add_generic_password("ccusage-fixture", "fixture-account", b"old-fixture")
-      .map_err(|error| format!("add fixture item: {error}"))?;
-    save_keychain(
-      "ccusage-fixture",
-      b"new-fixture",
-      Some(std::slice::from_ref(&keychain)),
-    )?;
-    assert_eq!(
-      read_keychain("ccusage-fixture", Some(std::slice::from_ref(&keychain)))?,
-      Some(b"new-fixture".to_vec())
-    );
-    assert!(read_keychain("missing-service", Some(std::slice::from_ref(&keychain)))?.is_none());
-    let (bytes, item) = find_generic_password(
-      Some(std::slice::from_ref(&keychain)),
-      "ccusage-fixture",
-      "fixture-account",
-    )
-    .map_err(|error| format!("read fixture item: {error}"))?;
-    assert_eq!(bytes.as_ref(), b"new-fixture");
-    item.delete();
-    // Renewal must update an existing item, never create a replacement.
-    assert!(save_keychain("missing-service", b"new-fixture", Some(&[keychain])).is_err());
     Ok(())
   }
 }

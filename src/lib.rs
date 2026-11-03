@@ -4,6 +4,8 @@ pub mod cli;
 pub mod config;
 pub mod display;
 pub mod doctor;
+#[cfg(target_os = "macos")]
+mod keychain;
 pub mod storage;
 pub mod usage;
 

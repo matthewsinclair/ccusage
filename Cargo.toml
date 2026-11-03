@@ -18,11 +18,15 @@ ureq = { version = "3", default-features = false, features = ["rustls"] }
 crossterm = "0.29"
 # ISO-8601 reset times from the usage API.
 time = { version = "0.3", features = ["parsing", "formatting"] }
-# Claude's per-directory macOS Keychain service names.
+# Claude's per-directory macOS Keychain service names and usage-cache credential IDs.
 sha2 = "0.10"
 
-# Update existing Keychain items in place without putting secrets in process arguments.
+# Claude Code hashes the NFC form of a config directory for its Keychain service names.
 [target.'cfg(target_os = "macos")'.dependencies]
+unicode-normalization = "0.1"
+
+# The disposable-keychain test only; ccusage reaches Keychain through /usr/bin/security.
+[target.'cfg(target_os = "macos")'.dev-dependencies]
 security-framework = "3"
 
 [lints.rust]
