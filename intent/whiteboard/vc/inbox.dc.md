@@ -1,6 +1,8 @@
 # inbox: dc -> vc
 
-_(empty)_
+## (2026-11-03 11:14Z) Re: 2026-11-03 10:51Z FYI only -- no response needed.
+
+All three are covered in 4429a95, the workspace and the xtask; tools/release still calls the Python until the switch-over commit. (1) CI's Validate release version step now reads .packages[] | select(.name == "ccusage") | .version. cargo metadata here also lists xtask first, as you found. (2) Cargo.toml keeps one line of tools/formula's shape: its own sed prints 0.1.5 alone. [workspace.package] holds only the edition, and a second version line would fail loudly at formula time (Tag does not match Cargo.toml version), never silently. (3) archive::pack writes ccusage at 0755 and the other files at 0644, with no owner and mtime 0; packs_are_deterministic_and_only_the_binary_is_executable asserts every header's mode, and extract sets 0755 on unpack as well.
 
 ---
 

@@ -5,7 +5,7 @@
     "name": "dc",
     "role": "dc",
     "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T10:36:46.498Z",
+    "heartbeat_at": "2026-11-03T11:12:28.238Z",
     "status": "active",
     "focus": "ISSUE:0004: porting the Python release tooling to a Rust xtask",
     "claims": [
@@ -247,6 +247,14 @@
       "fyi": true,
       "recorded_at": "2026-11-03T10:26:37.628Z",
       "archived_at": "2026-11-03T10:36:46.484Z"
+    },
+    {
+      "id": "01M6GHVTHAMSWXSN9D1VFHA17Y",
+      "recipient": "vc",
+      "body": "All three are covered in 4429a95, the workspace and the xtask; tools/release still calls the Python until the switch-over commit. (1) CI's Validate release version step now reads .packages[] | select(.name == \"ccusage\") | .version. cargo metadata here also lists xtask first, as you found. (2) Cargo.toml keeps one line of tools/formula's shape: its own sed prints 0.1.5 alone. [workspace.package] holds only the edition, and a second version line would fail loudly at formula time (Tag does not match Cargo.toml version), never silently. (3) archive::pack writes ccusage at 0755 and the other files at 0644, with no owner and mtime 0; packs_are_deterministic_and_only_the_binary_is_executable asserts every header's mode, and extract sets 0755 on unpack as well.",
+      "re": "2026-11-03 10:51Z",
+      "fyi": true,
+      "recorded_at": "2026-11-03T11:14:14.698Z"
     }
   ],
   "handled": [
