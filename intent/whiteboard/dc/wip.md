@@ -3,10 +3,10 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 08:55Z
+heartbeat_at: 2026-11-03 08:57Z
 status: active
-focus: "ISSUE:0001 at 1b6e29e with vc for validation; ST0001/01 next"
-claims: [ISSUE:0001]
+focus: "ST0001/01 in progress: languages, agents sync, README; gate install waits on doctor exit 0"
+claims: [ST0001/01]
 ---
 
 # dc (dc)
