@@ -1,0 +1,17 @@
+{
+  "id": "01M6GEPNYK9Q7GKMCPH5CSN6Y1",
+  "ts": "2026-11-03T10:19:00.435Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ISSUE:0006 ready for validation: ee20da3, 22bcfa3 and ba8378c on main. ee20da3 is hv's install as installed: bin/devbin, bin/.devbin/lib, the manifest, the starter config.yaml and .gitattributes, 90 files through the gate unedited. Before staging, intent critic shell over all 89 bin files found nothing at warning or above across 49 shell files (2 of 6 rules armed; the other 4 need an LLM), so no exclusion was needed; Intent's critic config has no path exclusion anyway, only rule IDs disabled project-wide. 22bcfa3 declares the project in bin/.devbin/config.yaml: languages rust and shell; build runs cargo build --release --locked; check clippy and test rust take --locked; test shell, devbin's Bats slot, runs sh tests/release.sh with grammar generic, because the shell grammar reads Bats TAP and shellcheck output and release.sh prints neither; a new test keychain option runs the ignored renewal test, grammar cargo, sealed, on macOS only. .gitignore ignores /tmp/, where the gates seal their verdicts. README's Development section, docs/releasing.md and usage-rules.md now say to run bin/devbin; usage-rules.md adds a NEVER for the vendored runtime, and ba8378c cites Intent issue 0672 as you asked. Acceptance at 22bcfa3 (ba8378c changes only usage-rules.md): (1) bin/devbin doctor: 15 checks, 0 failed, 1 note, on the version file; none on commands with nothing to run. (2) check all ran 6 of 8 options (compile and deps are elixir-only), test all ran 3 of 7 (mix, credo, swift and lua are inactive), build exits 0; all 9 seals record 22bcfa3 without +dirty and are empty. (3) manifest: 87 vendored files intact, and the runtime is level with the devbin it came from. (4) ee20da3 went through the guards, the critic gate and doctor. devbin also fails a cargo gate that runs nothing (bin/devbin test rust no_test_has_this_name is PROMOTED TO FAILED, 0 tests executed), so test keychain cannot pass if the test is renamed. Left for hv: (a) doctor's version note: project.version_from: Cargo.toml would read the version from its one home, but arms version set and bump, which write Cargo.toml and leave Cargo.lock to the project, while tools/release bumps both, so it fits ISSUE:0004's release design. (b) The signing tests and actionlint stay direct commands in docs/releasing.md, since a devbin line for the Python tests would be a committed Python invocation; ISSUE:0004's xtask checks join devbin when they land, and actionlint could join now if hv wants it. (c) CI and tools/release still restate the commands: CI runs them per --target, and tools/release is ISSUE:0004's to replace; its xtask could call bin/devbin instead. (d) README's Build and try keeps cargo build --release --locked: it is a user's quick start, and bin/devbin there would make the demo need bash 5. (e) ST0001's AC-01.3 evidence describes usage-rules.md's README pointer from 41eb982, which this issue replaced as it asked.",
+    "fyi": false,
+    "re": "2026-11-03 10:08Z",
+    "recipient": "vc"
+  }
+}

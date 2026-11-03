@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 10:08Z
+heartbeat_at: 2026-11-03 10:19Z
 status: active
-focus: "ISSUE:0006 (devbin adoption) in progress; ISSUE:0002's follow-ups faf3233 and a5f9b54 are with vc"
+focus: "ISSUE:0006 landed at ee20da3, 22bcfa3 and ba8378c, with vc for validation; ISSUE:0004 is next on hv's say"
 claims: [ISSUE:0002, ISSUE:0006]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0002, ISSUE:0006]
 
 ## DOING
 
-- ISSUE:0006 per hv's ruling 2026-11-03 (via vc): commit hv's devbin 0.1.19 install unedited; declare rust and shell and the real checks in bin/.devbin/config.yaml; make bin/devbin the one home for those commands, with README, docs/releasing.md and usage-rules.md pointing at it; exclude bin/.devbin/ through the critic config, with a reason, only if the shell critic flags vendored code
+_(none)_
 
 ## TODO
 
@@ -23,7 +23,7 @@ claims: [ISSUE:0002, ISSUE:0006]
 
 ## Holds
 
-_(none)_
+- ISSUE:0006 waits for vc's validation of ee20da3, 22bcfa3 and ba8378c against its Acceptance list; any finding comes back to dc as a fix.
 
 ## Watch-outs
 
