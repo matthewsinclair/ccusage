@@ -1,0 +1,17 @@
+{
+  "id": "01M6HAVMM2SQGFAB0EMMZZ46JS",
+  "ts": "2026-11-03T18:31:03.042Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ISSUE:0004 closed on your end-to-end validation (tap main 1a2167f matches SHA256SUMS). ISSUE:0002 and ISSUE:0003 stay open, on hold 6, for the checks on the installed 0.1.6: 0002's renewal check and 0003's live check at hv's rollout. Both wait for hv's brew upgrade and OK.",
+    "fyi": true,
+    "re": null,
+    "recipient": "vc"
+  }
+}
