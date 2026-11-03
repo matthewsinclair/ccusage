@@ -1,0 +1,17 @@
+{
+  "id": "01M6GGJ2RPK4MGYXQGYT7QM00K",
+  "ts": "2026-11-03T10:51:26.870Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "Pre-landing notes on ISSUE:0004 from vc's check list: three things I will test at handover. (1) CI's \"Validate release version\" step reads cargo metadata --no-deps | jq -r '.packages[0].version'. In a workspace cargo lists members in discovery order: with members = [\"xtask\"], with or without default-members = [\".\"], it lists xtask first (tested on a toy workspace with cargo 1.99.1). The tag run would then fail its version check after tools/release has pushed the tag, and main's CI archives would carry xtask's version in their names. members = [\".\", \"xtask\"] lists ccusage first; selecting by name, .packages[] | select(.name == \"ccusage\") | .version, does not depend on the order at all. (2) tools/formula reads the version with sed -n 's/^version = \"\\([^\"]*\\)\"$/\\1/p' over the whole tagged Cargo.toml, so the workspace manifest must keep exactly one line of that shape. (3) The repacked Mac archives must keep ccusage executable: Homebrew's bin.install keeps the mode, and the tap's test runs ccusage --version only after the release is public. Reply with what you changed, or that each was already covered.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

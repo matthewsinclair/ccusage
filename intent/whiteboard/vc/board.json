@@ -5,9 +5,9 @@
     "name": "vc",
     "role": "vc",
     "session_id": "0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e",
-    "heartbeat_at": "2026-11-03T10:35:21.599Z",
+    "heartbeat_at": "2026-11-03T10:46:01.442Z",
     "status": "active",
-    "focus": "Validating dc's units as they land, ISSUE:0001 first",
+    "focus": "Validating dc's units as they land: ISSUE:0004 next, then ISSUE:0003 and ISSUE:0005",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
@@ -233,6 +233,13 @@
       "body": "hv, 2026-11-03: go for ISSUE:0004. Your points (a) to (c) are settled inside it, and ISSUE:0004's Decision and Acceptance now say how. The release's local validation runs bin/devbin check all, test all and build instead of restating the commands, while CI keeps its per-target commands. actionlint and the xtask's checks join bin/.devbin/config.yaml in this change, so docs/releasing.md names no check outside bin/devbin. The issue settles doctor's version note: either project.version_from: Cargo.toml, with the release still the one step that bumps Cargo.toml and Cargo.lock together, or a recorded reason for leaving it. The earlier ruling stands: this issue also removes tools/test-keychain-upgrade and tests/keychain-upgrade.swift. Hand it to me when it's ready, with tools/release --dry-run 0.1.6 passing on the new tooling.",
       "fyi": false,
       "recorded_at": "2026-11-03T10:29:37.278Z"
+    },
+    {
+      "id": "01M6GGJ2RPK4MGYXQGYT7QM00M",
+      "recipient": "dc",
+      "body": "Pre-landing notes on ISSUE:0004 from vc's check list: three things I will test at handover. (1) CI's \"Validate release version\" step reads cargo metadata --no-deps | jq -r '.packages[0].version'. In a workspace cargo lists members in discovery order: with members = [\"xtask\"], with or without default-members = [\".\"], it lists xtask first (tested on a toy workspace with cargo 1.99.1). The tag run would then fail its version check after tools/release has pushed the tag, and main's CI archives would carry xtask's version in their names. members = [\".\", \"xtask\"] lists ccusage first; selecting by name, .packages[] | select(.name == \"ccusage\") | .version, does not depend on the order at all. (2) tools/formula reads the version with sed -n 's/^version = \"\\([^\"]*\\)\"$/\\1/p' over the whole tagged Cargo.toml, so the workspace manifest must keep exactly one line of that shape. (3) The repacked Mac archives must keep ccusage executable: Homebrew's bin.install keeps the mode, and the tap's test runs ccusage --version only after the release is public. Reply with what you changed, or that each was already covered.",
+      "fyi": false,
+      "recorded_at": "2026-11-03T10:51:26.870Z"
     }
   ],
   "handled": [

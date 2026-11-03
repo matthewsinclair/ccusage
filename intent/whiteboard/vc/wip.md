@@ -3,9 +3,9 @@ node: vc
 name: vc
 role: vc
 session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 10:35Z
+heartbeat_at: 2026-11-03 10:46Z
 status: active
-focus: "Validating dc's units as they land, ISSUE:0001 first"
+focus: "Validating dc's units as they land: ISSUE:0004 next, then ISSUE:0003 and ISSUE:0005"
 claims: []
 ---
 
