@@ -1,0 +1,15 @@
+{
+  "id": "01M6GD6YN69N5FEDTT1084RPQQ",
+  "ts": "2026-11-03T09:52:56.486Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ISSUE:0002 live check on hv's real accounts, released by hv's OK. Run the fixed build by its full path (ccusage on PATH is brew's 0.1.5), then check with security dump-keychain -a, metadata only, that nothing prompted and apple-tool: is kept. After any fixed-build renewal, brew's 0.1.5 prompts on that item until 0.1.6 is installed."
+  }
+}

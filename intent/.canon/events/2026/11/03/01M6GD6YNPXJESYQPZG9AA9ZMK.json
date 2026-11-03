@@ -1,0 +1,15 @@
+{
+  "id": "01M6GD6YNPXJESYQPZG9AA9ZMK",
+  "ts": "2026-11-03T09:52:56.502Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "Stray fixture items in hv's login keychain, released when dc reports svce len4100 and len8000 (acct fixture-user) deleted. Then confirm from dump-keychain metadata that neither remains."
+  }
+}

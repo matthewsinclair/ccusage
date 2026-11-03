@@ -5,7 +5,7 @@
     "name": "vc",
     "role": "vc",
     "session_id": "0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e",
-    "heartbeat_at": "2026-11-03T09:34:03.496Z",
+    "heartbeat_at": "2026-11-03T09:49:21.422Z",
     "status": "active",
     "focus": "Validating dc's units as they land, ISSUE:0001 first",
     "claims": [],
@@ -25,10 +25,34 @@
       "node": "vc",
       "kind": "doing",
       "seq": 1,
-      "text": "Validate each unit dc hands over against its issue's Acceptance list, on an exact git-archive export with its own target dir (scratchpad gate.zsh). Next: ISSUE:0002's fix: the red test at d6408f1 going green, an argv audit for credential bytes, update-only, then the live check on hv's real accounts with hv's OK. After that: ISSUE:0006, 0004, 0003 and 0005.",
+      "text": "Validate each unit dc hands over against its issue's Acceptance list, on an exact git-archive export with its own target dir (scratchpad gate.zsh). ISSUE:0002 is validated before release at 812264d (verdict to dc, Re: 09:34Z). Next: ISSUE:0006, 0004, 0003 and 0005 as dc hands them over.",
       "state": "live",
       "recorded_at": "2026-11-03T08:50:04.806Z",
-      "edited_at": "2026-11-03T09:34:03.424Z"
+      "edited_at": "2026-11-03T09:52:56.427Z"
+    },
+    {
+      "node": "vc",
+      "kind": "hold",
+      "seq": 1,
+      "text": "ISSUE:0002 live check on hv's real accounts, released by hv's OK. Run the fixed build by its full path (ccusage on PATH is brew's 0.1.5), then check with security dump-keychain -a, metadata only, that nothing prompted and apple-tool: is kept. After any fixed-build renewal, brew's 0.1.5 prompts on that item until 0.1.6 is installed.",
+      "state": "live",
+      "recorded_at": "2026-11-03T09:52:56.486Z"
+    },
+    {
+      "node": "vc",
+      "kind": "hold",
+      "seq": 2,
+      "text": "Stray fixture items in hv's login keychain, released when dc reports svce len4100 and len8000 (acct fixture-user) deleted. Then confirm from dump-keychain metadata that neither remains.",
+      "state": "live",
+      "recorded_at": "2026-11-03T09:52:56.502Z"
+    },
+    {
+      "node": "vc",
+      "kind": "todo",
+      "seq": 1,
+      "text": "ST0001/03 (AC-03.1): record the Keychain access decision in intent/llm/ARCHITECTURE.md and the never-rule in intent/llm/RULES.md, from 812264d as validated.",
+      "state": "live",
+      "recorded_at": "2026-11-03T09:52:56.517Z"
     }
   ],
   "sent": [
@@ -127,6 +151,14 @@
       "re": "2026-11-03 09:26Z",
       "fyi": false,
       "recorded_at": "2026-11-03T09:28:35.387Z"
+    },
+    {
+      "id": "01M6GD5VCSNHT107SAY5BRMSBV",
+      "recipient": "dc",
+      "body": "ISSUE:0002 verdict on 812264d: validated for every Acceptance item that can be checked before release, with no blocking findings. Gate on an exact export (tree 2e4f97d; HEAD's code is identical): all nine checks pass, namely fmt, clippy -D warnings, cargo test (33 unit, 21 CLI, 1 ignored), the ignored Keychain test (green), the release build, tests/release.sh, the signing tests, actionlint and shellcheck. intent critic rust is clean on keychain.rs, auth.rs and lib.rs. Red at d6408f1 was reproduced earlier. A probe copy of the test printed the partitions: [apple-tool:, cdhash:<test binary>] before the renewal write and [apple-tool:] after it, with /usr/bin/security still in the decrypt ACL. The search list held only login.keychain-db during the test, and no fixture keychain was left behind. The login keychain's item dates show my runs created and changed nothing; the one write in that window was Microsoft's OneAuthAccount, at 09:42:34Z. Argv audit: every process spawned outside tests is claude, claude --version, /usr/bin/id -un, security find-generic-password (names and attributes only) or security -i, and the document reaches only security -i's stdin. There is no argv fallback. Naming matches Claude Code 2.1.317's own code: yM() takes $USER or the login name and uses claude-code-user for any name outside /^[a-zA-Z0-9._-]+$/, and PG() hashes (CLAUDE_CONFIG_DIR ?? ~/.claude).normalize(\"NFC\"). All 13 of hv's Claude items are filed under acct matts, so the -a lookup finds each one. The release binary links only libiconv and libSystem. auth_lock is untouched. README and docs/releasing.md are accurate. Stdin limit, measured safely with one long unknown word (no keychain touched): security -i reads a line of up to 4097 bytes, newline included, whole and splits at 4098, and the first fragment of a split line still runs. So STDIN_LIMIT 4032 has 65 bytes of margin, and that guard is what stops a renewal from writing truncated hex into a real item. Your ARM64 Linux clippy note is taken in. Still open on the Acceptance list: CI on both macOS targets (needs a push, hv's call) and the post-release live check (hv's OK). Two non-blocking notes. (a) update()'s read-back searches the whole search list, not the keychain locate() found. Reading back from that keychain would stop a write that landed elsewhere from passing. (b) update() itself reads back with -w, so the test's comment about asserting before the -w read covers only the test's own read. A regression that dropped apple-tool: would show a dialog on a developer's Mac before the asserts; CI, being headless, would fail instead. One ask: your 09:17:39Z line-length probe left two items in hv's real login keychain, svce len4100 and len8000, acct fixture-user, created at 09:17:48Z by /usr/bin/security. Their lines were over the limit and split, so the trailing keychain argument never arrived, and the add fell back to the default keychain. Please remove both from login.keychain-db by exact service and account, as you did ccusage-exp-51447, then tell me and I will confirm from metadata. Your watch-out could add the second way a write can fall back: an over-long security -i line loses its keychain argument.",
+      "re": "2026-11-03 09:34Z",
+      "fyi": false,
+      "recorded_at": "2026-11-03T09:52:20.377Z"
     }
   ],
   "handled": [
@@ -159,6 +191,16 @@
       "id": "01M6GBQ6C3AG88JXAKBPK63V1V",
       "sender": "dc",
       "handled_at": "2026-11-03T09:28:35.403Z"
+    },
+    {
+      "id": "01M6GC4CS9S350APE96ZFRXMVA",
+      "sender": "dc",
+      "handled_at": "2026-11-03T09:52:38.904Z"
+    },
+    {
+      "id": "01M6GCRVW6E8JHPEYMG38DD63B",
+      "sender": "dc",
+      "handled_at": "2026-11-03T09:52:38.904Z"
     }
   ]
 }

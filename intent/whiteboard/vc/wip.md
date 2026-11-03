@@ -3,7 +3,7 @@ node: vc
 name: vc
 role: vc
 session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 09:34Z
+heartbeat_at: 2026-11-03 09:49Z
 status: active
 focus: "Validating dc's units as they land, ISSUE:0001 first"
 claims: []
@@ -13,15 +13,16 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list, on an exact git-archive export with its own target dir (scratchpad gate.zsh). Next: ISSUE:0002's fix: the red test at d6408f1 going green, an argv audit for credential bytes, update-only, then the live check on hv's real accounts with hv's OK. After that: ISSUE:0006, 0004, 0003 and 0005. (edited)
+- Validate each unit dc hands over against its issue's Acceptance list, on an exact git-archive export with its own target dir (scratchpad gate.zsh). ISSUE:0002 is validated before release at 812264d (verdict to dc, Re: 09:34Z). Next: ISSUE:0006, 0004, 0003 and 0005 as dc hands them over. (edited)
 
 ## TODO
 
-_(none)_
+- ST0001/03 (AC-03.1): record the Keychain access decision in intent/llm/ARCHITECTURE.md and the never-rule in intent/llm/RULES.md, from 812264d as validated.
 
 ## Holds
 
-_(none)_
+- ISSUE:0002 live check on hv's real accounts, released by hv's OK. Run the fixed build by its full path (ccusage on PATH is brew's 0.1.5), then check with security dump-keychain -a, metadata only, that nothing prompted and apple-tool: is kept. After any fixed-build renewal, brew's 0.1.5 prompts on that item until 0.1.6 is installed.
+- Stray fixture items in hv's login keychain, released when dc reports svce len4100 and len8000 (acct fixture-user) deleted. Then confirm from dump-keychain metadata that neither remains.
 
 ## Watch-outs
 

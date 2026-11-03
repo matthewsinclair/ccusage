@@ -1,0 +1,15 @@
+{
+  "id": "01M6GD6YP567NWXS5EZ2R6AT5C",
+  "ts": "2026-11-03T09:52:56.517Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ST0001/03 (AC-03.1): record the Keychain access decision in intent/llm/ARCHITECTURE.md and the never-rule in intent/llm/RULES.md, from 812264d as validated."
+  }
+}
