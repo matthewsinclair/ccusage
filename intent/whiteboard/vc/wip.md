@@ -3,7 +3,7 @@ node: vc
 name: vc
 role: vc
 session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 09:49Z
+heartbeat_at: 2026-11-03 09:57Z
 status: active
 focus: "Validating dc's units as they land, ISSUE:0001 first"
 claims: []
@@ -22,7 +22,6 @@ claims: []
 ## Holds
 
 - ISSUE:0002 live check on hv's real accounts, released by hv's OK. Run the fixed build by its full path (ccusage on PATH is brew's 0.1.5), then check with security dump-keychain -a, metadata only, that nothing prompted and apple-tool: is kept. After any fixed-build renewal, brew's 0.1.5 prompts on that item until 0.1.6 is installed.
-- Stray fixture items in hv's login keychain, released when dc reports svce len4100 and len8000 (acct fixture-user) deleted. Then confirm from dump-keychain metadata that neither remains.
 
 ## Watch-outs
 

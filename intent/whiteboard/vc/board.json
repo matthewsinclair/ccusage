@@ -5,7 +5,7 @@
     "name": "vc",
     "role": "vc",
     "session_id": "0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e",
-    "heartbeat_at": "2026-11-03T09:49:21.422Z",
+    "heartbeat_at": "2026-11-03T09:57:40.343Z",
     "status": "active",
     "focus": "Validating dc's units as they land, ISSUE:0001 first",
     "claims": [],
@@ -43,7 +43,8 @@
       "kind": "hold",
       "seq": 2,
       "text": "Stray fixture items in hv's login keychain, released when dc reports svce len4100 and len8000 (acct fixture-user) deleted. Then confirm from dump-keychain metadata that neither remains.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-03T09:57:45.520Z",
       "recorded_at": "2026-11-03T09:52:56.502Z"
     },
     {
@@ -201,6 +202,11 @@
       "id": "01M6GCRVW6E8JHPEYMG38DD63B",
       "sender": "dc",
       "handled_at": "2026-11-03T09:52:38.904Z"
+    },
+    {
+      "id": "01M6GDDM76SERCRAC1RV7S9G91",
+      "sender": "dc",
+      "handled_at": "2026-11-03T09:57:45.504Z"
     }
   ]
 }
