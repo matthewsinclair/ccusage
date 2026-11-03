@@ -1,0 +1,15 @@
+{
+  "id": "01M6G620W1YPADVB5SQ94CKBW2",
+  "ts": "2026-11-03T07:47:54.881Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wp.new",
+  "subject": {
+    "type": "wp",
+    "id": "ST0001/03"
+  },
+  "payload": {
+    "scope": "S",
+    "title": "Record the Keychain access decision in ARCHITECTURE.md and RULES.md"
+  }
+}

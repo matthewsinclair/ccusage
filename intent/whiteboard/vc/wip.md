@@ -6,7 +6,7 @@ session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
 heartbeat_at: 2026-11-03 07:29Z
 status: active
 focus: "ISSUE:0001-0003 filed and diagnosed; fix plan with hv for approval"
-claims: [ISSUE:0001, ISSUE:0002, ISSUE:0003]
+claims: [ISSUE:0003]
 ---
 
 # vc (vc)

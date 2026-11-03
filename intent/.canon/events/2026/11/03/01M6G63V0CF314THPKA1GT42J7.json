@@ -1,0 +1,15 @@
+{
+  "id": "01M6G63V0CF314THPKA1GT42J7",
+  "ts": "2026-11-03T07:48:54.412Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.register",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "name": "Hypervisor",
+    "role": "hypervisor"
+  }
+}

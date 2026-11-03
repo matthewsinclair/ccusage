@@ -2,8 +2,9 @@
 
 An index of every steel thread in the project. A steel thread is a self-contained unit of work focused on implementing one piece of functionality.
 
-| ID  | Title | Status | Created | Completed |
-| --- | ----- | ------ | ------- | --------- |
+| ID     | Title                           | Status | Created    | Completed |
+| ------ | ------------------------------- | ------ | ---------- | --------- |
+| ST0001 | Bring Ccusage up to Intent spec | WIP    | 2026-11-03 |           |
 
 ---
 

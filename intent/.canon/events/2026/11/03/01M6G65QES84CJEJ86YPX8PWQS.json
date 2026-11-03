@@ -1,0 +1,14 @@
+{
+  "id": "01M6G65QES84CJEJ86YPX8PWQS",
+  "ts": "2026-11-03T07:49:56.314Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-04"
+  },
+  "payload": {
+    "evidence": "intent/whiteboard/README.md; intent wb status lists hv (Hypervisor, hypervisor)"
+  }
+}

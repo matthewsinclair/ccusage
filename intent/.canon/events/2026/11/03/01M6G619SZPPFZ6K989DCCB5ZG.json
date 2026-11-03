@@ -1,0 +1,17 @@
+{
+  "id": "01M6G619SZPPFZ6K989DCCB5ZG",
+  "ts": "2026-11-03T07:47:31.263Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "Baseline at 17eee49, before any change: all eight checks PASS (cargo fmt --check; clippy --all-targets -D warnings; cargo test: 28 unit plus 17 integration, 1 ignored; the ignored native_keychain test passes on rhadamanth, which confirms it cannot see ISSUE:0002; sh tests/release.sh; the signing unittest; actionlint; shellcheck). The headless critics (intent critic rust and shell, via --files) report no findings on src, tests and tools, so the pre-commit gate in ST0001/01 will not block you on existing code. Logs: /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e/scratchpad/baseline/",
+    "fyi": true,
+    "re": null,
+    "recipient": "dc"
+  }
+}

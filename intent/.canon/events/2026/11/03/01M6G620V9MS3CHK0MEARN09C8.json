@@ -1,0 +1,15 @@
+{
+  "id": "01M6G620V9MS3CHK0MEARN09C8",
+  "ts": "2026-11-03T07:47:54.858Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wp.new",
+  "subject": {
+    "type": "wp",
+    "id": "ST0001/01"
+  },
+  "payload": {
+    "scope": "S",
+    "title": "Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md"
+  }
+}

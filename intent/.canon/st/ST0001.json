@@ -1,0 +1,101 @@
+{
+  "schema": "intent/thread@3.0",
+  "id": "ST0001",
+  "title": "Bring Ccusage up to Intent spec",
+  "slug": "bring-ccusage-up-to-intent-spec",
+  "status": "wip",
+  "created": "2026-11-03",
+  "objective": "Ccusage was added to Intent on 2026-11-03 to track ISSUE:0001 to ISSUE:0003. Bring it up to the spec of an Intent project, so that every session gets the same contract, every commit passes the same gate, and the whiteboard has a declared roster.\n\n- WP01 (dc): declare the project's languages (`intent lang init rust shell`), apply Intent's Claude canon and git gate (`intent claude upgrade --apply`), resync `AGENTS.md`, drop README's stale \"Intent integration is intentionally deferred\" line, take the first `intent backup`.\n- WP02 (vc): declare the whiteboard roster (`intent/whiteboard/README.md`, register `hv`, name vc as the reader of `hv/inbox.*`) and replace the template `intent/wip.md`.\n- WP03 (vc): once ISSUE:0002 lands, record the Keychain access decision in `intent/llm/ARCHITECTURE.md` and its never-rule in `intent/llm/RULES.md`.\n\nDone when `intent doctor` is clean with no advisory, the pre-commit gate runs the critics and doctor on a real commit, and a fresh session's `/in-session` loads the Rust and shell rules and picks up the declared roster.",
+  "context": "",
+  "body": "",
+  "preamble": "",
+  "wps": [
+    {
+      "seq": 1,
+      "title": "Declare languages, install Intent's Claude canon and git gate, resync AGENTS.md",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "Declare rust and shell with `intent lang init rust shell`. Apply Intent's Claude canon and git gate with `intent claude upgrade --apply` (.claude/settings.json, .mcp.json, usage-rules.md, .intent_critic.yml, and the pre-commit, post-merge, post-checkout and post-rewrite hooks). Resync AGENTS.md with `intent agents sync`, drop README's \"Intent integration is intentionally deferred\" line, and take the first `intent backup`. This satisfies AC-01, AC-02, AC-03 and the backup half of AC-07. The gate body runs from the install pointer (/Users/matts/Devel/prj/Intent), not the brew binary, as `intent claude upgrade` reports.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 2,
+      "title": "Declare the whiteboard roster and seed the project records",
+      "scope": "S",
+      "status": "done",
+      "objective": "Declare the whiteboard roster in intent/whiteboard/README.md (hv, vc and dc, with vc the named reader of hv/inbox.*), register hv, and replace the template intent/wip.md with the current focus. This satisfies AC-04 and AC-05.",
+      "body": "",
+      "preamble": ""
+    },
+    {
+      "seq": 3,
+      "title": "Record the Keychain access decision in ARCHITECTURE.md and RULES.md",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "Once ISSUE:0002 lands, record in intent/llm/ARCHITECTURE.md why ccusage reaches Claude's Keychain items only through /usr/bin/security, the way Claude Code does, and put the matching never-rule in intent/llm/RULES.md. This satisfies AC-06.",
+      "body": "",
+      "preamble": ""
+    }
+  ],
+  "criteria": [
+    {
+      "id": "AC-01",
+      "text": "intent lang declared lists rust and shell, so /in-session and the critics apply the Rust and shell rules (WP01)",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-02",
+      "text": "intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit (WP01)",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-03",
+      "text": "AGENTS.md is resynced from project state, and README no longer says Intent integration is deferred (WP01)",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-04",
+      "text": "intent/whiteboard/README.md declares hv, vc and dc with their scopes and names vc as the reader of hv/inbox.*, and hv is registered (WP02)",
+      "kind": "non-test",
+      "state": {
+        "is": "satisfied",
+        "evidence": "intent/whiteboard/README.md; intent wb status lists hv (Hypervisor, hypervisor)"
+      }
+    },
+    {
+      "id": "AC-05",
+      "text": "intent/wip.md carries the current focus with a verblock, not the template (WP02)",
+      "kind": "non-test",
+      "state": {
+        "is": "satisfied",
+        "evidence": "intent/wip.md v0.2, 2026-11-03T07:48:41Z"
+      }
+    },
+    {
+      "id": "AC-06",
+      "text": "intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule (WP03)",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-07",
+      "text": "intent doctor reports no finding and no advisory, the stale-backup advisory included",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    }
+  ]
+}

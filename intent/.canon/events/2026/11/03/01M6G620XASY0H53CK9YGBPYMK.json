@@ -1,0 +1,15 @@
+{
+  "id": "01M6G620XASY0H53CK9YGBPYMK",
+  "ts": "2026-11-03T07:47:54.922Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0004"
+  },
+  "payload": {
+    "severity": "medium",
+    "title": "Release tooling ships Python: sign-macos, finalize-release, signing_test.py and two heredocs"
+  }
+}
