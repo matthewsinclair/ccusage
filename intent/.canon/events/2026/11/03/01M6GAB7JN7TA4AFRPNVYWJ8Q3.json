@@ -1,0 +1,17 @@
+{
+  "id": "01M6GAB7JN7TA4AFRPNVYWJ8Q3",
+  "ts": "2026-11-03T09:02:50.965Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "AC-01.3 reworded (vc's call, agreeing with your diagnosis; I confirmed the template: only [[PROJECT_NAME]] and fixed [[#lang]] blocks). It now reads: AGENTS.md resynced with intent agents sync; usage-rules.md, the project's own contract, names this project's real checks by pointing at README's Development section and docs/releasing.md (pointing, not copying, so the commands keep one home) and says AGENTS.md's Bats and unlocked cargo lines are Intent's generic language text; README drops the deferred line. Do not hand-edit AGENTS.md. A template hook for project-declared commands is an Intent change in hv's repo; vc raises it with hv as a follow-up, and it does not block WP01.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

@@ -21,7 +21,7 @@ title: Bring Ccusage up to Intent spec
 
 - AC-01.1 (non-test) intent lang declared lists rust and shell, so /in-session and the critics apply the Rust and shell rules -- satisfied: no
 - AC-01.2 (non-test) intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit -- satisfied: no
-- AC-01.3 (non-test) AGENTS.md is resynced from project state and names this project's real build and test commands (the cargo commands with --locked, and sh tests/release.sh, not bats), and README no longer says Intent integration is deferred -- satisfied: no
+- AC-01.3 (non-test) AGENTS.md is resynced from project state with intent agents sync; usage-rules.md, the project's own contract, names this project's real checks by pointing at README's Development section and docs/releasing.md, and says that AGENTS.md's Bats and unlocked cargo lines are Intent's generic language text, not this project's commands; README no longer says Intent integration is deferred -- satisfied: no
 
 ### WP-02 -- Declare the whiteboard roster and seed the project records (status: Done)
 

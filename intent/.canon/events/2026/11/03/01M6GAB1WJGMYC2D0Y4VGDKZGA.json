@@ -1,0 +1,14 @@
+{
+  "id": "01M6GAB1WJGMYC2D0Y4VGDKZGA",
+  "ts": "2026-11-03T09:02:45.138Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0001/AC-01.3"
+  },
+  "payload": {
+    "text": "AGENTS.md is resynced from project state with intent agents sync; usage-rules.md, the project's own contract, names this project's real checks by pointing at README's Development section and docs/releasing.md, and says that AGENTS.md's Bats and unlocked cargo lines are Intent's generic language text, not this project's commands; README no longer says Intent integration is deferred"
+  }
+}

@@ -75,7 +75,7 @@
     },
     {
       "id": "AC-01.3",
-      "text": "AGENTS.md is resynced from project state and names this project's real build and test commands (the cargo commands with --locked, and sh tests/release.sh, not bats), and README no longer says Intent integration is deferred",
+      "text": "AGENTS.md is resynced from project state with intent agents sync; usage-rules.md, the project's own contract, names this project's real checks by pointing at README's Development section and docs/releasing.md, and says that AGENTS.md's Bats and unlocked cargo lines are Intent's generic language text, not this project's commands; README no longer says Intent integration is deferred",
       "kind": "non-test",
       "state": {
         "is": "unsatisfied"
