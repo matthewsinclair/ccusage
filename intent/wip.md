@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-03T07:48:41Z:v0.2: vc - Focus after triaging ISSUE:0001 to ISSUE:0004"
+verblock: "2026-11-03T08:03:34Z:v0.3: vc - hv's rulings on ISSUE:0003 and ISSUE:0004 folded in"
 ---
 
 # Work In Progress
@@ -12,8 +12,8 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 - ISSUE:0001 (low): bare `ccusage` shows the active account's usage and `ccusage --all` every account; help only from `help` and `--help`. dc builds first.
 - ISSUE:0002 (high): ccusage's renewal writes go through Security.framework and strip `apple-tool:` from Claude's Keychain items, so `/usr/bin/security` (Claude Code, Claude Usage) prompts after every renewal. dc writes the red test on a disposable keychain, then moves reads and writes to `/usr/bin/security` as Claude Code does. It is checked live on rhadamanth with a local build, then hv cuts the brew release.
-- ISSUE:0003 (medium): engineering.01 appears twice in Claude Usage, from two logins of one account. The design (one login per account, sessions selecting it with `CLAUDE_SECURESTORAGE_CONFIG_DIR`) waits on hv.
-- ISSUE:0004 (medium): the release tooling ships Python. hv picks the replacement: a Rust `xtask` or zsh.
+- ISSUE:0004 (medium): the release tooling ships Python. hv chose a Rust `xtask`, built now and shipped in 0.1.6, with the Python removed as soon as it is replaced. dc builds it after ISSUE:0002.
+- ISSUE:0003 (medium): engineering.01 appears twice in Claude Usage, because the main config holds its own login of a profile's account. The design is one login per account: sessions keep `~/.config/claude`, borrow the active profile's login through `CLAUDE_SECURESTORAGE_CONFIG_DIR`, and `ccusage use` copies the profile's `oauthAccount` into the shared `.claude.json`. vc holds it until hv confirms that write; dc builds it last.
 
 ## Active Steel Threads
 
@@ -21,8 +21,8 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Upcoming Work
 
-- hv cuts the brew release once ISSUE:0002 works on rhadamanth.
-- Port the release tooling off Python (ISSUE:0004), on the option hv picks.
+- hv cuts 0.1.6 once ISSUE:0001 to ISSUE:0004 work on rhadamanth, the release running on the new `xtask` tooling.
+- After 0.1.6: the ISSUE:0003 rollout (shared mode on, Molt's launcher export, restart the sessions, retire `ca646b28`).
 
 ## Notes
 
