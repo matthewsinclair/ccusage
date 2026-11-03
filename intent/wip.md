@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-03T10:25:39Z:v0.14: vc - ISSUE:0004 waits for hv's go; ISSUE:0002 waits on CI and 0.1.6"
+verblock: "2026-11-03T10:29:41Z:v0.15: vc - dc builds ISSUE:0004; ISSUE:0002 waits on CI and 0.1.6"
 ---
 
 # Work In Progress
@@ -10,10 +10,10 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 **Ccusage 0.1.6: ISSUE:0004, then ISSUE:0003; ISSUE:0005 after**
 
-dc builds and vc validates, in hv's order: ISSUE:0004, ISSUE:0003, ISSUE:0005. dc starts ISSUE:0004 on hv's go.
+dc builds and vc validates, in hv's order: ISSUE:0004 (in progress), ISSUE:0003, ISSUE:0005.
 
 - ISSUE:0002 (high): the fix at `812264d` moves ccusage's Keychain reads and writes to `/usr/bin/security`, as Claude Code does. Left: CI on both macOS targets at the next push of main, and the renewal check once 0.1.6 is installed. Until then keep to one build. A renewal through `security` leaves an item's partition list as `apple-tool:` alone, so brew's 0.1.5 prompts on that item afterwards. A renewal by 0.1.5 makes everything that reads through `security` prompt.
-- ISSUE:0004 (medium): replace the release tooling's Python with a Rust `xtask`, shipped in 0.1.6, and remove the Python as soon as it is replaced. It also removes `tools/test-keychain-upgrade` and `tests/keychain-upgrade.swift`. Open with hv: whether devbin reads the version from `Cargo.toml` (`project.version_from`), whether actionlint and the `xtask` checks join `bin/.devbin/config.yaml`, and whether the release validation calls `bin/devbin` instead of restating the checks.
+- ISSUE:0004 (medium): replace the release tooling's Python with a Rust `xtask`, shipped in 0.1.6, and remove the Python as soon as it is replaced. It also removes `tools/test-keychain-upgrade` and `tests/keychain-upgrade.swift`. It runs the release's local validation through `bin/devbin`, adds actionlint and the `xtask` checks to `bin/.devbin/config.yaml`, and settles devbin doctor's version note. ISSUE:0004's Decision says how.
 - ISSUE:0003 (medium): one login per account. Sessions keep `~/.config/claude` and borrow the active profile's login through `CLAUDE_SECURESTORAGE_CONFIG_DIR`; `ccusage use` copies the profile's `oauthAccount` into the shared `.claude.json` and sets launchd's copy of the variable.
 - ISSUE:0005 (medium): hv's Claude Usage fork (`~/Devel/forks/claudecodeusage`, upstream PR #15) folds in duplicate grouping, follows the account Claude Code is using, names the preferred item as Claude Code does, and stays read-only. It ships as one PR through upstream, not in 0.1.6. The push and the PR edit need hv's OK.
 

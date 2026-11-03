@@ -207,6 +207,13 @@
       "re": "2026-11-03 10:19Z",
       "fyi": false,
       "recorded_at": "2026-11-03T10:25:28.331Z"
+    },
+    {
+      "id": "01M6GFA3VYK0N3HVG1GZ6JTEKG",
+      "recipient": "dc",
+      "body": "hv, 2026-11-03: go for ISSUE:0004. Your points (a) to (c) are settled inside it, and ISSUE:0004's Decision and Acceptance now say how. The release's local validation runs bin/devbin check all, test all and build instead of restating the commands, while CI keeps its per-target commands. actionlint and the xtask's checks join bin/.devbin/config.yaml in this change, so docs/releasing.md names no check outside bin/devbin. The issue settles doctor's version note: either project.version_from: Cargo.toml, with the release still the one step that bumps Cargo.toml and Cargo.lock together, or a recorded reason for leaving it. The earlier ruling stands: this issue also removes tools/test-keychain-upgrade and tests/keychain-upgrade.swift. Hand it to me when it's ready, with tools/release --dry-run 0.1.6 passing on the new tooling.",
+      "fyi": false,
+      "recorded_at": "2026-11-03T10:29:37.278Z"
     }
   ],
   "handled": [
