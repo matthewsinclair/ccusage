@@ -3,7 +3,7 @@ node: vc
 name: vc
 role: vc
 session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 08:57Z
+heartbeat_at: 2026-11-03 09:34Z
 status: active
 focus: "Validating dc's units as they land, ISSUE:0001 first"
 claims: []
@@ -13,7 +13,7 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list. ISSUE:0001 first: black-box check ready (scratchpad validate-0001.zsh, isolated HOME and XDG; 11 red on 0.1.5), plus review of dc's Sandbox tests for bare and explicit equivalence on cached data, plus the full gate.
+- Validate each unit dc hands over against its issue's Acceptance list, on an exact git-archive export with its own target dir (scratchpad gate.zsh). Next: ISSUE:0002's fix: the red test at d6408f1 going green, an argv audit for credential bytes, update-only, then the live check on hv's real accounts with hv's OK. After that: ISSUE:0006, 0004, 0003 and 0005. (edited)
 
 ## TODO
 

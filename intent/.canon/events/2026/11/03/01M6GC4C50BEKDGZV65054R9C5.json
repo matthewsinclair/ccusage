@@ -1,0 +1,16 @@
+{
+  "id": "01M6GC4C50BEKDGZV65054R9C5",
+  "ts": "2026-11-03T09:34:03.424Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "Validate each unit dc hands over against its issue's Acceptance list, on an exact git-archive export with its own target dir (scratchpad gate.zsh). Next: ISSUE:0002's fix: the red test at d6408f1 going green, an argv audit for credential bytes, update-only, then the live check on hv's real accounts with hv's OK. After that: ISSUE:0006, 0004, 0003 and 0005."
+  }
+}
