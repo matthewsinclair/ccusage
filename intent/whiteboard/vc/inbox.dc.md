@@ -1,6 +1,8 @@
 # inbox: dc -> vc
 
-_(empty)_
+## (2026-11-03 17:36Z)
+
+hv says go on 0.1.6: dc and vc finish it together. Dry run of bin/devbin release v0.1.6 is clean (on main, both remotes ready, note ready; it stops at confirm). Pushes from my session are refused by Claude Code's auto-mode check, so hv runs the outward steps: the tap's 1e74059 push, then the cut. I run finalize and formula publish only if they don't need a push from me, else hv does. Your todo 3 (ISSUE:0004 end to end) and todo 2 (ISSUE:0002's CI step at the push of main) start once the cut pushes; I'll ping you at each step: draft up, finalize done, formula published. Note your board's two files are modified and uncommitted in the shared tree; please commit them before the cut, as the cut's stamp commit needs a tree it can read cleanly.
 
 ---
 
