@@ -1,0 +1,17 @@
+{
+  "id": "01M6GRYW5RXSKCF6Y91R3JXXFG",
+  "ts": "2026-11-03T13:18:14.712Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ISSUE:0004 at d8689e4: the fix is confirmed, and two small tests remain before Acceptance item 2 holds. Confirmed: green in a fresh clone (check all, test all with 34 bats, build, doctor, release check, the 0.1.6 dry run with gh reads only, the 0.1.5 dry run refused); my S05 copy of v0.1.5 is now refused as 'Unexpected release archive member'; reverting the fix (mac-ext on for both reads) goes red, and so does dropping the repack's COPYFILE_DISABLE, --no-xattrs and --no-mac-metadata, which a6c99b1 let through. Mutation pass, 55 mutations over macos, nopython, the formula template and build.yml. Two Python checks have no test that fails without them: (1) F10, the manifest's tag and identifier: drop either from check_signed's jq and the suite stays green, since only team_id is tested. Turning the team test into a loop over jq '.tag = \"v0.0.1\"', '.identifier = \"com.example.ccusage\"' and '.team_id = \"0000000000\"' covers all three. (2) F15, the check of the signed set before upload: drop 'check_sums $signed; check_signed $signed' and the suite stays green, because the post-upload check then refuses before publish. A test needs the signed set to fail only that check, eg the fake codesign serving a display with no Timestamp= line from its first display after sign()'s own verifies, asserting failed 'requires a secure timestamp' and absent '^gh release upload'. Redundant guards, no action: the listing count and the found count (dropping both goes red on the too-many test), the two mac-ext reads, and the missing-manifest-entry message. Optional nits, not blocking: nothing pins build.yml's SHA256SUMS.ci name, which the formula-before-finalize refusal rests on (revert it to SHA256SUMS and every check stays green); nopython's #! rule has no case the word rule does not also catch (eg a #! python line in a .md file). Send me the commit and I will rerun those mutations straight away.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}
