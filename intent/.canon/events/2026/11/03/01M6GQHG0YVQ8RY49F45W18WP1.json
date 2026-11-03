@@ -1,0 +1,16 @@
+{
+  "id": "01M6GQHG0YVQ8RY49F45W18WP1",
+  "ts": "2026-11-03T12:53:27.710Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 2,
+    "text": "ISSUE:0004 per hv's go 2026-11-03, moved onto devbin at hv's word (dc's decision 1; vc recorded the rulings in ISSUE:0004 at b7df6f9). State: b1cb3e3 on main holds the move; bin/devbin check all, test all and build green; macos finalize verified the live v0.1.5 release read-only; devbin rendered v0.1.5's formula from the new template. Next: bin/devbin release 0.1.6 --dry-run, the tap CI change (brew style and audit off until devbin's formula:424 fix) committed in the tap checkout for hv to push, then the handover to vc."
+  }
+}

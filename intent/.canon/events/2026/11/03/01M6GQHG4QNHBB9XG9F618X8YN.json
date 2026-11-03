@@ -1,0 +1,16 @@
+{
+  "id": "01M6GQHG4QNHBB9XG9F618X8YN",
+  "ts": "2026-11-03T12:53:27.831Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 4,
+    "text": "ISSUE:0003 per vc brief and hv confirmation 2026-11-03: claim when the queue reaches it. hv via vc: one 0.1.6 cut carries ISSUE:0002, 0004 and 0003 together, no split releases. In shared mode ccusage use runs launchctl setenv CLAUDE_SECURESTORAGE_CONFIG_DIR: give use a seam the tests drive, so no test and no scratch run calls the real launchctl; vc recorded launchd's values (CLAUDE_CONFIG_DIR=/Users/matts/.config/claude, CLAUDE_SECURESTORAGE_CONFIG_DIR unset) and compares them after the suite."
+  }
+}

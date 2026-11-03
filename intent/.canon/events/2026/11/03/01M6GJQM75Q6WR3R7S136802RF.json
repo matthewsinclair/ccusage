@@ -1,0 +1,16 @@
+{
+  "id": "01M6GJQM75Q6WR3R7S136802RF",
+  "ts": "2026-11-03T11:29:25.733Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "decision",
+    "seq": 1,
+    "text": "ISSUE:0004 design (dc, 2026-11-03), as built on hv's rulings (hv to dc, 2026-11-03: tools/* moves to devbin, following Pplr's approach; no bespoke dev tools or scripts). Three devbin commands. (1) bin/devbin release: devbin's cut, config.yaml release: block (remotes local and upstream, notes changelog from CHANGELOG.md, derived bin/devbin lock-sync ported from Pplr, gates check all, test all, build and doctor, ci.workflow build.yml on candidate/<tag>, object: ci with object_wait 40m); CI's tag run makes the private draft with the four archives and SHA256SUMS.ci. (2) bin/devbin macos finalize <tag>: a zsh project command cut down from Pplr's signer (hv: CI builds, Mac signs; zsh, the Rust xtask goes): listing then unpacked-tree archive checks, lipo architecture, Developer ID signing with identifier, runtime and timestamp, verify against packaging/macos/signing's requirement, Timestamp= line, CodeDirectory runtime flag, designated requirement without cdhash, optional notarization, one identity across both Macs; it alone writes SHA256SUMS, so devbin's formula cannot render from an unsigned draft (H05), and it publishes only once the uploaded manifest's identity (H01) and checksums verify; a rerun takes the draft's own SHA256SUMS. (3) bin/devbin formula publish: devbin's built-in, assets mode, template rewritten to its placeholders, Linux built from the top-level git url and @@REVISION@@ (hv: built-in, tap CI drops brew style and audit until devbin's formula:424 fix). The xtask, the workspace, .cargo/, tools/ and tests/release.sh are gone; bats suites in tests/ cover the three project commands; check nopython keeps Python out; version_from Cargo.toml, with a usage-rules NEVER that only bin/devbin release changes the version."
+  }
+}
