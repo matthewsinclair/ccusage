@@ -107,7 +107,8 @@ impl Item<'_> {
   /// item, so this finds the item by its attributes first and refuses when it is
   /// absent; the password then travels on `security -i`'s stdin, never in argv.
   pub fn update(&self, password: &[u8]) -> Result<()> {
-    let line = update_line(self.service, self.account, &self.locate()?, password)?;
+    let keychain = self.locate()?;
+    let line = update_line(self.service, self.account, &keychain, password)?;
     let mut child = writer()
       .spawn()
       .map_err(|_| "could not run /usr/bin/security to save renewed Claude credentials")?;
@@ -129,8 +130,14 @@ impl Item<'_> {
         "could not save renewed Claude credentials in Keychain; unlock it and retry".into(),
       );
     }
-    // security -i can report success for a write it made somewhere else.
-    if self.read()?.as_deref() != Some(password) {
+    // security -i can report success for a write it made somewhere else, such as the
+    // default keychain when it cannot open the one named, so the item is read back
+    // from the keychain it was found in.
+    let found = Item {
+      keychain: Some(&keychain),
+      ..*self
+    };
+    if found.read()?.as_deref() != Some(password) {
       return Err("Claude's Keychain item did not take the renewed credentials".into());
     }
     Ok(())

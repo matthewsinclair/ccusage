@@ -938,9 +938,10 @@ mod tests {
       keychain: Some(&keychain.path),
     }
     .update(renewed)?;
-    // The asserts come before the security -w read: had the write dropped apple-tool:,
-    // that read would raise a password dialog, and turning interaction off here cannot
-    // stop a dialog in another process.
+    // update() has already read the item back through security -w, as Claude Code does,
+    // so a write that dropped apple-tool: would have prompted there: turning interaction
+    // off here cannot stop a prompt in another process. Deny such a prompt and the test
+    // fails; Always Allow would change the item's access and could hide the fault.
     let access = keychain.access(&service)?;
     assert!(
       access.partitions.iter().any(|id| id == "apple-tool:"),
