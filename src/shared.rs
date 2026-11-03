@@ -221,4 +221,27 @@ mod tests {
     ));
     assert!(!same_account(&json!({}), &json!({})));
   }
+
+  #[test]
+  fn a_switch_keeps_every_float_bit_for_bit() -> Result<()> {
+    // Claude Code's .claude.json holds costs and frame timings, floats with every digit
+    // significant. A switch rewrites the whole file, so none may move by even an ulp.
+    const SAMPLES: usize = 2000;
+    let mut state: u64 = 0x2545_f491_4f6c_dd1d;
+    let mut document = serde_json::Map::new();
+    for index in 0..SAMPLES {
+      // xorshift64, scaled to the costs and timings Claude Code records
+      state ^= state << 13;
+      state ^= state >> 7;
+      state ^= state << 17;
+      let value = (state >> 11) as f64 / (1_u64 << 53) as f64 * 1000.0;
+      document.insert(format!("value{index}"), json!(value));
+    }
+    let record = json!({"emailAddress": "a@example.com"});
+    document.insert(RECORD.to_owned(), record.clone());
+    // serde_json writes each float as its shortest exact text
+    let text = serde_json::to_string_pretty(&document)?;
+    assert_eq!(with_account(&text, &record)?, text);
+    Ok(())
+  }
 }
