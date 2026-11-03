@@ -3,7 +3,7 @@ node: vc
 name: vc
 role: vc
 session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 10:26Z
+heartbeat_at: 2026-11-03 10:35Z
 status: active
 focus: "Validating dc's units as they land, ISSUE:0001 first"
 claims: []
@@ -13,7 +13,7 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list, on an exact git-archive export or a fresh local clone in the scratchpad, with its own target dir (scratchpad gate.zsh). Next: ISSUE:0004, 0003 and 0005 as dc hands them over. (edited)
+- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone (or exact git-archive export) in the scratchpad, with its own target dir. Next: ISSUE:0004, then 0003 and 0005. For ISSUE:0004, validate through bin/devbin (check all, test all, build) plus tools/release --dry-run 0.1.6, a grep for any remaining Python, and the removed-check tests failing red. The scratchpad gate.zsh's signing-py and shellcheck steps name files 0004 removes. (edited)
 
 ## TODO
 

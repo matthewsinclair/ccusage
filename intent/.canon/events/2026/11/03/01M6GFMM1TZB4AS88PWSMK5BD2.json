@@ -1,0 +1,16 @@
+{
+  "id": "01M6GFMM1TZB4AS88PWSMK5BD2",
+  "ts": "2026-11-03T10:35:21.530Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone (or exact git-archive export) in the scratchpad, with its own target dir. Next: ISSUE:0004, then 0003 and 0005. For ISSUE:0004, validate through bin/devbin (check all, test all, build) plus tools/release --dry-run 0.1.6, a grep for any remaining Python, and the removed-check tests failing red. The scratchpad gate.zsh's signing-py and shellcheck steps name files 0004 removes."
+  }
+}
