@@ -91,6 +91,8 @@ pub fn switch(store: &Store, name: &str) -> Result<()> {
     .ok_or_else(|| format!("profile {name} records no oauthAccount; run ccusage login {name}"))?;
   let file = shared.join(SETTINGS);
   {
+    // Held for a read, a merge and a rename: every session shares this file, and
+    // Claude Code writes over a lock held past its 10 s stale time.
     let _lock = lock(&file)?;
     let text = settings(&shared)?.ok_or_else(|| {
       format!(
@@ -99,7 +101,8 @@ pub fn switch(store: &Store, name: &str) -> Result<()> {
         shared.display()
       )
     })?;
-    storage::replace(&file, with_account(&text, &record)?.as_bytes())?;
+    // A 0600 file staged beside it and renamed over it, as Claude Code saves its own.
+    storage::write_atomic(&file, with_account(&text, &record)?.as_bytes())?;
   }
   store.activate(name)?;
   #[cfg(target_os = "macos")]
@@ -107,7 +110,9 @@ pub fn switch(store: &Store, name: &str) -> Result<()> {
   Ok(())
 }
 
-/// Claude Code's lock on a `.claude.json`.
+/// Claude Code's lock on a `.claude.json`, which its saveGlobalConfig takes:
+/// proper-lockfile's `<file>.lock` directory, with an mtime heartbeat, stale after
+/// 10 s (read from Claude Code 2.1.317's source).
 fn lock(file: &Path) -> Result<Lock> {
   let mut path = file.as_os_str().to_owned();
   path.push(".lock");

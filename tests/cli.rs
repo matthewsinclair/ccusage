@@ -659,6 +659,7 @@ fn shared_mode_use_copies_only_the_account_record_and_points_launchd() -> Result
   let sandbox = Sandbox::new()?;
   let shared = sandbox.shared()?;
   let settings = shared.join(".claude.json");
+  // Claude Code saves its .claude.json at 0600, and so does a switch, whatever it found.
   fs::set_permissions(&settings, fs::Permissions::from_mode(0o644))?;
   let said = sandbox.ok(&["use", "work"])?;
   assert!(said.contains("New Claude sessions use this account"));
@@ -666,7 +667,7 @@ fn shared_mode_use_copies_only_the_account_record_and_points_launchd() -> Result
     fs::read_to_string(&settings)?,
     "{\n  \"numStartups\": 3,\n  \"oauthAccount\": {\n    \"accountUuid\": \"u-work\",\n    \"emailAddress\": \"test@example.com\"\n  },\n  \"theme\": \"dark\"\n}\n"
   );
-  assert_eq!(fs::metadata(&settings)?.permissions().mode() & 0o777, 0o644);
+  assert_eq!(fs::metadata(&settings)?.permissions().mode() & 0o777, 0o600);
   assert!(!shared.join(".claude.json.lock").exists());
   assert_eq!(
     fs::read_to_string(sandbox.root.join("state/ccusage/active.json"))?,
@@ -823,5 +824,33 @@ fn doctor_is_unchanged_with_shared_mode_off() -> Result<()> {
     "{text}"
   );
   assert!(sandbox.launchctl()?.is_empty());
+  Ok(())
+}
+
+#[test]
+fn shared_mode_use_waits_for_claude_codes_settings_lock() -> Result<()> {
+  use std::{process::Stdio, time::Duration};
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  // Held, as Claude Code's saveGlobalConfig holds it: a fresh lock is not stale for 10 s.
+  let lock = shared.join(".claude.json.lock");
+  fs::create_dir(&lock)?;
+  let mut child = sandbox
+    .command()
+    .args(["use", "work"])
+    .stdout(Stdio::null())
+    .spawn()?;
+  std::thread::sleep(Duration::from_millis(500));
+  assert!(
+    child.try_wait()?.is_none(),
+    "use went ahead while the lock was held"
+  );
+  assert_eq!(
+    fs::read_to_string(shared.join(".claude.json"))?,
+    SHARED_SETTINGS
+  );
+  fs::remove_dir(&lock)?;
+  assert!(child.wait()?.success());
+  assert!(fs::read_to_string(shared.join(".claude.json"))?.contains("\"u-work\""));
   Ok(())
 }
