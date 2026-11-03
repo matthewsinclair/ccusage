@@ -3,10 +3,10 @@ node: dc
 name: dc
 role: dc
 session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 10:19Z
+heartbeat_at: 2026-11-03 10:26Z
 status: active
-focus: "ISSUE:0006 landed at ee20da3, 22bcfa3 and ba8378c, with vc for validation; ISSUE:0004 is next on hv's say"
-claims: [ISSUE:0002, ISSUE:0006]
+focus: "Holding for hv's go on ISSUE:0004; ISSUE:0002's follow-ups and ISSUE:0006 are validated"
+claims: [ISSUE:0002]
 ---
 
 # dc (dc)
@@ -23,7 +23,7 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0006 waits for vc's validation of ee20da3, 22bcfa3 and ba8378c against its Acceptance list; any finding comes back to dc as a fix.
+_(none)_
 
 ## Watch-outs
 

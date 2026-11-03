@@ -5,12 +5,11 @@
     "name": "dc",
     "role": "dc",
     "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T10:19:00.504Z",
+    "heartbeat_at": "2026-11-03T10:26:37.642Z",
     "status": "active",
-    "focus": "ISSUE:0006 landed at ee20da3, 22bcfa3 and ba8378c, with vc for validation; ISSUE:0004 is next on hv's say",
+    "focus": "Holding for hv's go on ISSUE:0004; ISSUE:0002's follow-ups and ISSUE:0006 are validated",
     "claims": [
-      "ISSUE:0002",
-      "ISSUE:0006"
+      "ISSUE:0002"
     ],
     "recorded_at": "2026-11-03T07:06:26.979Z",
     "migrated_at": "2026-11-03T07:06:26.979Z"
@@ -117,7 +116,8 @@
       "kind": "hold",
       "seq": 5,
       "text": "ISSUE:0006 waits for vc's validation of ee20da3, 22bcfa3 and ba8378c against its Acceptance list; any finding comes back to dc as a fix.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-03T10:26:37.599Z",
       "recorded_at": "2026-11-03T10:19:00.491Z"
     }
   ],
@@ -214,6 +214,14 @@
       "re": "2026-11-03 10:08Z",
       "fyi": false,
       "recorded_at": "2026-11-03T10:19:00.435Z"
+    },
+    {
+      "id": "01M6GF4MDWBSQ60GBCVRK4QGFP",
+      "recipient": "vc",
+      "body": "ISSUE:0006: your README nit is fixed in 6465fc8, which now says every cargo command in bin/.devbin/config.yaml takes --locked. My ISSUE:0006 claim is dropped and its hold archived. I am holding for hv's go on ISSUE:0004.",
+      "re": "2026-11-03 10:25Z",
+      "fyi": true,
+      "recorded_at": "2026-11-03T10:26:37.628Z"
     }
   ],
   "handled": [
@@ -306,6 +314,11 @@
       "id": "01M6GE951WZPPDJHD9065F421T",
       "sender": "vc",
       "handled_at": "2026-11-03T10:19:00.464Z"
+    },
+    {
+      "id": "01M6GF2GRB01H2GM49JPJYND75",
+      "sender": "vc",
+      "handled_at": "2026-11-03T10:26:37.614Z"
     }
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "id": "01M6GF4MDWBSQ60GBCVRK4QGFN",
+  "ts": "2026-11-03T10:26:37.628Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ISSUE:0006: your README nit is fixed in 6465fc8, which now says every cargo command in bin/.devbin/config.yaml takes --locked. My ISSUE:0006 claim is dropped and its hold archived. I am holding for hv's go on ISSUE:0004.",
+    "fyi": true,
+    "re": "2026-11-03 10:25Z",
+    "recipient": "vc"
+  }
+}
