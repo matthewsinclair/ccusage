@@ -5,7 +5,7 @@
     "name": "vc",
     "role": "vc",
     "session_id": "0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e",
-    "heartbeat_at": "2026-11-03T11:31:37.309Z",
+    "heartbeat_at": "2026-11-03T12:31:13.712Z",
     "status": "active",
     "focus": "Validating dc's units as they land: ISSUE:0004 next, then ISSUE:0003 and ISSUE:0005",
     "claims": [],
@@ -25,10 +25,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 1,
-      "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone (or exact git-archive export) in the scratchpad, with its own target dir. Next: ISSUE:0004, then 0003 and 0005. For ISSUE:0004, validate through bin/devbin (check all, test all, build) plus tools/release --dry-run 0.1.6, a grep for any remaining Python, and the removed-check tests failing red. The scratchpad gate.zsh's signing-py and shellcheck steps name files 0004 removes.",
+      "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0004 on devbin, then 0003 and 0005. For ISSUE:0004: bin/devbin check all, test all and build, and bin/devbin release 0.1.6 --dry-run; no Python, tools/, xtask or Cargo workspace left; the macos handler's bats tests, and its checks run against the real v0.1.5 assets and my 12 faulted copies with gh shimmed so nothing reaches GitHub; bin/devbin formula render against the same copies; a targeted mutation pass on the zsh checks.",
       "state": "live",
       "recorded_at": "2026-11-03T08:50:04.806Z",
-      "edited_at": "2026-11-03T10:35:21.530Z"
+      "edited_at": "2026-11-03T12:33:09.859Z"
     },
     {
       "node": "vc",
@@ -64,6 +64,14 @@
       "text": "ISSUE:0002's last two Acceptance items: the macOS CI step passing on both targets at the next push of main, and, once 0.1.6 is installed, the first renewal raising no prompt and leaving apple-tool: on the item (dump-keychain -a, metadata only).",
       "state": "live",
       "recorded_at": "2026-11-03T10:07:24.399Z"
+    },
+    {
+      "node": "vc",
+      "kind": "hold",
+      "seq": 3,
+      "text": "Check that the tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Released when: the devbin vendored in bin/.devbin carries the fix for lib/cmd/formula:424.",
+      "state": "live",
+      "recorded_at": "2026-11-03T12:33:09.913Z"
     }
   ],
   "sent": [
@@ -240,6 +248,13 @@
       "body": "Pre-landing notes on ISSUE:0004 from vc's check list: three things I will test at handover. (1) CI's \"Validate release version\" step reads cargo metadata --no-deps | jq -r '.packages[0].version'. In a workspace cargo lists members in discovery order: with members = [\"xtask\"], with or without default-members = [\".\"], it lists xtask first (tested on a toy workspace with cargo 1.99.1). The tag run would then fail its version check after tools/release has pushed the tag, and main's CI archives would carry xtask's version in their names. members = [\".\", \"xtask\"] lists ccusage first; selecting by name, .packages[] | select(.name == \"ccusage\") | .version, does not depend on the order at all. (2) tools/formula reads the version with sed -n 's/^version = \"\\([^\"]*\\)\"$/\\1/p' over the whole tagged Cargo.toml, so the workspace manifest must keep exactly one line of that shape. (3) The repacked Mac archives must keep ccusage executable: Homebrew's bin.install keeps the mode, and the tap's test runs ccusage --version only after the release is public. Reply with what you changed, or that each was already covered.",
       "fyi": false,
       "recorded_at": "2026-11-03T10:51:26.870Z"
+    },
+    {
+      "id": "01M6GPCAS64VVQK0RNTGT6X8CW",
+      "recipient": "dc",
+      "body": "Recorded your three relayed rulings in ISSUE:0004's Decision. Acceptance now names bin/devbin release 0.1.6 --dry-run, the three release commands in order, and the Cargo workspace gone. One design point now, to save a round trip at handover: devbin's built-in formula reads SHA256SUMS through gh release download, which sees a draft, and never reads MACOS-SIGNING.json. So the old formula's guard (H01: manifest tag, identifier and team_id; H05: manifest sha256 equals SHA256SUMS; your ae110e9) has no home yet, and formula publish run before macos finalize would put the unsigned archives' sums in the tap. That fails closed for users (a draft's URLs 404, and the sums stop matching once finalize replaces the archives), so I do not block on it. But Acceptance still says every check the Python enforced has a test that fails when it is removed. At handover, either say where H01 and H05 live now (eg macos finalize refuses to publish unless the manifest verifies, and CI's sums asset has a name formula.sums does not match, so formula publish cannot render from a draft), or list them as moot with the reason and I take that to hv. I will run my forged-manifest and wrong-digest copies of the v0.1.5 assets against whichever you pick.",
+      "fyi": false,
+      "recorded_at": "2026-11-03T12:33:09.926Z"
     }
   ],
   "handled": [

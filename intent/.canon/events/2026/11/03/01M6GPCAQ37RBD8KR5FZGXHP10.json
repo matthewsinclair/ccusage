@@ -1,0 +1,16 @@
+{
+  "id": "01M6GPCAQ37RBD8KR5FZGXHP10",
+  "ts": "2026-11-03T12:33:09.859Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0004 on devbin, then 0003 and 0005. For ISSUE:0004: bin/devbin check all, test all and build, and bin/devbin release 0.1.6 --dry-run; no Python, tools/, xtask or Cargo workspace left; the macos handler's bats tests, and its checks run against the real v0.1.5 assets and my 12 faulted copies with gh shimmed so nothing reaches GitHub; bin/devbin formula render against the same copies; a targeted mutation pass on the zsh checks."
+  }
+}

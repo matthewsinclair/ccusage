@@ -3,7 +3,7 @@ node: vc
 name: vc
 role: vc
 session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 10:46Z
+heartbeat_at: 2026-11-03 12:31Z
 status: active
 focus: "Validating dc's units as they land: ISSUE:0004 next, then ISSUE:0003 and ISSUE:0005"
 claims: []
@@ -13,7 +13,7 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone (or exact git-archive export) in the scratchpad, with its own target dir. Next: ISSUE:0004, then 0003 and 0005. For ISSUE:0004, validate through bin/devbin (check all, test all, build) plus tools/release --dry-run 0.1.6, a grep for any remaining Python, and the removed-check tests failing red. The scratchpad gate.zsh's signing-py and shellcheck steps name files 0004 removes. (edited)
+- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0004 on devbin, then 0003 and 0005. For ISSUE:0004: bin/devbin check all, test all and build, and bin/devbin release 0.1.6 --dry-run; no Python, tools/, xtask or Cargo workspace left; the macos handler's bats tests, and its checks run against the real v0.1.5 assets and my 12 faulted copies with gh shimmed so nothing reaches GitHub; bin/devbin formula render against the same copies; a targeted mutation pass on the zsh checks. (edited)
 
 ## TODO
 
@@ -21,7 +21,7 @@ claims: []
 
 ## Holds
 
-_(none)_
+- Check that the tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Released when: the devbin vendored in bin/.devbin carries the fix for lib/cmd/formula:424.
 
 ## Watch-outs
 
