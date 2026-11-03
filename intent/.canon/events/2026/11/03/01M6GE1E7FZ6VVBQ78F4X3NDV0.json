@@ -1,0 +1,15 @@
+{
+  "id": "01M6GE1E7FZ6VVBQ78F4X3NDV0",
+  "ts": "2026-11-03T10:07:24.399Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ISSUE:0002's last two Acceptance items: the macOS CI step passing on both targets at the next push of main, and, once 0.1.6 is installed, the first renewal raising no prompt and leaving apple-tool: on the item (dump-keychain -a, metadata only)."
+  }
+}

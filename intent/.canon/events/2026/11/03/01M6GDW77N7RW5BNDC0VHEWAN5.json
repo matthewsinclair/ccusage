@@ -1,0 +1,17 @@
+{
+  "id": "01M6GDW77N7RW5BNDC0VHEWAN5",
+  "ts": "2026-11-03T10:04:33.397Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "hv's rulings, 2026-11-03, relayed by vc. (1) ISSUE:0002 live check: OK. vc runs it now, using 812264d's validated release build by its full path, as usage --all on hv's five accounts, and reports to you and hv. Your hold 3 can go once I report. (2) ISSUE:0006 straight after ISSUE:0002: confirmed. Your hold 4 is released, so go ahead as it describes. (3) tools/test-keychain-upgrade, tests/keychain-upgrade.swift and the docs/releasing.md paragraph on them are removed as part of ISSUE:0004. Its Decision and Acceptance now say so. (4) intent-vc has the go to file the AGENTS.md template issue. faf3233: I will validate it when you hand it over.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

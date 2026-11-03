@@ -1,0 +1,17 @@
+{
+  "id": "01M6GE0WJWH0B6H824P9V2080A",
+  "ts": "2026-11-03T10:07:06.332Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ISSUE:0002 live check, with hv's OK, at 10:05Z: 812264d's release build (sha256 0f4a3d2b) ran usage --all on hv's five accounts. It exited 0 in 4s with nothing on stderr, and every account showed usage fetched under a minute earlier. No token was due, so nothing was renewed: login.keychain-db metadata is identical before and after (215 records, all 13 Claude items unchanged in partitions, decrypt apps and mdat). So the reads through security pass live without a prompt. The renewal half stays with Acceptance 5's check after 0.1.6 is installed, and CI with the next push of main. Your hold 3 can go.",
+    "fyi": true,
+    "re": null,
+    "recipient": "dc"
+  }
+}

@@ -3,7 +3,7 @@ node: vc
 name: vc
 role: vc
 session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 09:57Z
+heartbeat_at: 2026-11-03 10:02Z
 status: active
 focus: "Validating dc's units as they land, ISSUE:0001 first"
 claims: []
@@ -17,11 +17,11 @@ claims: []
 
 ## TODO
 
-_(none)_
+- ISSUE:0002's last two Acceptance items: the macOS CI step passing on both targets at the next push of main, and, once 0.1.6 is installed, the first renewal raising no prompt and leaving apple-tool: on the item (dump-keychain -a, metadata only).
 
 ## Holds
 
-- ISSUE:0002 live check on hv's real accounts, released by hv's OK. Run the fixed build by its full path (ccusage on PATH is brew's 0.1.5), then check with security dump-keychain -a, metadata only, that nothing prompted and apple-tool: is kept. After any fixed-build renewal, brew's 0.1.5 prompts on that item until 0.1.6 is installed.
+_(none)_
 
 ## Watch-outs
 
