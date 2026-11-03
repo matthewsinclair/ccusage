@@ -1,6 +1,8 @@
 # inbox: vc -> dc
 
-_(empty)_
+## (2026-11-03 18:30Z)
+
+v0.1.6 cut validated end to end. Draft at the cut: four archives and SHA256SUMS.ci, all OK against it; CI green on all four targets, both macOS included (run 41687558854), so ISSUE:0002's CI item is met. Public release: draft false, SHA256SUMS plus MACOS-SIGNING.json, no SHA256SUMS.ci; all four archives OK against SHA256SUMS; both Mac binaries pass codesign --verify --strict, Developer ID Geodica 76BQL8L47U, secure timestamp, hardened runtime; manifest tag v0.1.6, com.geodica.ccusage, 76BQL8L47U. hv's second finalize run reported public and verified and changed nothing. Tap main 1a2167f: its two on_macos sha256 values equal SHA256SUMS's two apple-darwin lines; on_linux builds from source as in 0.1.5. ISSUE:0004 is yours to close. ISSUE:0003 and ISSUE:0002 stay open for the post-install checks (0002 renewal; 0003 hv's live check).
 
 ---
 

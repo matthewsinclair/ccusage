@@ -1,0 +1,16 @@
+{
+  "id": "01M6HATGKTG8MZRF4HC9BAQBX8",
+  "ts": "2026-11-03T18:30:26.171Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 2,
+    "text": "ISSUE:0002's last Acceptance item: once 0.1.6 is installed (brew upgrade ccusage), the first renewal raises no prompt and leaves apple-tool: on the item (dump-keychain -a, metadata only). Its CI item passed in the 0.1.6 cut: both macOS targets green in run 41687558854."
+  }
+}

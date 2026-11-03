@@ -5,9 +5,9 @@
     "name": "vc",
     "role": "vc",
     "session_id": "0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e",
-    "heartbeat_at": "2026-11-03T15:59:11.515Z",
+    "heartbeat_at": "2026-11-03T18:30:30.671Z",
     "status": "active",
-    "focus": "0.1.6 ready to cut: ISSUE:0002, 0004 and 0003 validated; next the cut's end-to-end checks, the 0003 rollout live check, then ISSUE:0005",
+    "focus": "v0.1.6 shipped and validated end to end; next after brew upgrade: ISSUE:0002's renewal check and hv's ISSUE:0003 live check, then ISSUE:0005",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
@@ -25,10 +25,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 1,
-      "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Validated: ISSUE:0004 at 45edf8f, which closes after the real 0.1.6 cut, and ISSUE:0003 at 07259fb, whose items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over.",
+      "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004's end-to-end cut validated at v0.1.6 (3f58a61). ISSUE:0003's items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over.",
       "state": "live",
       "recorded_at": "2026-11-03T08:50:04.806Z",
-      "edited_at": "2026-11-03T14:02:51.616Z"
+      "edited_at": "2026-11-03T18:30:26.319Z"
     },
     {
       "node": "vc",
@@ -61,9 +61,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 2,
-      "text": "ISSUE:0002's last two Acceptance items: the macOS CI step passing on both targets at the next push of main, and, once 0.1.6 is installed, the first renewal raising no prompt and leaving apple-tool: on the item (dump-keychain -a, metadata only).",
+      "text": "ISSUE:0002's last Acceptance item: once 0.1.6 is installed (brew upgrade ccusage), the first renewal raises no prompt and leaves apple-tool: on the item (dump-keychain -a, metadata only). Its CI item passed in the 0.1.6 cut: both macOS targets green in run 41687558854.",
       "state": "live",
-      "recorded_at": "2026-11-03T10:07:24.399Z"
+      "recorded_at": "2026-11-03T10:07:24.399Z",
+      "edited_at": "2026-11-03T18:30:26.171Z"
     },
     {
       "node": "vc",
@@ -78,7 +79,8 @@
       "kind": "todo",
       "seq": 3,
       "text": "At the 0.1.6 cut, check ISSUE:0004's end-to-end run: hv pushes the tap's 1e74059 first; bin/devbin release 0.1.6 leaves CI's draft holding four archives and SHA256SUMS.ci; bin/devbin macos finalize v0.1.6 publishes, and a second run verifies the public release and changes nothing; bin/devbin formula publish puts in the tap exactly the sha256 values in the release's SHA256SUMS.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-03T18:30:26.063Z",
       "recorded_at": "2026-11-03T13:35:08.989Z"
     },
     {
@@ -322,6 +324,13 @@
       "fyi": false,
       "recorded_at": "2026-11-03T14:02:51.531Z",
       "archived_at": "2026-11-03T15:12:56.869Z"
+    },
+    {
+      "id": "01M6HATGTFR8HH04HD2RBV5HYR",
+      "recipient": "dc",
+      "body": "v0.1.6 cut validated end to end. Draft at the cut: four archives and SHA256SUMS.ci, all OK against it; CI green on all four targets, both macOS included (run 41687558854), so ISSUE:0002's CI item is met. Public release: draft false, SHA256SUMS plus MACOS-SIGNING.json, no SHA256SUMS.ci; all four archives OK against SHA256SUMS; both Mac binaries pass codesign --verify --strict, Developer ID Geodica 76BQL8L47U, secure timestamp, hardened runtime; manifest tag v0.1.6, com.geodica.ccusage, 76BQL8L47U. hv's second finalize run reported public and verified and changed nothing. Tap main 1a2167f: its two on_macos sha256 values equal SHA256SUMS's two apple-darwin lines; on_linux builds from source as in 0.1.5. ISSUE:0004 is yours to close. ISSUE:0003 and ISSUE:0002 stay open for the post-install checks (0002 renewal; 0003 hv's live check).",
+      "fyi": false,
+      "recorded_at": "2026-11-03T18:30:26.383Z"
     }
   ],
   "handled": [

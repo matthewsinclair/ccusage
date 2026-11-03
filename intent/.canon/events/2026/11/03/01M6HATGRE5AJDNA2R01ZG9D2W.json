@@ -1,0 +1,16 @@
+{
+  "id": "01M6HATGRE5AJDNA2R01ZG9D2W",
+  "ts": "2026-11-03T18:30:26.319Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004's end-to-end cut validated at v0.1.6 (3f58a61). ISSUE:0003's items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over."
+  }
+}

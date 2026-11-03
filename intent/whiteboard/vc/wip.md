@@ -3,9 +3,9 @@ node: vc
 name: vc
 role: vc
 session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 15:59Z
+heartbeat_at: 2026-11-03 18:30Z
 status: active
-focus: "0.1.6 ready to cut: ISSUE:0002, 0004 and 0003 validated; next the cut's end-to-end checks, the 0003 rollout live check, then ISSUE:0005"
+focus: "v0.1.6 shipped and validated end to end; next after brew upgrade: ISSUE:0002's renewal check and hv's ISSUE:0003 live check, then ISSUE:0005"
 claims: []
 ---
 
@@ -13,12 +13,11 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Validated: ISSUE:0004 at 45edf8f, which closes after the real 0.1.6 cut, and ISSUE:0003 at 07259fb, whose items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over. (edited)
+- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004's end-to-end cut validated at v0.1.6 (3f58a61). ISSUE:0003's items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over. (edited)
 
 ## TODO
 
-- ISSUE:0002's last two Acceptance items: the macOS CI step passing on both targets at the next push of main, and, once 0.1.6 is installed, the first renewal raising no prompt and leaving apple-tool: on the item (dump-keychain -a, metadata only).
-- At the 0.1.6 cut, check ISSUE:0004's end-to-end run: hv pushes the tap's 1e74059 first; bin/devbin release 0.1.6 leaves CI's draft holding four archives and SHA256SUMS.ci; bin/devbin macos finalize v0.1.6 publishes, and a second run verifies the public release and changes nothing; bin/devbin formula publish puts in the tap exactly the sha256 values in the release's SHA256SUMS.
+- ISSUE:0002's last Acceptance item: once 0.1.6 is installed (brew upgrade ccusage), the first renewal raises no prompt and leaves apple-tool: on the item (dump-keychain -a, metadata only). Its CI item passed in the 0.1.6 cut: both macOS targets green in run 41687558854. (edited)
 - At the ISSUE:0003 rollout, hv's live check, once 0.1.6 is installed and hv turns shared mode on: a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts.
 
 ## Holds
