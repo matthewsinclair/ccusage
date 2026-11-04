@@ -23,6 +23,8 @@ setup() {
   # The notary credentials' prefix, and the team the fake credentials name: the signing team
   KEYCHAIN=$(sed -n 's/^keychain=//p' "$ROOT/packaging/macos/signing")
   FAKE_NOTARY_TEAM=$(sed -n 's/^team=//p' "$ROOT/packaging/macos/signing")
+  # The release's repository, as config.yaml's release.repo names it
+  REPO_NAME=$(sed -n 's/^  repo: //p' "$ROOT/bin/.devbin/config.yaml" | head -1)
   mkdir -p "$FAKE_BIN" "$FAKE_RELEASE"
   : > "$FAKE_LOG"
   write_fakes
@@ -219,6 +221,17 @@ display() {
   printf '%s' "$out"
 }
 
+# copy_tree <sed expression>: the handler, the signing facts and config.yaml, with <sed
+# expression> applied to the config, in a tree of their own; prints the copy's handler
+copy_tree() {
+  local tree=$BATS_TEST_TMPDIR/tree
+  mkdir -p "$tree/bin/.devbin/cmd" "$tree/packaging/macos"
+  cp "$HANDLER" "$tree/bin/.devbin/cmd/"
+  cp "$ROOT/packaging/macos/signing" "$tree/packaging/macos/"
+  sed "$1" "$ROOT/bin/.devbin/config.yaml" > "$tree/bin/.devbin/config.yaml"
+  printf '%s' "$tree/bin/.devbin/cmd/macos"
+}
+
 @test "a draft is signed, uploaded, verified again, then published" {
   finalize
   [ "$status" -eq 0 ] || { echo "$output"; return 1; }
@@ -229,7 +242,7 @@ display() {
   edit=$(grep -n '^gh release edit' "$FAKE_LOG" | cut -d: -f1)
   [ "$upload" -lt "$last_download" ]
   [ "$last_download" -lt "$edit" ]
-  [ "$(grep '^gh ' "$FAKE_LOG" | tail -1)" = "gh release edit $TAG --repo matthewsinclair/ccusage --draft=false" ]
+  [ "$(grep '^gh ' "$FAKE_LOG" | tail -1)" = "gh release edit $TAG --repo $REPO_NAME --draft=false" ]
   [ ! -e "$FAKE_RELEASE/SHA256SUMS.ci" ]
   (cd "$FAKE_RELEASE" && shasum -a 256 -c SHA256SUMS)
   local target unpacked
@@ -246,6 +259,23 @@ display() {
   done
   grep -qxF "codesign --force --sign Developer ID Application: Geodica Pty Ltd (76BQL8L47U) --identifier com.geodica.ccusage --options runtime --timestamp $(grep '^codesign --force' "$FAKE_LOG" | head -1 | awk '{ print $NF }')" "$FAKE_LOG"
   [ "$(grep -c '^codesign --force' "$FAKE_LOG")" -eq "$(echo "$TARGETS" | tr ' ' '\n' | grep -c apple-darwin)" ]
+}
+
+@test "every gh call names the repository config.yaml's release.repo names" {
+  local handler
+  handler=$(copy_tree 's#^  repo: .*#  repo: example/elsewhere#')
+  run "$handler" finalize "$TAG"
+  [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+  [ "$(grep -c '^gh ' "$FAKE_LOG")" -eq "$(grep -c '^gh .* --repo example/elsewhere ' "$FAKE_LOG")" ]
+  absent "$REPO_NAME"
+}
+
+@test "a config.yaml that names no release repo refuses before any gh call" {
+  local handler
+  handler=$(copy_tree '/^  repo: /d')
+  run "$handler" finalize "$TAG"
+  refused "names no release repo"
+  absent '^gh '
 }
 
 @test "the manifest keeps the layout published releases carry, bound to SHA256SUMS" {

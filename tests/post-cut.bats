@@ -92,13 +92,19 @@ untouched() {
   unpulled
 }
 
+# The last line claims the two steps that ran, and nothing about the tap's clone
+last_line_claims_what_ran() {
+  [ "${lines[${#lines[@]}-1]}" = "post-cut: ccusage v0.1.7: macos finalize and formula publish done" ] ||
+    { echo "output: $output"; return 1; }
+}
+
 @test "finalize, then formula publish, under the cut's yes, then this Mac's tap is pulled" {
   DEVBIN_RELEASE_CONFIRMED=v0.1.7 post_cut
   [ "$status" -eq 0 ] || { echo "$output"; return 1; }
   [ "$(grep '^devbin ' "$FAKE_LOG")" = "$(printf '%s\n' 'devbin macos finalize v0.1.7 yes=v0.1.7' 'devbin formula publish yes=v0.1.7')" ]
   [ "$(git -C "$TAP_CLONE" rev-parse HEAD)" = "$(git -C "$TAP_REMOTE" rev-parse main)" ]
   [[ $output == *"this Mac's tap: ccusage 0.1.7"* ]]
-  [[ $output == *"ccusage v0.1.7: signed, notarized and public, and the tap published"* ]]
+  last_line_claims_what_ran
 }
 
 @test "with no tag named and no cut, the tag is v and Cargo.toml's version, and publish is handed no yes" {
@@ -153,11 +159,29 @@ untouched() {
   grep -q '^devbin formula publish' "$FAKE_LOG"
 }
 
-@test "with no clone of the tap here, the pull is skipped" {
+@test "with no clone of the tap here, the pull is skipped, saying where it looked" {
   rm -rf "$TAP_CLONE"
   post_cut
   [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+  [[ $output == *"no clone of matthewsinclair/homebrew-ccusage at $TAP_CLONE, so nothing here to pull"* ]]
   [[ $output != *"this Mac's tap"* ]]
+  last_line_claims_what_ran
+}
+
+@test "with no brew on PATH, the pull is skipped, saying what it looked for" {
+  rm "$FAKE_BIN/brew"
+  # PATH without any directory holding a brew, this Mac's own included
+  local entry path=
+  local -a entries
+  IFS=: read -ra entries <<<"$PATH"
+  for entry in "${entries[@]}"; do
+    [ -x "$entry/brew" ] || path+=${path:+:}$entry
+  done
+  PATH=$path post_cut
+  [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+  [[ $output == *"no brew on PATH, so no clone of matthewsinclair/homebrew-ccusage here to pull"* ]]
+  unpulled
+  last_line_claims_what_ran
 }
 
 @test "it refuses off macOS, and more than one argument" {

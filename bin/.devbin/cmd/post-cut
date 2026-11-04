@@ -62,13 +62,18 @@ bin/devbin formula publish ||
 
 # This Mac's clone of the tap, pulled so brew upgrade sees the release: brew's
 # auto-update can leave a third-party tap behind. The upgrade is the maintainer's.
-if (( $+commands[brew] )); then
-  brew_repo=$(brew --repository) || die "brew cannot name its repository; $tag is public and the tap published"
+# Each way past the pull says what it looked for, and the last line claims only what ran.
+if (( ! $+commands[brew] )); then
+  say "no brew on PATH, so no clone of $tap here to pull"
+else
+  brew_repo=$(brew --repository) || die "brew cannot name its repository; macos finalize and formula publish are done"
   tapdir=$brew_repo/Library/Taps/$tap
   if [[ -d $tapdir/.git ]]; then
     git -C $tapdir pull -q --ff-only ||
-      die "cannot pull $tapdir; $tag is public and the tap published. Pull it by hand before brew upgrade"
+      die "cannot pull $tapdir; macos finalize and formula publish are done. Pull it by hand before brew upgrade"
     say "this Mac's tap: $(git -C $tapdir log -1 --format=%s)"
+  else
+    say "no clone of $tap at $tapdir, so nothing here to pull"
   fi
 fi
-say "ccusage $tag: signed, notarized and public, and the tap published"
+say "ccusage $tag: macos finalize and formula publish done"

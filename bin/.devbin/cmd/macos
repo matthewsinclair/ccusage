@@ -33,7 +33,6 @@ setopt err_exit no_unset pipe_fail
 root=${0:A:h:h:h:h}
 cd $root
 signing=packaging/macos/signing
-repo=matthewsinclair/ccusage
 files=(LICENSE README.md ccusage ccusage-logo.svg)
 targets=(aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu)
 mac_targets=(${(M)targets:#*-apple-darwin})
@@ -73,7 +72,7 @@ require_identity() {
 secret() {
   local keychain value
   keychain=$(fact keychain) || exit 1
-  value=$(security find-generic-password -a $USER -s "$keychain.$1" -w 2>/dev/null) ||
+  value=$(security find-generic-password -a "$USER" -s "$keychain.$1" -w 2>/dev/null) ||
     die "no $keychain.$1 in the login keychain"
   [[ -n $value ]] || die "$keychain.$1 in the login keychain is empty"
   print -r -- $value
@@ -289,7 +288,10 @@ cmd_finalize() {
   tag=$1
   [[ $tag =~ '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' ]] ||
     die "expected a stable release tag such as v0.1.0, not $tag"
-  local draft incoming signed uploaded
+  local draft incoming signed uploaded repo
+  # The release's repository has one home, bin/.devbin/config.yaml's release.repo
+  repo=$(sed -n 's/^  repo: //p' bin/.devbin/config.yaml | head -1) || die "cannot read bin/.devbin/config.yaml"
+  [[ -n $repo ]] || die "bin/.devbin/config.yaml names no release repo"
   draft=$(gh release view $tag --repo $repo --json isDraft --jq .isDraft) || die "gh cannot read $tag's release"
   [[ $draft == true || $draft == false ]] || die "Could not determine draft status"
   # A draft is signed and notarized, so both are checked before anything is downloaded;
