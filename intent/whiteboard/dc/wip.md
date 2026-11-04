@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Released when hv has run steps 1 and 2 (shared mode on, then Molt's launcher export) and the desk grants vc's restart slot 01M6K31TH20532K7NYN48GJE86 (vc todo 4). (edited)
+- ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Step 1 is done (hv ran it, vc verified it read-only). Released when Molt 1.4.3's launcher export (step 2) is in and the desk grants vc's restart slot 01M6K31TH20532K7NYN48GJE86 (vc todo 4). (edited)
 
 ## Watch-outs
 
