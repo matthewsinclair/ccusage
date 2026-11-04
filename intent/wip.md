@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-04T09:22:40Z:v0.18: vc - after 0.1.8; 0002 on hv's word"
+verblock: "2026-11-04T10:14:51Z:v0.19: vc - hv's no-prompt word; dc closes ISSUE:0002"
 ---
 
 # Work In Progress
@@ -8,11 +8,10 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**Ccusage after 0.1.8: ISSUE:0002's last word, ISSUE:0003's rollout, then ISSUE:0005**
+**Ccusage after 0.1.8: ISSUE:0003's rollout, then ISSUE:0005**
 
 dc builds and vc validates.
 
-- ISSUE:0002 (high): waits only on hv's word that the 2026-11-04 05:17Z renewal raised no prompt; its Keychain metadata holds (vc todo 2). dc then closes it.
 - ISSUE:0003 (medium): the rollout waits for hv to turn shared mode on, and for a slot from the estate's desk, since its step 3 restarts every Claude session on the Mac. vc checks each step against the issue's Rollout and Acceptance.
 - ISSUE:0005 (medium): hv's Claude Usage fork (`~/Devel/forks/claudecodeusage`, upstream PR #15), which dc builds after ISSUE:0003 as one PR. The push and the PR edit need hv's OK.
 
@@ -28,5 +27,4 @@ None.
 ## Notes
 
 - All work happens on `main` in the one checkout. Every commit passes the pre-commit gate (guards, the rust and shell critics, intent doctor). hv pushes, and hv runs a release: one command, `bin/devbin release X.Y.Z` (`docs/releasing.md`).
-- Never point a ccusage profile at `~/.config/claude` before hv confirms ISSUE:0002's renewal raised no prompt (vc watch-out 1).
 - Never run a local ccusage build against the real XDG config without hv's OK: a renewal spends real tokens. Test in a throwaway HOME and XDG tree.

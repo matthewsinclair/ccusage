@@ -3,9 +3,9 @@ node: vc
 name: vc
 role: vc
 session_id: 3fc778cd-9397-4076-8adb-b1d31ba9465e
-heartbeat_at: 2026-11-04 09:23Z
+heartbeat_at: 2026-11-04 10:15Z
 status: active
-focus: "Folded after v0.1.8 (ca0e959). Next: ISSUE:0002 on hv's no-prompt word; ISSUE:0003's rollout when hv turns shared mode on (an estate slot for the restart); then ISSUE:0005"
+focus: "hv's no-prompt word is in ISSUE:0002, and dc closes it. Next: ISSUE:0003's rollout when hv turns shared mode on (an estate slot for the restart); then ISSUE:0005"
 claims: []
 ---
 
@@ -17,7 +17,6 @@ claims: []
 
 ## TODO
 
-- ISSUE:0002's last Acceptance item. Its metadata half holds on 2026-11-04: the installed 0.1.6 renewed all five profile items at 05:17:56Z to 05:18:02Z (ccusage's cache files follow each by about a second), and each now has partition list apple-tool: alone and /usr/bin/security in its decrypt ACL (dump-keychain -a, metadata only). Left: hv confirms that renewal raised no Keychain prompt; then dc closes ISSUE:0002. (edited)
 - At the ISSUE:0003 rollout, hv's live check (waits for hv to turn shared mode on, and for a slot from the estate's desk, since step 3 restarts every Claude session on the Mac): a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts. (edited)
 
 ## Holds
@@ -26,7 +25,7 @@ claims: []
 
 ## Watch-outs
 
-- Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until hv confirms ISSUE:0002's renewal raised no prompt (todo 2): a renewal by a build without the fix would strip apple-tool: from that item, and every Claude Code session on it would prompt. (edited)
+_(none)_
 
 ## Decisions
 

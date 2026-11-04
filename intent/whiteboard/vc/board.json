@@ -5,9 +5,9 @@
     "name": "vc",
     "role": "vc",
     "session_id": "3fc778cd-9397-4076-8adb-b1d31ba9465e",
-    "heartbeat_at": "2026-11-04T09:23:23.112Z",
+    "heartbeat_at": "2026-11-04T10:15:05.903Z",
     "status": "active",
-    "focus": "Folded after v0.1.8 (ca0e959). Next: ISSUE:0002 on hv's no-prompt word; ISSUE:0003's rollout when hv turns shared mode on (an estate slot for the restart); then ISSUE:0005",
+    "focus": "hv's no-prompt word is in ISSUE:0002, and dc closes it. Next: ISSUE:0003's rollout when hv turns shared mode on (an estate slot for the restart); then ISSUE:0005",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
@@ -18,7 +18,8 @@
       "kind": "watchout",
       "seq": 1,
       "text": "Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until hv confirms ISSUE:0002's renewal raised no prompt (todo 2): a renewal by a build without the fix would strip apple-tool: from that item, and every Claude Code session on it would prompt.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-04T10:14:51.220Z",
       "recorded_at": "2026-11-03T07:29:21.153Z",
       "edited_at": "2026-11-04T08:39:08.484Z"
     },
@@ -63,7 +64,8 @@
       "kind": "todo",
       "seq": 2,
       "text": "ISSUE:0002's last Acceptance item. Its metadata half holds on 2026-11-04: the installed 0.1.6 renewed all five profile items at 05:17:56Z to 05:18:02Z (ccusage's cache files follow each by about a second), and each now has partition list apple-tool: alone and /usr/bin/security in its decrypt ACL (dump-keychain -a, metadata only). Left: hv confirms that renewal raised no Keychain prompt; then dc closes ISSUE:0002.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-04T10:14:51.198Z",
       "recorded_at": "2026-11-03T10:07:24.399Z",
       "edited_at": "2026-11-04T08:39:08.193Z"
     },
