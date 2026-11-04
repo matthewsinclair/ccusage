@@ -115,7 +115,7 @@ To register an existing Claude directory without copying it, and without another
 ccusage add existing --dir ~/.claude
 ```
 
-Share a directory only if every tool using it keeps the same account signed in: a different login there becomes the login Ccusage sees, and Ccusage rejects usage once its configured email no longer matches. To move a registered profile, set `config_dir` in its entry:
+Share a directory only if every tool using it keeps the same account signed in: a different login there becomes the login Ccusage sees, and Ccusage rejects usage once its configured email no longer matches. To point a registered profile at another directory, set `config_dir` in its entry:
 
 ```toml
 [profiles.work]
@@ -123,7 +123,7 @@ email = "you@company.com"
 config_dir = "~/.claude-work"
 ```
 
-Relative paths resolve against the config file's directory, and `~/` is expanded. Duplicate directories, including symlink aliases, are rejected. Each default profile holds Claude's own settings, history, plugins and authentication state, which Claude manages as a unit; macOS login secrets stay in the Keychain, and Ccusage's XDG placement does not move files Claude stores elsewhere.
+Relative paths resolve against the config file's directory, and `~/` is expanded. Duplicate directories, including symlink aliases of an existing directory, are rejected. Each default profile holds Claude's own settings, history, plugins and authentication state, which Claude manages as a unit; macOS login secrets normally stay in the Keychain, and Ccusage's XDG placement does not move files Claude stores elsewhere.
 
 On macOS, one account signed in from two config directories has two Keychain logins, and tools that list Keychain logins show both. For one login per account under one Claude config, use [shared mode](#shared-mode) rather than pointing a profile at that config.
 

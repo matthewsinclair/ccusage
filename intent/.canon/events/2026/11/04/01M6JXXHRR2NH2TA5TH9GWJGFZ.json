@@ -1,0 +1,16 @@
+{
+  "id": "01M6JXXHRR2NH2TA5TH9GWJGFZ",
+  "ts": "2026-11-04T09:23:23.032Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 4,
+    "text": "At the ISSUE:0003 rollout, hv's live check (waits for hv to turn shared mode on, and for a slot from the estate's desk, since step 3 restarts every Claude session on the Mac): a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts."
+  }
+}

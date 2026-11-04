@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-04T08:57:16Z:v0.17: vc - after 0.1.7; v0.1.8 next; 0002 on hv's word"
+verblock: "2026-11-04T09:22:40Z:v0.18: vc - after 0.1.8; 0002 on hv's word"
 ---
 
 # Work In Progress
@@ -8,9 +8,9 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**Ccusage after 0.1.7: ISSUE:0002's last word, ISSUE:0003's rollout, then ISSUE:0005**
+**Ccusage after 0.1.8: ISSUE:0002's last word, ISSUE:0003's rollout, then ISSUE:0005**
 
-dc builds and vc validates. 0.1.7 is installed on rhadamanth.
+dc builds and vc validates.
 
 - ISSUE:0002 (high): waits only on hv's word that the 2026-11-04 05:17Z renewal raised no prompt; its Keychain metadata holds (vc todo 2). dc then closes it.
 - ISSUE:0003 (medium): the rollout waits for hv to turn shared mode on, and for a slot from the estate's desk, since its step 3 restarts every Claude session on the Mac. vc checks each step against the issue's Rollout and Acceptance.
@@ -22,8 +22,7 @@ None.
 
 ## Upcoming Work
 
-- hv cuts v0.1.8 next with `bin/devbin release --patch`, to test the one-command release end to end; CHANGELOG's `## [0.1.8] - unreleased` holds what it ships.
-- dc's todos P1 to P7: critic-shell's findings in `bin/.devbin/cmd/` that predate 0.1.6.
+- dc's todos P1 to P7: critic-shell's findings in `bin/.devbin/cmd/`.
 - The tap's CI runs `brew style` and `brew audit --strict` again once a devbin release fixes `lib/cmd/formula:424` and Ccusage vendors it (vc hold 3).
 
 ## Notes
