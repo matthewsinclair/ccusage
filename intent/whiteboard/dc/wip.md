@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 11:41Z
+heartbeat_at: 2026-11-04 12:20Z
 status: active
-focus: "Fix-all done: 94dbcf3, 6a102b3, 302a721 and 7477ec6, validated green by vc in a fresh clone at 7477ec6, and fc4c217, vc's usage-test catch, measured green. ISSUE:0003 waits for hv's steps 1 and 2 and vc's restart slot (hold 6)"
+focus: "Folded for hv's compact; after it, /in-session and pickup as dc. Fix-all is done and validated by vc (94dbcf3, 6a102b3, 302a721, 7477ec6, fc4c217), and nothing of dc's is pending. Next: ISSUE:0003's rollout support once hv runs steps 1 and 2 and the desk grants vc's restart slot (hold 6)"
 claims: [ISSUE:0003]
 ---
 
