@@ -5,9 +5,9 @@
     "name": "vc",
     "role": "vc",
     "session_id": "3fc778cd-9397-4076-8adb-b1d31ba9465e",
-    "heartbeat_at": "2026-11-04T05:10:58.219Z",
+    "heartbeat_at": "2026-11-04T08:39:16.195Z",
     "status": "active",
-    "focus": "v0.1.7 one-command release validation for pplr-vc first (review dc's commit, fresh-clone gates and dry run, credential probe); then ISSUE:0002's renewal check, ISSUE:0003's rollout and ISSUE:0005",
+    "focus": "v0.1.7 released and its critic follow-up 8bfc30c verified; ISSUE:0002 waits only on hv's no-prompt word for the 05:17Z renewal; then ISSUE:0003's rollout (hv's shared mode, an estate slot for the restart) and ISSUE:0005",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
@@ -17,18 +17,19 @@
       "node": "vc",
       "kind": "watchout",
       "seq": 1,
-      "text": "Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until ISSUE:0002 ships: a ccusage renewal would strip apple-tool: from that item and every Claude Code session on it would prompt.",
+      "text": "Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until hv confirms ISSUE:0002's renewal raised no prompt (todo 2): a renewal by a build without the fix would strip apple-tool: from that item, and every Claude Code session on it would prompt.",
       "state": "live",
-      "recorded_at": "2026-11-03T07:29:21.153Z"
+      "recorded_at": "2026-11-03T07:29:21.153Z",
+      "edited_at": "2026-11-04T08:39:08.484Z"
     },
     {
       "node": "vc",
       "kind": "doing",
       "seq": 1,
-      "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004's end-to-end cut validated at v0.1.6 (3f58a61). ISSUE:0003's items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over.",
+      "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0005 when dc hands it over.",
       "state": "live",
       "recorded_at": "2026-11-03T08:50:04.806Z",
-      "edited_at": "2026-11-03T18:30:26.319Z"
+      "edited_at": "2026-11-04T08:39:08.058Z"
     },
     {
       "node": "vc",
@@ -61,10 +62,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 2,
-      "text": "ISSUE:0002's last Acceptance item: once 0.1.6 is installed (brew upgrade ccusage), the first renewal raises no prompt and leaves apple-tool: on the item (dump-keychain -a, metadata only). Its CI item passed in the 0.1.6 cut: both macOS targets green in run 41687558854.",
+      "text": "ISSUE:0002's last Acceptance item. Its metadata half holds on 2026-11-04: the installed 0.1.6 renewed all five profile items at 05:17:56Z to 05:18:02Z (ccusage's cache files follow each by about a second), and each now has partition list apple-tool: alone and /usr/bin/security in its decrypt ACL (dump-keychain -a, metadata only). Left: hv confirms that renewal raised no Keychain prompt; then dc closes ISSUE:0002.",
       "state": "live",
       "recorded_at": "2026-11-03T10:07:24.399Z",
-      "edited_at": "2026-11-03T18:30:26.171Z"
+      "edited_at": "2026-11-04T08:39:08.193Z"
     },
     {
       "node": "vc",
@@ -87,16 +88,18 @@
       "node": "vc",
       "kind": "todo",
       "seq": 4,
-      "text": "At the ISSUE:0003 rollout, hv's live check, once 0.1.6 is installed and hv turns shared mode on: a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts.",
+      "text": "At the ISSUE:0003 rollout, hv's live check (0.1.7 installed 2026-11-04 08:32Z; waits for hv to turn shared mode on, and for a slot from the estate's desk, since step 3 restarts every Claude session on the Mac): a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts.",
       "state": "live",
-      "recorded_at": "2026-11-03T14:02:51.674Z"
+      "recorded_at": "2026-11-03T14:02:51.674Z",
+      "edited_at": "2026-11-04T08:39:08.333Z"
     },
     {
       "node": "vc",
       "kind": "doing",
       "seq": 2,
       "text": "v0.1.7 one-command release validation for pplr-vc (hv gave pplr-vc the pen on ccusage, 2026-11-04). dc's dd30c82 validated in a fresh clone in pplr-vc's slot: check all, test all (bats 54 of 54, keychain 1 of 1), build, doctor and release v0.1.7 --dry-run all exit 0, the dry run ending with no step failed at the confirm step; a live read-only finalize v0.1.6 verified; the credential probe through finalize's own reader was accepted. N1 (the step line before each notarytool wait) landed as b026b91 and re-ran clean: check all, test all and the dry run, all exit 0. N2 stays, at pplr-vc's word. Left: critic-shell on post-cut and macos. hv runs the cut.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-04T08:39:01.274Z",
       "recorded_at": "2026-11-04T05:10:54.989Z",
       "edited_at": "2026-11-04T05:49:54.035Z"
     }
@@ -339,21 +342,32 @@
       "recipient": "dc",
       "body": "v0.1.6 cut validated end to end. Draft at the cut: four archives and SHA256SUMS.ci, all OK against it; CI green on all four targets, both macOS included (run 41687558854), so ISSUE:0002's CI item is met. Public release: draft false, SHA256SUMS plus MACOS-SIGNING.json, no SHA256SUMS.ci; all four archives OK against SHA256SUMS; both Mac binaries pass codesign --verify --strict, Developer ID Geodica 76BQL8L47U, secure timestamp, hardened runtime; manifest tag v0.1.6, com.geodica.ccusage, 76BQL8L47U. hv's second finalize run reported public and verified and changed nothing. Tap main 1a2167f: its two on_macos sha256 values equal SHA256SUMS's two apple-darwin lines; on_linux builds from source as in 0.1.5. ISSUE:0004 is yours to close. ISSUE:0003 and ISSUE:0002 stay open for the post-install checks (0002 renewal; 0003 hv's live check).",
       "fyi": false,
-      "recorded_at": "2026-11-03T18:30:26.383Z"
+      "recorded_at": "2026-11-03T18:30:26.383Z",
+      "archived_at": "2026-11-04T08:39:01.293Z"
     },
     {
       "id": "01M6JFF8RYWNHSTXVGKS4A14JY",
       "recipient": "dc",
       "body": "Review points for the one-command release commit, also sent live before your hash: (1) read the three geodica.apple.* values as plain assignments (x=$(secret NAME) || die) on the draft path beside require_identity, before sign_release and any upload; in zsh, local x=$(...) and a substitution inside notarytool's arguments both carry on with status 0, which is Pplr's and Cldr's flaw; the public path needs no credentials. (2) spctl, if any, only after Accepted, never in verify(), which sign() runs before notarize. (3) check_signed requires notarized: true for the release it publishes. (4) optional: refuse a geodica.apple.APPLE_TEAM_ID that differs from signing's team. (5) never print notarytool's output; status and at most the submission id. (6) CCUSAGE_NOTARY_PROFILE today: cmd/macos 19, 165, 181, 211; docs/releasing.md:37; tests/macos.bats 25, 470, 477. (7) tests stub security, codesign, notarytool and gh. (8) config.yaml's release comment still says 'No after:'.",
       "fyi": false,
-      "recorded_at": "2026-11-04T05:10:55.006Z"
+      "recorded_at": "2026-11-04T05:10:55.006Z",
+      "archived_at": "2026-11-04T08:39:01.293Z"
     },
     {
       "id": "01M6JH0MKWJTB89SKWTX6JDH6V",
       "recipient": "dc",
       "body": "dd30c82 validated, pass, no blockers (report to pplr-vc). Non-blocking nits: N1, finalize prints nothing during each notarytool --wait, so the cut sits on '-- signing <archive>' for minutes; a 'notarizing <binary> (notarytool waits)' step line would make the wait read as expected. N2, post-cut reads formula.tap with sed's first two-space tap: line, which a second such key in config.yaml would take over.",
       "fyi": false,
-      "recorded_at": "2026-11-04T05:37:52.764Z"
+      "recorded_at": "2026-11-04T05:37:52.764Z",
+      "archived_at": "2026-11-04T08:39:01.293Z"
+    },
+    {
+      "id": "01M6JTQF1VV1FRG1GXNTMSBZKJ",
+      "recipient": "dc",
+      "body": "critic-shell follow-up, routed by pplr-vc after v0.1.7 (no release needed). Line numbers are current main, 4c3f155.\nONE SMALL COMMIT on main, measured (check all, test all), which vc verifies in a fresh clone:\nC1 (IN-AG-HIGHLANDER-001, critical): macos:36 `repo=matthewsinclair/ccusage` restates release.repo (config.yaml:82), and every gh call in cmd_finalize uses the literal. Read it from config.yaml instead.\nR1 (IN-SH-CODE-001): macos:76 `-a $USER` is unquoted in secret(). In native zsh an empty value is dropped, so -a would take -s as its account. Make it `-a \"$USER\"`.\nR2 (IN-AG-NO-SILENT-001): post-cut:65-73. With no brew, or no clone at the derived tap path, the pull is skipped silently, yet line 74 says 'the tap published'. Say what was looked for on each skip branch.\nTODOS for your board (all pre-existing since 0.1.6, all fail closed):\nP1: the target set is in three places (macos:38, .github/workflows/build.yml:28-34, config.yaml:110-111), and the archive name format in more.\nP2: die is copied into three zsh handlers (macos:51, post-cut:31, lock-sync:26; lock-sync's has drifted to `print -u2` without `-r --`), and so are the root derivation (macos:33, post-cut:28, lock-sync:23; bin/devbin already exports PROJECT_ROOT) and the help extractor (macos:345, post-cut:35). One small zsh library would hold them.\nP3: macos:67 `local identity=$(fact identity)` masks fact's status (the F1 trap); a missing key dies at line 69, naming an empty identity.\nP4: macos:68 `|| identities=` turns a failure of security itself (eg a locked keychain) into 'identity not in this keychain'.\nP5: macos:144 `limit filesize 128m` restates max (line 43).\nP6: `$(fact ...)` inside arguments at macos:177, 215, 254 and 267 carries on with an empty value; a missing identifier is caught only by the requirement's pin. Read each fact once at the top of cmd_finalize with a plain assignment.\nP7 (PFIC): macos:274 check_signed reads the global $sums that check_sums fills; every caller pairs them correctly today.",
+      "fyi": false,
+      "recorded_at": "2026-11-04T08:27:37.915Z",
+      "archived_at": "2026-11-04T08:39:01.293Z"
     }
   ],
   "handled": [
@@ -476,6 +490,21 @@
       "id": "01M6HB39PKCTA7H61TBDQ5S0K1",
       "sender": "dc",
       "handled_at": "2026-11-04T05:00:45.113Z"
+    },
+    {
+      "id": "01M6JGD2A6MX7ZNJMGTW0YS9NK",
+      "sender": "dc",
+      "handled_at": "2026-11-04T08:39:01.253Z"
+    },
+    {
+      "id": "01M6JHJ1F2RE63V3790VKYS4JP",
+      "sender": "dc",
+      "handled_at": "2026-11-04T08:39:01.253Z"
+    },
+    {
+      "id": "01M6JV6M7CH22ZW5MF7Q05J9MM",
+      "sender": "dc",
+      "handled_at": "2026-11-04T08:39:01.253Z"
     }
   ]
 }

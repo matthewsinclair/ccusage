@@ -1,0 +1,16 @@
+{
+  "id": "01M6JVCHE4S2VBPGGTP3MZ7XJ0",
+  "ts": "2026-11-04T08:39:08.484Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "seq": 1,
+    "text": "Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until hv confirms ISSUE:0002's renewal raised no prompt (todo 2): a renewal by a build without the fix would strip apple-tool: from that item, and every Claude Code session on it would prompt."
+  }
+}

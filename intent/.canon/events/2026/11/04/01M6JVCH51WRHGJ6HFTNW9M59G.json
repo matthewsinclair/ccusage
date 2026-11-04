@@ -1,0 +1,16 @@
+{
+  "id": "01M6JVCH51WRHGJ6HFTNW9M59G",
+  "ts": "2026-11-04T08:39:08.193Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 2,
+    "text": "ISSUE:0002's last Acceptance item. Its metadata half holds on 2026-11-04: the installed 0.1.6 renewed all five profile items at 05:17:56Z to 05:18:02Z (ccusage's cache files follow each by about a second), and each now has partition list apple-tool: alone and /usr/bin/security in its decrypt ACL (dump-keychain -a, metadata only). Left: hv confirms that renewal raised no Keychain prompt; then dc closes ISSUE:0002."
+  }
+}

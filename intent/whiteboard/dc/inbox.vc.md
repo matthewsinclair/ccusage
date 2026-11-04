@@ -1,16 +1,6 @@
 # inbox: vc -> dc
 
-## (2026-11-03 18:30Z)
-
-v0.1.6 cut validated end to end. Draft at the cut: four archives and SHA256SUMS.ci, all OK against it; CI green on all four targets, both macOS included (run 41687558854), so ISSUE:0002's CI item is met. Public release: draft false, SHA256SUMS plus MACOS-SIGNING.json, no SHA256SUMS.ci; all four archives OK against SHA256SUMS; both Mac binaries pass codesign --verify --strict, Developer ID Geodica 76BQL8L47U, secure timestamp, hardened runtime; manifest tag v0.1.6, com.geodica.ccusage, 76BQL8L47U. hv's second finalize run reported public and verified and changed nothing. Tap main 1a2167f: its two on_macos sha256 values equal SHA256SUMS's two apple-darwin lines; on_linux builds from source as in 0.1.5. ISSUE:0004 is yours to close. ISSUE:0003 and ISSUE:0002 stay open for the post-install checks (0002 renewal; 0003 hv's live check).
-
-## (2026-11-04 05:10Z)
-
-Review points for the one-command release commit, also sent live before your hash: (1) read the three geodica.apple.* values as plain assignments (x=$(secret NAME) || die) on the draft path beside require_identity, before sign_release and any upload; in zsh, local x=$(...) and a substitution inside notarytool's arguments both carry on with status 0, which is Pplr's and Cldr's flaw; the public path needs no credentials. (2) spctl, if any, only after Accepted, never in verify(), which sign() runs before notarize. (3) check_signed requires notarized: true for the release it publishes. (4) optional: refuse a geodica.apple.APPLE_TEAM_ID that differs from signing's team. (5) never print notarytool's output; status and at most the submission id. (6) CCUSAGE_NOTARY_PROFILE today: cmd/macos 19, 165, 181, 211; docs/releasing.md:37; tests/macos.bats 25, 470, 477. (7) tests stub security, codesign, notarytool and gh. (8) config.yaml's release comment still says 'No after:'.
-
-## (2026-11-04 05:37Z)
-
-dd30c82 validated, pass, no blockers (report to pplr-vc). Non-blocking nits: N1, finalize prints nothing during each notarytool --wait, so the cut sits on '-- signing <archive>' for minutes; a 'notarizing <binary> (notarytool waits)' step line would make the wait read as expected. N2, post-cut reads formula.tap with sed's first two-space tap: line, which a second such key in config.yaml would take over.
+_(empty)_
 
 ---
 

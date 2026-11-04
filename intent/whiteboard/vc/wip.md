@@ -3,9 +3,9 @@ node: vc
 name: vc
 role: vc
 session_id: 3fc778cd-9397-4076-8adb-b1d31ba9465e
-heartbeat_at: 2026-11-04 05:10Z
+heartbeat_at: 2026-11-04 08:39Z
 status: active
-focus: "v0.1.7 one-command release validation for pplr-vc first (review dc's commit, fresh-clone gates and dry run, credential probe); then ISSUE:0002's renewal check, ISSUE:0003's rollout and ISSUE:0005"
+focus: "v0.1.7 released and its critic follow-up 8bfc30c verified; ISSUE:0002 waits only on hv's no-prompt word for the 05:17Z renewal; then ISSUE:0003's rollout (hv's shared mode, an estate slot for the restart) and ISSUE:0005"
 claims: []
 ---
 
@@ -13,13 +13,12 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004's end-to-end cut validated at v0.1.6 (3f58a61). ISSUE:0003's items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over. (edited)
-- v0.1.7 one-command release validation for pplr-vc (hv gave pplr-vc the pen on ccusage, 2026-11-04). dc's dd30c82 validated in a fresh clone in pplr-vc's slot: check all, test all (bats 54 of 54, keychain 1 of 1), build, doctor and release v0.1.7 --dry-run all exit 0, the dry run ending with no step failed at the confirm step; a live read-only finalize v0.1.6 verified; the credential probe through finalize's own reader was accepted. N1 (the step line before each notarytool wait) landed as b026b91 and re-ran clean: check all, test all and the dry run, all exit 0. N2 stays, at pplr-vc's word. Left: critic-shell on post-cut and macos. hv runs the cut. (edited)
+- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0005 when dc hands it over. (edited)
 
 ## TODO
 
-- ISSUE:0002's last Acceptance item: once 0.1.6 is installed (brew upgrade ccusage), the first renewal raises no prompt and leaves apple-tool: on the item (dump-keychain -a, metadata only). Its CI item passed in the 0.1.6 cut: both macOS targets green in run 41687558854. (edited)
-- At the ISSUE:0003 rollout, hv's live check, once 0.1.6 is installed and hv turns shared mode on: a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts.
+- ISSUE:0002's last Acceptance item. Its metadata half holds on 2026-11-04: the installed 0.1.6 renewed all five profile items at 05:17:56Z to 05:18:02Z (ccusage's cache files follow each by about a second), and each now has partition list apple-tool: alone and /usr/bin/security in its decrypt ACL (dump-keychain -a, metadata only). Left: hv confirms that renewal raised no Keychain prompt; then dc closes ISSUE:0002. (edited)
+- At the ISSUE:0003 rollout, hv's live check (0.1.7 installed 2026-11-04 08:32Z; waits for hv to turn shared mode on, and for a slot from the estate's desk, since step 3 restarts every Claude session on the Mac): a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts. (edited)
 
 ## Holds
 
@@ -27,7 +26,7 @@ claims: []
 
 ## Watch-outs
 
-- Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until ISSUE:0002 ships: a ccusage renewal would strip apple-tool: from that item and every Claude Code session on it would prompt.
+- Do not point any ccusage profile at ~/.config/claude, or any dir Claude Code uses directly, until hv confirms ISSUE:0002's renewal raised no prompt (todo 2): a renewal by a build without the fix would strip apple-tool: from that item, and every Claude Code session on it would prompt. (edited)
 
 ## Decisions
 

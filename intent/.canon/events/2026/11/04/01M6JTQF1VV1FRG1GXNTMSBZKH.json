@@ -1,0 +1,17 @@
+{
+  "id": "01M6JTQF1VV1FRG1GXNTMSBZKH",
+  "ts": "2026-11-04T08:27:37.915Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "critic-shell follow-up, routed by pplr-vc after v0.1.7 (no release needed). Line numbers are current main, 4c3f155.\nONE SMALL COMMIT on main, measured (check all, test all), which vc verifies in a fresh clone:\nC1 (IN-AG-HIGHLANDER-001, critical): macos:36 `repo=matthewsinclair/ccusage` restates release.repo (config.yaml:82), and every gh call in cmd_finalize uses the literal. Read it from config.yaml instead.\nR1 (IN-SH-CODE-001): macos:76 `-a $USER` is unquoted in secret(). In native zsh an empty value is dropped, so -a would take -s as its account. Make it `-a \"$USER\"`.\nR2 (IN-AG-NO-SILENT-001): post-cut:65-73. With no brew, or no clone at the derived tap path, the pull is skipped silently, yet line 74 says 'the tap published'. Say what was looked for on each skip branch.\nTODOS for your board (all pre-existing since 0.1.6, all fail closed):\nP1: the target set is in three places (macos:38, .github/workflows/build.yml:28-34, config.yaml:110-111), and the archive name format in more.\nP2: die is copied into three zsh handlers (macos:51, post-cut:31, lock-sync:26; lock-sync's has drifted to `print -u2` without `-r --`), and so are the root derivation (macos:33, post-cut:28, lock-sync:23; bin/devbin already exports PROJECT_ROOT) and the help extractor (macos:345, post-cut:35). One small zsh library would hold them.\nP3: macos:67 `local identity=$(fact identity)` masks fact's status (the F1 trap); a missing key dies at line 69, naming an empty identity.\nP4: macos:68 `|| identities=` turns a failure of security itself (eg a locked keychain) into 'identity not in this keychain'.\nP5: macos:144 `limit filesize 128m` restates max (line 43).\nP6: `$(fact ...)` inside arguments at macos:177, 215, 254 and 267 carries on with an empty value; a missing identifier is caught only by the requirement's pin. Read each fact once at the top of cmd_finalize with a plain assignment.\nP7 (PFIC): macos:274 check_signed reads the global $sums that check_sums fills; every caller pairs them correctly today.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}
