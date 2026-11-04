@@ -3,7 +3,7 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 08:53Z
+heartbeat_at: 2026-11-04 08:57Z
 status: active
 focus: "Folded for a compact. Next: close ISSUE:0002 on hv's no-prompt word for the 05:17Z renewal, relayed by vc; ISSUE:0003's rollout when hv turns shared mode on; then ISSUE:0005 (todo 5, vc's ruling on change 3 first). P1 to P7 (todos 6 to 12) wait for a tooling pass"
 claims: [ISSUE:0002, ISSUE:0003]
