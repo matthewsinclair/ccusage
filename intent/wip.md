@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-04T11:41:25Z:v0.22: vc - fix-all validated; ISSUE:0003's rollout left"
+verblock: "2026-11-04T19:53:48Z:v0.23: vc - EOD fold; ISSUE:0003 step 1 done, step 2 is Molt 1.4.3"
 ---
 
 # Work In Progress
@@ -12,7 +12,7 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 dc builds and vc validates.
 
-- ISSUE:0003 (medium): the rollout waits for hv's step 1 (shared mode on); for Molt 1.4.3's step 2, which pplr-dc builds after Molt 1.4.2, with the shell and Molt's LaunchAgent running `ccusage dir` at each start and login; and for estate slot `01M6K31TH20532K7NYN48GJE86`, step 3's restart of every Claude session, which pplr-vc grants with hv's go. vc checks each step against the issue's Rollout and Acceptance.
+- ISSUE:0003 (medium): step 1 is done (shared mode on, engineering01 active; verified by vc). The rollout waits for Molt 1.4.3 (Molt issue 0088, step 2: the shell and Molt's LaunchAgent read `ccusage dir` at each start and login, exporting only an existing directory), whose cut stopped on a stranded macOS runner and goes again on 2026-11-05; then for estate slot `01M6K31TH20532K7NYN48GJE86`, step 3's restart of every Claude session, which pplr-vc grants with hv's go. vc checks each step against the issue's Rollout and Acceptance.
 
 ## Active Steel Threads
 
