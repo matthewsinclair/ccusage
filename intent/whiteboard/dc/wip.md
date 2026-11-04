@@ -13,7 +13,7 @@ claims: [ISSUE:0002, ISSUE:0003]
 
 ## DOING
 
-- One-command release for ccusage, pplr-vc's ask for hv, for v0.1.7: banked as dd30c82 on main (post-cut as release.after:, finalize notarizing always with geodica.apple.*), measured green in a fresh clone in pplr-vc's slot. The hash is with ccusage-vc, validating, and pplr-vc. Next: answer vc's findings. No push, tag or tap write: hv cuts v0.1.7. (edited)
+- One-command release for ccusage, pplr-vc's ask for hv, for v0.1.7: dd30c82 (post-cut as release.after:, finalize notarizing always with geodica.apple.*), validated by ccusage-vc with no blockers, and b026b91, vc's N1 taken before the cut at pplr-vc's word (a step line before each notarytool wait). N2 stays unchanged, at pplr-vc's word. Waiting on vc's re-run at b026b91 and its critic-shell report; anything real goes in one more small commit. No push, tag or tap write: hv cuts v0.1.7. (edited)
 
 ## TODO
 

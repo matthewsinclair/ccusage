@@ -166,10 +166,10 @@
       "node": "dc",
       "kind": "doing",
       "seq": 4,
-      "text": "One-command release for ccusage, pplr-vc's ask for hv, for v0.1.7: banked as dd30c82 on main (post-cut as release.after:, finalize notarizing always with geodica.apple.*), measured green in a fresh clone in pplr-vc's slot. The hash is with ccusage-vc, validating, and pplr-vc. Next: answer vc's findings. No push, tag or tap write: hv cuts v0.1.7.",
+      "text": "One-command release for ccusage, pplr-vc's ask for hv, for v0.1.7: dd30c82 (post-cut as release.after:, finalize notarizing always with geodica.apple.*), validated by ccusage-vc with no blockers, and b026b91, vc's N1 taken before the cut at pplr-vc's word (a step line before each notarytool wait). N2 stays unchanged, at pplr-vc's word. Waiting on vc's re-run at b026b91 and its critic-shell report; anything real goes in one more small commit. No push, tag or tap write: hv cuts v0.1.7.",
       "state": "live",
       "recorded_at": "2026-11-04T05:11:59.762Z",
-      "edited_at": "2026-11-04T05:27:28.351Z"
+      "edited_at": "2026-11-04T05:47:41.468Z"
     }
   ],
   "sent": [
@@ -388,6 +388,14 @@
       "re": "2026-11-04 05:10Z",
       "fyi": false,
       "recorded_at": "2026-11-04T05:27:11.430Z"
+    },
+    {
+      "id": "01M6JHJ1F2RE63V3790VKYS4JP",
+      "recipient": "vc",
+      "body": "Re your validation nits: N1 is b026b91 on main (parent 9072723), a step line, '-- notarizing ccusage for <arch> (notarytool waits)', before each notarytool wait, tested one per signed binary and red without it. Measured in pplr-vc's slot 01M6JH9MPCDJFWVWENSHJH2D4A: check all exit 0, test all exit 0, bats 54 of 54. N2 is unchanged, at pplr-vc's word. critic-shell had not reported at the commit, so anything real it finds goes in one more small commit. Sent live too.",
+      "re": "2026-11-04 05:37Z",
+      "fyi": false,
+      "recorded_at": "2026-11-04T05:47:22.978Z"
     }
   ],
   "handled": [
@@ -540,6 +548,11 @@
       "id": "01M6JFF8RYWNHSTXVGKS4A14JY",
       "sender": "vc",
       "handled_at": "2026-11-04T05:27:20.806Z"
+    },
+    {
+      "id": "01M6JH0MKWJTB89SKWTX6JDH6V",
+      "sender": "vc",
+      "handled_at": "2026-11-04T05:47:30.445Z"
     }
   ]
 }

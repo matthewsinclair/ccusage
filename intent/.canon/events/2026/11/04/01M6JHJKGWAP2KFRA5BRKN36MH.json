@@ -1,0 +1,16 @@
+{
+  "id": "01M6JHJKGWAP2KFRA5BRKN36MH",
+  "ts": "2026-11-04T05:47:41.468Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "One-command release for ccusage, pplr-vc's ask for hv, for v0.1.7: dd30c82 (post-cut as release.after:, finalize notarizing always with geodica.apple.*), validated by ccusage-vc with no blockers, and b026b91, vc's N1 taken before the cut at pplr-vc's word (a step line before each notarytool wait). N2 stays unchanged, at pplr-vc's word. Waiting on vc's re-run at b026b91 and its critic-shell report; anything real goes in one more small commit. No push, tag or tap write: hv cuts v0.1.7."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "01M6JHJ1F2RE63V3790VKYS4JN",
+  "ts": "2026-11-04T05:47:22.978Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "Re your validation nits: N1 is b026b91 on main (parent 9072723), a step line, '-- notarizing ccusage for <arch> (notarytool waits)', before each notarytool wait, tested one per signed binary and red without it. Measured in pplr-vc's slot 01M6JH9MPCDJFWVWENSHJH2D4A: check all exit 0, test all exit 0, bats 54 of 54. N2 is unchanged, at pplr-vc's word. critic-shell had not reported at the commit, so anything real it finds goes in one more small commit. Sent live too.",
+    "fyi": false,
+    "re": "2026-11-04 05:37Z",
+    "recipient": "vc"
+  }
+}
