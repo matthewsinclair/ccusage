@@ -186,11 +186,13 @@ verify() {
   REPLY=$designated
 }
 
-# notarize <binary>: submit it with the notary credentials and wait. Only the answer's
-# status is read, and on a refusal its submission id, never the rest of it.
+# notarize <binary> <arch>: submit it with the notary credentials and wait. Only the
+# answer's status is read, and on a refusal its submission id, never the rest of it.
 notarize() {
   local binary=$1 zip=${1:h}/notarize.zip answer verdict id submitted=1
   ditto -c -k --keepParent $binary $zip >/dev/null 2>&1 || die "ditto could not zip ${binary:t} for notarization"
+  # Said before the wait, which takes minutes with nothing else on the terminal
+  step "notarizing ${binary:t} for $2 (notarytool waits)"
   # notarytool exits non-zero on an Invalid verdict too, so its answer is read either way
   answer=$(xcrun notarytool submit $zip --apple-id "$notary[APPLE_ID]" --password "$notary[APPLE_APP_PASSWORD]" \
     --team-id "$notary[APPLE_TEAM_ID]" --wait --output-format json 2>/dev/null) || submitted=0
@@ -213,7 +215,7 @@ sign() {
   codesign --force --sign "$(fact identity)" --identifier "$(fact identifier)" --options runtime --timestamp \
     $binary >/dev/null 2>&1 || die "codesign could not sign ${binary:t}"
   verify $binary
-  notarize $binary
+  notarize $binary $2
 }
 
 # sign_release <in> <out>: <out> must not exist. Copy each Linux archive as it is, sign

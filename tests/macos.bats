@@ -523,6 +523,10 @@ display() {
   done
   local submit="xcrun notarytool submit .* --apple-id fixture-APPLE_ID --password fixture-APPLE_APP_PASSWORD --team-id $FAKE_NOTARY_TEAM --wait --output-format json"
   [ "$(grep -c "^$submit\$" "$FAKE_LOG")" -eq "$(grep -c '^codesign --force' "$FAKE_LOG")" ]
+  # Each wait is said before it starts, naming its binary's architecture
+  [ "$(grep -c '^-- notarizing ccusage for .* (notarytool waits)$' <<<"$output")" -eq "$(grep -c '^codesign --force' "$FAKE_LOG")" ]
+  [[ $output == *"-- notarizing ccusage for arm64 (notarytool waits)"* ]]
+  [[ $output == *"-- notarizing ccusage for x86_64 (notarytool waits)"* ]]
   local last_read first_download
   last_read=$(grep -n '^security find-generic-password' "$FAKE_LOG" | tail -1 | cut -d: -f1)
   first_download=$(grep -n '^gh release download' "$FAKE_LOG" | head -1 | cut -d: -f1)
