@@ -17,7 +17,7 @@ claims: []
 
 ## TODO
 
-- At the ISSUE:0003 rollout, hv's live check (waits for hv to turn shared mode on, and for a slot from the estate's desk, since step 3 restarts every Claude session on the Mac): a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts. (edited)
+- At the ISSUE:0003 rollout, hv's live check. It waits for hv's step 1 (shared mode on), Molt 1.4.3's step 2 (shell and LaunchAgent export of ccusage dir, evaluated at each shell start and login; pplr-dc builds it after Molt 1.4.2), and estate slot 01M6K31TH20532K7NYN48GJE86 for step 3's restart, which pplr-vc grants with hv's go. Then: a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts. (edited)
 
 ## Holds
 
