@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-04T10:55:16Z:v0.20: vc - fix-all; 0003 waits on Molt 1.4.3; P1-P7 now"
+verblock: "2026-11-04T11:06:50Z:v0.21: vc - hv's rulings: 0005 to close; devbin nodes on hold 3"
 ---
 
 # Work In Progress
@@ -8,12 +8,11 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**Ccusage after 0.1.8: ISSUE:0003's rollout, ISSUE:0005's ruling, dc's P1 to P7**
+**Ccusage after 0.1.8: ISSUE:0003's rollout, dc's P1 to P7**
 
 dc builds and vc validates.
 
 - ISSUE:0003 (medium): the rollout waits for hv's step 1 (shared mode on); for Molt 1.4.3's step 2, which pplr-dc builds after Molt 1.4.2, with the shell and Molt's LaunchAgent running `ccusage dir` at each start and login; and for estate slot `01M6K31TH20532K7NYN48GJE86`, step 3's restart of every Claude session, which pplr-vc grants with hv's go. vc checks each step against the issue's Rollout and Acceptance.
-- ISSUE:0005 (medium): upstream merged PR #15 and shipped it as Claude Usage v1.16, without 0005's changes. vc recommends closing it as overtaken, since ISSUE:0003's step 4 removes the duplicate. hv rules, and dc holds it until then.
 - dc fixes P1 to P7, critic-shell's findings in `bin/.devbin/cmd/`, and adds a test pinning the settings lock's 10 s stale time. vc validates each in a fresh clone.
 
 ## Active Steel Threads
@@ -22,7 +21,7 @@ None.
 
 ## Upcoming Work
 
-- The tap's CI runs `brew style` and `brew audit --strict` again once a devbin release fixes `lib/cmd/formula:424` and Ccusage vendors it (vc hold 3). No devbin node runs on the estate, so hv routes it.
+- The tap's CI runs `brew style` and `brew audit --strict` again once a devbin release fixes `lib/cmd/formula:424` and Ccusage vendors it (vc hold 3). devbin-vc and devbin-dc have the fix.
 
 ## Notes
 

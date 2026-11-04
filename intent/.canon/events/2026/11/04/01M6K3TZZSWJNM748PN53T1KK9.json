@@ -1,0 +1,16 @@
+{
+  "id": "01M6K3TZZSWJNM748PN53T1KK9",
+  "ts": "2026-11-04T11:06:50.745Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 3,
+    "text": "Check that the tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Released when: the devbin vendored in bin/.devbin carries the fix for lib/cmd/formula:424, which devbin-vc and devbin-dc took on 2026-11-04."
+  }
+}

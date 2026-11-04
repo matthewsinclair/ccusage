@@ -21,7 +21,7 @@ claims: []
 
 ## Holds
 
-- Check that the tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Released when: the devbin vendored in bin/.devbin carries the fix for lib/cmd/formula:424.
+- Check that the tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Released when: the devbin vendored in bin/.devbin carries the fix for lib/cmd/formula:424, which devbin-vc and devbin-dc took on 2026-11-04. (edited)
 
 ## Watch-outs
 
