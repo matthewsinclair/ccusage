@@ -53,7 +53,6 @@ class Ccusage < Formula
       Check your environment with: ccusage doctor
       Set up accounts with: ccusage init
       Existing credentials and XDG configuration are preserved on upgrades.
-      macOS may request Keychain access once per account when moving to signed releases.
     EOS
   end
 

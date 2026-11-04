@@ -234,7 +234,8 @@
       "kind": "todo",
       "seq": 13,
       "text": "D1 (vc, docs, before the next cut): packaging/homebrew/ccusage.rb:56's caveat, 'macOS may request Keychain access once per account when moving to signed releases', contradicts README:112: since 0.1.6 ccusage has no Keychain access of its own, and only an item an older ccusage left without apple-tool: asks, once, to allow security. hv saw it at today's brew upgrade, and the next formula publish renders it.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-04T08:43:46.323Z",
       "recorded_at": "2026-11-04T08:40:06.910Z"
     }
   ],

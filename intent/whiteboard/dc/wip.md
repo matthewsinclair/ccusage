@@ -25,7 +25,6 @@ _(none)_
 - P5 (critic-shell, pre-existing; lines at 4c3f155): macos:144 'limit filesize 128m' restates max (line 43). Derive it.
 - P6 (critic-shell, pre-existing; lines at 4c3f155): $(fact ...) inside arguments at macos:177, 215, 254 and 267 carries on with an empty value, so a missing identifier is caught only by the requirement's pin. Read each fact once at the top of cmd_finalize, as plain assignments.
 - P7 (critic-shell, PFIC, pre-existing; lines at 4c3f155): macos:274 check_signed reads the global $sums that check_sums fills; every caller pairs them correctly today. Pass the sums in.
-- D1 (vc, docs, before the next cut): packaging/homebrew/ccusage.rb:56's caveat, 'macOS may request Keychain access once per account when moving to signed releases', contradicts README:112: since 0.1.6 ccusage has no Keychain access of its own, and only an item an older ccusage left without apple-tool: asks, once, to allow security. hv saw it at today's brew upgrade, and the next formula publish renders it.
 
 ## Holds
 
