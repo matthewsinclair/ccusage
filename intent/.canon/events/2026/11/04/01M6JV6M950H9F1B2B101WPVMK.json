@@ -1,0 +1,15 @@
+{
+  "id": "01M6JV6M950H9F1B2B101WPVMK",
+  "ts": "2026-11-04T08:35:54.789Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "P3 (critic-shell, pre-existing; lines at 4c3f155): macos:67 local identity=$(fact identity) masks fact's status, so a missing key dies at line 69 naming an empty identity. Assign it plainly."
+  }
+}

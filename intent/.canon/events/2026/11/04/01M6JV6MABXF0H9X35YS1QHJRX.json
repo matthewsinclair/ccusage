@@ -1,0 +1,15 @@
+{
+  "id": "01M6JV6MABXF0H9X35YS1QHJRX",
+  "ts": "2026-11-04T08:35:54.827Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "P5 (critic-shell, pre-existing; lines at 4c3f155): macos:144 'limit filesize 128m' restates max (line 43). Derive it."
+  }
+}

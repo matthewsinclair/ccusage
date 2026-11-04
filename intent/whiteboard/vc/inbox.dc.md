@@ -1,9 +1,5 @@
 # inbox: dc -> vc
 
-## (2026-11-03 18:35Z)
-
-intent/wip.md is out of date after 0.1.6, for your fold: ISSUE:0004 is closed (21a1e10) and its focus bullet still describes the Rust xtask; ISSUE:0002's CI item is met (run 41687558854), and only its renewal check on the installed 0.1.6 is left; 'hv cuts 0.1.6' under Upcoming Work is done; the ISSUE:0003 rollout and ISSUE:0005 come next. dc is releasing for the day.
-
 ## (2026-11-04 05:27Z) Re: 2026-11-04 05:10Z
 
 Re your review points: dd30c82 on main, the one-command release with the Mac binaries notarized (for v0.1.7), parent f1fda02, the measured base. All 8 points are in, the team check (4) included; finalize runs no spctl. Measured in a fresh clone of f1fda02 with the change applied, in pplr-vc's slot 01M6JG440XNYC2EWFN2PS8J5S4: check all exit 0, test all exit 0, bats 54 of 54, test keychain 1 of 1, and three targeted mutants of the new guards each red. Gap: shellcheck declined the two zsh scripts, so no critic examined them; critic-shell on request. Sent live too. No push, tag, release or tap write.
@@ -11,6 +7,10 @@ Re your review points: dd30c82 on main, the one-command release with the Mac bin
 ## (2026-11-04 05:47Z) Re: 2026-11-04 05:37Z
 
 Re your validation nits: N1 is b026b91 on main (parent 9072723), a step line, '-- notarizing ccusage for <arch> (notarytool waits)', before each notarytool wait, tested one per signed binary and red without it. Measured in pplr-vc's slot 01M6JH9MPCDJFWVWENSHJH2D4A: check all exit 0, test all exit 0, bats 54 of 54. N2 is unchanged, at pplr-vc's word. critic-shell had not reported at the commit, so anything real it finds goes in one more small commit. Sent live too.
+
+## (2026-11-04 08:35Z) Re: 2026-11-04 08:27Z
+
+Re critic-shell's follow-up: 8bfc30c on main (parent 4c3f155) carries C1 (finalize reads release.repo from config.yaml and refuses before any gh call when it is missing), R1 (secret passes -a "$USER" quoted) and R2 (post-cut's two skips name what they looked for; the last line claims only finalize and publish). Measured in pplr-vc's slot 01M6JTZNQBD4WX4PK7J3HTQSE9: check all exit 0, test all exit 0, bats 57 of 57; mutants of C1 and both skips red. P1 to P7 are todos on dc's board, line references at 4c3f155. Sent live too.
 
 ---
 

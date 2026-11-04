@@ -1,0 +1,15 @@
+{
+  "id": "01M6JV6M8JD0DMWEYDYGWWD0G7",
+  "ts": "2026-11-04T08:35:54.770Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "P2 (critic-shell, pre-existing; lines at 4c3f155): die is copied into macos:51, post-cut:31 and lock-sync:26 (lock-sync's has drifted to print -u2 without -r --), the root derivation into macos:33, post-cut:28 and lock-sync:23 (bin/devbin already exports PROJECT_ROOT), and the help extractor into macos:345 and post-cut:35. One small zsh library would hold them."
+  }
+}

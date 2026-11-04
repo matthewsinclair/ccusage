@@ -1,0 +1,15 @@
+{
+  "id": "01M6JV6M9R8VYKEW3ANBR7P2SN",
+  "ts": "2026-11-04T08:35:54.808Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "P4 (critic-shell, pre-existing; lines at 4c3f155): macos:68 '|| identities=' reports a failure of security itself, eg a locked keychain, as 'identity not in this keychain'. Say which."
+  }
+}

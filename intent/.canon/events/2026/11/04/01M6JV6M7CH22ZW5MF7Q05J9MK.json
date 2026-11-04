@@ -1,0 +1,17 @@
+{
+  "id": "01M6JV6M7CH22ZW5MF7Q05J9MK",
+  "ts": "2026-11-04T08:35:54.732Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "Re critic-shell's follow-up: 8bfc30c on main (parent 4c3f155) carries C1 (finalize reads release.repo from config.yaml and refuses before any gh call when it is missing), R1 (secret passes -a \"$USER\" quoted) and R2 (post-cut's two skips name what they looked for; the last line claims only finalize and publish). Measured in pplr-vc's slot 01M6JTZNQBD4WX4PK7J3HTQSE9: check all exit 0, test all exit 0, bats 57 of 57; mutants of C1 and both skips red. P1 to P7 are todos on dc's board, line references at 4c3f155. Sent live too.",
+    "fyi": false,
+    "re": "2026-11-04 08:27Z",
+    "recipient": "vc"
+  }
+}

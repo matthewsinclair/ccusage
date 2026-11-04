@@ -1,0 +1,16 @@
+{
+  "id": "01M6JV92KD2JZQSP13E29Q8VTE",
+  "ts": "2026-11-04T08:37:14.989Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 6,
+    "text": "ISSUE:0002 and ISSUE:0003 close after the installed build passes its checks, 0.1.6 or 0.1.7 alike, since 0.1.7 changes nothing under src/: ISSUE:0002's renewal check (its Acceptance 5: the first renewal raises no prompt and keeps apple-tool:, metadata only), and ISSUE:0003's Acceptance items 1 and 5 at hv's live check at rollout. Both need hv's OK, because a renewal spends real tokens. vc validated ISSUE:0002 at faf3233 and a5f9b54 and ISSUE:0003 at 07259fb. Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant."
+  }
+}

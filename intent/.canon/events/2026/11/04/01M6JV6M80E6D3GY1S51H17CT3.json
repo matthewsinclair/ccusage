@@ -1,0 +1,15 @@
+{
+  "id": "01M6JV6M80E6D3GY1S51H17CT3",
+  "ts": "2026-11-04T08:35:54.752Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "P1 (critic-shell, pre-existing, fails closed; lines at 4c3f155): the target set lives in three places, macos:38, .github/workflows/build.yml:28-34 and config.yaml:110-111, and the archive name format in more. Give it one home."
+  }
+}

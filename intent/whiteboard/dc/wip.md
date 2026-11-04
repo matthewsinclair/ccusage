@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 05:02Z
+heartbeat_at: 2026-11-04 08:37Z
 status: active
-focus: "Booted, ready for ccusage-vc's and pplr-vc's instructions. brew's 0.1.6 is installed (Developer ID, Cellar 2026-11-03 18:48Z), so ISSUE:0002's renewal check and ISSUE:0003's live check wait only on hv's OK; ISSUE:0005 (fork PR #15) next"
+focus: "v0.1.7 is out, signed and notarized. 8bfc30c (critic-shell's C1, R1 and R2) is with ccusage-vc for verification, and P1 to P7 are todos. Next: ISSUE:0002's renewal check and ISSUE:0003's live check on hv's OK, then ISSUE:0005"
 claims: [ISSUE:0002, ISSUE:0003]
 ---
 
@@ -13,15 +13,22 @@ claims: [ISSUE:0002, ISSUE:0003]
 
 ## DOING
 
-- One-command release for ccusage, pplr-vc's ask for hv, for v0.1.7: dd30c82 (post-cut as release.after:, finalize notarizing always with geodica.apple.*), validated by ccusage-vc with no blockers, and b026b91, vc's N1 taken before the cut at pplr-vc's word (a step line before each notarytool wait). N2 stays unchanged, at pplr-vc's word. Waiting on vc's re-run at b026b91 and its critic-shell report; anything real goes in one more small commit. No push, tag or tap write: hv cuts v0.1.7. (edited)
+_(none)_
 
 ## TODO
 
 - ISSUE:0005 after ISSUE:0003, as one PR (#15) in ~/Devel/forks/claudecodeusage: local commits only, no push
+- P1 (critic-shell, pre-existing, fails closed; lines at 4c3f155): the target set lives in three places, macos:38, .github/workflows/build.yml:28-34 and config.yaml:110-111, and the archive name format in more. Give it one home.
+- P2 (critic-shell, pre-existing; lines at 4c3f155): die is copied into macos:51, post-cut:31 and lock-sync:26 (lock-sync's has drifted to print -u2 without -r --), the root derivation into macos:33, post-cut:28 and lock-sync:23 (bin/devbin already exports PROJECT_ROOT), and the help extractor into macos:345 and post-cut:35. One small zsh library would hold them.
+- P3 (critic-shell, pre-existing; lines at 4c3f155): macos:67 local identity=$(fact identity) masks fact's status, so a missing key dies at line 69 naming an empty identity. Assign it plainly.
+- P4 (critic-shell, pre-existing; lines at 4c3f155): macos:68 '|| identities=' reports a failure of security itself, eg a locked keychain, as 'identity not in this keychain'. Say which.
+- P5 (critic-shell, pre-existing; lines at 4c3f155): macos:144 'limit filesize 128m' restates max (line 43). Derive it.
+- P6 (critic-shell, pre-existing; lines at 4c3f155): $(fact ...) inside arguments at macos:177, 215, 254 and 267 carries on with an empty value, so a missing identifier is caught only by the requirement's pin. Read each fact once at the top of cmd_finalize, as plain assignments.
+- P7 (critic-shell, PFIC, pre-existing; lines at 4c3f155): macos:274 check_signed reads the global $sums that check_sums fills; every caller pairs them correctly today. Pass the sums in.
 
 ## Holds
 
-- ISSUE:0002 and ISSUE:0003 close after the installed 0.1.6 passes its checks: ISSUE:0002's renewal check (its Acceptance 5: the first renewal raises no prompt and keeps apple-tool:, metadata only), and ISSUE:0003's Acceptance items 1 and 5 at hv's live check at rollout. Both need hv's brew upgrade ccusage and hv's OK, because a renewal spends real tokens. vc validated ISSUE:0002 at faf3233 and a5f9b54 and ISSUE:0003 at 07259fb. Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant. (edited)
+- ISSUE:0002 and ISSUE:0003 close after the installed build passes its checks, 0.1.6 or 0.1.7 alike, since 0.1.7 changes nothing under src/: ISSUE:0002's renewal check (its Acceptance 5: the first renewal raises no prompt and keeps apple-tool:, metadata only), and ISSUE:0003's Acceptance items 1 and 5 at hv's live check at rollout. Both need hv's OK, because a renewal spends real tokens. vc validated ISSUE:0002 at faf3233 and a5f9b54 and ISSUE:0003 at 07259fb. Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant. (edited)
 
 ## Watch-outs
 
@@ -29,7 +36,7 @@ claims: [ISSUE:0002, ISSUE:0003]
 
 ## Decisions
 
-- ISSUE:0004 design (dc, 2026-11-03), as built on hv's rulings (hv to dc, 2026-11-03: tools/* moves to devbin, following Pplr's approach; no bespoke dev tools or scripts). Three devbin commands. (1) bin/devbin release: devbin's cut, config.yaml release: block (remotes local and upstream, notes changelog from CHANGELOG.md, derived bin/devbin lock-sync ported from Pplr, gates check all, test all, build and doctor, ci.workflow build.yml on candidate/<tag>, object: ci with object_wait 40m); CI's tag run makes the private draft with the four archives and SHA256SUMS.ci. (2) bin/devbin macos finalize <tag>: a zsh project command cut down from Pplr's signer (hv: CI builds, Mac signs; zsh, the Rust xtask goes): listing then unpacked-tree archive checks, lipo architecture, Developer ID signing with identifier, runtime and timestamp, verify against packaging/macos/signing's requirement, Timestamp= line, CodeDirectory runtime flag, designated requirement without cdhash, optional notarization, one identity across both Macs; it alone writes SHA256SUMS, so devbin's formula cannot render from an unsigned draft (H05), and it publishes only once the uploaded manifest's identity (H01) and checksums verify; a rerun takes the draft's own SHA256SUMS. (3) bin/devbin formula publish: devbin's built-in, assets mode, template rewritten to its placeholders, Linux built from the top-level git url and @@REVISION@@ (hv: built-in, tap CI drops brew style and audit until devbin's formula:424 fix). The xtask, the workspace, .cargo/, tools/ and tests/release.sh are gone; bats suites in tests/ cover the three project commands; check nopython keeps Python out; version_from Cargo.toml, with a usage-rules NEVER that only bin/devbin release changes the version. (edited)
+_(none)_
 
 ---
 
