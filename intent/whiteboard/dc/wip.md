@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 11:08Z
+heartbeat_at: 2026-11-04 11:35Z
 status: active
-focus: "Fixing P1 to P7 (todos 6 to 12) and the settings-lock stale-time test now (doing 5, hv via vc), measured one commit at a time in dc's scratch clone. ISSUE:0003 waits for hv's steps 1 and 2 and vc's restart slot (hold 6). ISSUE:0005 is closed as overtaken (hv's ruling)"
+focus: "Fix-all landed: 94dbcf3 (settings-lock stale time), 6a102b3 (P3 to P7), 302a721 (P1, the build matrix as the targets' one home) and 7477ec6 (P2, the shared handler library), each measured; vc checks each in a fresh clone. ISSUE:0003 waits for hv's steps 1 and 2 and vc's restart slot (hold 6)"
 claims: [ISSUE:0003]
 ---
 
@@ -13,17 +13,11 @@ claims: [ISSUE:0003]
 
 ## DOING
 
-- P1 to P7 (todos 6 to 12) and a test pinning the settings lock's 10 s stale time (vc's one surviving mutant), now: hv via vc, 2026-11-04, fix all issues now with nothing left for later. Each commit passes check all, test all, release --dry-run and a read-only macos finalize of a public release, and vc checks each in a fresh clone.
+_(none)_
 
 ## TODO
 
-- P1 (critic-shell, pre-existing, fails closed; lines at 4c3f155): the target set lives in three places, macos:38, .github/workflows/build.yml:28-34 and config.yaml:110-111, and the archive name format in more. Give it one home.
-- P2 (critic-shell, pre-existing; lines at 4c3f155): die is copied into macos:51, post-cut:31 and lock-sync:26 (lock-sync's has drifted to print -u2 without -r --), the root derivation into macos:33, post-cut:28 and lock-sync:23 (bin/devbin already exports PROJECT_ROOT), and the help extractor into macos:345 and post-cut:35. One small zsh library would hold them.
-- P3 (critic-shell, pre-existing; lines at 4c3f155): macos:67 local identity=$(fact identity) masks fact's status, so a missing key dies at line 69 naming an empty identity. Assign it plainly.
-- P4 (critic-shell, pre-existing; lines at 4c3f155): macos:68 '|| identities=' reports a failure of security itself, eg a locked keychain, as 'identity not in this keychain'. Say which.
-- P5 (critic-shell, pre-existing; lines at 4c3f155): macos:144 'limit filesize 128m' restates max (line 43). Derive it.
-- P6 (critic-shell, pre-existing; lines at 4c3f155): $(fact ...) inside arguments at macos:177, 215, 254 and 267 carries on with an empty value, so a missing identifier is caught only by the requirement's pin. Read each fact once at the top of cmd_finalize, as plain assignments.
-- P7 (critic-shell, PFIC, pre-existing; lines at 4c3f155): macos:274 check_signed reads the global $sums that check_sums fills; every caller pairs them correctly today. Pass the sums in.
+_(none)_
 
 ## Holds
 
