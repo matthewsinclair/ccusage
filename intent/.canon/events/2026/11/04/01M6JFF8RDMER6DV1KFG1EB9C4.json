@@ -1,0 +1,15 @@
+{
+  "id": "01M6JFF8RDMER6DV1KFG1EB9C4",
+  "ts": "2026-11-04T05:10:54.989Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "v0.1.7 one-command release validation for pplr-vc (hv gave pplr-vc the pen on ccusage, 2026-11-04): review dc's commit (bin/devbin post-cut as the one after:, finalize notarising always with geodica.apple.*, no CCUSAGE_NOTARY_PROFILE), then in a fresh clone at its hash: check all, test all, build and doctor measured in a slot from pplr-vc's desk, release v0.1.7 --dry-run ending at the confirm step, and a read-only notarytool history probe through finalize's own reader. Pre-hash list sent to pplr-vc; review points sent to dc. No pushes, tags, releases or tap writes: hv runs the cut."
+  }
+}
