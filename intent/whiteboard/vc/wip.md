@@ -3,9 +3,9 @@ node: vc
 name: vc
 role: vc
 session_id: 3fc778cd-9397-4076-8adb-b1d31ba9465e
-heartbeat_at: 2026-11-04 10:15Z
+heartbeat_at: 2026-11-04 12:21Z
 status: active
-focus: "hv's no-prompt word is in ISSUE:0002, and dc closes it. Next: ISSUE:0003's rollout when hv turns shared mode on (an estate slot for the restart); then ISSUE:0005"
+focus: "Folded for a compact while hv travels; all banked (fix-all validated green at 7477ec6). Next: ISSUE:0003. Check hv's step 1 once run; then Molt 1.4.3's step 2 and restart slot 01M6K31TH20532K7NYN48GJE86"
 claims: []
 ---
 
