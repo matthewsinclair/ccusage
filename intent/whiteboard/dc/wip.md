@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 12:23Z
+heartbeat_at: 2026-11-04 19:53Z
 status: active
-focus: "Folded for hv's compact; after it, /in-session and pickup as dc. Fix-all is done and validated by vc (94dbcf3, 6a102b3, 302a721, 7477ec6, fc4c217), and nothing of dc's is pending. Next: ISSUE:0003's rollout support once hv runs steps 1 and 2 and the desk grants vc's restart slot (hold 6)"
+focus: "Folded for the night; nothing in flight. ISSUE:0003 step 1 is done and verified by vc; hold 6 waits on Molt 1.4.3 (step 2) and vc's restart slot. CI run 41874767445 on b824a5b is green after a re-run (an arm64 runner shortage, not the code)"
 claims: [ISSUE:0003]
 ---
 
