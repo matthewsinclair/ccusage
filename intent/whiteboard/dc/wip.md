@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 08:37Z
+heartbeat_at: 2026-11-04 08:53Z
 status: active
-focus: "v0.1.7 is out, signed and notarized. 8bfc30c (critic-shell's C1, R1 and R2) is with ccusage-vc for verification, and P1 to P7 are todos. Next: ISSUE:0002's renewal check and ISSUE:0003's live check on hv's OK, then ISSUE:0005"
+focus: "Folded for a compact. Next: close ISSUE:0002 on hv's no-prompt word for the 05:17Z renewal, relayed by vc; ISSUE:0003's rollout when hv turns shared mode on; then ISSUE:0005 (todo 5, vc's ruling on change 3 first). P1 to P7 (todos 6 to 12) wait for a tooling pass"
 claims: [ISSUE:0002, ISSUE:0003]
 ---
 
@@ -17,7 +17,7 @@ _(none)_
 
 ## TODO
 
-- ISSUE:0005 after ISSUE:0003, as one PR (#15) in ~/Devel/forks/claudecodeusage: local commits only, no push
+- ISSUE:0005, the Claude Usage fork's PR #15 in ~/Devel/forks/claudecodeusage (build on fix/account-picker, 29a4db2; fold in 4b116b9), after ISSUE:0003. Local commits only: no push, no PR edit without hv's OK, and never run the app, which reads real Keychain items. First ask vc to rule on change 3: a GUI app's environment is fixed at launch, so reading CLAUDE_SECURESTORAGE_CONFIG_DIR from it before launchd cannot follow a later ccusage use; dc recommends launchd's live value first. (edited)
 - P1 (critic-shell, pre-existing, fails closed; lines at 4c3f155): the target set lives in three places, macos:38, .github/workflows/build.yml:28-34 and config.yaml:110-111, and the archive name format in more. Give it one home.
 - P2 (critic-shell, pre-existing; lines at 4c3f155): die is copied into macos:51, post-cut:31 and lock-sync:26 (lock-sync's has drifted to print -u2 without -r --), the root derivation into macos:33, post-cut:28 and lock-sync:23 (bin/devbin already exports PROJECT_ROOT), and the help extractor into macos:345 and post-cut:35. One small zsh library would hold them.
 - P3 (critic-shell, pre-existing; lines at 4c3f155): macos:67 local identity=$(fact identity) masks fact's status, so a missing key dies at line 69 naming an empty identity. Assign it plainly.
@@ -28,7 +28,7 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0002 and ISSUE:0003 close after the installed build passes its checks, 0.1.6 or 0.1.7 alike, since 0.1.7 changes nothing under src/: ISSUE:0002's renewal check (its Acceptance 5: the first renewal raises no prompt and keeps apple-tool:, metadata only), and ISSUE:0003's Acceptance items 1 and 5 at hv's live check at rollout. Both need hv's OK, because a renewal spends real tokens. vc validated ISSUE:0002 at faf3233 and a5f9b54 and ISSUE:0003 at 07259fb. Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant. (edited)
+- ISSUE:0002 closes on hv's word, relayed by vc, that the 05:17Z renewal raised no Keychain prompt; its metadata already holds (vc todo 2). ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5, once hv turns shared mode on and the desk gives a slot for the restart (vc todo 4). Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant. (edited)
 
 ## Watch-outs
 

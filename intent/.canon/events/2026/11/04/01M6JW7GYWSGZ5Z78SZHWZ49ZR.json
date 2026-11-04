@@ -1,0 +1,16 @@
+{
+  "id": "01M6JW7GYWSGZ5Z78SZHWZ49ZR",
+  "ts": "2026-11-04T08:53:52.732Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 5,
+    "text": "ISSUE:0005, the Claude Usage fork's PR #15 in ~/Devel/forks/claudecodeusage (build on fix/account-picker, 29a4db2; fold in 4b116b9), after ISSUE:0003. Local commits only: no push, no PR edit without hv's OK, and never run the app, which reads real Keychain items. First ask vc to rule on change 3: a GUI app's environment is fixed at launch, so reading CLAUDE_SECURESTORAGE_CONFIG_DIR from it before launchd cannot follow a later ccusage use; dc recommends launchd's live value first."
+  }
+}

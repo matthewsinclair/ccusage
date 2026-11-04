@@ -1,0 +1,16 @@
+{
+  "id": "01M6JW7H31GRXRQFAJE715Z9AV",
+  "ts": "2026-11-04T08:53:52.865Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 6,
+    "text": "ISSUE:0002 closes on hv's word, relayed by vc, that the 05:17Z renewal raised no Keychain prompt; its metadata already holds (vc todo 2). ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5, once hv turns shared mode on and the desk gives a slot for the restart (vc todo 4). Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant."
+  }
+}
