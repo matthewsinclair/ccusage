@@ -17,7 +17,7 @@ claims: []
 
 ## TODO
 
-- At the ISSUE:0003 rollout, hv's live check. It waits for hv's step 1 (shared mode on), Molt 1.4.3's step 2 (shell and LaunchAgent export of ccusage dir, evaluated at each shell start and login; pplr-dc builds it after Molt 1.4.2), and estate slot 01M6K31TH20532K7NYN48GJE86 for step 3's restart, which pplr-vc grants with hv's go. Then: a session launched with ccusage dir's export reports the active profile's email from claude auth status, with the Claude Code-credentials item count from dump-keychain (metadata only) the same before and after; ccusage use NAME leaves launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR naming NAME's profile dir; Claude Usage lists exactly five accounts and nothing prompts. (edited)
+- At the ISSUE:0003 rollout, hv's live check. Step 1 is done and verified (17:30Z: config head, ccusage dir = engineering01's dir, launchd matches, shared oauthAccount = engineering01's, 13 Keychain items, none new). Waits for Molt 1.4.3's step 2 (Molt 0088, carrying vc's two musts) and estate slot 01M6K31TH20532K7NYN48GJE86 for step 3's restart, which pplr-vc grants with hv's go. Then: a new shell and launchd equal ccusage dir, and CLAUDE_CONFIG_DIR equals claude_config_dir; after the restart, ca646b28's mdat stops moving while c5365930 renews; a session reports engineering.01 from claude auth status (hv's OK) with no new Keychain item; Claude Usage lists exactly five accounts and nothing prompts. (edited)
 
 ## Holds
 
