@@ -41,7 +41,7 @@ dependencies = [
 
 [[package]]
 name = "ccusage"
-version = "0.1.6"
+version = "0.1.7"
 dependencies = [
  "crossterm",
  "security-framework",
