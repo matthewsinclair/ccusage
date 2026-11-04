@@ -114,6 +114,8 @@ FAKE
 echo "security $*" >> "$FAKE_LOG"
 case "$1" in
   find-identity)
+    # security itself failing, as it does on a locked keychain
+    [ "${FAKE_FIND_IDENTITY_FAILS:-}" != yes ] || exit 51
     if [ "${FAKE_NO_IDENTITY:-}" = yes ]; then echo '     0 valid identities found'; exit 0; fi
     echo '  1) 0123456789ABCDEF0123456789ABCDEF01234567 "Developer ID Application: Geodica Pty Ltd (76BQL8L47U)"'
     echo '     1 valid identities found' ;;
@@ -221,14 +223,15 @@ display() {
   printf '%s' "$out"
 }
 
-# copy_tree <sed expression>: the handler, the signing facts and config.yaml, with <sed
-# expression> applied to the config, in a tree of their own; prints the copy's handler
+# copy_tree <config sed> [<signing sed>]: the handler, config.yaml and the signing
+# facts in a tree of their own, with each sed expression applied to its file; prints
+# the copy's handler
 copy_tree() {
   local tree=$BATS_TEST_TMPDIR/tree
   mkdir -p "$tree/bin/.devbin/cmd" "$tree/packaging/macos"
   cp "$HANDLER" "$tree/bin/.devbin/cmd/"
-  cp "$ROOT/packaging/macos/signing" "$tree/packaging/macos/"
   sed "$1" "$ROOT/bin/.devbin/config.yaml" > "$tree/bin/.devbin/config.yaml"
+  sed "${2:-}" "$ROOT/packaging/macos/signing" > "$tree/packaging/macos/signing"
   printf '%s' "$tree/bin/.devbin/cmd/macos"
 }
 
@@ -276,6 +279,25 @@ copy_tree() {
   run "$handler" finalize "$TAG"
   refused "names no release repo"
   absent '^gh '
+}
+
+@test "a signing file without one of its facts refuses before any gh call, naming it" {
+  local key handler
+  # Each key the file holds, read on fd 3 so each run keeps its own stdin
+  while IFS= read -r key <&3; do
+    : > "$FAKE_LOG"
+    handler=$(copy_tree '' "/^$key=/d")
+    run "$handler" finalize "$TAG"
+    refused "packaging/macos/signing has no $key" || { echo "for $key"; return 1; }
+    absent '^gh ' || { echo "for $key"; return 1; }
+  done 3< <(sed -n 's/^\([a-z]*\)=.*/\1/p' "$ROOT/packaging/macos/signing")
+}
+
+@test "security failing to list identities is said as that, not as a missing identity" {
+  FAKE_FIND_IDENTITY_FAILS=yes finalize
+  refused "security cannot list this keychain's code-signing identities"
+  [[ $output != *"not in this keychain"* ]] || { echo "output: $output"; return 1; }
+  absent '^gh release download'
 }
 
 @test "the manifest keeps the layout published releases carry, bound to SHA256SUMS" {

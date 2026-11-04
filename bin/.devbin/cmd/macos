@@ -58,24 +58,38 @@ fact() {
   print -r -- ${line#$1=}
 }
 
+# The facts finalize signs and checks with, each read once at its top as a plain
+# assignment, so a missing one stops the run there, naming itself: read inside a
+# tool's arguments, it would reach the tool as an empty word and the run carry on
+typeset -gA facts
+read_facts() {
+  local key
+  for key in identity team keychain identifier requirement; do
+    facts[$key]=$(fact $key) || exit 1
+  done
+}
+
 guard() {
   [[ -z ${CI:-} ]] || die "refusing to run on CI: signing happens on the maintainer's Mac only"
   [[ $(uname) == Darwin ]] || die "signing needs macOS"
 }
 
 require_identity() {
-  local identity=$(fact identity) identities
-  identities=$(security find-identity -v -p codesigning 2>/dev/null) || identities=
-  [[ $identities == *"\"$identity\""* ]] || die "the signing identity is not in this keychain: $identity"
+  local identities
+  # find-identity succeeds when it finds no identity, so its failure is security's
+  # own, eg a locked keychain, and is said as that
+  identities=$(security find-identity -v -p codesigning 2>/dev/null) ||
+    die "security cannot list this keychain's code-signing identities"
+  [[ $identities == *"\"$facts[identity]\""* ]] ||
+    die "the signing identity is not in this keychain: $facts[identity]"
 }
 
 # A notary credential from the login keychain, under the signing file's prefix
 secret() {
-  local keychain value
-  keychain=$(fact keychain) || exit 1
-  value=$(security find-generic-password -a "$USER" -s "$keychain.$1" -w 2>/dev/null) ||
-    die "no $keychain.$1 in the login keychain"
-  [[ -n $value ]] || die "$keychain.$1 in the login keychain is empty"
+  local value
+  value=$(security find-generic-password -a "$USER" -s "$facts[keychain].$1" -w 2>/dev/null) ||
+    die "no $facts[keychain].$1 in the login keychain"
+  [[ -n $value ]] || die "$facts[keychain].$1 in the login keychain is empty"
   print -r -- $value
 }
 
@@ -86,25 +100,23 @@ secret() {
 # release's do, and are never printed.
 typeset -gA notary
 require_credentials() {
-  local name team
-  team=$(fact team) || exit 1
+  local name
   for name in APPLE_ID APPLE_APP_PASSWORD APPLE_TEAM_ID; do
     notary[$name]=$(secret $name) || exit 1
   done
-  [[ $notary[APPLE_TEAM_ID] == "$team" ]] ||
-    die "the notary credentials name another team than packaging/macos/signing's, $team"
+  [[ $notary[APPLE_TEAM_ID] == "$facts[team]" ]] ||
+    die "the notary credentials name another team than packaging/macos/signing's, $facts[team]"
 }
 
 sha() { shasum -a 256 -- $1 | cut -d' ' -f1 }
 
 # check_sums <dir>: SHA256SUMS there names exactly this release's four archives, each
-# once, each by a lowercase SHA-256 its file in <dir> has. Leaves them in $sums.
-typeset -gA sums
+# once, each by a lowercase SHA-256 its file in <dir> has.
 check_sums() {
   local dir=$1 line t
   local -a fields expected
+  local -A sums
   [[ -f $dir/SHA256SUMS ]] || die "the release has no SHA256SUMS"
-  sums=()
   while IFS= read -r line || [[ -n $line ]]; do
     fields=(${=line})
     (( $#fields == 2 )) || die "Invalid release checksum manifest"
@@ -141,7 +153,8 @@ unpack() {
   for (( i = 1; i <= $#wanted; i++ )); do
     [[ $members[i] == "$wanted[i]" ]] || die "Unexpected release archive member in ${archive:t}"
   done
-  ( limit filesize 128m; bsdtar --options '!mac-ext' -xzf $archive -C $dir --no-same-owner \
+  # No file it writes may outgrow max, in the kilobytes zsh's limit counts in
+  ( limit filesize $(( max / 1024 ))k; bsdtar --options '!mac-ext' -xzf $archive -C $dir --no-same-owner \
     --no-same-permissions --no-xattrs --no-mac-metadata ) >/dev/null 2>&1 || die "${archive:t} cannot be unpacked"
   found=($dir/**/*(DN))
   (( $#found == $#files )) || die "Unexpected release archive member in ${archive:t}"
@@ -174,7 +187,7 @@ hardened() {
 verify() {
   local binary=$1 out designated
   local -a lines
-  codesign --verify --strict -R "=$(fact requirement)" $binary >/dev/null 2>&1 ||
+  codesign --verify --strict -R "=$facts[requirement]" $binary >/dev/null 2>&1 ||
     die "${binary:t} does not meet the Geodica Developer ID requirement"
   # codesign -d prints the designated requirement on stdout, the details on stderr
   out=$(codesign -d --verbose=4 -r- $binary 2>$work/display) || die "codesign cannot display ${binary:t}'s signature"
@@ -212,7 +225,7 @@ sign() {
   local binary=$1 reported
   reported=$(lipo -archs $binary 2>/dev/null) || die "lipo cannot read ${binary:t}"
   [[ ${reported//[[:space:]]/} == "$2" ]] || die "Release binary has the wrong architecture"
-  codesign --force --sign "$(fact identity)" --identifier "$(fact identifier)" --options runtime --timestamp \
+  codesign --force --sign "$facts[identity]" --identifier "$facts[identifier]" --options runtime --timestamp \
     $binary >/dev/null 2>&1 || die "codesign could not sign ${binary:t}"
   verify $binary
   notarize $binary $2
@@ -251,27 +264,29 @@ sign_release() {
     archives=$(jq -n --argjson a $archives --arg n $name --arg r $requirement_of[$name] \
       --arg s "$(sha $out/$name)" '$a + {($n): {requirement: $r, notarized: true, sha256: $s}}')
   done
-  jq -n --arg tag $tag --arg id "$(fact identifier)" --arg team "$(fact team)" --argjson archives $archives \
+  jq -n --arg tag $tag --arg id "$facts[identifier]" --arg team "$facts[team]" --argjson archives $archives \
     '{tag: $tag, identifier: $id, team_id: $team, archives: $archives}' > $out/MACOS-SIGNING.json
 }
 
 # check_signed <dir> [notarized]: MACOS-SIGNING.json there is this release's and the
-# Geodica team's, each Mac archive has the checksum SHA256SUMS gives it, and its binary
-# still verifies with the designated requirement the manifest recorded. With notarized,
-# for the release it publishes, the manifest must also record each Mac archive as
-# notarized. A release made public before notarization was always on records false,
-# and still verifies.
+# Geodica team's, each Mac archive there has the checksum the manifest records for it,
+# and its binary still verifies with the designated requirement the manifest recorded.
+# Every caller has held the same archives to SHA256SUMS with check_sums, so the
+# manifest and SHA256SUMS agree. With notarized, for the release it publishes, the
+# manifest must also record each Mac archive as notarized. A release made public
+# before notarization was always on records false, and still verifies.
 check_signed() {
-  local dir=$1 publishing=${2:-} manifest=$1/MACOS-SIGNING.json t name recorded unpacked
+  local dir=$1 publishing=${2:-} manifest=$1/MACOS-SIGNING.json t name recorded actual unpacked
   [[ -f $manifest ]] || die "the release has no MACOS-SIGNING.json"
-  jq -e --arg tag $tag --arg id "$(fact identifier)" --arg team "$(fact team)" \
+  jq -e --arg tag $tag --arg id "$facts[identifier]" --arg team "$facts[team]" \
     '.tag == $tag and .identifier == $id and .team_id == $team' $manifest >/dev/null 2>&1 ||
     die "Release signing identity mismatch"
   for t in $mac_targets; do
     name=ccusage-$tag-$t.tar.gz
     recorded=$(jq -r --arg n $name '.archives[$n].sha256 // empty' $manifest 2>/dev/null) || recorded=
     [[ -n $recorded ]] || die "MACOS-SIGNING.json does not sign $name"
-    [[ $recorded == "$sums[$name]" ]] || die "Signed archive checksum mismatch"
+    actual=$(sha $dir/$name) || die "cannot read $name's checksum"
+    [[ $recorded == "$actual" ]] || die "Signed archive checksum mismatch"
     if [[ $publishing == notarized ]]; then
       jq -e --arg n $name '.archives[$n].notarized == true' $manifest >/dev/null 2>&1 ||
         die "MACOS-SIGNING.json does not record $name as notarized"
@@ -289,6 +304,7 @@ cmd_finalize() {
   tag=$1
   [[ $tag =~ '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' ]] ||
     die "expected a stable release tag such as v0.1.0, not $tag"
+  read_facts
   local draft incoming signed uploaded repo
   # The release's repository has one home, bin/.devbin/config.yaml's release.repo
   repo=$(sed -n 's/^  repo: //p' bin/.devbin/config.yaml | head -1) || die "cannot read bin/.devbin/config.yaml"
