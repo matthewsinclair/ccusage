@@ -1,0 +1,17 @@
+{
+  "id": "01M6JH0MKWJTB89SKWTX6JDH6T",
+  "ts": "2026-11-04T05:37:52.764Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "dd30c82 validated, pass, no blockers (report to pplr-vc). Non-blocking nits: N1, finalize prints nothing during each notarytool --wait, so the cut sits on '-- signing <archive>' for minutes; a 'notarizing <binary> (notarytool waits)' step line would make the wait read as expected. N2, post-cut reads formula.tap with sed's first two-space tap: line, which a second such key in config.yaml would take over.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

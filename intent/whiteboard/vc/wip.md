@@ -14,7 +14,7 @@ claims: []
 ## DOING
 
 - Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004's end-to-end cut validated at v0.1.6 (3f58a61). ISSUE:0003's items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over. (edited)
-- v0.1.7 one-command release validation for pplr-vc (hv gave pplr-vc the pen on ccusage, 2026-11-04): review dc's commit (bin/devbin post-cut as the one after:, finalize notarising always with geodica.apple.*, no CCUSAGE_NOTARY_PROFILE), then in a fresh clone at its hash: check all, test all, build and doctor measured in a slot from pplr-vc's desk, release v0.1.7 --dry-run ending at the confirm step, and a read-only notarytool history probe through finalize's own reader. Pre-hash list sent to pplr-vc; review points sent to dc. No pushes, tags, releases or tap writes: hv runs the cut.
+- v0.1.7 one-command release validation for pplr-vc (hv gave pplr-vc the pen on ccusage, 2026-11-04): dc's dd30c82 validated in a fresh clone in pplr-vc's slot. check all, test all (bats 54 of 54, keychain 1 of 1), build, doctor and release v0.1.7 --dry-run all exit 0, the dry run ending with no step failed at the confirm step; a live read-only finalize v0.1.6 verified; the credential probe through finalize's own reader was accepted. Report to pplr-vc; nits N1 (no line during notarytool's wait) and N2 (post-cut's sed read of formula.tap) to dc. Left: critic-shell on post-cut and macos. hv runs the cut. (edited)
 
 ## TODO
 

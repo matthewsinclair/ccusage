@@ -1,0 +1,16 @@
+{
+  "id": "01M6JH0MHMF5ZF329KWQ5WHJCQ",
+  "ts": "2026-11-04T05:37:52.692Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 2,
+    "text": "v0.1.7 one-command release validation for pplr-vc (hv gave pplr-vc the pen on ccusage, 2026-11-04): dc's dd30c82 validated in a fresh clone in pplr-vc's slot. check all, test all (bats 54 of 54, keychain 1 of 1), build, doctor and release v0.1.7 --dry-run all exit 0, the dry run ending with no step failed at the confirm step; a live read-only finalize v0.1.6 verified; the credential probe through finalize's own reader was accepted. Report to pplr-vc; nits N1 (no line during notarytool's wait) and N2 (post-cut's sed read of formula.tap) to dc. Left: critic-shell on post-cut and macos. hv runs the cut."
+  }
+}
