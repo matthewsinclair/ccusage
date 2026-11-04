@@ -3,10 +3,10 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 09:24Z
+heartbeat_at: 2026-11-04 10:16Z
 status: active
-focus: "v0.1.8 is out (pplr-vc). Next: close ISSUE:0002 on hv's no-prompt word for the 05:17Z renewal, relayed by vc; ISSUE:0003's rollout when hv turns shared mode on; then ISSUE:0005 (todo 5, vc's ruling on change 3 first). P1 to P7 (todos 6 to 12) wait for a tooling pass"
-claims: [ISSUE:0002, ISSUE:0003]
+focus: "v0.1.8 is out, and ISSUE:0002 is closed on hv's word. Next: ISSUE:0003's rollout when hv turns shared mode on; then ISSUE:0005 (todo 5, vc's ruling on change 3 first). P1 to P7 (todos 6 to 12) wait for a tooling pass"
+claims: [ISSUE:0003]
 ---
 
 # dc (dc)
@@ -28,7 +28,7 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0002 closes on hv's word, relayed by vc, that the 05:17Z renewal raised no Keychain prompt; its metadata already holds (vc todo 2). ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5, once hv turns shared mode on and the desk gives a slot for the restart (vc todo 4). Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant. (edited)
+- ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5, once hv turns shared mode on and the desk gives a slot for the restart (vc todo 4). Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant. (edited)
 
 ## Watch-outs
 
