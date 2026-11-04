@@ -14,7 +14,7 @@ claims: []
 ## DOING
 
 - Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. ISSUE:0004's end-to-end cut validated at v0.1.6 (3f58a61). ISSUE:0003's items 1 and 5 wait for hv's live check at rollout. Next: ISSUE:0005 when dc hands it over. (edited)
-- v0.1.7 one-command release validation for pplr-vc (hv gave pplr-vc the pen on ccusage, 2026-11-04): dc's dd30c82 validated in a fresh clone in pplr-vc's slot. check all, test all (bats 54 of 54, keychain 1 of 1), build, doctor and release v0.1.7 --dry-run all exit 0, the dry run ending with no step failed at the confirm step; a live read-only finalize v0.1.6 verified; the credential probe through finalize's own reader was accepted. Report to pplr-vc; nits N1 (no line during notarytool's wait) and N2 (post-cut's sed read of formula.tap) to dc. Left: critic-shell on post-cut and macos. hv runs the cut. (edited)
+- v0.1.7 one-command release validation for pplr-vc (hv gave pplr-vc the pen on ccusage, 2026-11-04). dc's dd30c82 validated in a fresh clone in pplr-vc's slot: check all, test all (bats 54 of 54, keychain 1 of 1), build, doctor and release v0.1.7 --dry-run all exit 0, the dry run ending with no step failed at the confirm step; a live read-only finalize v0.1.6 verified; the credential probe through finalize's own reader was accepted. N1 (the step line before each notarytool wait) landed as b026b91 and re-ran clean: check all, test all and the dry run, all exit 0. N2 stays, at pplr-vc's word. Left: critic-shell on post-cut and macos. hv runs the cut. (edited)
 
 ## TODO
 
