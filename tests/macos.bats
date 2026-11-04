@@ -7,12 +7,14 @@
 # publishes for real, and no real Keychain item is read.
 
 TAG=v0.1.4
-TARGETS="aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu"
 MARKER='signed by the fake codesign'
 
 setup() {
   ROOT=$(cd "$BATS_TEST_DIRNAME/.." && pwd)
   HANDLER=$ROOT/bin/.devbin/cmd/macos
+  WORKFLOW=$ROOT/.github/workflows/build.yml
+  # The release's targets, from the build matrix's include block, as finalize reads them
+  TARGETS=$(sed -n '/^      matrix:/,/^    steps:/s/^ *target: //p' "$WORKFLOW" | xargs)
   FAKE_BIN=$BATS_TEST_TMPDIR/bin
   FAKE_RELEASE=$BATS_TEST_TMPDIR/release
   FAKE_LOG=$BATS_TEST_TMPDIR/log
@@ -223,15 +225,16 @@ display() {
   printf '%s' "$out"
 }
 
-# copy_tree <config sed> [<signing sed>]: the handler, config.yaml and the signing
-# facts in a tree of their own, with each sed expression applied to its file; prints
-# the copy's handler
+# copy_tree <config sed> [<signing sed> [<workflow sed>]]: the handler, config.yaml,
+# the signing facts and the build workflow in a tree of their own, with each sed
+# expression applied to its file; prints the copy's handler
 copy_tree() {
   local tree=$BATS_TEST_TMPDIR/tree
-  mkdir -p "$tree/bin/.devbin/cmd" "$tree/packaging/macos"
+  mkdir -p "$tree/bin/.devbin/cmd" "$tree/packaging/macos" "$tree/.github/workflows"
   cp "$HANDLER" "$tree/bin/.devbin/cmd/"
   sed "$1" "$ROOT/bin/.devbin/config.yaml" > "$tree/bin/.devbin/config.yaml"
   sed "${2:-}" "$ROOT/packaging/macos/signing" > "$tree/packaging/macos/signing"
+  sed "${3:-}" "$WORKFLOW" > "$tree/.github/workflows/build.yml"
   printf '%s' "$tree/bin/.devbin/cmd/macos"
 }
 
@@ -363,10 +366,48 @@ copy_tree() {
 }
 
 @test "CI names its sums SHA256SUMS.ci, so devbin's formula cannot render from an unsigned draft" {
-  local workflow=$ROOT/.github/workflows/build.yml
-  grep -qF 'sha256sum ccusage-*.tar.gz > SHA256SUMS.ci' "$workflow"
+  grep -qF 'sha256sum ccusage-*.tar.gz > SHA256SUMS.ci' "$WORKFLOW"
   # The draft's upload: archives, then CI's sums, on gh release create's line
-  grep -qF 'ccusage-*.tar.gz SHA256SUMS.ci' "$workflow"
+  grep -qF 'ccusage-*.tar.gz SHA256SUMS.ci' "$WORKFLOW"
+}
+
+@test "the build matrix is the targets' one home, which the formula repeats for the Mac" {
+  local target assets wanted named
+  local -a mac=()
+  # Each matrix entry pairs a runner with a target, so none is missed
+  [ "$(sed -n '/^      matrix:/,/^    steps:/p' "$WORKFLOW" | grep -c '^ *- runner: ')" -eq "$(wc -w <<<"$TARGETS")" ]
+  for target in $TARGETS; do
+    [[ $target != *-apple-darwin ]] || mac+=("$target")
+  done
+  [ "${#mac[@]}" -gt 0 ]
+  # CI's package step names each archive as finalize reads it
+  grep -qF "TARGET: \${{ matrix.target }}" "$WORKFLOW"
+  grep -qF "tar -czf \"dist/ccusage-v\${VERSION}-\${TARGET}.tar.gz\"" "$WORKFLOW"
+  # config.yaml's formula assets are the Mac archives, and nothing else
+  wanted=$(for target in "${mac[@]}"; do echo "ccusage-v{version}-$target.tar.gz"; done | sort | xargs)
+  assets=$(sed -n '/^  assets:/,/^  [a-z]/s/^    - "\(.*\)"$/\1/p' "$ROOT/bin/.devbin/config.yaml" | sort | xargs)
+  [ "$assets" = "$wanted" ] || { echo "config.yaml's assets: $assets"; return 1; }
+  # The formula downloads each Mac archive and checks its sum, and names no other archive
+  local formula=$ROOT/packaging/homebrew/ccusage.rb
+  for target in "${mac[@]}"; do
+    grep -qF "/ccusage-v@@VERSION@@-$target.tar.gz\"" "$formula" || { echo "no url for $target"; return 1; }
+    grep -qF "\"@@SHA256:ccusage-v{version}-$target.tar.gz@@\"" "$formula" || { echo "no sha256 for $target"; return 1; }
+  done
+  named=$(grep -oE 'ccusage-v(@@VERSION@@|\{version\})-[^.]+\.tar\.gz' "$formula" | sed -E 's/^ccusage-v[^-]+-//; s/\.tar\.gz$//' | sort -u | xargs)
+  [ "$named" = "$(printf '%s\n' "${mac[@]}" | sort | xargs)" ] || { echo "the formula names: $named"; return 1; }
+}
+
+@test "finalize expects exactly the archives the build matrix's targets make" {
+  local handler
+  # The matrix without its Intel Mac: that archive becomes one the release must not have
+  handler=$(copy_tree '' '' '/^            target: x86_64-apple-darwin$/d')
+  run "$handler" finalize "$TAG"
+  refused "Unexpected or missing release archives"
+  : > "$FAKE_LOG"
+  handler=$(copy_tree '' '' '/^ *target: /d')
+  run "$handler" finalize "$TAG"
+  refused "build matrix names no target"
+  absent '^gh '
 }
 
 @test "a public release whose manifest sha256 disagrees with SHA256SUMS is refused" {

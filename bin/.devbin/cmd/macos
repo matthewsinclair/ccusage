@@ -20,7 +20,8 @@
 # no cdhash. Each signed binary is then notarized, and the run stops unless Apple
 # answers Accepted. The facts it signs and checks with, and the login keychain's
 # prefix for the notary credentials, live once, in packaging/macos/signing; the
-# release's repository is bin/.devbin/config.yaml's release.repo.
+# release's repository is bin/.devbin/config.yaml's release.repo, and its targets are
+# the build workflow's matrix, in .github/workflows/build.yml.
 #
 # IT RUNS ON THE MAINTAINER'S MAC ONLY. It refuses on CI ($CI set) and off macOS,
 # and, before it downloads anything for a draft, when the Developer ID identity is
@@ -35,10 +36,13 @@ root=${0:A:h:h:h:h}
 cd $root
 signing=packaging/macos/signing
 files=(LICENSE README.md ccusage ccusage-logo.svg)
-targets=(aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu)
-mac_targets=(${(M)targets:#*-apple-darwin})
-# What lipo -archs prints for each Mac target's binary
-typeset -A arch=(aarch64-apple-darwin arm64 x86_64-apple-darwin x86_64)
+# The release's targets live once, in the build matrix, where CI builds one archive
+# for each; read_targets fills these from it
+workflow=.github/workflows/build.yml
+targets=()
+mac_targets=()
+# What lipo -archs prints for a Mac binary, by its target's CPU
+typeset -A lipo_arch=(aarch64 arm64 x86_64 x86_64)
 # The largest member it unpacks; a test may lower it, never raise it
 max=$(( 128 * 1024 * 1024 ))
 limit=${CCUSAGE_MACOS_MEMBER_LIMIT:-$max}
@@ -68,6 +72,22 @@ read_facts() {
     facts[$key]=$(fact $key) || exit 1
   done
 }
+
+# read_targets: the build matrix's targets, from the lines of its include block, with
+# a lipo architecture known for each Mac one
+read_targets() {
+  local t
+  [[ -f $workflow ]] || die "there is no $workflow to read the release's targets from"
+  targets=(${(f)"$(sed -n '/^      matrix:/,/^    steps:/s/^ *target: //p' $workflow)"})
+  (( $#targets )) || die "$workflow's build matrix names no target"
+  mac_targets=(${(M)targets:#*-apple-darwin})
+  for t in $mac_targets; do
+    (( ${+lipo_arch[${t%%-*}]} )) || die "lipo has no architecture known here for $t"
+  done
+}
+
+# archive_name <target>: the name CI's package step gives the release's archive for it
+archive_name() { print -r -- "ccusage-$tag-$1.tar.gz" }
 
 guard() {
   [[ -z ${CI:-} ]] || die "refusing to run on CI: signing happens on the maintainer's Mac only"
@@ -125,7 +145,7 @@ check_sums() {
     (( ! ${+sums[$fields[2]]} )) || die "Invalid release checksum manifest"
     sums[$fields[2]]=$fields[1]
   done < $dir/SHA256SUMS
-  for t in $targets; do expected+=(ccusage-$tag-$t.tar.gz); done
+  for t in $targets; do expected+=("$(archive_name $t)"); done
   # Sorted into arrays first: in [[ ]] a nested expansion is one word before (o) sees it
   local -a named=(${(ok)sums}) wanted=(${(o)expected})
   [[ "${(j: :)named}" == "${(j: :)wanted}" ]] || die "Unexpected or missing release archives"
@@ -239,15 +259,15 @@ sign_release() {
   local -A requirement_of
   mkdir -- $out || die "$out exists already"
   for t in $targets; do
-    name=ccusage-$tag-$t.tar.gz
-    if (( ! ${+arch[$t]} )); then
+    name=$(archive_name $t)
+    if (( ! ${mac_targets[(Ie)$t]} )); then
       cp -- $in/$name $out/$name
       continue
     fi
     step "signing $name"
     unpacked=$(mktemp -d $work/unpacked.XXXXXX)
     unpack $in/$name $unpacked
-    sign $unpacked/ccusage $arch[$t]
+    sign $unpacked/ccusage $lipo_arch[${t%%-*}]
     requirement_of[$name]=$REPLY
     COPYFILE_DISABLE=1 bsdtar -czf $out/$name --uid 0 --gid 0 --uname '' --gname '' --no-xattrs \
       --no-mac-metadata -C $unpacked $files >/dev/null 2>&1 || die "cannot pack $name"
@@ -255,12 +275,12 @@ sign_release() {
   local -a distinct=(${(u)requirement_of})
   (( $#distinct == 1 )) || die "Mac architectures do not share the same signing identity"
   for t in $targets; do
-    name=ccusage-$tag-$t.tar.gz
+    name=$(archive_name $t)
     print -r -- "$(sha $out/$name)  $name" >> $out/SHA256SUMS
   done
   # sign stops the run unless Apple accepted each Mac binary, so every one here is notarized
   for t in $mac_targets; do
-    name=ccusage-$tag-$t.tar.gz
+    name=$(archive_name $t)
     archives=$(jq -n --argjson a $archives --arg n $name --arg r $requirement_of[$name] \
       --arg s "$(sha $out/$name)" '$a + {($n): {requirement: $r, notarized: true, sha256: $s}}')
   done
@@ -282,7 +302,7 @@ check_signed() {
     '.tag == $tag and .identifier == $id and .team_id == $team' $manifest >/dev/null 2>&1 ||
     die "Release signing identity mismatch"
   for t in $mac_targets; do
-    name=ccusage-$tag-$t.tar.gz
+    name=$(archive_name $t)
     recorded=$(jq -r --arg n $name '.archives[$n].sha256 // empty' $manifest 2>/dev/null) || recorded=
     [[ -n $recorded ]] || die "MACOS-SIGNING.json does not sign $name"
     actual=$(sha $dir/$name) || die "cannot read $name's checksum"
@@ -305,7 +325,8 @@ cmd_finalize() {
   [[ $tag =~ '^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$' ]] ||
     die "expected a stable release tag such as v0.1.0, not $tag"
   read_facts
-  local draft incoming signed uploaded repo
+  read_targets
+  local draft incoming signed uploaded repo glob
   # The release's repository has one home, bin/.devbin/config.yaml's release.repo
   repo=$(sed -n 's/^  repo: //p' bin/.devbin/config.yaml | head -1) || die "cannot read bin/.devbin/config.yaml"
   [[ -n $repo ]] || die "bin/.devbin/config.yaml names no release repo"
@@ -320,7 +341,8 @@ cmd_finalize() {
   work=$(mktemp -d "${TMPDIR:-/tmp}/ccusage-release-assets.XXXXXX")
   incoming=$work/incoming
   mkdir -- $incoming
-  local -a patterns=(--pattern "ccusage-$tag-*.tar.gz" --pattern SHA256SUMS)
+  glob=$(archive_name '*')
+  local -a patterns=(--pattern "$glob" --pattern SHA256SUMS)
   # CI names its sums SHA256SUMS.ci, so devbin's formula, which reads SHA256SUMS, cannot
   # render from a draft: SHA256SUMS is this command's alone, written once the manifest
   # binds it. A draft that has one is a run whose publish did not finish.

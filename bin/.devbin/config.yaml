@@ -106,6 +106,8 @@ release:
 formula:
   mode: assets
   tap: git@github.com-matthewsinclair:matthewsinclair/homebrew-ccusage.git
+  # The Mac archives, as CI names them for the build matrix's Mac targets, which
+  # are the targets' one home; tests/macos.bats fails when the two differ
   assets:
     - "ccusage-v{version}-aarch64-apple-darwin.tar.gz"
     - "ccusage-v{version}-x86_64-apple-darwin.tar.gz"

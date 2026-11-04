@@ -23,6 +23,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # The release's targets, here alone: bin/devbin macos finalize reads them from
+        # this block, and tests/macos.bats holds the formula's Mac archives to them
         include:
           - runner: macos-15
             target: aarch64-apple-darwin
