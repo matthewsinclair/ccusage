@@ -60,4 +60,7 @@ PROBE
   [[ $output == "  bin/devbin probe <what>   the usage block's first line"$'\n'* ]] || { echo "output: $output"; return 1; }
   [[ $output == *$'\n'"                            and its second" ]] || { echo "output: $output"; return 1; }
   [[ $output != *"what the library gives"* && $output != *"After the usage block"* ]]
+  # $output drops trailing newlines, so the bare # itself is checked on the last line
+  # usage prints, which an empty line there would be
+  [ -n "$("$PROBE" --help | tail -n 1)" ] || { echo "usage ends in a blank line"; return 1; }
 }
