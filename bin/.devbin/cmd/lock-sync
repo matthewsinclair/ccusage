@@ -20,13 +20,11 @@
 emulate -L zsh
 setopt err_exit no_unset pipe_fail
 
-root=${0:A:h:h:h:h}
+# $root and working from it, and die
+source ${0:A:h}/common/handler.zsh
 lock=Cargo.lock
 
-die() { print -u2 "lock-sync: $*"; exit 1 }
-
 (( $# == 0 )) || die "takes no arguments, and was given: $*"
-cd $root
 [[ -f $lock ]] || die "no $lock to sync"
 (( $+commands[cargo] )) || die "cargo is not on PATH; the lock is cargo's to write"
 
@@ -59,4 +57,4 @@ if ! moved=$(diff <(print -r -- $before | own_version_aside /dev/stdin) <(own_ve
   die "cargo changed more than ccusage's own version, so $lock is put back:"$'\n'$moved
 fi
 
-print $lock
+print -r -- $lock

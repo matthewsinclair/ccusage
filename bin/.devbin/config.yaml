@@ -22,7 +22,8 @@ devbin_version: "^0.1.19"
 # cargo line takes --locked, so a check never rewrites Cargo.lock, and every
 # cargo test takes --no-fail-fast, so one failing target never hides another.
 # The project commands, macos, post-cut, lock-sync and nopython, are in
-# bin/.devbin/cmd/.
+# bin/.devbin/cmd/, and the zsh the first three share is in
+# bin/.devbin/cmd/common/.
 commands:
   build:
     run: cargo build --release --locked
@@ -48,9 +49,9 @@ commands:
       rust:
         run: cargo test --locked --no-fail-fast
       # The shell slot is devbin's own, bats tests: the macos, post-cut and
-      # lock-sync project commands and the nopython check. The signer is the
-      # maintainer's Mac's alone, and its suite leans on macOS's bsdtar, stat
-      # and csreq.
+      # lock-sync project commands, the library they share and the nopython
+      # check. The signer is the maintainer's Mac's alone, and its suite leans
+      # on macOS's bsdtar, stat and csreq.
       shell:
         summary: The bats suites for the project commands
         platforms:

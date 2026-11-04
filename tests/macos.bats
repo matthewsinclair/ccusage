@@ -225,13 +225,14 @@ display() {
   printf '%s' "$out"
 }
 
-# copy_tree <config sed> [<signing sed> [<workflow sed>]]: the handler, config.yaml,
-# the signing facts and the build workflow in a tree of their own, with each sed
-# expression applied to its file; prints the copy's handler
+# copy_tree <config sed> [<signing sed> [<workflow sed>]]: the handler and the library
+# it sources, config.yaml, the signing facts and the build workflow in a tree of their
+# own, with each sed expression applied to its file; prints the copy's handler
 copy_tree() {
   local tree=$BATS_TEST_TMPDIR/tree
   mkdir -p "$tree/bin/.devbin/cmd" "$tree/packaging/macos" "$tree/.github/workflows"
   cp "$HANDLER" "$tree/bin/.devbin/cmd/"
+  cp -R "$ROOT/bin/.devbin/cmd/common" "$tree/bin/.devbin/cmd/"
   sed "$1" "$ROOT/bin/.devbin/config.yaml" > "$tree/bin/.devbin/config.yaml"
   sed "${2:-}" "$ROOT/packaging/macos/signing" > "$tree/packaging/macos/signing"
   sed "${3:-}" "$WORKFLOW" > "$tree/.github/workflows/build.yml"

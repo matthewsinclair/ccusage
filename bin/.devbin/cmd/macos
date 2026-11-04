@@ -32,8 +32,8 @@
 emulate -L zsh
 setopt err_exit no_unset pipe_fail
 
-root=${0:A:h:h:h:h}
-cd $root
+# $root and working from it, die, say and usage
+source ${0:A:h}/common/handler.zsh
 signing=packaging/macos/signing
 files=(LICENSE README.md ccusage ccusage-logo.svg)
 # The release's targets live once, in the build matrix, where CI builds one archive
@@ -52,7 +52,6 @@ work=
 # Set here, not in a function: zsh runs a function's EXIT trap when the function returns
 trap '[[ -z $work ]] || rm -rf -- $work' EXIT
 
-die() { print -u2 -r -- "macos: $*"; exit 1 }
 step() { print -r -- "-- $*" }
 
 # A fact from packaging/macos/signing, by key
@@ -355,7 +354,7 @@ cmd_finalize() {
   check_sums $incoming
   if [[ $draft == false ]]; then
     check_signed $incoming
-    print -r -- "macos: $tag is public already, and its Mac signatures verify"
+    say "$tag is public already, and its Mac signatures verify"
     return 0
   fi
   signed=$work/signed
@@ -374,7 +373,7 @@ cmd_finalize() {
       die "gh could not remove CI's SHA256SUMS.ci from $tag"
   fi
   gh release edit $tag --repo $repo --draft=false >/dev/null || die "gh could not publish $tag"
-  print -r -- "macos: published $tag with verified Mac signatures"
+  say "published $tag with verified Mac signatures"
 }
 
 guard
@@ -382,7 +381,6 @@ sub=${1:-}
 (( $# )) && shift
 case $sub in
   finalize) cmd_finalize "$@" ;;
-  # The usage block above, from its first line to the bare # after it
-  ""|-h|--help) sed -n '/^#   bin\/devbin macos finalize/,/^#$/p' ${0:A} | sed -e '$d' -e 's/^# \{0,1\}//' ;;
+  ""|-h|--help) usage ;;
   *) die "unknown step: $sub (finalize)" ;;
 esac

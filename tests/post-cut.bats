@@ -1,9 +1,10 @@
 #!/usr/bin/env bats
 # bin/devbin post-cut, the cut's one after: line, in a repository of its own: a copy of
-# the command beside the real config.yaml, a stand-in bin/devbin that logs each step it
-# is asked for and the yes it was handed, annotated release tags, and a stand-in brew
-# whose repository holds a clone of a local tap. Nothing here signs, publishes or
-# pushes for real, and this Mac's own tap is never touched.
+# the command and the library it sources beside the real config.yaml, a stand-in
+# bin/devbin that logs each step it is asked for and the yes it was handed, annotated
+# release tags, and a stand-in brew whose repository holds a clone of a local tap.
+# Nothing here signs, publishes or pushes for real, and this Mac's own tap is never
+# touched.
 
 setup() {
   ROOT=$(cd "$BATS_TEST_DIRNAME/.." && pwd)
@@ -18,6 +19,7 @@ setup() {
   mkdir -p "$REPO/bin/.devbin/cmd" "$FAKE_BIN"
   : > "$FAKE_LOG"
   cp "$ROOT/bin/.devbin/cmd/post-cut" "$REPO/bin/.devbin/cmd/"
+  cp -R "$ROOT/bin/.devbin/cmd/common" "$REPO/bin/.devbin/cmd/"
   cp "$ROOT/bin/.devbin/config.yaml" "$REPO/bin/.devbin/"
   printf '[package]\nname = "ccusage"\nversion = "0.1.7"\n' > "$REPO/Cargo.toml"
   write_fakes

@@ -8,6 +8,7 @@ setup() {
   CRATE=$BATS_TEST_TMPDIR/crate
   mkdir -p "$CRATE/src" "$CRATE/bin/.devbin/cmd"
   cp "$ROOT/bin/.devbin/cmd/lock-sync" "$CRATE/bin/.devbin/cmd/"
+  cp -R "$ROOT/bin/.devbin/cmd/common" "$CRATE/bin/.devbin/cmd/"
   printf '[package]\nname = "fixture"\nversion = "0.1.0"\nedition = "2024"\n' > "$CRATE/Cargo.toml"
   printf 'fn main() {}\n' > "$CRATE/src/main.rs"
   (cd "$CRATE" && cargo generate-lockfile --offline --quiet)

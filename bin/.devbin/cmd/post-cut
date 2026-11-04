@@ -26,14 +26,11 @@
 emulate -L zsh
 setopt err_exit no_unset pipe_fail
 
-root=${0:A:h:h:h:h}
-cd $root
-
-die() { print -u2 -r -- "post-cut: $*"; exit 1 }
-say() { print -r -- "post-cut: $*" }
+# $root and working from it, die, say and usage
+source ${0:A:h}/common/handler.zsh
 
 case ${1:-} in
-  -h|--help) sed -n '/^#   bin\/devbin post-cut/,/^#$/p' ${0:A} | sed -e '$d' -e 's/^# \{0,1\}//'; exit 0 ;;
+  -h|--help) usage; exit 0 ;;
 esac
 (( $# <= 1 )) || die "usage: bin/devbin post-cut [<tag>]"
 [[ $(uname) == Darwin ]] || die "the Mac archives are signed and notarized on macOS only; this is $(uname)"

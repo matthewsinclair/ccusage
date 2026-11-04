@@ -16,6 +16,6 @@ This file is the prescriptive DO / NEVER contract for working in Ccusage. Everyt
 - Never create steel thread or work package directories by hand; use `intent st new` and `intent wp new`.
 - Never edit `status:` fields in a thread's frontmatter; use the `intent st` and `intent wp` lifecycle verbs.
 - Never wrap lines in markdown files by hand.
-- Never edit devbin's vendored runtime: `bin/devbin`, `bin/.devbin/lib/` and `bin/.devbin/manifest.sha256`. `bin/devbin upgrade` replaces it, and `bin/devbin doctor` checks it against the manifest. The project's own devbin files are `bin/.devbin/config.yaml` and any handler in `bin/.devbin/cmd/`.
+- Never edit devbin's vendored runtime: `bin/devbin`, `bin/.devbin/lib/` and `bin/.devbin/manifest.sha256`. `bin/devbin upgrade` replaces it, and `bin/devbin doctor` checks it against the manifest. The project's own devbin files are `bin/.devbin/config.yaml`, any handler in `bin/.devbin/cmd/`, and the zsh the handlers share in `bin/.devbin/cmd/common/`.
 - Never change the version with `bin/devbin version set`, `bump` or `sync`: they write `Cargo.toml` alone. `bin/devbin release` is the one step that changes it, its `derived:` step `bin/devbin lock-sync` bringing `Cargo.lock` along.
 - Never add a developer script or tool outside devbin: no `tools/` directory, no Python, and no bespoke task runner such as a `cargo xtask`. `bin/devbin check nopython` refuses Python.
