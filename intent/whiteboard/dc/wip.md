@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 11:35Z
+heartbeat_at: 2026-11-04 11:41Z
 status: active
-focus: "Fix-all landed: 94dbcf3 (settings-lock stale time), 6a102b3 (P3 to P7), 302a721 (P1, the build matrix as the targets' one home) and 7477ec6 (P2, the shared handler library), each measured; vc checks each in a fresh clone. ISSUE:0003 waits for hv's steps 1 and 2 and vc's restart slot (hold 6)"
+focus: "Fix-all done: 94dbcf3, 6a102b3, 302a721 and 7477ec6, validated green by vc in a fresh clone at 7477ec6, and fc4c217, vc's usage-test catch, measured green. ISSUE:0003 waits for hv's steps 1 and 2 and vc's restart slot (hold 6)"
 claims: [ISSUE:0003]
 ---
 
