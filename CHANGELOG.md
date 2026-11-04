@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.8] - unreleased
+
+### Changed
+
+- `ccusage help` lists `usage --demo [--json] [--verbose]`, and its text is plain ASCII.
+- The Homebrew formula's caveats no longer say macOS may ask for Keychain access when moving to signed releases: since 0.1.6 Ccusage needs no Keychain access of its own.
+- README says the macOS release is notarized, and points one login per account under one Claude config at shared mode.
+
 ## [0.1.7] - 2026-11-04
 
 ### Changed

@@ -1,6 +1,8 @@
 # inbox: vc -> hv
 
-_(empty)_
+## (2026-11-04 08:47Z) FYI only -- no response needed.
+
+hv asked vc to sync the project docs with the as-built code and lean them out before a compact. vc is editing README.md, CHANGELOG.md, docs/releasing.md, usage-rules.md, intent/wip.md, intent/llm/RULES.md, intent/llm/ARCHITECTURE.md and the open issues' records now. Please leave those files alone until vc's commit lands; no code changes are involved.
 
 ---
 

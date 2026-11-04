@@ -1,6 +1,6 @@
 # Ccusage
 
-A Rust-based tool for viewing Claude Code usage across multiple named accounts, explicit account selection, and a compact terminal dashboard for subscription usage. Rust. Requires `claude` on `PATH`; the interactive dashboard requires a terminal.
+A Rust command-line tool for Claude Code subscription usage across multiple named accounts, with explicit account selection and a compact terminal dashboard. It needs `claude` on `PATH`, and the interactive dashboard needs a terminal.
 
 Ccusage is a command-line take on [Claude Usage](https://github.com/richhickson/claudecodeusage). Thanks to [@richhickson](https://github.com/richhickson) for creating Claude Usage and inspiring this project.
 
@@ -11,10 +11,9 @@ brew install matthewsinclair/ccusage/ccusage
 ccusage doctor
 ```
 
-On macOS, Homebrew installs the Developer ID signed release binary and verifies its signing identity. On Linux, the formula builds from a pinned release tag and commit, with Rust as a build dependency. Claude Code must be installed separately for account operations. Prebuilt binaries for macOS (ARM64 and Intel) and Linux (ARM64 and x86-64), with checksums, are available on the [releases page](https://github.com/matthewsinclair/ccusage/releases).
+On macOS, Homebrew installs the release binary, signed with Geodica's Developer ID and notarized by Apple, and verifies its signing identity. On Linux, the formula builds from a pinned release tag and commit, with Rust as a build dependency. Claude Code must be installed separately for account operations. Prebuilt binaries for macOS (ARM64 and Intel) and Linux (ARM64 and x86-64), with checksums, are available on the [releases page](https://github.com/matthewsinclair/ccusage/releases).
 
 ## Build and try
-
 
 ```sh
 cargo build --release --locked
@@ -25,10 +24,9 @@ The demo uses fixture data, reads no credentials, and makes no network requests.
 
 ## Check the environment
 
-`ccusage doctor` checks that `claude --version` runs from `PATH`, validates the configuration, inspects XDG/profile directory permissions, and checks existing private files are `0600`. It reads no credential contents, does not invoke browser login or fetch usage, and makes no configuration changes. Missing initial setup is informational and includes the next commands; a missing/broken Claude executable, malformed config, inaccessible path, or unsafe private file exits nonzero. Directory permissions other than `0700` and a stale active profile produce warnings. Native macOS/Linux builds run in CI for ARM64 and x86-64; see [releasing](docs/releasing.md) for the release and tap-update process.
+`ccusage doctor` checks that `claude --version` runs from `PATH`, validates the configuration, inspects XDG/profile directory permissions, and checks existing private files are `0600`. It reads no credential contents, does not invoke browser login or fetch usage, and makes no configuration changes. Missing initial setup is informational and includes the next commands; a missing/broken Claude executable, malformed config, inaccessible path, or unsafe private file exits nonzero. Directory permissions other than `0700` and a stale active profile produce warnings.
 
 ## Set up accounts
-
 
 ```sh
 ccusage init
@@ -74,7 +72,7 @@ In shared mode:
 
 - `ccusage use NAME` selects NAME and copies its account record (`oauthAccount`, which Claude Code shows as the session's account) from NAME's own `.claude.json` into the shared one, changing no other key. It refuses a profile that has no record yet; `ccusage login NAME` writes one. On macOS it also sets launchd's `CLAUDE_SECURESTORAGE_CONFIG_DIR`, so Claude Code started from a GUI app follows the active account too. New sessions use NAME, and running ones switch when they are restarted.
 - `ccusage run [NAME]` launches Claude with the shared config and NAME's login, switching to NAME first when it is not the active profile.
-- `ccusage dir [NAME]` prints the active or named profile's directory, for a launcher to export. It prints nothing and fails when shared mode is off or no profile is active, so a launcher can use it unconditionally:
+- `ccusage dir [NAME]` prints the active or named profile's directory, for a launcher to export. When shared mode is off or no profile is active it prints nothing on stdout and fails, so a launcher can use it unconditionally:
 
 ```sh
 dir=$(ccusage dir 2>/dev/null) && export CLAUDE_CONFIG_DIR=~/.config/claude CLAUDE_SECURESTORAGE_CONFIG_DIR="$dir"
@@ -86,12 +84,12 @@ dir=$(ccusage dir 2>/dev/null) && export CLAUDE_CONFIG_DIR=~/.config/claude CLAU
 
 Ccusage follows the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir/latest/) on macOS and Linux. Empty or relative `XDG_*_HOME` overrides are ignored.
 
-| Purpose | Environment variable | Default |
-| --- | --- | --- |
-| Profile configuration | `XDG_CONFIG_HOME` | `~/.config/ccusage/config.toml` |
-| Persistent Claude profile data | `XDG_DATA_HOME` | `~/.local/share/ccusage/profiles/NAME/` |
-| Active account selection | `XDG_STATE_HOME` | `~/.local/state/ccusage/active.json` |
-| Last successful usage and rate-limit cooldown | `XDG_CACHE_HOME` | `~/.cache/ccusage/NAME.json` |
+| Purpose                                       | Environment variable | Default                                 |
+| --------------------------------------------- | -------------------- | --------------------------------------- |
+| Profile configuration                         | `XDG_CONFIG_HOME`    | `~/.config/ccusage/config.toml`         |
+| Persistent Claude profile data                | `XDG_DATA_HOME`      | `~/.local/share/ccusage/profiles/NAME/` |
+| Active account selection                      | `XDG_STATE_HOME`     | `~/.local/state/ccusage/active.json`    |
+| Last successful usage and rate-limit cooldown | `XDG_CACHE_HOME`     | `~/.cache/ccusage/NAME.json`            |
 
 `ccusage paths` shows resolved paths. `CCUSAGE_CONFIG` or a leading `--config PATH` overrides the config file only; the other XDG locations remain independently controlled. Configurations using the same XDG data/state/cache directories share named profile storage and the active selection. To create a fully independent environment, override all four XDG variables.
 
@@ -111,29 +109,23 @@ Ccusage verifies configured profile emails against the authenticated account bef
 
 On macOS, Ccusage reaches Claude's Keychain items only through `/usr/bin/security`, the way Claude Code does: it reads an item with `find-generic-password` and writes a renewed login with `security -i`, which takes it on stdin, never as a process argument. Every in-place write resets an item's partition list to the writer's own, so a write made by `security` keeps the `apple-tool:` partition that Claude Code and Claude Usage read with, and none of them prompts after a renewal. Ccusage needs no Keychain access of its own, so signed releases, source builds and development builds behave the same. Renewal only updates an existing item and never creates one, and it refuses a credential document too large for one `security -i` line rather than pass it as an argument. A locked Keychain still asks to be unlocked. If an older Ccusage left an item without `apple-tool:`, allow `security` once; the next renewal restores the partition.
 
-To register an existing Claude directory without copying it:
+To register an existing Claude directory without copying it, and without another login:
 
 ```sh
 ccusage add existing --dir ~/.claude
 ```
 
-Share an existing directory only if every tool using it will keep the same account logged in. Signing into a different account through any of those tools changes the login Ccusage sees too; Ccusage will reject usage when its configured email no longer matches. For example:
-
-```sh
-ccusage add work --email you@company.com --dir ~/.config/claude
-```
-
-An existing authenticated directory does not need another login. To change a profile that is already registered, set its directory in `config.toml`:
+Share a directory only if every tool using it keeps the same account signed in: a different login there becomes the login Ccusage sees, and Ccusage rejects usage once its configured email no longer matches. To move a registered profile, set `config_dir` in its entry:
 
 ```toml
 [profiles.work]
 email = "you@company.com"
-config_dir = "~/.config/claude"
+config_dir = "~/.claude-work"
 ```
 
-On macOS, authenticating the same account in different config directories creates separate Keychain login stores. Tools that discover accounts from Keychain can show both. Sharing the directory makes Ccusage and those other clients use the same login; it also shares that directory's settings, plugins, and MCP credentials.
+Relative paths resolve against the config file's directory, and `~/` is expanded. Duplicate directories, including symlink aliases, are rejected. Each default profile holds Claude's own settings, history, plugins and authentication state, which Claude manages as a unit; macOS login secrets stay in the Keychain, and Ccusage's XDG placement does not move files Claude stores elsewhere.
 
-Or set `config_dir` in a profile. Relative paths resolve against the config file's directory; `~/` is expanded. Duplicate directories, including existing symlink aliases, are rejected. Each default profile contains Claude's own settings, history, plugins, and authentication state; these are kept together because Claude manages that directory as a unit. macOS login secrets normally remain in Keychain. Ccusage's XDG placement does not relocate files Claude itself chooses to store elsewhere.
+On macOS, one account signed in from two config directories has two Keychain logins, and tools that list Keychain logins show both. For one login per account under one Claude config, use [shared mode](#shared-mode) rather than pointing a profile at that config.
 
 New directories use mode `0700` and Ccusage files use `0600` on Unix. Existing directory permissions are preserved. Before reading an existing config, state, cache, or fallback credential file, Ccusage requires a regular file with mode exactly `0600` (including no special permission bits); otherwise it refuses with a `chmod 600` instruction before reading contents. It checks the opened file, and does not silently repair user-managed files. Config parser errors redact source contents. These modes do not add encryption to credential files Claude stores on Linux; protect and back up the profile directories accordingly.
 
@@ -156,7 +148,7 @@ The dashboard fetches accounts in a background worker, keeps the terminal respon
 
 Each failed account gets its own error, so `usage --all` continues through the remaining profiles. Usage commands exit nonzero when any account has an error, even if last-known data is displayed. JSON output includes `name`, `fetched_at` (Unix seconds, UTC), `cached`, `snapshot`, and `error`. Raw usage percentages are retained; the terminal rounds them for display. Optional weekly model windows appear when the API returns them.
 
-This initial version targets Claude subscription accounts on macOS and Linux. Console/API-billing and cloud-provider accounts are outside its usage model. Native Windows operation has not been validated. Native macOS and Linux tests and release builds run in the four-platform GitHub Actions matrix.
+Ccusage targets Claude subscription accounts on macOS and Linux. Console/API-billing and cloud-provider accounts are outside its usage model, and native Windows operation has not been validated.
 
 ## Development
 
@@ -166,11 +158,11 @@ bin/devbin test all
 bin/devbin build
 ```
 
-`bin/devbin` is the vendored devbin launcher, and `bin/.devbin/config.yaml` holds the project's checks. `check all` runs `cargo fmt --check`, Clippy with warnings as errors, actionlint on the workflow, shellcheck on the bats suites, `check nopython` and devbin's read-only gates. `test all` runs the Cargo suites and, on macOS, the bats suites for the project commands in `bin/.devbin/cmd/` (`test shell`) and the disposable-keychain renewal test (`test keychain`). `build` makes the release build. Every cargo command in `bin/.devbin/config.yaml` takes `--locked`. Each gate seals its verdict under `tmp/`, and `bin/devbin help --why` says what is active here. devbin needs bash 5 or later, and `bin/devbin doctor` checks the install.
+`bin/devbin` is the vendored devbin launcher, and `bin/.devbin/config.yaml` holds the project's checks. `check all` runs `cargo fmt --check`, Clippy with warnings as errors, actionlint on the workflow, shellcheck on the bats suites, `check nopython` and devbin's read-only gates. `test all` runs the Cargo suites and, on macOS, the bats suites for the project commands in `bin/.devbin/cmd/` (`test shell`) and the disposable-keychain renewal test (`test keychain`). `build` makes the release build. Each gate seals its verdict under `tmp/`, and `bin/devbin help --why` says what is active here. devbin needs bash 5 or later, and `bin/devbin doctor` checks the install. [docs/releasing.md](docs/releasing.md#checks) covers the test stand-ins, the keychain test, the maintainer tools and CI.
 
 Tests use local HTTP fixtures and temporary XDG directories. A fake Claude executable verifies login, selection, logout, environment isolation, and argument/exit-code forwarding without using real accounts. Other checks cover stale-cache fallback, cooldown persistence, config validation, and storage permissions. Real browser login and live usage need verification with an account you explicitly configure.
 
-Code is split into configuration, credential access, storage, usage retrieval, terminal rendering, and CLI coordination. A release is one devbin command, `bin/devbin release`, which [docs/releasing.md](docs/releasing.md) describes. Dependency purposes are documented beside their entries in `Cargo.toml`. Formatting uses two spaces. Unsafe Rust is forbidden; Clippy denies `unwrap` and `expect`. Cargo.lock is retained for reproducible application builds.
+Code is split into configuration, credential access and renewal (the macOS Keychain in `src/keychain.rs` alone), shared mode, storage, usage retrieval, terminal rendering, environment checks and CLI coordination. Dependency purposes are documented beside their entries in `Cargo.toml`. Formatting uses two spaces. Unsafe Rust is forbidden; Clippy denies `unwrap` and `expect`. Cargo.lock is retained for reproducible application builds.
 
 ## Detailed output
 
@@ -194,4 +186,4 @@ The parser uses the canonical `limits` array when present, including model displ
 
 ## Maintainer release commands
 
-From a clean `main` checkout on the maintainer's Mac, `bin/devbin release 0.1.7` is the whole release. It bumps the version, runs the gates and CI, then tags and pushes, and its `after:` step, `bin/devbin post-cut`, signs and notarizes the Mac archives, publishes the release and updates the Homebrew tap. `bin/devbin release 0.1.7 --dry-run` previews the cut. Running the same command again continues a cut that stopped before its tag, and `bin/devbin post-cut v0.1.7` continues one that stopped after it. Neither installs or uninstalls local packages. See [releasing](docs/releasing.md) for prerequisites and recovery details.
+From a clean `main` checkout on the maintainer's Mac, `bin/devbin release X.Y.Z` is the whole release: the version stamp, the gates and CI, the tag and the push, then `bin/devbin post-cut`, which signs and notarizes the Mac archives, publishes the release and updates the Homebrew tap. It installs and uninstalls no local packages. [docs/releasing.md](docs/releasing.md) covers the preview, the prerequisites and recovery.

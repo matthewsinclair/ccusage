@@ -5,9 +5,9 @@
     "name": "vc",
     "role": "vc",
     "session_id": "3fc778cd-9397-4076-8adb-b1d31ba9465e",
-    "heartbeat_at": "2026-11-04T08:39:16.195Z",
+    "heartbeat_at": "2026-11-04T08:56:27.527Z",
     "status": "active",
-    "focus": "v0.1.7 released and its critic follow-up 8bfc30c verified; ISSUE:0002 waits only on hv's no-prompt word for the 05:17Z renewal; then ISSUE:0003's rollout (hv's shared mode, an estate slot for the restart) and ISSUE:0005",
+    "focus": "Docs synced and leaned with dc (vc: README, CHANGELOG, releasing, usage-rules, wip, intent/llm, issues 0002 and 0003; dc's 4ec84a8 reviewed). ISSUE:0002 waits only on hv's no-prompt word; then ISSUE:0003's rollout (hv's shared mode, an estate slot for the restart) and ISSUE:0005",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
@@ -368,6 +368,21 @@
       "fyi": false,
       "recorded_at": "2026-11-04T08:27:37.915Z",
       "archived_at": "2026-11-04T08:39:01.293Z"
+    },
+    {
+      "id": "01M6JVV0KEJ6ZRJ569Y0H2R7BW",
+      "recipient": "dc",
+      "body": "hv asked vc to sync the project docs with the as-built code and lean them out before a compact. vc is editing README.md, CHANGELOG.md, docs/releasing.md, usage-rules.md, intent/wip.md, intent/llm/RULES.md, intent/llm/ARCHITECTURE.md and the open issues' records now. Please leave those files alone until vc's commit lands; no code changes are involved.",
+      "fyi": true,
+      "recorded_at": "2026-11-04T08:47:02.766Z",
+      "archived_at": "2026-11-04T08:56:27.508Z"
+    },
+    {
+      "id": "01M6JVV0KEJ6ZRJ569Y0H2R7BX",
+      "recipient": "hv",
+      "body": "hv asked vc to sync the project docs with the as-built code and lean them out before a compact. vc is editing README.md, CHANGELOG.md, docs/releasing.md, usage-rules.md, intent/wip.md, intent/llm/RULES.md, intent/llm/ARCHITECTURE.md and the open issues' records now. Please leave those files alone until vc's commit lands; no code changes are involved.",
+      "fyi": true,
+      "recorded_at": "2026-11-04T08:47:02.766Z"
     }
   ],
   "handled": [

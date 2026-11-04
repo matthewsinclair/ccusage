@@ -1,14 +1,10 @@
 ---
-verblock: "2026-11-03T09:59:43Z:v0.1: vc - Claude's Keychain items reached only through /usr/bin/security"
+verblock: "2026-11-04T08:53:39Z:v0.2: vc - leaner intro; pointers to two decisions"
 ---
 
 # ARCHITECTURE.md
 
-How Ccusage is shaped, and why.
-
-This is the one document under `intent/llm/` that nothing can generate for you. An index of the source tree can tell a reader what exists and where; only this can say what the shape is FOR -- which decisions were taken, what was rejected and on what grounds, and what would break if someone quietly undid them.
-
-Write it when there is something to say. Design decisions belong here at the point they are made, not reconstructed later from the code that resulted.
+How Ccusage is shaped, and why: each decision, what it rejected, and what would break if it were undone.
 
 ## Claude's Keychain items are reached only through `/usr/bin/security`
 
@@ -40,3 +36,8 @@ On macOS, Claude Code keeps each config directory's login in an item in the logi
 ### Checked by
 
 `renewal_write_keeps_claude_items_readable_by_security` in `src/auth.rs`, which is ignored by default and runs on both macOS CI targets. It creates an item in a disposable keychain as Claude Code does, runs ccusage's renewal write, and asserts that the item keeps `apple-tool:` and `/usr/bin/security` and that a missing item is never created. `docs/releasing.md` says how to run it.
+
+## Decisions recorded in their issues
+
+- Shared mode, one login per account under one Claude config: ISSUE:0003 holds the design and the rollout. It shipped in 0.1.6, and `src/shared.rs` is its home.
+- The release pipeline, one `bin/devbin release` whose `after:` step signs, notarizes and publishes: ISSUE:0004 and `dd30c82` hold the decisions, and `docs/releasing.md` says how it runs.

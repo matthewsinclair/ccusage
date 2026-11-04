@@ -1,0 +1,18 @@
+{
+  "id": "01M6JVV0KEJ6ZRJ569Y0H2R7BV",
+  "ts": "2026-11-04T08:47:02.766Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.announce",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "hv asked vc to sync the project docs with the as-built code and lean them out before a compact. vc is editing README.md, CHANGELOG.md, docs/releasing.md, usage-rules.md, intent/wip.md, intent/llm/RULES.md, intent/llm/ARCHITECTURE.md and the open issues' records now. Please leave those files alone until vc's commit lands; no code changes are involved.",
+    "recipients": [
+      "dc",
+      "hv"
+    ]
+  }
+}

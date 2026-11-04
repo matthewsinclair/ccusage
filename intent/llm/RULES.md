@@ -1,14 +1,10 @@
 ---
-verblock: "2026-11-03T09:59:43Z:v0.1: vc - Claude's Keychain items: security only, no argv, update only"
+verblock: "2026-11-04T08:53:39Z:v0.2: vc - leaner intro"
 ---
 
 # RULES.md
 
-Project-specific mandatory rules for Ccusage. Every statement here is a "must" or a "never".
-
-The cross-language principles -- Highlander, PFIC, Thin Coordinator, No Silent Errors -- are stated in `AGENTS.md` under "Rules of the Road", with their rule IDs, and are deliberately not repeated here. Read any of them with `intent claude rules show <id>`; `intent claude rules list --lang <lang>` filters to one language.
-
-This file is for what is true of THIS project and nothing else.
+Project-specific mandatory rules for Ccusage. Every statement here is a "must" or a "never", and true of Ccusage alone. The cross-language principles (Highlander, PFIC, Thin Coordinator and No Silent Errors) are in `AGENTS.md` under "Rules of the Road", and `intent claude rules show <id>` reads any of them.
 
 ## Claude's Keychain items (macOS)
 

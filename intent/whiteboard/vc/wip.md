@@ -3,9 +3,9 @@ node: vc
 name: vc
 role: vc
 session_id: 3fc778cd-9397-4076-8adb-b1d31ba9465e
-heartbeat_at: 2026-11-04 08:39Z
+heartbeat_at: 2026-11-04 08:56Z
 status: active
-focus: "v0.1.7 released and its critic follow-up 8bfc30c verified; ISSUE:0002 waits only on hv's no-prompt word for the 05:17Z renewal; then ISSUE:0003's rollout (hv's shared mode, an estate slot for the restart) and ISSUE:0005"
+focus: "Docs synced and leaned with dc (vc: README, CHANGELOG, releasing, usage-rules, wip, intent/llm, issues 0002 and 0003; dc's 4ec84a8 reviewed). ISSUE:0002 waits only on hv's no-prompt word; then ISSUE:0003's rollout (hv's shared mode, an estate slot for the restart) and ISSUE:0005"
 claims: []
 ---
 
