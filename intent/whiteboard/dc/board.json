@@ -228,6 +228,14 @@
       "text": "P7 (critic-shell, PFIC, pre-existing; lines at 4c3f155): macos:274 check_signed reads the global $sums that check_sums fills; every caller pairs them correctly today. Pass the sums in.",
       "state": "live",
       "recorded_at": "2026-11-04T08:35:54.866Z"
+    },
+    {
+      "node": "dc",
+      "kind": "todo",
+      "seq": 13,
+      "text": "D1 (vc, docs, before the next cut): packaging/homebrew/ccusage.rb:56's caveat, 'macOS may request Keychain access once per account when moving to signed releases', contradicts README:112: since 0.1.6 ccusage has no Keychain access of its own, and only an item an older ccusage left without apple-tool: asks, once, to allow security. hv saw it at today's brew upgrade, and the next formula publish renders it.",
+      "state": "live",
+      "recorded_at": "2026-11-04T08:40:06.910Z"
     }
   ],
   "sent": [
