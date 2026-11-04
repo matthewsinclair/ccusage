@@ -1,0 +1,16 @@
+{
+  "id": "01M6K346DVJDDRGE3MBY0CPK68",
+  "ts": "2026-11-04T10:54:23.675Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 6,
+    "text": "ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Released when hv has run steps 1 and 2 (shared mode on, then Molt's launcher export) and the desk grants vc's restart slot 01M6K31TH20532K7NYN48GJE86 (vc todo 4)."
+  }
+}

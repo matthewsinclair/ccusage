@@ -1,0 +1,15 @@
+{
+  "id": "01M6K346G37BE59SNGEXEX8YAJ",
+  "ts": "2026-11-04T10:54:23.747Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ISSUE:0005, not started. PR #15 merged upstream on 2026-11-03 at 17:03Z and shipped as v1.16 with none of 0005's changes 1 to 5, so its plan to rewrite #15 is moot. vc has recommended closing it as overtaken: once ISSUE:0003's step 4 retires ca646b28, the fork's dump-keychain discovery lists the five profile logins with no duplicate. Released when hv rules on that. If hv rules to go on: the fork is ~/Devel/forks/claudecodeusage, local commits only, no push or PR edit without hv's OK, and never run the app, which reads real Keychain items."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "01M6K346HB1QKAJFSVPAQ7PQNJ",
+  "ts": "2026-11-04T10:54:23.787Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "P1 to P7 (todos 6 to 12) and a test pinning the settings lock's 10 s stale time (vc's one surviving mutant), now: hv via vc, 2026-11-04, fix all issues now with nothing left for later. Each commit passes check all, test all, release --dry-run and a read-only macos finalize of a public release, and vc checks each in a fresh clone."
+  }
+}

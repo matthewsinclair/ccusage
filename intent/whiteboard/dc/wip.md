@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 10:16Z
+heartbeat_at: 2026-11-04 10:54Z
 status: active
-focus: "v0.1.8 is out, and ISSUE:0002 is closed on hv's word. Next: ISSUE:0003's rollout when hv turns shared mode on; then ISSUE:0005 (todo 5, vc's ruling on change 3 first). P1 to P7 (todos 6 to 12) wait for a tooling pass"
+focus: "Fixing P1 to P7 (todos 6 to 12) and the settings-lock stale-time test now (doing 5, hv via vc). ISSUE:0003 waits for hv's steps 1 and 2 and vc's restart slot (hold 6); ISSUE:0005 waits for hv's ruling on closing it as overtaken (hold 7)"
 claims: [ISSUE:0003]
 ---
 
@@ -13,11 +13,10 @@ claims: [ISSUE:0003]
 
 ## DOING
 
-_(none)_
+- P1 to P7 (todos 6 to 12) and a test pinning the settings lock's 10 s stale time (vc's one surviving mutant), now: hv via vc, 2026-11-04, fix all issues now with nothing left for later. Each commit passes check all, test all, release --dry-run and a read-only macos finalize of a public release, and vc checks each in a fresh clone.
 
 ## TODO
 
-- ISSUE:0005, the Claude Usage fork's PR #15 in ~/Devel/forks/claudecodeusage (build on fix/account-picker, 29a4db2; fold in 4b116b9), after ISSUE:0003. Local commits only: no push, no PR edit without hv's OK, and never run the app, which reads real Keychain items. First ask vc to rule on change 3: a GUI app's environment is fixed at launch, so reading CLAUDE_SECURESTORAGE_CONFIG_DIR from it before launchd cannot follow a later ccusage use; dc recommends launchd's live value first. (edited)
 - P1 (critic-shell, pre-existing, fails closed; lines at 4c3f155): the target set lives in three places, macos:38, .github/workflows/build.yml:28-34 and config.yaml:110-111, and the archive name format in more. Give it one home.
 - P2 (critic-shell, pre-existing; lines at 4c3f155): die is copied into macos:51, post-cut:31 and lock-sync:26 (lock-sync's has drifted to print -u2 without -r --), the root derivation into macos:33, post-cut:28 and lock-sync:23 (bin/devbin already exports PROJECT_ROOT), and the help extractor into macos:345 and post-cut:35. One small zsh library would hold them.
 - P3 (critic-shell, pre-existing; lines at 4c3f155): macos:67 local identity=$(fact identity) masks fact's status, so a missing key dies at line 69 naming an empty identity. Assign it plainly.
@@ -28,11 +27,12 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5, once hv turns shared mode on and the desk gives a slot for the restart (vc todo 4). Optional, not started: a test pinning the settings lock's 10 s stale time, vc's one surviving mutant. (edited)
+- ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Released when hv has run steps 1 and 2 (shared mode on, then Molt's launcher export) and the desk grants vc's restart slot 01M6K31TH20532K7NYN48GJE86 (vc todo 4). (edited)
+- ISSUE:0005, not started. PR #15 merged upstream on 2026-11-03 at 17:03Z and shipped as v1.16 with none of 0005's changes 1 to 5, so its plan to rewrite #15 is moot. vc has recommended closing it as overtaken: once ISSUE:0003's step 4 retires ca646b28, the fork's dump-keychain discovery lists the five profile logins with no duplicate. Released when hv rules on that. If hv rules to go on: the fork is ~/Devel/forks/claudecodeusage, local commits only, no push or PR edit without hv's OK, and never run the app, which reads real Keychain items.
 
 ## Watch-outs
 
-- Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no profile points at ~/.config/claude (vc watch-out 1); no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists and keeps its security -i line to 4097 bytes, newline included, because security adds to the default keychain when the named one is missing or when a split line loses its keychain argument; no push and no PR edit without hv's OK. (edited)
+- Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists and keeps its security -i line to 4097 bytes, newline included, because security adds to the default keychain when the named one is missing or when a split line loses its keychain argument; no push and no PR edit without hv's OK. hv's ccusage config and launchd are hv's to change: vc's session was refused permission, so dc does not do it either. (edited)
 
 ## Decisions
 
