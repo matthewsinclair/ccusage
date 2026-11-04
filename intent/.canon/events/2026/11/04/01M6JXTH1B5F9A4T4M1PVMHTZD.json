@@ -1,0 +1,15 @@
+{
+  "id": "01M6JXTH1B5F9A4T4M1PVMHTZD",
+  "ts": "2026-11-04T09:21:43.979Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "Next pass (pplr-vc, 2026-11-04): README's three points from dc's review of 27709bc, lines as at ca0e959. README:126 'macOS login secrets stay in the Keychain' becomes 'normally stay': on macOS read_stored falls back to .credentials.json (auth.rs:95-121). README:126 'including symlink aliases' becomes 'including symlink aliases of an existing directory': absolute() keeps a dangling link as a literal name, and existing() canonicalizes only a path that exists (config.rs:74, 225). README:118 'To move a registered profile' becomes 'To point a registered profile at another directory'. vc agreed all three wordings and offered to write them, so settle the writer with vc first."
+  }
+}
