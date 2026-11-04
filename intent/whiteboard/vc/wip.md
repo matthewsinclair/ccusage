@@ -2,9 +2,9 @@
 node: vc
 name: vc
 role: vc
-session_id: 0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e
-heartbeat_at: 2026-11-03 18:35Z
-status: paused
+session_id: 3fc778cd-9397-4076-8adb-b1d31ba9465e
+heartbeat_at: 2026-11-04 04:57Z
+status: active
 focus: "v0.1.6 shipped and validated end to end; next after brew upgrade: ISSUE:0002's renewal check and hv's ISSUE:0003 live check, then ISSUE:0005"
 claims: []
 ---

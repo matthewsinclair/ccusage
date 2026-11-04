@@ -4,9 +4,9 @@
     "moniker": "vc",
     "name": "vc",
     "role": "vc",
-    "session_id": "0fa88acb-cacd-4dea-9ff6-d9c39c15cf1e",
-    "heartbeat_at": "2026-11-03T18:35:25.238Z",
-    "status": "paused",
+    "session_id": "3fc778cd-9397-4076-8adb-b1d31ba9465e",
+    "heartbeat_at": "2026-11-04T04:57:47.159Z",
+    "status": "active",
     "focus": "v0.1.6 shipped and validated end to end; next after brew upgrade: ISSUE:0002's renewal check and hv's ISSUE:0003 live check, then ISSUE:0005",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
@@ -448,6 +448,11 @@
       "id": "01M6HAVMM2SQGFAB0EMMZZ46JT",
       "sender": "dc",
       "handled_at": "2026-11-03T18:35:13.925Z"
+    },
+    {
+      "id": "01M6HB39PKCTA7H61TBDQ5S0K1",
+      "sender": "dc",
+      "handled_at": "2026-11-04T05:00:45.113Z"
     }
   ]
 }
