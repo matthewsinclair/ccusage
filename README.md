@@ -170,7 +170,7 @@ bin/devbin build
 
 Tests use local HTTP fixtures and temporary XDG directories. A fake Claude executable verifies login, selection, logout, environment isolation, and argument/exit-code forwarding without using real accounts. Other checks cover stale-cache fallback, cooldown persistence, config validation, and storage permissions. Real browser login and live usage need verification with an account you explicitly configure.
 
-Code is split into configuration, credential access, storage, usage retrieval, terminal rendering, and CLI coordination. Releases run through devbin: `bin/devbin release`, `bin/devbin macos finalize` and `bin/devbin formula publish`, which [docs/releasing.md](docs/releasing.md) describes. Dependency purposes are documented beside their entries in `Cargo.toml`. Formatting uses two spaces. Unsafe Rust is forbidden; Clippy denies `unwrap` and `expect`. Cargo.lock is retained for reproducible application builds.
+Code is split into configuration, credential access, storage, usage retrieval, terminal rendering, and CLI coordination. A release is one devbin command, `bin/devbin release`, which [docs/releasing.md](docs/releasing.md) describes. Dependency purposes are documented beside their entries in `Cargo.toml`. Formatting uses two spaces. Unsafe Rust is forbidden; Clippy denies `unwrap` and `expect`. Cargo.lock is retained for reproducible application builds.
 
 ## Detailed output
 
@@ -194,4 +194,4 @@ The parser uses the canonical `limits` array when present, including model displ
 
 ## Maintainer release commands
 
-From a clean `main` checkout on the maintainer's Mac, `bin/devbin release 0.1.6` bumps the version, runs the gates and CI, then tags and pushes; `bin/devbin macos finalize v0.1.6` signs the Mac archives and publishes the release; and `bin/devbin formula publish` updates the Homebrew tap. `bin/devbin release 0.1.6 --dry-run` previews the cut, and running a command again continues it from where it stopped. None of them installs or uninstalls local packages. See [releasing](docs/releasing.md) for prerequisites and recovery details.
+From a clean `main` checkout on the maintainer's Mac, `bin/devbin release 0.1.7` is the whole release. It bumps the version, runs the gates and CI, then tags and pushes, and its `after:` step, `bin/devbin post-cut`, signs and notarizes the Mac archives, publishes the release and updates the Homebrew tap. `bin/devbin release 0.1.7 --dry-run` previews the cut. Running the same command again continues a cut that stopped before its tag, and `bin/devbin post-cut v0.1.7` continues one that stopped after it. Neither installs or uninstalls local packages. See [releasing](docs/releasing.md) for prerequisites and recovery details.

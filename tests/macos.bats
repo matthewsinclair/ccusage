@@ -1,8 +1,10 @@
 #!/usr/bin/env bats
 # bin/devbin macos finalize against a stand-in Mac and GitHub. The fake gh serves a
 # release from a directory, the fake codesign signs by appending a marker and shows
-# the v0.1.5 binary's signature, and the fake lipo answers as lipo does for each
-# target's binary. Nothing here signs, uploads or publishes for real.
+# the v0.1.5 binary's signature, the fake lipo answers as lipo does for each target's
+# binary, the fake security holds the identity and fixture notary credentials, and
+# the fake xcrun answers as notarytool does. Nothing here signs, notarizes, uploads or
+# publishes for real, and no real Keychain item is read.
 
 TAG=v0.1.4
 TARGETS="aarch64-apple-darwin x86_64-apple-darwin aarch64-unknown-linux-gnu x86_64-unknown-linux-gnu"
@@ -18,12 +20,15 @@ setup() {
   FAKE_DISPLAY_ERR=$ROOT/tests/fixtures/codesign-v0.1.5.stderr
   # How many signatures the fake codesign has displayed
   FAKE_DISPLAYS=$BATS_TEST_TMPDIR/displays
+  # The notary credentials' prefix, and the team the fake credentials name: the signing team
+  KEYCHAIN=$(sed -n 's/^keychain=//p' "$ROOT/packaging/macos/signing")
+  FAKE_NOTARY_TEAM=$(sed -n 's/^team=//p' "$ROOT/packaging/macos/signing")
   mkdir -p "$FAKE_BIN" "$FAKE_RELEASE"
   : > "$FAKE_LOG"
   write_fakes
   ci_release
-  unset CI CCUSAGE_NOTARY_PROFILE CCUSAGE_MACOS_MEMBER_LIMIT
-  export FAKE_RELEASE FAKE_LOG FAKE_DISPLAY_OUT FAKE_DISPLAY_ERR FAKE_DISPLAYS PATH="$FAKE_BIN:$PATH"
+  unset CI CCUSAGE_MACOS_MEMBER_LIMIT
+  export FAKE_RELEASE FAKE_LOG FAKE_DISPLAY_OUT FAKE_DISPLAY_ERR FAKE_DISPLAYS KEYCHAIN FAKE_NOTARY_TEAM PATH="$FAKE_BIN:$PATH"
 }
 
 # How many Mac archives a release signs, one signature display each
@@ -104,16 +109,36 @@ esac
 FAKE
   cat > "$FAKE_BIN/security" <<'FAKE'
 #!/bin/sh
-if [ "${FAKE_NO_IDENTITY:-}" = yes ]; then echo '     0 valid identities found'; exit 0; fi
-echo '  1) 0123456789ABCDEF0123456789ABCDEF01234567 "Developer ID Application: Geodica Pty Ltd (76BQL8L47U)"'
-echo '     1 valid identities found'
+echo "security $*" >> "$FAKE_LOG"
+case "$1" in
+  find-identity)
+    if [ "${FAKE_NO_IDENTITY:-}" = yes ]; then echo '     0 valid identities found'; exit 0; fi
+    echo '  1) 0123456789ABCDEF0123456789ABCDEF01234567 "Developer ID Application: Geodica Pty Ltd (76BQL8L47U)"'
+    echo '     1 valid identities found' ;;
+  find-generic-password)
+    # -a <account> -s <service> -w: a fixture value for each notary credential
+    service=
+    while [ $# -gt 0 ]; do
+      case "$1" in -s) shift; service=$1 ;; esac
+      shift
+    done
+    case "$service" in
+      "${FAKE_NO_CREDENTIAL:-}") exit 44 ;;
+      "${FAKE_EMPTY_CREDENTIAL:-}") echo ;;
+      "$KEYCHAIN.APPLE_TEAM_ID") echo "$FAKE_NOTARY_TEAM" ;;
+      "$KEYCHAIN".*) echo "fixture-${service#"$KEYCHAIN".}" ;;
+      *) exit 44 ;;
+    esac ;;
+  *) echo "the fake security has no answer for $1" >&2; exit 2 ;;
+esac
 FAKE
   cat > "$FAKE_BIN/xcrun" <<'FAKE'
 #!/bin/sh
 echo "xcrun $*" >> "$FAKE_LOG"
 answer=${FAKE_NOTARY:-}
-[ -n "$answer" ] || answer='{"id":"fixture","status":"Accepted"}'
-printf '%s\n' "$answer"
+[ -n "$answer" ] || answer='{"id":"2efe2717-52ef-43a5-96dc-0797e4ca1041","status":"Accepted"}'
+[ "$answer" = none ] || printf '%s\n' "$answer"
+exit "${FAKE_NOTARY_EXIT:-0}"
 FAKE
   cat > "$FAKE_BIN/ditto" <<'FAKE'
 #!/bin/sh
@@ -233,7 +258,7 @@ display() {
     name=ccusage-$TAG-$target.tar.gz
     [ "$(jq -r --arg n "$name" '.archives[$n].sha256' "$manifest")" = "$(grep " $name\$" "$FAKE_RELEASE/SHA256SUMS" | cut -d' ' -f1)" ]
     [ "$(jq -r --arg n "$name" '.archives[$n].requirement' "$manifest")" = "$(cat "$FAKE_DISPLAY_OUT")" ]
-    [ "$(jq -r --arg n "$name" '.archives[$n].notarized' "$manifest")" = false ]
+    [ "$(jq -r --arg n "$name" '.archives[$n].notarized' "$manifest")" = true ]
   done
   [ "$(jq -r '.archives | keys | join(" ")' "$manifest")" = "ccusage-$TAG-aarch64-apple-darwin.tar.gz ccusage-$TAG-x86_64-apple-darwin.tar.gz" ]
 }
@@ -248,6 +273,20 @@ display() {
   grep -q '^gh release download .*--pattern MACOS-SIGNING.json' "$FAKE_LOG"
   absent '^gh release (upload|edit|delete-asset)'
   absent '^codesign --force'
+  # Verifying needs neither the identity nor a notary credential
+  absent '^security '
+  absent '^xcrun '
+}
+
+@test "a public release whose manifest predates notarization still verifies" {
+  finalize
+  [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+  jq '.archives[].notarized = false' "$FAKE_RELEASE/MACOS-SIGNING.json" > "$BATS_TEST_TMPDIR/manifest"
+  mv "$BATS_TEST_TMPDIR/manifest" "$FAKE_RELEASE/MACOS-SIGNING.json"
+  : > "$FAKE_LOG"
+  FAKE_DRAFT=false finalize
+  [ "$status" -eq 0 ] || { echo "$output"; return 1; }
+  [[ $output == *"public already"* ]]
 }
 
 @test "a public release whose manifest names another tag, identifier or team is refused" {
@@ -313,6 +352,14 @@ display() {
 @test "a manifest that changes on its way to GitHub is never published" {
   FAKE_AFTER_UPLOAD="sed -i '' s/76BQL8L47U/0000000000/ '$FAKE_RELEASE/MACOS-SIGNING.json'" finalize
   failed "Release signing identity mismatch"
+  unpublished
+}
+
+@test "a manifest that loses its notarized record on its way to GitHub is never published" {
+  local manifest=$FAKE_RELEASE/MACOS-SIGNING.json changed=$BATS_TEST_TMPDIR/changed
+  FAKE_AFTER_UPLOAD="jq '.archives[].notarized = false' '$manifest' > '$changed' && mv '$changed' '$manifest'" finalize
+  failed "does not record ccusage-$TAG-"
+  [[ $output == *"as notarized"* ]]
   unpublished
 }
 
@@ -466,18 +513,64 @@ display() {
   absent '^gh release upload'
 }
 
-@test "notarization must be accepted, and is recorded" {
-  CCUSAGE_NOTARY_PROFILE=ccusage-notary finalize
+@test "every signed binary is notarized with the keychain's credentials, read before any download" {
+  finalize
   [ "$status" -eq 0 ] || { echo "$output"; return 1; }
   [ "$(jq '[.archives[].notarized] | all' "$FAKE_RELEASE/MACOS-SIGNING.json")" = true ]
-  [ "$(grep -c '^xcrun notarytool submit .* --keychain-profile ccusage-notary --wait' "$FAKE_LOG")" -eq "$(grep -c '^codesign --force' "$FAKE_LOG")" ]
+  local name
+  for name in APPLE_ID APPLE_APP_PASSWORD APPLE_TEAM_ID; do
+    grep -qxF "security find-generic-password -a $USER -s $KEYCHAIN.$name -w" "$FAKE_LOG"
+  done
+  local submit="xcrun notarytool submit .* --apple-id fixture-APPLE_ID --password fixture-APPLE_APP_PASSWORD --team-id $FAKE_NOTARY_TEAM --wait --output-format json"
+  [ "$(grep -c "^$submit\$" "$FAKE_LOG")" -eq "$(grep -c '^codesign --force' "$FAKE_LOG")" ]
+  local last_read first_download
+  last_read=$(grep -n '^security find-generic-password' "$FAKE_LOG" | tail -1 | cut -d: -f1)
+  first_download=$(grep -n '^gh release download' "$FAKE_LOG" | head -1 | cut -d: -f1)
+  [ "$last_read" -lt "$first_download" ]
+}
+
+@test "a missing or empty notary credential, or another team's, refuses before any download" {
+  local name
+  for name in APPLE_ID APPLE_APP_PASSWORD APPLE_TEAM_ID; do
+    : > "$FAKE_LOG"
+    FAKE_NO_CREDENTIAL=$KEYCHAIN.$name finalize
+    refused "no $KEYCHAIN.$name in the login keychain" || { echo "for $name"; return 1; }
+    absent '^gh release download'
+    absent '^xcrun '
+    : > "$FAKE_LOG"
+    FAKE_EMPTY_CREDENTIAL=$KEYCHAIN.$name finalize
+    refused "$KEYCHAIN.$name in the login keychain is empty" || { echo "for $name"; return 1; }
+    absent '^gh release download'
+  done
+  : > "$FAKE_LOG"
+  FAKE_NOTARY_TEAM=0000000000 finalize
+  refused "name another team than packaging/macos/signing's"
+  absent '^gh release download'
+}
+
+@test "a notarization that is not accepted publishes nothing, and names its submission alone" {
+  local id=2efe2717-52ef-43a5-96dc-0797e4ca1041
+  # notarytool exits non-zero on an Invalid verdict, and the verdict is still read
+  FAKE_NOTARY="{\"id\":\"$id\",\"status\":\"Invalid\",\"message\":\"fixture diagnostic\"}" FAKE_NOTARY_EXIT=1 finalize
+  failed "Notarization was not accepted (submission $id)"
+  [[ $output != *"fixture diagnostic"* ]] || { echo "output: $output"; return 1; }
+  absent '^gh release upload'
+  unpublished
   local answer
-  for answer in '{"status":"Invalid"}' '{}'; do
+  for answer in '{"status":"Invalid"}' '{}' '{"id":"not an id","status":"Invalid"}'; do
     rm -rf "$FAKE_RELEASE" && mkdir "$FAKE_RELEASE" && ci_release && : > "$FAKE_LOG"
-    CCUSAGE_NOTARY_PROFILE=ccusage-notary FAKE_NOTARY=$answer finalize
-    failed "Notarization was not accepted"
+    FAKE_NOTARY=$answer finalize
+    failed "Notarization was not accepted" || { echo "for $answer"; return 1; }
+    [[ $output != *"(submission"* ]] || { echo "for $answer: $output"; return 1; }
     unpublished
   done
+}
+
+@test "a submission notarytool cannot make publishes nothing" {
+  FAKE_NOTARY=none FAKE_NOTARY_EXIT=1 finalize
+  failed "notarytool could not submit"
+  absent '^gh release upload'
+  unpublished
 }
 
 @test "verification holds each binary to packaging/macos/signing's requirement, which macOS parses" {
@@ -500,6 +593,14 @@ display() {
     [[ $line == *"\\" ]] || break
   done < "$ROOT/packaging/homebrew/ccusage.rb"
   [ "$text" = "=$(sed -n 's/^requirement=//p' "$ROOT/packaging/macos/signing")" ]
+}
+
+@test "help prints the usage block, from its first line to the bare # after it" {
+  run "$HANDLER" --help
+  [ "$status" -eq 0 ]
+  [[ $output == *"bin/devbin macos finalize <tag>"* ]]
+  [[ $output == *"left alone." ]] || { echo "output: $output"; return 1; }
+  [[ $output != *"An archive is unpacked"* ]]
 }
 
 @test "it refuses on CI, without the signing identity, and for a tag that is not stable" {

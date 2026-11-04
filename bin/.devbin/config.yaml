@@ -21,7 +21,8 @@ devbin_version: "^0.1.19"
 # docs/releasing.md and usage-rules.md say to run them through bin/devbin. Every
 # cargo line takes --locked, so a check never rewrites Cargo.lock, and every
 # cargo test takes --no-fail-fast, so one failing target never hides another.
-# The project commands, macos, lock-sync and nopython, are in bin/.devbin/cmd/.
+# The project commands, macos, post-cut, lock-sync and nopython, are in
+# bin/.devbin/cmd/.
 commands:
   build:
     run: cargo build --release --locked
@@ -46,9 +47,10 @@ commands:
     options:
       rust:
         run: cargo test --locked --no-fail-fast
-      # The shell slot is devbin's own, bats tests: the macos and lock-sync
-      # project commands and the nopython check. The signer is the maintainer's
-      # Mac's alone, and its suite leans on macOS's bsdtar, stat and csreq.
+      # The shell slot is devbin's own, bats tests: the macos, post-cut and
+      # lock-sync project commands and the nopython check. The signer is the
+      # maintainer's Mac's alone, and its suite leans on macOS's bsdtar, stat
+      # and csreq.
       shell:
         summary: The bats suites for the project commands
         platforms:
@@ -70,9 +72,12 @@ commands:
 # The cut: the version stamped into Cargo.toml and Cargo.lock, the CHANGELOG note
 # dated, the gates and CI on candidate/<tag> green, then the tag and the push.
 # CI's tag run makes the release object, a draft holding the four archives and
-# SHA256SUMS.ci. Then, by hand and in this order: bin/devbin macos finalize <tag>
-# signs the Mac archives and publishes the draft, and bin/devbin formula publish
-# brings the tap to it. No after:, since formula publish needs the signed release.
+# SHA256SUMS.ci, which object: ci waits for. Then, under the cut's one yes, its
+# one after: line, bin/devbin post-cut: bin/devbin macos finalize <tag> signs and
+# notarizes the Mac archives and publishes the draft, then bin/devbin formula
+# publish brings the tap to it. One line, because the core runs every after: line
+# even when one before it failed, and formula publish needs the signed release.
+# bin/devbin post-cut <tag> resumes a release that stopped after its tag.
 release:
   repo: matthewsinclair/ccusage
   remotes:
@@ -92,6 +97,8 @@ release:
     workflow: build.yml
   object: ci
   object_wait: 40m
+  after:
+    - bin/devbin post-cut
 
 # The Homebrew formula: the signed Mac archives on macOS, and a build from the
 # tag's commit on Linux, from the template packaging/homebrew/ccusage.rb. The tap

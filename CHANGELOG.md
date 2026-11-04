@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.7] - unreleased
+
+### Changed
+
+- A release is one command, `bin/devbin release`. Its one `after:` step, `bin/devbin post-cut`, signs and notarizes the Mac archives, publishes the release and the Homebrew formula, and brings this Mac's clone of the tap up to date; `bin/devbin post-cut <tag>` resumes a release that stopped after its tag.
+- Both Mac binaries are notarized as well as signed, with the notary credentials in the maintainer's login keychain, so `CCUSAGE_NOTARY_PROFILE` is gone.
+
 ## [0.1.6] - 2026-11-03
 
 ### Added

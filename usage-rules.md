@@ -7,7 +7,7 @@ This is Ccusage's own hand-authored contract, not the `usage_rules` Hex library'
 ## Project conventions
 
 - Before a commit, run `bin/devbin check all`, `bin/devbin test all` and `bin/devbin build`. `bin/.devbin/config.yaml` is the one home of those checks, and every cargo command in it takes `--locked`.
-- Developer tooling is devbin's: a project command in `bin/.devbin/cmd/`, run as `bin/devbin <command>`, with a bats suite in `tests/`. The release is `bin/devbin release`, `bin/devbin macos finalize` and `bin/devbin formula publish`, as `docs/releasing.md` describes.
+- Developer tooling is devbin's: a project command in `bin/.devbin/cmd/`, run as `bin/devbin <command>`, with a bats suite in `tests/`. The release is one command, `bin/devbin release`, whose `after:` step, `bin/devbin post-cut`, also resumes a release that stopped after its tag, as `docs/releasing.md` describes.
 - AGENTS.md's `bats -r tests/`, and its unlocked `cargo test` and `cargo build`, are Intent's generic language text, not this project's commands; Intent issue 0672 records that gap in AGENTS.md's template. The bats suites run as `bin/devbin test shell`, and every check runs through the `bin/devbin` commands above.
 
 ## NEVER DO

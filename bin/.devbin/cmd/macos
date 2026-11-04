@@ -1,28 +1,31 @@
 #!/usr/bin/env zsh
-# devbin: summary = sign CI's two Mac release archives with the Developer ID, verify what GitHub then holds, and publish the draft
+# devbin: summary = sign and notarize CI's two Mac release archives with the Developer ID, verify what GitHub then holds, and publish the draft
 # devbin: group = Ship
 #
 # `bin/devbin macos` for Ccusage, a project handler cut down from Pplr's. It
 # replaces devbin's built-in macos, which signs a .app only.
 #
 #   bin/devbin macos finalize <tag>   CI's draft for <tag> holds the four archives and
-#                                     SHA256SUMS.ci. Sign its two Mac archives here, upload
-#                                     them with SHA256SUMS and MACOS-SIGNING.json, download
-#                                     everything again and verify it, then drop
-#                                     SHA256SUMS.ci and publish the draft. A release
-#                                     already public is verified and left alone.
+#                                     SHA256SUMS.ci. Sign and notarize its two Mac archives
+#                                     here, upload them with SHA256SUMS and
+#                                     MACOS-SIGNING.json, download everything again and
+#                                     verify it, then drop SHA256SUMS.ci and publish the
+#                                     draft. A release already public is verified and
+#                                     left alone.
 #
 # An archive is unpacked only when it holds exactly LICENSE, README.md, ccusage and
 # ccusage-logo.svg, each once and each a regular file, named bare or under a ./ root
 # directory. Its binary must be its target's architecture, and each signature must
 # carry the hardened runtime, a secure timestamp and a designated requirement with
-# no cdhash. With CCUSAGE_NOTARY_PROFILE naming a notarytool profile on this Mac,
-# each signed binary must also be notarized. The facts it signs and checks with
-# live once, in packaging/macos/signing.
+# no cdhash. Each signed binary is then notarized, and the run stops unless Apple
+# answers Accepted. The facts it signs and checks with, and the login keychain's
+# prefix for the notary credentials, live once, in packaging/macos/signing.
 #
 # IT RUNS ON THE MAINTAINER'S MAC ONLY. It refuses on CI ($CI set) and off macOS,
-# and before it signs, when the Developer ID identity is not in the keychain. It
-# never prints what a signing tool printed: that can carry Keychain diagnostics.
+# and, before it downloads anything for a draft, when the Developer ID identity is
+# not in the keychain, a notary credential is missing, or the credentials' team is
+# not the signing team. It never prints what a signing or notary tool printed: that
+# can carry Keychain diagnostics.
 
 emulate -L zsh
 setopt err_exit no_unset pipe_fail
@@ -64,6 +67,32 @@ require_identity() {
   local identity=$(fact identity) identities
   identities=$(security find-identity -v -p codesigning 2>/dev/null) || identities=
   [[ $identities == *"\"$identity\""* ]] || die "the signing identity is not in this keychain: $identity"
+}
+
+# A notary credential from the login keychain, under the signing file's prefix
+secret() {
+  local keychain value
+  keychain=$(fact keychain) || exit 1
+  value=$(security find-generic-password -a $USER -s "$keychain.$1" -w 2>/dev/null) ||
+    die "no $keychain.$1 in the login keychain"
+  [[ -n $value ]] || die "$keychain.$1 in the login keychain is empty"
+  print -r -- $value
+}
+
+# The notary credentials, read on a draft's path before anything is downloaded or
+# signed. Each is a plain assignment, so a missing one stops the run here: read in a
+# local's declaration, or in notarytool's arguments, a failed read would leave it
+# empty and carry on. They reach notarytool as its arguments, as every Geodica
+# release's do, and are never printed.
+typeset -gA notary
+require_credentials() {
+  local name team
+  team=$(fact team) || exit 1
+  for name in APPLE_ID APPLE_APP_PASSWORD APPLE_TEAM_ID; do
+    notary[$name]=$(secret $name) || exit 1
+  done
+  [[ $notary[APPLE_TEAM_ID] == "$team" ]] ||
+    die "the notary credentials name another team than packaging/macos/signing's, $team"
 }
 
 sha() { shasum -a 256 -- $1 | cut -d' ' -f1 }
@@ -157,15 +186,21 @@ verify() {
   REPLY=$designated
 }
 
-# Submit a signed binary with a notarytool profile already on this Mac; no
-# notarization credential is exported.
+# notarize <binary>: submit it with the notary credentials and wait. Only the answer's
+# status is read, and on a refusal its submission id, never the rest of it.
 notarize() {
-  local binary=$1 zip=${1:h}/notarize.zip answer verdict
+  local binary=$1 zip=${1:h}/notarize.zip answer verdict id submitted=1
   ditto -c -k --keepParent $binary $zip >/dev/null 2>&1 || die "ditto could not zip ${binary:t} for notarization"
-  answer=$(xcrun notarytool submit $zip --keychain-profile $CCUSAGE_NOTARY_PROFILE --wait --output-format json 2>/dev/null) ||
-    die "notarytool could not submit ${binary:t}"
-  verdict=$(jq -r '.status // empty' <<<$answer 2>/dev/null) || verdict=
-  [[ $verdict == Accepted ]] || die "Notarization was not accepted"
+  # notarytool exits non-zero on an Invalid verdict too, so its answer is read either way
+  answer=$(xcrun notarytool submit $zip --apple-id "$notary[APPLE_ID]" --password "$notary[APPLE_APP_PASSWORD]" \
+    --team-id "$notary[APPLE_TEAM_ID]" --wait --output-format json 2>/dev/null) || submitted=0
+  verdict=$(jq -rs 'last | .status // empty' <<<$answer 2>/dev/null) || verdict=
+  if [[ $verdict != Accepted ]]; then
+    [[ -n $verdict ]] || (( submitted )) || die "notarytool could not submit ${binary:t}"
+    id=$(jq -rs 'last | .id // empty' <<<$answer 2>/dev/null) || id=
+    [[ $id =~ '^[0-9A-Fa-f-]+$' ]] || id=
+    die "Notarization was not accepted${id:+ (submission $id)}"
+  fi
   rm -f -- $zip
 }
 
@@ -178,14 +213,14 @@ sign() {
   codesign --force --sign "$(fact identity)" --identifier "$(fact identifier)" --options runtime --timestamp \
     $binary >/dev/null 2>&1 || die "codesign could not sign ${binary:t}"
   verify $binary
-  [[ -z ${CCUSAGE_NOTARY_PROFILE:-} ]] || notarize $binary
+  notarize $binary
 }
 
 # sign_release <in> <out>: <out> must not exist. Copy each Linux archive as it is, sign
-# each Mac one, then write SHA256SUMS and MACOS-SIGNING.json last, so a failed run
-# leaves neither.
+# and notarize each Mac one, then write SHA256SUMS and MACOS-SIGNING.json last, so a
+# failed run leaves neither.
 sign_release() {
-  local in=$1 out=$2 t name unpacked notarized=false archives='{}'
+  local in=$1 out=$2 t name unpacked archives='{}'
   local -A requirement_of
   mkdir -- $out || die "$out exists already"
   for t in $targets; do
@@ -208,21 +243,24 @@ sign_release() {
     name=ccusage-$tag-$t.tar.gz
     print -r -- "$(sha $out/$name)  $name" >> $out/SHA256SUMS
   done
-  [[ -z ${CCUSAGE_NOTARY_PROFILE:-} ]] || notarized=true
+  # sign stops the run unless Apple accepted each Mac binary, so every one here is notarized
   for t in $mac_targets; do
     name=ccusage-$tag-$t.tar.gz
     archives=$(jq -n --argjson a $archives --arg n $name --arg r $requirement_of[$name] \
-      --argjson z $notarized --arg s "$(sha $out/$name)" '$a + {($n): {requirement: $r, notarized: $z, sha256: $s}}')
+      --arg s "$(sha $out/$name)" '$a + {($n): {requirement: $r, notarized: true, sha256: $s}}')
   done
   jq -n --arg tag $tag --arg id "$(fact identifier)" --arg team "$(fact team)" --argjson archives $archives \
     '{tag: $tag, identifier: $id, team_id: $team, archives: $archives}' > $out/MACOS-SIGNING.json
 }
 
-# check_signed <dir>: MACOS-SIGNING.json there is this release's and the Geodica team's,
-# each Mac archive has the checksum SHA256SUMS gives it, and its binary still verifies
-# with the designated requirement the manifest recorded.
+# check_signed <dir> [notarized]: MACOS-SIGNING.json there is this release's and the
+# Geodica team's, each Mac archive has the checksum SHA256SUMS gives it, and its binary
+# still verifies with the designated requirement the manifest recorded. With notarized,
+# for the release it publishes, the manifest must also record each Mac archive as
+# notarized. A release made public before notarization was always on records false,
+# and still verifies.
 check_signed() {
-  local dir=$1 manifest=$1/MACOS-SIGNING.json t name recorded unpacked
+  local dir=$1 publishing=${2:-} manifest=$1/MACOS-SIGNING.json t name recorded unpacked
   [[ -f $manifest ]] || die "the release has no MACOS-SIGNING.json"
   jq -e --arg tag $tag --arg id "$(fact identifier)" --arg team "$(fact team)" \
     '.tag == $tag and .identifier == $id and .team_id == $team' $manifest >/dev/null 2>&1 ||
@@ -232,6 +270,10 @@ check_signed() {
     recorded=$(jq -r --arg n $name '.archives[$n].sha256 // empty' $manifest 2>/dev/null) || recorded=
     [[ -n $recorded ]] || die "MACOS-SIGNING.json does not sign $name"
     [[ $recorded == "$sums[$name]" ]] || die "Signed archive checksum mismatch"
+    if [[ $publishing == notarized ]]; then
+      jq -e --arg n $name '.archives[$n].notarized == true' $manifest >/dev/null 2>&1 ||
+        die "MACOS-SIGNING.json does not record $name as notarized"
+    fi
     unpacked=$(mktemp -d $work/verified.XXXXXX)
     unpack $dir/$name $unpacked
     verify $unpacked/ccusage
@@ -248,7 +290,12 @@ cmd_finalize() {
   local draft incoming signed uploaded
   draft=$(gh release view $tag --repo $repo --json isDraft --jq .isDraft) || die "gh cannot read $tag's release"
   [[ $draft == true || $draft == false ]] || die "Could not determine draft status"
-  [[ $draft == false ]] || require_identity
+  # A draft is signed and notarized, so both are checked before anything is downloaded;
+  # a public release is only verified, and needs neither
+  if [[ $draft == true ]]; then
+    require_identity
+    require_credentials
+  fi
   work=$(mktemp -d "${TMPDIR:-/tmp}/ccusage-release-assets.XXXXXX")
   incoming=$work/incoming
   mkdir -- $incoming
@@ -271,13 +318,13 @@ cmd_finalize() {
   signed=$work/signed
   sign_release $incoming $signed
   check_sums $signed
-  check_signed $signed
+  check_signed $signed notarized
   gh release upload $tag --repo $repo --clobber $signed/*(.on) || die "gh could not upload $tag's signed assets"
   # What GitHub now holds is verified before anything is published, on a resumed run too
   uploaded=$work/uploaded
   gh release download $tag --repo $repo --dir $uploaded || die "gh could not download $tag's uploaded assets"
   check_sums $uploaded
-  check_signed $uploaded
+  check_signed $uploaded notarized
   # CI's sums no longer match the signed Mac archives, so they do not ship
   if [[ -e $uploaded/SHA256SUMS.ci ]]; then
     gh release delete-asset $tag SHA256SUMS.ci --repo $repo --yes >/dev/null ||
@@ -292,6 +339,7 @@ sub=${1:-}
 (( $# )) && shift
 case $sub in
   finalize) cmd_finalize "$@" ;;
-  ""|-h|--help) sed -n '7,12p' ${0:A} | sed 's/^# \{0,1\}//' ;;
+  # The usage block above, from its first line to the bare # after it
+  ""|-h|--help) sed -n '/^#   bin\/devbin macos finalize/,/^#$/p' ${0:A} | sed -e '$d' -e 's/^# \{0,1\}//' ;;
   *) die "unknown step: $sub (finalize)" ;;
 esac
