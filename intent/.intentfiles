@@ -29,4 +29,3 @@
 # `# comment`. Nothing else. A line the parser cannot read ABORTS the run with
 # its line number.
 ISSUE:0003
-ISSUE:0005

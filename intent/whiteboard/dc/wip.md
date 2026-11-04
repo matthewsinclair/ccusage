@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 10:54Z
+heartbeat_at: 2026-11-04 11:08Z
 status: active
-focus: "Fixing P1 to P7 (todos 6 to 12) and the settings-lock stale-time test now (doing 5, hv via vc). ISSUE:0003 waits for hv's steps 1 and 2 and vc's restart slot (hold 6); ISSUE:0005 waits for hv's ruling on closing it as overtaken (hold 7)"
+focus: "Fixing P1 to P7 (todos 6 to 12) and the settings-lock stale-time test now (doing 5, hv via vc), measured one commit at a time in dc's scratch clone. ISSUE:0003 waits for hv's steps 1 and 2 and vc's restart slot (hold 6). ISSUE:0005 is closed as overtaken (hv's ruling)"
 claims: [ISSUE:0003]
 ---
 
@@ -28,7 +28,6 @@ claims: [ISSUE:0003]
 ## Holds
 
 - ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Released when hv has run steps 1 and 2 (shared mode on, then Molt's launcher export) and the desk grants vc's restart slot 01M6K31TH20532K7NYN48GJE86 (vc todo 4). (edited)
-- ISSUE:0005, not started. PR #15 merged upstream on 2026-11-03 at 17:03Z and shipped as v1.16 with none of 0005's changes 1 to 5, so its plan to rewrite #15 is moot. vc has recommended closing it as overtaken: once ISSUE:0003's step 4 retires ca646b28, the fork's dump-keychain discovery lists the five profile logins with no duplicate. Released when hv rules on that. If hv rules to go on: the fork is ~/Devel/forks/claudecodeusage, local commits only, no push or PR edit without hv's OK, and never run the app, which reads real Keychain items.
 
 ## Watch-outs
 
