@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: d310dccf-bdc7-4666-955a-1694840757e1
-heartbeat_at: 2026-11-04 09:22Z
+heartbeat_at: 2026-11-04 09:24Z
 status: active
-focus: "v0.1.8 is out (pplr-vc). Next: close ISSUE:0002 on hv's no-prompt word for the 05:17Z renewal, relayed by vc; ISSUE:0003's rollout when hv turns shared mode on; then ISSUE:0005 (todo 5, vc's ruling on change 3 first). Next pass: README's three points (todo 14; settle the writer with vc). P1 to P7 (todos 6 to 12) wait for a tooling pass"
+focus: "v0.1.8 is out (pplr-vc). Next: close ISSUE:0002 on hv's no-prompt word for the 05:17Z renewal, relayed by vc; ISSUE:0003's rollout when hv turns shared mode on; then ISSUE:0005 (todo 5, vc's ruling on change 3 first). P1 to P7 (todos 6 to 12) wait for a tooling pass"
 claims: [ISSUE:0002, ISSUE:0003]
 ---
 
@@ -25,7 +25,6 @@ _(none)_
 - P5 (critic-shell, pre-existing; lines at 4c3f155): macos:144 'limit filesize 128m' restates max (line 43). Derive it.
 - P6 (critic-shell, pre-existing; lines at 4c3f155): $(fact ...) inside arguments at macos:177, 215, 254 and 267 carries on with an empty value, so a missing identifier is caught only by the requirement's pin. Read each fact once at the top of cmd_finalize, as plain assignments.
 - P7 (critic-shell, PFIC, pre-existing; lines at 4c3f155): macos:274 check_signed reads the global $sums that check_sums fills; every caller pairs them correctly today. Pass the sums in.
-- Next pass (pplr-vc, 2026-11-04): README's three points from dc's review of 27709bc, lines as at ca0e959. README:126 'macOS login secrets stay in the Keychain' becomes 'normally stay': on macOS read_stored falls back to .credentials.json (auth.rs:95-121). README:126 'including symlink aliases' becomes 'including symlink aliases of an existing directory': absolute() keeps a dangling link as a literal name, and existing() canonicalizes only a path that exists (config.rs:74, 225). README:118 'To move a registered profile' becomes 'To point a registered profile at another directory'. vc agreed all three wordings and offered to write them, so settle the writer with vc first.
 
 ## Holds
 
