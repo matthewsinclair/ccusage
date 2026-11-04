@@ -33,7 +33,7 @@ impl Lock {
     Self::acquire_for(path, stale, Duration::from_secs(20))
   }
 
-  fn acquire_for(path: PathBuf, stale: Duration, timeout: Duration) -> Result<Self> {
+  pub(crate) fn acquire_for(path: PathBuf, stale: Duration, timeout: Duration) -> Result<Self> {
     let start = Instant::now();
     loop {
       let mut builder = fs::DirBuilder::new();

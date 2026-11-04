@@ -110,13 +110,22 @@ pub fn switch(store: &Store, name: &str) -> Result<()> {
   Ok(())
 }
 
+/// When Claude Code takes a `.claude.json`'s lock as abandoned and writes over it: 10 s
+/// (read from Claude Code 2.1.317's source).
+const SETTINGS_STALE: Duration = Duration::from_secs(10);
+
 /// Claude Code's lock on a `.claude.json`, which its saveGlobalConfig takes:
 /// proper-lockfile's `<file>.lock` directory, with an mtime heartbeat, stale after
-/// 10 s (read from Claude Code 2.1.317's source).
+/// SETTINGS_STALE.
 fn lock(file: &Path) -> Result<Lock> {
+  Lock::acquire(lock_path(file), SETTINGS_STALE)
+}
+
+/// proper-lockfile's lock directory for `file`: `<file>.lock`, beside it.
+fn lock_path(file: &Path) -> PathBuf {
   let mut path = file.as_os_str().to_owned();
   path.push(".lock");
-  Lock::acquire(PathBuf::from(path), Duration::from_secs(10))
+  PathBuf::from(path)
 }
 
 /// launchctl, for launchd's environment. CCUSAGE_LAUNCHCTL names a stand-in, which the
@@ -163,6 +172,36 @@ pub fn launchd_dir() -> Result<String> {
 mod tests {
   use super::*;
   use serde_json::json;
+  use std::{
+    fs::{File, FileTimes},
+    time::SystemTime,
+  };
+
+  #[test]
+  fn the_settings_lock_is_reclaimed_past_claude_codes_stale_time_and_not_before() -> Result<()> {
+    // Claude Code 2.1.317's saveGlobalConfig locks with proper-lockfile's stale of
+    // 10000 ms. Stated here apart from SETTINGS_STALE, so that a change to it fails.
+    let claude_code = Duration::from_secs(10);
+    let margin = Duration::from_millis(500);
+    let dir = std::env::temp_dir().join(format!("ccusage-settings-lock-{}", std::process::id()));
+    storage::private_dir(&dir)?;
+    let held = lock_path(&dir.join(SETTINGS));
+    fs::create_dir_all(&held)?;
+    // A holder whose heartbeat stopped `age` ago. Each acquire looks once and does not
+    // wait, so the lock cannot age past the stale time while it looks.
+    let stopped = |age: Duration| -> Result<()> {
+      File::open(&held)?.set_times(FileTimes::new().set_modified(SystemTime::now() - age))?;
+      Ok(())
+    };
+    stopped(claude_code - margin)?;
+    assert!(Lock::acquire_for(held.clone(), SETTINGS_STALE, Duration::ZERO).is_err());
+    stopped(claude_code + margin)?;
+    let reclaimed = Lock::acquire_for(held.clone(), SETTINGS_STALE, Duration::ZERO)?;
+    drop(reclaimed);
+    assert!(!held.exists());
+    fs::remove_dir(&dir)?;
+    Ok(())
+  }
 
   #[test]
   fn a_switch_changes_only_the_record_keeping_order_and_newline() -> Result<()> {
