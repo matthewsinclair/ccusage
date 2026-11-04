@@ -5,7 +5,7 @@ role: vc
 session_id: 3fc778cd-9397-4076-8adb-b1d31ba9465e
 heartbeat_at: 2026-11-04 12:25Z
 status: active
-focus: "Back after hv's compact; all banked, 16 commits await hv's push. ISSUE:0003 waits for hv's step 1 (shared mode on), then Molt 1.4.3's step 2 and restart slot 01M6K31TH20532K7NYN48GJE86; vc verifies each step read-only"
+focus: "Back after hv's compact; all banked, awaiting hv's push. ISSUE:0003 waits for hv's step 1 (shared mode on), then Molt 1.4.3's step 2 and restart slot 01M6K31TH20532K7NYN48GJE86; vc verifies each step read-only"
 claims: []
 ---
 
