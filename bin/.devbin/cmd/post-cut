@@ -9,7 +9,8 @@
 #
 # In order, stopping at the first failure: bin/devbin macos finalize <tag>, which
 # signs and notarizes the Mac archives in CI's draft and publishes it, then
-# bin/devbin formula publish, then this Mac's clone of the tap pulled. The core's
+# bin/devbin formula publish, then this Mac's clone of the tap pulled, or a line
+# saying why not: no brew on PATH, or no clone where brew keeps it. The core's
 # object step (object: ci) has waited for CI's draft before any after: line runs.
 #
 # ONE LINE, NOT THREE: the core runs every after: line even when one before it

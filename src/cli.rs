@@ -6,7 +6,7 @@ use crate::{
 };
 use std::path::PathBuf;
 
-const HELP: &str = "Ccusage — named Claude Code accounts and plan usage
+const HELP: &str = "Ccusage: named Claude Code accounts and plan usage
 
 Usage: ccusage [--config PATH] [--no-color] [--verbose] [COMMAND]
 
@@ -20,11 +20,14 @@ Usage: ccusage [--config PATH] [--no-color] [--verbose] [COMMAND]
   list                         Show profiles and local credential status
   use NAME                     Select the account for future ccusage run launches
                                (in shared mode, for new Claude sessions too)
-  run [NAME] [-- CLAUDE_ARGS…]  Launch Claude with the selected profile
+  run [NAME] [-- CLAUDE_ARGS...]
+                               Launch Claude with the selected profile
   dir [NAME]                   In shared mode, print the active or named profile's
                                directory, for CLAUDE_SECURESTORAGE_CONFIG_DIR
   usage [NAME | --all] [--json] [--refresh] [--verbose]
                                Show plan usage (default: active account)
+  usage --demo [--json] [--verbose]
+                               Show plan usage from fixture data, with no account
   tui [--demo]                 Interactive account dashboard (demo works without setup)
   shell zsh|bash               Print an optional wrapper for plain claude
   paths                        Show resolved XDG directories

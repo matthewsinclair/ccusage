@@ -19,7 +19,8 @@
 # carry the hardened runtime, a secure timestamp and a designated requirement with
 # no cdhash. Each signed binary is then notarized, and the run stops unless Apple
 # answers Accepted. The facts it signs and checks with, and the login keychain's
-# prefix for the notary credentials, live once, in packaging/macos/signing.
+# prefix for the notary credentials, live once, in packaging/macos/signing; the
+# release's repository is bin/.devbin/config.yaml's release.repo.
 #
 # IT RUNS ON THE MAINTAINER'S MAC ONLY. It refuses on CI ($CI set) and off macOS,
 # and, before it downloads anything for a draft, when the Developer ID identity is
