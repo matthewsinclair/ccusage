@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-04T11:06:50Z:v0.21: vc - hv's rulings: 0005 to close; devbin nodes on hold 3"
+verblock: "2026-11-04T11:41:25Z:v0.22: vc - fix-all validated; ISSUE:0003's rollout left"
 ---
 
 # Work In Progress
@@ -8,12 +8,11 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**Ccusage after 0.1.8: ISSUE:0003's rollout, dc's P1 to P7**
+**Ccusage after 0.1.8: ISSUE:0003's rollout**
 
 dc builds and vc validates.
 
 - ISSUE:0003 (medium): the rollout waits for hv's step 1 (shared mode on); for Molt 1.4.3's step 2, which pplr-dc builds after Molt 1.4.2, with the shell and Molt's LaunchAgent running `ccusage dir` at each start and login; and for estate slot `01M6K31TH20532K7NYN48GJE86`, step 3's restart of every Claude session, which pplr-vc grants with hv's go. vc checks each step against the issue's Rollout and Acceptance.
-- dc fixes P1 to P7, critic-shell's findings in `bin/.devbin/cmd/`, and adds a test pinning the settings lock's 10 s stale time. vc validates each in a fresh clone.
 
 ## Active Steel Threads
 

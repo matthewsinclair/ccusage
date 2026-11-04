@@ -13,7 +13,7 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0005 when dc hands it over. (edited)
+- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0003's rollout checks (todo 4). (edited)
 
 ## TODO
 

@@ -1,0 +1,16 @@
+{
+  "id": "01M6K5TAD55VWJFZ0AG2G5J7QF",
+  "ts": "2026-11-04T11:41:25.797Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0003's rollout checks (todo 4)."
+  }
+}
