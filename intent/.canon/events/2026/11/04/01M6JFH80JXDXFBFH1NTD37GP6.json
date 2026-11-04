@@ -1,0 +1,15 @@
+{
+  "id": "01M6JFH80JXDXFBFH1NTD37GP6",
+  "ts": "2026-11-04T05:11:59.762Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "One-command release for ccusage, pplr-vc's ask for hv, for v0.1.7: banked as dd30c82 on main (post-cut as release.after:, finalize notarizing always with geodica.apple.*), measured green in a fresh clone in pplr-vc's slot. The hash is with ccusage-vc, validating, and pplr-vc. Next: answer vc's findings. No push, tag or tap write: hv cuts v0.1.7."
+  }
+}

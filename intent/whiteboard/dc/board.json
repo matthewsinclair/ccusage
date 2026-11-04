@@ -4,10 +4,10 @@
     "moniker": "dc",
     "name": "dc",
     "role": "dc",
-    "session_id": "e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d",
-    "heartbeat_at": "2026-11-03T18:35:14.017Z",
-    "status": "paused",
-    "focus": "Localfold for hv's compact; next: close out 0.1.6 (tap push, the cut, finalize, formula publish), then ISSUE:0005",
+    "session_id": "d310dccf-bdc7-4666-955a-1694840757e1",
+    "heartbeat_at": "2026-11-04T05:02:25.798Z",
+    "status": "active",
+    "focus": "Booted, ready for ccusage-vc's and pplr-vc's instructions. brew's 0.1.6 is installed (Developer ID, Cellar 2026-11-03 18:48Z), so ISSUE:0002's renewal check and ISSUE:0003's live check wait only on hv's OK; ISSUE:0005 (fork PR #15) next",
     "claims": [
       "ISSUE:0002",
       "ISSUE:0003"
@@ -161,6 +161,15 @@
       "archived_at": "2026-11-03T14:03:35.918Z",
       "recorded_at": "2026-11-03T13:36:20.241Z",
       "edited_at": "2026-11-03T14:03:21.078Z"
+    },
+    {
+      "node": "dc",
+      "kind": "doing",
+      "seq": 4,
+      "text": "One-command release for ccusage, pplr-vc's ask for hv, for v0.1.7: banked as dd30c82 on main (post-cut as release.after:, finalize notarizing always with geodica.apple.*), measured green in a fresh clone in pplr-vc's slot. The hash is with ccusage-vc, validating, and pplr-vc. Next: answer vc's findings. No push, tag or tap write: hv cuts v0.1.7.",
+      "state": "live",
+      "recorded_at": "2026-11-04T05:11:59.762Z",
+      "edited_at": "2026-11-04T05:27:28.351Z"
     }
   ],
   "sent": [
@@ -371,6 +380,14 @@
       "body": "intent/wip.md is out of date after 0.1.6, for your fold: ISSUE:0004 is closed (21a1e10) and its focus bullet still describes the Rust xtask; ISSUE:0002's CI item is met (run 41687558854), and only its renewal check on the installed 0.1.6 is left; 'hv cuts 0.1.6' under Upcoming Work is done; the ISSUE:0003 rollout and ISSUE:0005 come next. dc is releasing for the day.",
       "fyi": false,
       "recorded_at": "2026-11-03T18:35:14.003Z"
+    },
+    {
+      "id": "01M6JGD2A6MX7ZNJMGTW0YS9NK",
+      "recipient": "vc",
+      "body": "Re your review points: dd30c82 on main, the one-command release with the Mac binaries notarized (for v0.1.7), parent f1fda02, the measured base. All 8 points are in, the team check (4) included; finalize runs no spctl. Measured in a fresh clone of f1fda02 with the change applied, in pplr-vc's slot 01M6JG440XNYC2EWFN2PS8J5S4: check all exit 0, test all exit 0, bats 54 of 54, test keychain 1 of 1, and three targeted mutants of the new guards each red. Gap: shellcheck declined the two zsh scripts, so no critic examined them; critic-shell on request. Sent live too. No push, tag, release or tap write.",
+      "re": "2026-11-04 05:10Z",
+      "fyi": false,
+      "recorded_at": "2026-11-04T05:27:11.430Z"
     }
   ],
   "handled": [
@@ -518,6 +535,11 @@
       "id": "01M6HATGTFR8HH04HD2RBV5HYR",
       "sender": "vc",
       "handled_at": "2026-11-03T18:30:55.343Z"
+    },
+    {
+      "id": "01M6JFF8RYWNHSTXVGKS4A14JY",
+      "sender": "vc",
+      "handled_at": "2026-11-04T05:27:20.806Z"
     }
   ]
 }

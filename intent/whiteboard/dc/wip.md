@@ -2,10 +2,10 @@
 node: dc
 name: dc
 role: dc
-session_id: e1e5d4f2-40c1-4c02-8b5f-93719b6fc69d
-heartbeat_at: 2026-11-03 18:35Z
-status: paused
-focus: "Localfold for hv's compact; next: close out 0.1.6 (tap push, the cut, finalize, formula publish), then ISSUE:0005"
+session_id: d310dccf-bdc7-4666-955a-1694840757e1
+heartbeat_at: 2026-11-04 05:02Z
+status: active
+focus: "Booted, ready for ccusage-vc's and pplr-vc's instructions. brew's 0.1.6 is installed (Developer ID, Cellar 2026-11-03 18:48Z), so ISSUE:0002's renewal check and ISSUE:0003's live check wait only on hv's OK; ISSUE:0005 (fork PR #15) next"
 claims: [ISSUE:0002, ISSUE:0003]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0002, ISSUE:0003]
 
 ## DOING
 
-_(none)_
+- One-command release for ccusage, pplr-vc's ask for hv, for v0.1.7: banked as dd30c82 on main (post-cut as release.after:, finalize notarizing always with geodica.apple.*), measured green in a fresh clone in pplr-vc's slot. The hash is with ccusage-vc, validating, and pplr-vc. Next: answer vc's findings. No push, tag or tap write: hv cuts v0.1.7. (edited)
 
 ## TODO
 
