@@ -22,7 +22,7 @@ claims: []
 ## Holds
 
 - Check that the tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Released when: the tap's formula is published by devbin 0.1.20 or later, at 0.1.9's post-cut. The vendored 0.1.20 carries the fix (devbin 0322: lib/cmd/formula:436 writes the manifest list one element a line), but the live formula 130e87d was rendered by 0.1.19, and the tap's test.yml still turns style and audit off. Then: turn them back on in test.yml and see the tap's CI green. (edited)
-- Brief dc on ISSUE:0007's switch wiring (dc's hold 8), then validate it. Released when: devbin-cc sends 0326's three parts (what a project declares, how a compiled tool stamps its sha and +dirty at build, the formula's one install form) and devbin-vc says a devbin release carries 0326 (its todo 201). Then: brief dc, read the wiring against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv.
+- Brief dc on ISSUE:0007's switch wiring (dc's hold 8), then validate it. Released when: devbin-cc sends 0326's three parts (what a project declares, how a compiled tool stamps its sha and +dirty at build, the formula's one install form) once devbin-vc agrees the shape, and devbin-vc says a devbin release carries 0326 (its todo 201). Then: brief dc, including the hint for a habitual ccusage use NAME ('to select an account, run ccusage activate NAME'), which devbin-cc's shape puts in Ccusage's own use rather than the core, subject to devbin-vc's agreement; read the wiring against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv. (edited)
 
 ## Watch-outs
 

@@ -110,9 +110,10 @@
       "node": "vc",
       "kind": "hold",
       "seq": 4,
-      "text": "Brief dc on ISSUE:0007's switch wiring (dc's hold 8), then validate it. Released when: devbin-cc sends 0326's three parts (what a project declares, how a compiled tool stamps its sha and +dirty at build, the formula's one install form) and devbin-vc says a devbin release carries 0326 (its todo 201). Then: brief dc, read the wiring against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv.",
+      "text": "Brief dc on ISSUE:0007's switch wiring (dc's hold 8), then validate it. Released when: devbin-cc sends 0326's three parts (what a project declares, how a compiled tool stamps its sha and +dirty at build, the formula's one install form) once devbin-vc agrees the shape, and devbin-vc says a devbin release carries 0326 (its todo 201). Then: brief dc, including the hint for a habitual ccusage use NAME ('to select an account, run ccusage activate NAME'), which devbin-cc's shape puts in Ccusage's own use rather than the core, subject to devbin-vc's agreement; read the wiring against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv.",
       "state": "live",
-      "recorded_at": "2026-11-06T09:16:33.099Z"
+      "recorded_at": "2026-11-06T09:16:33.099Z",
+      "edited_at": "2026-11-06T09:36:08.453Z"
     }
   ],
   "sent": [

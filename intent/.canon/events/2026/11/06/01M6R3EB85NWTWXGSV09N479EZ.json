@@ -1,0 +1,16 @@
+{
+  "id": "01M6R3EB85NWTWXGSV09N479EZ",
+  "ts": "2026-11-06T09:36:08.453Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 4,
+    "text": "Brief dc on ISSUE:0007's switch wiring (dc's hold 8), then validate it. Released when: devbin-cc sends 0326's three parts (what a project declares, how a compiled tool stamps its sha and +dirty at build, the formula's one install form) once devbin-vc agrees the shape, and devbin-vc says a devbin release carries 0326 (its todo 201). Then: brief dc, including the hint for a habitual ccusage use NAME ('to select an account, run ccusage activate NAME'), which devbin-cc's shape puts in Ccusage's own use rather than the core, subject to devbin-vc's agreement; read the wiring against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv."
+  }
+}
