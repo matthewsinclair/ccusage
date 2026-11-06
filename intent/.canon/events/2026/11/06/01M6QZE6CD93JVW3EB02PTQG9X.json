@@ -1,0 +1,15 @@
+{
+  "id": "01M6QZE6CD93JVW3EB02PTQG9X",
+  "ts": "2026-11-06T08:26:09.165Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0007"
+  },
+  "payload": {
+    "severity": "medium",
+    "title": "Ccusage's `use` selects an account, so it has no dev/opt/brew switch, and its Linux formula installs outside the brew tree; adopt devbin's one approach"
+  }
+}
