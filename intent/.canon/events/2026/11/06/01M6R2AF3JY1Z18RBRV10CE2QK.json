@@ -1,0 +1,16 @@
+{
+  "id": "01M6R2AF3JY1Z18RBRV10CE2QK",
+  "ts": "2026-11-06T09:16:32.754Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "Validate each unit dc hands over against its issue's Acceptance list. Under hv's one layer of proof, the verdict is vc's read of the diff, with the author's measured run as the one run; a scratch-clone run only when the committed tree differs from the one the run tested. Next: ISSUE:0007's switch wiring (hold 4) and ISSUE:0003's live check (todo 4), both for 0.1.9's one cut at hv's word of 2026-11-06."
+  }
+}

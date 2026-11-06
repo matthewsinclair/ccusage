@@ -3,9 +3,9 @@ node: vc
 name: vc
 role: vc
 session_id: 216719f9-fd24-458e-8ec3-f436824fa31a
-heartbeat_at: 2026-11-06 08:19Z
+heartbeat_at: 2026-11-06 09:16Z
 status: active
-focus: "EOD fold, holding for tomorrow. ISSUE:0003 step 1 done and verified; waits for Molt 1.4.3 (its cut goes again on 2026-11-05), then restart slot 01M6K31TH20532K7NYN48GJE86 at hv's go; then vc's live checks (todo 4). Hold 3 waits for devbin 0.1.20 vendored"
+focus: "0.1.9 is one cut with every outstanding issue (hv, 2026-11-06). ISSUE:0007: dc's activate rename landed (29943b5) and passed vc's read; the switch waits for devbin#0326, which devbin-cc is designing (hold 4). ISSUE:0003: steps 1 to 3 done; its live check is todo 4, with hv's step 4 and OK."
 claims: []
 ---
 
@@ -13,15 +13,16 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list, in a fresh local clone in the scratchpad with its own target dir. Next: ISSUE:0003's rollout checks (todo 4). (edited)
+- Validate each unit dc hands over against its issue's Acceptance list. Under hv's one layer of proof, the verdict is vc's read of the diff, with the author's measured run as the one run; a scratch-clone run only when the committed tree differs from the one the run tested. Next: ISSUE:0007's switch wiring (hold 4) and ISSUE:0003's live check (todo 4), both for 0.1.9's one cut at hv's word of 2026-11-06. (edited)
 
 ## TODO
 
-- At the ISSUE:0003 rollout, hv's live check. Step 1 is done and verified (17:30Z: config head, ccusage dir = engineering01's dir, launchd matches, shared oauthAccount = engineering01's, 13 Keychain items, none new). Waits for Molt 1.4.3's step 2 (Molt 0088, carrying vc's two musts) and estate slot 01M6K31TH20532K7NYN48GJE86 for step 3's restart, which pplr-vc grants with hv's go. Then: a new shell and launchd equal ccusage dir, and CLAUDE_CONFIG_DIR equals claude_config_dir; after the restart, ca646b28's mdat stops moving while c5365930 renews; a session reports engineering.01 from claude auth status (hv's OK) with no new Keychain item; Claude Usage lists exactly five accounts and nothing prompts. (edited)
+- ISSUE:0003's live check, to close it in 0.1.9's cut (hv, 2026-11-06). Steps 1 to 3 are done, verified from metadata at 09:13Z: engineering04 is active, Molt 1.4.5's login shell and launchd give its directory, 13 Keychain items, none new. (a) When 7a2ec3d6 (engineering04's login) next renews, check that ca646b28 still reads 05:01:46Z; then hv retires ca646b28 (step 4, hv's own command). (b) With hv's OK, or as hv's own command: a session on a scratch config with the exported directory reports engineering.04 from claude auth status, and no new Keychain item appears. (c) After step 4, hv sees Claude Usage list exactly five accounts with nothing prompting, and vc counts the items. Then dc closes ISSUE:0003 (dc's hold 6). (edited)
 
 ## Holds
 
-- Check that the tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Released when: the devbin vendored in bin/.devbin carries the fix for lib/cmd/formula:424, which devbin-vc and devbin-dc took on 2026-11-04. (edited)
+- Check that the tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Released when: the tap's formula is published by devbin 0.1.20 or later, at 0.1.9's post-cut. The vendored 0.1.20 carries the fix (devbin 0322: lib/cmd/formula:436 writes the manifest list one element a line), but the live formula 130e87d was rendered by 0.1.19, and the tap's test.yml still turns style and audit off. Then: turn them back on in test.yml and see the tap's CI green. (edited)
+- Brief dc on ISSUE:0007's switch wiring (dc's hold 8), then validate it. Released when: devbin-cc sends 0326's three parts (what a project declares, how a compiled tool stamps its sha and +dirty at build, the formula's one install form) and devbin-vc says a devbin release carries 0326 (its todo 201). Then: brief dc, read the wiring against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv.
 
 ## Watch-outs
 
