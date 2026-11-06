@@ -78,6 +78,10 @@ esac
       .env("PATH", self.root.join("bin"))
       .env("CCUSAGE_LAUNCHCTL", self.root.join("bin/launchctl"))
       .env_remove("CCUSAGE_CONFIG")
+      // A launcher exports these into the shell the tests run from, as Molt does for
+      // shared mode, and doctor reports the second; a test sets them itself.
+      .env_remove("CLAUDE_CONFIG_DIR")
+      .env_remove("CLAUDE_SECURESTORAGE_CONFIG_DIR")
       .env("NO_COLOR", "1");
     command
   }
