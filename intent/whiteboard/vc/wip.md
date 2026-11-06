@@ -3,9 +3,9 @@ node: vc
 name: vc
 role: vc
 session_id: 216719f9-fd24-458e-8ec3-f436824fa31a
-heartbeat_at: 2026-11-06 09:46Z
+heartbeat_at: 2026-11-06 13:40Z
 status: active
-focus: "0.1.9 is one cut with every outstanding issue (hv, 2026-11-06). ISSUE:0007 is rescoped at hv's correction: the switch is bin/devbin use, ccusage use stays the account verb, and dc reverts 29943b5 (2d42e60 stays). The adoption waits for devbin's release of #0326 (hold 4). ISSUE:0003: steps 1 to 3 done; its live check is todo 4."
+focus: "Folded for hv's travel (2026-11-06 13:39Z by date -u); nothing in flight. 0.1.9 is one cut: ISSUE:0007 waits for devbin's release of #0326 (hold 4); ISSUE:0003 is blocked at step 3 on hv's choice of launcher fix (todo 4); the tap's checks return at 0.1.9's formula publish (hold 3)."
 claims: []
 ---
 
