@@ -1,0 +1,16 @@
+{
+  "id": "01M6R1WQV2Y02B53FVT2BD547A",
+  "ts": "2026-11-06T09:09:02.946Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 6,
+    "text": "ISSUE:0007's activate rename landed as 2d42e60 (the test sandbox drops the launcher's Claude variables) and 29943b5 (the rename), on main and not pushed; vc validates. hv's ruling, via vc before 09:08Z: devbin-cc builds devbin#0326 and Ccusage wires the core once devbin releases it, so no install, switch, version-line or manifest code here until then; every outstanding issue ships in the next release."
+  }
+}
