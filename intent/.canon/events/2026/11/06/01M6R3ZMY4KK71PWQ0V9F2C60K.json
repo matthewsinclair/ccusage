@@ -1,0 +1,15 @@
+{
+  "id": "01M6R3ZMY4KK71PWQ0V9F2C60K",
+  "ts": "2026-11-06T09:45:35.428Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.edit",
+  "subject": {
+    "type": "issue",
+    "id": "0007"
+  },
+  "payload": {
+    "bytes": 7843,
+    "title": "Ccusage has no dev/opt/brew switch, no tree identity and no contract version line, and its Linux formula installs outside the brew tree; adopt devbin's one approach"
+  }
+}
