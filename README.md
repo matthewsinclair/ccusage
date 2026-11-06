@@ -34,7 +34,7 @@ ccusage add work --email you@company.com
 ccusage add personal --email you@example.com
 ccusage login work
 ccusage login personal
-ccusage activate work
+ccusage use work
 ccusage run
 ```
 
@@ -44,13 +44,13 @@ Claude retains ownership of its credentials: macOS Keychain, or its native `.cre
 
 ```sh
 ccusage list
-ccusage activate personal
+ccusage use personal
 ccusage run work -- --continue
 ccusage run -- --model sonnet
 ccusage logout personal
 ```
 
-`activate` checks that a login is stored, then changes the selection for future launches through Ccusage. It does not change a running Claude session. On Unix, `run` replaces itself with Claude, preserving signals and exit status. Arguments after `--` pass through unchanged. Inherited API-key, OAuth-token, provider, and API-base-URL environment overrides are removed for the launched Claude process so they do not override the named login. Organization-managed Claude settings still apply.
+`use` checks that a login is stored, then changes the selection for future launches through Ccusage. It does not change a running Claude session. On Unix, `run` replaces itself with Claude, preserving signals and exit status. Arguments after `--` pass through unchanged. Inherited API-key, OAuth-token, provider, and API-base-URL environment overrides are removed for the launched Claude process so they do not override the named login. Organization-managed Claude settings still apply.
 
 To make plain `claude` use the selected account, review `ccusage shell zsh` (or `bash`) and add the printed function to your shell startup file:
 
@@ -70,7 +70,7 @@ claude_config_dir = "~/.config/claude"
 
 In shared mode:
 
-- `ccusage activate NAME` selects NAME and copies its account record (`oauthAccount`, which Claude Code shows as the session's account) from NAME's own `.claude.json` into the shared one, changing no other key. It refuses a profile that has no record yet; `ccusage login NAME` writes one. On macOS it also sets launchd's `CLAUDE_SECURESTORAGE_CONFIG_DIR`, so Claude Code started from a GUI app follows the active account too. New sessions use NAME, and running ones switch when they are restarted.
+- `ccusage use NAME` selects NAME and copies its account record (`oauthAccount`, which Claude Code shows as the session's account) from NAME's own `.claude.json` into the shared one, changing no other key. It refuses a profile that has no record yet; `ccusage login NAME` writes one. On macOS it also sets launchd's `CLAUDE_SECURESTORAGE_CONFIG_DIR`, so Claude Code started from a GUI app follows the active account too. New sessions use NAME, and running ones switch when they are restarted.
 - `ccusage run [NAME]` launches Claude with the shared config and NAME's login, switching to NAME first when it is not the active profile.
 - `ccusage dir [NAME]` prints the active or named profile's directory, for a launcher to export. When shared mode is off or no profile is active it prints nothing on stdout and fails, so a launcher can use it unconditionally:
 

@@ -18,7 +18,7 @@ Usage: ccusage [--config PATH] [--no-color] [--verbose] [COMMAND]
   login NAME                   Sign in through Claude's browser login
   logout NAME                  Sign out this profile through Claude
   list                         Show profiles and local credential status
-  activate NAME                Select the account for future ccusage run launches
+  use NAME                     Select the account for future ccusage run launches
                                (in shared mode, for new Claude sessions too)
   run [NAME] [-- CLAUDE_ARGS...]
                                Launch Claude with the selected profile
@@ -259,7 +259,7 @@ pub fn run(mut args: Vec<String>) -> Result<()> {
         println!("{marker} {name:<20} {status}");
       }
     }
-    "activate" => {
+    "use" => {
       let name = one(&args)?;
       auth::read(&store.profile_dir(name)?)?;
       if store.shared_dir()?.is_some() {

@@ -215,7 +215,7 @@ impl Store {
       Some(name) => Some(name.to_owned()),
       None => self.active()?,
     }
-    .ok_or("no active profile; run ccusage activate NAME")?;
+    .ok_or("no active profile; run ccusage use NAME")?;
     self.profile(&selected)?;
     Ok(selected)
   }

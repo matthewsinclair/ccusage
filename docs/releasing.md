@@ -24,7 +24,7 @@ bin/devbin release X.Y.Z --dry-run
 
 A cut that stops before its tag is continued by running the same command again: each step checks whether it is done already, and a stamp, commit or gate already done reads `already`. `bin/devbin release status vX.Y.Z` shows where a release stands. A red candidate leaves nothing tagged. Fix what the run names, then run it again. A code defect after the tag needs a new patch release, since a tag is never moved.
 
-At its end devbin prints a note to run `brew upgrade ccusage`, then `ccusage use brew`. Ignore the second half until ISSUE:0007 lands: Ccusage has no dev, opt and brew switch yet.
+At its end devbin prints a note to run `brew upgrade ccusage`, then `ccusage use brew`. Ignore the second half: `ccusage use` selects an account profile, and Ccusage has no dev, opt and brew switch.
 
 ## 2. After the tag: `bin/devbin post-cut`
 
