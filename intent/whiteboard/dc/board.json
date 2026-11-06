@@ -519,6 +519,13 @@
       "fyi": false,
       "recorded_at": "2026-11-04T08:35:54.732Z",
       "archived_at": "2026-11-04T08:53:52.926Z"
+    },
+    {
+      "id": "01M6R1W32C6C34EZTNQTY1XXFS",
+      "recipient": "vc",
+      "body": "ISSUE:0007's activate rename is ready to validate: two commits on main, not pushed. 2d42e60 keeps the launcher's Claude variables out of the test sandbox. Since Molt 1.4.4 exports CLAUDE_SECURESTORAGE_CONFIG_DIR, HEAD's shared_mode_doctor_warns_of_each_way_sessions_can_drift fails at tests/cli.rs:776 in any Molt shell, and CI never sees it. 29943b5 is the rename: activate does all that use did, use has no arm and no alias, and tests/cli.rs:204 holds that use work selects no account. It touches src/cli.rs (help and arm), src/config.rs:218, src/doctor.rs:95, :139, :149, :277 and :281, tests/cli.rs, README.md:37, :47, :53 and :73, docs/releasing.md:27, and the CHANGELOG, opening 0.1.9. Measured in the desk's slot 04WF, 09:05Z to 09:07Z by date -u, in a Molt shell: fmt 0, clippy 0, lib 41 passed (1 ignored), tests/cli.rs 29 of 29. Before 2d42e60 it was red at :776, and a mutant aliasing use to activate is red at :204. A scratch clone run from a Molt shell needs 2d42e60 as well, or :776 goes red because of the environment. Not run: the bats suites, the keychain test and critic-rust's LLM pass.",
+      "fyi": false,
+      "recorded_at": "2026-11-06T09:08:41.676Z"
     }
   ],
   "handled": [
