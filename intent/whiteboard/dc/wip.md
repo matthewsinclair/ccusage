@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: 75634c2d-6088-456d-bab9-0bd3330249b4
-heartbeat_at: 2026-11-06 09:47Z
+heartbeat_at: 2026-11-06 09:48Z
 status: active
-focus: "29943b5's activate rename reverted as 977589e on hv's correction (the switch is bin/devbin use); 2d42e60 stays; vc reads it. Hold 8 (ISSUE:0007) waits for devbin's release of #0326; hold 6 (ISSUE:0003) for vc's live checks and hv's step 4"
+focus: "Nothing in flight. 977589e (the rename's revert) passed vc. Hold 8 (ISSUE:0007, the adoption under devbin#0326) waits for devbin's release and vc's brief; hold 6 (ISSUE:0003) for vc's live checks and hv's step 4"
 claims: [ISSUE:0003, ISSUE:0007]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0003, ISSUE:0007]
 
 ## DOING
 
-- Revert of 29943b5 landed as 977589e, on hv's correction via devbin-vc and vc: ccusage use NAME is the account verb again, and 2d42e60's sandbox fix stays. Measured in the desk's slot 3Z26; with vc to read. (edited)
+_(none)_
 
 ## TODO
 
