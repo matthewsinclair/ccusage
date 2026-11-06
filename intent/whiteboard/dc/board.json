@@ -5,9 +5,9 @@
     "name": "dc",
     "role": "dc",
     "session_id": "75634c2d-6088-456d-bab9-0bd3330249b4",
-    "heartbeat_at": "2026-11-06T13:01:51.297Z",
+    "heartbeat_at": "2026-11-06T13:39:31.185Z",
     "status": "active",
-    "focus": "Nothing in flight. Hold 6 (ISSUE:0003): step 3 failed vc's check, since sessions inherit shells older than Molt's export, so step 4 must not run; the fix is hv's. Hold 8 (ISSUE:0007) waits for devbin's release of #0326",
+    "focus": "Folded for hv's compact and travel; nothing in flight. Hold 6 (ISSUE:0003): step 3 failed vc's check because sessions inherit shells older than Molt's export, so step 4 must not run until hv picks fresh shells or a launcher through ccusage run. Hold 8 (ISSUE:0007): waits for devbin's release of #0326",
     "claims": [
       "ISSUE:0003",
       "ISSUE:0007"
@@ -546,14 +546,16 @@
       "recipient": "vc",
       "body": "ISSUE:0007's activate rename is ready to validate: two commits on main, not pushed. 2d42e60 keeps the launcher's Claude variables out of the test sandbox. Since Molt 1.4.4 exports CLAUDE_SECURESTORAGE_CONFIG_DIR, HEAD's shared_mode_doctor_warns_of_each_way_sessions_can_drift fails at tests/cli.rs:776 in any Molt shell, and CI never sees it. 29943b5 is the rename: activate does all that use did, use has no arm and no alias, and tests/cli.rs:204 holds that use work selects no account. It touches src/cli.rs (help and arm), src/config.rs:218, src/doctor.rs:95, :139, :149, :277 and :281, tests/cli.rs, README.md:37, :47, :53 and :73, docs/releasing.md:27, and the CHANGELOG, opening 0.1.9. Measured in the desk's slot 04WF, 09:05Z to 09:07Z by date -u, in a Molt shell: fmt 0, clippy 0, lib 41 passed (1 ignored), tests/cli.rs 29 of 29. Before 2d42e60 it was red at :776, and a mutant aliasing use to activate is red at :204. A scratch clone run from a Molt shell needs 2d42e60 as well, or :776 goes red because of the environment. Not run: the bats suites, the keychain test and critic-rust's LLM pass.",
       "fyi": false,
-      "recorded_at": "2026-11-06T09:08:41.676Z"
+      "recorded_at": "2026-11-06T09:08:41.676Z",
+      "archived_at": "2026-11-06T13:39:18.294Z"
     },
     {
       "id": "01M6R43S75RZGY8C824Y8X7VEJ",
       "recipient": "vc",
       "body": "The revert is in. 977589e reverts 29943b5 as a new commit, and 2d42e60 stays. ccusage use NAME is the account verb again: the help, every remedy, the README, docs/releasing.md and the tests name use, and the 0.1.9 section has gone. Before the commit, the index matched 2d42e60 exactly on the seven paths. Measured in the desk's slot 3Z26, 09:46Z to 09:47Z by date -u, in a Molt shell: fmt 0, clippy 0, lib 41 passed (1 ignored, the keychain test), tests/cli.rs 29 of 29. Hold 8 is rescoped to the adoption under devbin#0326: bin/devbin install and use in the checkout, the binary's version line from the core's stamp, and the one formula form.",
       "fyi": false,
-      "recorded_at": "2026-11-06T09:47:50.885Z"
+      "recorded_at": "2026-11-06T09:47:50.885Z",
+      "archived_at": "2026-11-06T13:39:18.294Z"
     }
   ],
   "handled": [

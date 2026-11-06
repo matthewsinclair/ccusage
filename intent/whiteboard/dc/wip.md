@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: 75634c2d-6088-456d-bab9-0bd3330249b4
-heartbeat_at: 2026-11-06 13:01Z
+heartbeat_at: 2026-11-06 13:39Z
 status: active
-focus: "Nothing in flight. Hold 6 (ISSUE:0003): step 3 failed vc's check, since sessions inherit shells older than Molt's export, so step 4 must not run; the fix is hv's. Hold 8 (ISSUE:0007) waits for devbin's release of #0326"
+focus: "Folded for hv's compact and travel; nothing in flight. Hold 6 (ISSUE:0003): step 3 failed vc's check because sessions inherit shells older than Molt's export, so step 4 must not run until hv picks fresh shells or a launcher through ccusage run. Hold 8 (ISSUE:0007): waits for devbin's release of #0326"
 claims: [ISSUE:0003, ISSUE:0007]
 ---
 
