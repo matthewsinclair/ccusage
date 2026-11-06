@@ -1,0 +1,16 @@
+{
+  "id": "01M6RF6W7AKKQ079ZEP957BPHG",
+  "ts": "2026-11-06T13:01:46.602Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 6,
+    "text": "ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Steps 1 and 2 are in, but step 3 failed vc's check (12:57Z by vc's date -u): 19 of 29 claude processes, dc's own included, launched from shells older than Molt's export or the last ccusage use, with no CLAUDE_SECURESTORAGE_CONFIG_DIR, so they renew ca646b28. The bounce restarted sessions, not shells. Step 4 must not run. Released when hv's fix (fresh shells, or a launcher that reads ccusage dir at each launch, eg through ccusage run) is in, vc's live checks (its todo 4) pass, and hv has retired ca646b28."
+  }
+}

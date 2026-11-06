@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: 75634c2d-6088-456d-bab9-0bd3330249b4
-heartbeat_at: 2026-11-06 09:48Z
+heartbeat_at: 2026-11-06 13:01Z
 status: active
-focus: "Nothing in flight. 977589e (the rename's revert) passed vc. Hold 8 (ISSUE:0007, the adoption under devbin#0326) waits for devbin's release and vc's brief; hold 6 (ISSUE:0003) for vc's live checks and hv's step 4"
+focus: "Nothing in flight. Hold 6 (ISSUE:0003): step 3 failed vc's check, since sessions inherit shells older than Molt's export, so step 4 must not run; the fix is hv's. Hold 8 (ISSUE:0007) waits for devbin's release of #0326"
 claims: [ISSUE:0003, ISSUE:0007]
 ---
 
@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Steps 1 and 2 are in (Molt 1.4.4 brought 1.4.3's export to brew), and this morning's bounce was step 3's restart, so the desk revoked slot 01M6K31TH20532K7NYN48GJE86 at 07:11Z. Released when vc's live checks (its todo 4) pass and hv has retired ca646b28 (step 4). (edited)
+- ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Steps 1 and 2 are in, but step 3 failed vc's check (12:57Z by vc's date -u): 19 of 29 claude processes, dc's own included, launched from shells older than Molt's export or the last ccusage use, with no CLAUDE_SECURESTORAGE_CONFIG_DIR, so they renew ca646b28. The bounce restarted sessions, not shells. Step 4 must not run. Released when hv's fix (fresh shells, or a launcher that reads ccusage dir at each launch, eg through ccusage run) is in, vc's live checks (its todo 4) pass, and hv has retired ca646b28. (edited)
 - ISSUE:0007, rescoped on hv's correction (via devbin-vc and vc, 2026-11-06): the dev/opt/brew switch is bin/devbin use in the checkout, a devbin feature, and ccusage use NAME stays the account verb. What stays for Ccusage is the adoption under devbin#0326: bin/devbin install and use in the checkout, the binary's version line from the core's stamp, and the one formula form. Released when devbin releases #0326, which devbin-cc builds, and vc briefs the wiring. (edited)
 
 ## Watch-outs
