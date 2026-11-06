@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: 75634c2d-6088-456d-bab9-0bd3330249b4
-heartbeat_at: 2026-11-06 09:09Z
+heartbeat_at: 2026-11-06 09:12Z
 status: active
-focus: "ISSUE:0007's rename landed (2d42e60, 29943b5), vc validating. Ccusage wires devbin#0326's core once devbin releases it; every outstanding issue ships in 0.1.9 (hv). Hold 6 (ISSUE:0003) waits on vc's live checks and hv's step 4"
+focus: "ISSUE:0007's rename validated by vc (2d42e60, 29943b5); hold 8, its switch half, waits for devbin's release of #0326. Hold 6 (ISSUE:0003) waits on vc's live checks and hv's step 4. Every outstanding issue ships in the next cut (hv)"
 claims: [ISSUE:0003, ISSUE:0007]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0003, ISSUE:0007]
 
 ## DOING
 
-- ISSUE:0007's activate rename landed as 2d42e60 (the test sandbox drops the launcher's Claude variables) and 29943b5 (the rename), on main and not pushed; vc validates. hv's ruling, via vc before 09:08Z: devbin-cc builds devbin#0326 and Ccusage wires the core once devbin releases it, so no install, switch, version-line or manifest code here until then; every outstanding issue ships in the next release. (edited)
+_(none)_
 
 ## TODO
 
@@ -22,6 +22,7 @@ _(none)_
 ## Holds
 
 - ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Steps 1 and 2 are in (Molt 1.4.4 brought 1.4.3's export to brew), and this morning's bounce was step 3's restart, so the desk revoked slot 01M6K31TH20532K7NYN48GJE86 at 07:11Z. Released when vc's live checks (its todo 4) pass and hv has retired ca646b28 (step 4). (edited)
+- ISSUE:0007's switch half: Ccusage wires devbin's core for install, use [dev|opt|brew], the version line with its build-stamped sha, doctor's shadow check and the formula's one install form, and writes none of it before then (hv's ruling via vc, 2026-11-06). Released when devbin releases #0326, which devbin-cc builds, and vc briefs the wiring. The wiring commit also makes the 0.1.9 CHANGELOG line, use is kept for the switch, read true (vc's nit 1).
 
 ## Watch-outs
 

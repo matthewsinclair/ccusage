@@ -1,0 +1,15 @@
+{
+  "id": "01M6R23BEG825NWRPWD2092KDR",
+  "ts": "2026-11-06T09:12:39.632Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ISSUE:0007's switch half: Ccusage wires devbin's core for install, use [dev|opt|brew], the version line with its build-stamped sha, doctor's shadow check and the formula's one install form, and writes none of it before then (hv's ruling via vc, 2026-11-06). Released when devbin releases #0326, which devbin-cc builds, and vc briefs the wiring. The wiring commit also makes the 0.1.9 CHANGELOG line, use is kept for the switch, read true (vc's nit 1)."
+  }
+}
