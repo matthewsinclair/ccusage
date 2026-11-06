@@ -1,0 +1,16 @@
+{
+  "id": "01M6R3ZHS2RB8AHG9N5Y9WN97J",
+  "ts": "2026-11-06T09:45:32.194Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 8,
+    "text": "ISSUE:0007, rescoped on hv's correction (via devbin-vc and vc, 2026-11-06): the dev/opt/brew switch is bin/devbin use in the checkout, a devbin feature, and ccusage use NAME stays the account verb. What stays for Ccusage is the adoption under devbin#0326: bin/devbin install and use in the checkout, the binary's version line from the core's stamp, and the one formula form. Released when devbin releases #0326, which devbin-cc builds, and vc briefs the wiring."
+  }
+}

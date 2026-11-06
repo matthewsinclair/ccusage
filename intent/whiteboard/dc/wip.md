@@ -3,9 +3,9 @@ node: dc
 name: dc
 role: dc
 session_id: 75634c2d-6088-456d-bab9-0bd3330249b4
-heartbeat_at: 2026-11-06 09:12Z
+heartbeat_at: 2026-11-06 09:47Z
 status: active
-focus: "ISSUE:0007's rename validated by vc (2d42e60, 29943b5); hold 8, its switch half, waits for devbin's release of #0326. Hold 6 (ISSUE:0003) waits on vc's live checks and hv's step 4. Every outstanding issue ships in the next cut (hv)"
+focus: "29943b5's activate rename reverted as 977589e on hv's correction (the switch is bin/devbin use); 2d42e60 stays; vc reads it. Hold 8 (ISSUE:0007) waits for devbin's release of #0326; hold 6 (ISSUE:0003) for vc's live checks and hv's step 4"
 claims: [ISSUE:0003, ISSUE:0007]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0003, ISSUE:0007]
 
 ## DOING
 
-_(none)_
+- Revert of 29943b5 landed as 977589e, on hv's correction via devbin-vc and vc: ccusage use NAME is the account verb again, and 2d42e60's sandbox fix stays. Measured in the desk's slot 3Z26; with vc to read. (edited)
 
 ## TODO
 
@@ -22,7 +22,7 @@ _(none)_
 ## Holds
 
 - ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Steps 1 and 2 are in (Molt 1.4.4 brought 1.4.3's export to brew), and this morning's bounce was step 3's restart, so the desk revoked slot 01M6K31TH20532K7NYN48GJE86 at 07:11Z. Released when vc's live checks (its todo 4) pass and hv has retired ca646b28 (step 4). (edited)
-- ISSUE:0007's switch half: Ccusage wires devbin's core for install, use [dev|opt|brew], the version line with its build-stamped sha, doctor's shadow check and the formula's one install form, and writes none of it before then (hv's ruling via vc, 2026-11-06). Released when devbin releases #0326, which devbin-cc builds, and vc briefs the wiring. The wiring commit also makes the 0.1.9 CHANGELOG line, use is kept for the switch, read true (vc's nit 1).
+- ISSUE:0007, rescoped on hv's correction (via devbin-vc and vc, 2026-11-06): the dev/opt/brew switch is bin/devbin use in the checkout, a devbin feature, and ccusage use NAME stays the account verb. What stays for Ccusage is the adoption under devbin#0326: bin/devbin install and use in the checkout, the binary's version line from the core's stamp, and the one formula form. Released when devbin releases #0326, which devbin-cc builds, and vc briefs the wiring. (edited)
 
 ## Watch-outs
 

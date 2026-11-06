@@ -1,0 +1,15 @@
+{
+  "id": "01M6R3ZHNZETVG20ZX66DZD30D",
+  "ts": "2026-11-06T09:45:32.095Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "Revert of 29943b5 landed as 977589e, on hv's correction via devbin-vc and vc: ccusage use NAME is the account verb again, and 2d42e60's sandbox fix stays. Measured in the desk's slot 3Z26; with vc to read."
+  }
+}

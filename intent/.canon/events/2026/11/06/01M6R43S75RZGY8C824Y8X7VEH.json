@@ -1,0 +1,17 @@
+{
+  "id": "01M6R43S75RZGY8C824Y8X7VEH",
+  "ts": "2026-11-06T09:47:50.885Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "The revert is in. 977589e reverts 29943b5 as a new commit, and 2d42e60 stays. ccusage use NAME is the account verb again: the help, every remedy, the README, docs/releasing.md and the tests name use, and the 0.1.9 section has gone. Before the commit, the index matched 2d42e60 exactly on the seven paths. Measured in the desk's slot 3Z26, 09:46Z to 09:47Z by date -u, in a Molt shell: fmt 0, clippy 0, lib 41 passed (1 ignored, the keychain test), tests/cli.rs 29 of 29. Hold 8 is rescoped to the adoption under devbin#0326: bin/devbin install and use in the checkout, the binary's version line from the core's stamp, and the one formula form.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

@@ -5,9 +5,9 @@
     "name": "dc",
     "role": "dc",
     "session_id": "75634c2d-6088-456d-bab9-0bd3330249b4",
-    "heartbeat_at": "2026-11-06T09:12:43.984Z",
+    "heartbeat_at": "2026-11-06T09:47:58.133Z",
     "status": "active",
-    "focus": "ISSUE:0007's rename validated by vc (2d42e60, 29943b5); hold 8, its switch half, waits for devbin's release of #0326. Hold 6 (ISSUE:0003) waits on vc's live checks and hv's step 4. Every outstanding issue ships in the next cut (hv)",
+    "focus": "29943b5's activate rename reverted as 977589e on hv's correction (the switch is bin/devbin use); 2d42e60 stays; vc reads it. Hold 8 (ISSUE:0007) waits for devbin's release of #0326; hold 6 (ISSUE:0003) for vc's live checks and hv's step 4",
     "claims": [
       "ISSUE:0003",
       "ISSUE:0007"
@@ -288,9 +288,19 @@
       "node": "dc",
       "kind": "hold",
       "seq": 8,
-      "text": "ISSUE:0007's switch half: Ccusage wires devbin's core for install, use [dev|opt|brew], the version line with its build-stamped sha, doctor's shadow check and the formula's one install form, and writes none of it before then (hv's ruling via vc, 2026-11-06). Released when devbin releases #0326, which devbin-cc builds, and vc briefs the wiring. The wiring commit also makes the 0.1.9 CHANGELOG line, use is kept for the switch, read true (vc's nit 1).",
+      "text": "ISSUE:0007, rescoped on hv's correction (via devbin-vc and vc, 2026-11-06): the dev/opt/brew switch is bin/devbin use in the checkout, a devbin feature, and ccusage use NAME stays the account verb. What stays for Ccusage is the adoption under devbin#0326: bin/devbin install and use in the checkout, the binary's version line from the core's stamp, and the one formula form. Released when devbin releases #0326, which devbin-cc builds, and vc briefs the wiring.",
       "state": "live",
-      "recorded_at": "2026-11-06T09:12:39.632Z"
+      "recorded_at": "2026-11-06T09:12:39.632Z",
+      "edited_at": "2026-11-06T09:45:32.194Z"
+    },
+    {
+      "node": "dc",
+      "kind": "doing",
+      "seq": 7,
+      "text": "Revert of 29943b5 landed as 977589e, on hv's correction via devbin-vc and vc: ccusage use NAME is the account verb again, and 2d42e60's sandbox fix stays. Measured in the desk's slot 3Z26; with vc to read.",
+      "state": "live",
+      "recorded_at": "2026-11-06T09:45:32.095Z",
+      "edited_at": "2026-11-06T09:47:50.818Z"
     }
   ],
   "sent": [
@@ -536,6 +546,13 @@
       "body": "ISSUE:0007's activate rename is ready to validate: two commits on main, not pushed. 2d42e60 keeps the launcher's Claude variables out of the test sandbox. Since Molt 1.4.4 exports CLAUDE_SECURESTORAGE_CONFIG_DIR, HEAD's shared_mode_doctor_warns_of_each_way_sessions_can_drift fails at tests/cli.rs:776 in any Molt shell, and CI never sees it. 29943b5 is the rename: activate does all that use did, use has no arm and no alias, and tests/cli.rs:204 holds that use work selects no account. It touches src/cli.rs (help and arm), src/config.rs:218, src/doctor.rs:95, :139, :149, :277 and :281, tests/cli.rs, README.md:37, :47, :53 and :73, docs/releasing.md:27, and the CHANGELOG, opening 0.1.9. Measured in the desk's slot 04WF, 09:05Z to 09:07Z by date -u, in a Molt shell: fmt 0, clippy 0, lib 41 passed (1 ignored), tests/cli.rs 29 of 29. Before 2d42e60 it was red at :776, and a mutant aliasing use to activate is red at :204. A scratch clone run from a Molt shell needs 2d42e60 as well, or :776 goes red because of the environment. Not run: the bats suites, the keychain test and critic-rust's LLM pass.",
       "fyi": false,
       "recorded_at": "2026-11-06T09:08:41.676Z"
+    },
+    {
+      "id": "01M6R43S75RZGY8C824Y8X7VEJ",
+      "recipient": "vc",
+      "body": "The revert is in. 977589e reverts 29943b5 as a new commit, and 2d42e60 stays. ccusage use NAME is the account verb again: the help, every remedy, the README, docs/releasing.md and the tests name use, and the 0.1.9 section has gone. Before the commit, the index matched 2d42e60 exactly on the seven paths. Measured in the desk's slot 3Z26, 09:46Z to 09:47Z by date -u, in a Molt shell: fmt 0, clippy 0, lib 41 passed (1 ignored, the keychain test), tests/cli.rs 29 of 29. Hold 8 is rescoped to the adoption under devbin#0326: bin/devbin install and use in the checkout, the binary's version line from the core's stamp, and the one formula form.",
+      "fyi": false,
+      "recorded_at": "2026-11-06T09:47:50.885Z"
     }
   ],
   "handled": [
