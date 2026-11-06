@@ -198,9 +198,12 @@ fn xdg_paths_and_no_overwrite() -> Result<()> {
 fn login_select_run_logout_and_argument_isolation() -> Result<()> {
   let sandbox = Sandbox::new()?;
   sandbox.setup()?;
-  assert!(!sandbox.run(&["use", "work"])?.status.success());
+  assert!(!sandbox.run(&["activate", "work"])?.status.success());
   sandbox.ok(&["login", "work"])?;
-  sandbox.ok(&["use", "work"])?;
+  // use is kept for the dev, opt and brew switch, so it selects no account (ISSUE:0007).
+  assert!(!sandbox.run(&["use", "work"])?.status.success());
+  assert!(!sandbox.ok(&["list"])?.contains("* work"));
+  sandbox.ok(&["activate", "work"])?;
   let list = sandbox.ok(&["list"])?;
   assert!(list.contains("* work"));
   assert!(list.contains("authenticated"));
@@ -398,7 +401,7 @@ fn verbose_shows_formatted_details_without_json_or_diagnostics() -> Result<()> {
   let default = sandbox.ok(&["usage", "work"])?;
   assert!(default.contains("Fable"));
   assert!(!default.contains("WEEKLY BREAKDOWN"));
-  sandbox.ok(&["use", "work"])?;
+  sandbox.ok(&["activate", "work"])?;
   for args in [
     vec!["--verbose", "usage", "work"],
     vec!["usage", "work", "--verbose"],
@@ -425,7 +428,7 @@ fn bare_ccusage_and_leading_usage_flags_report_as_usage_does() -> Result<()> {
   sandbox.setup()?;
   sandbox.ok(&["add", "personal"])?;
   sandbox.cached("work", ccusage::now(), 0)?;
-  sandbox.ok(&["use", "work"])?;
+  sandbox.ok(&["activate", "work"])?;
   for (bare, explicit) in [
     (vec!["--json"], vec!["usage", "--json"]),
     (vec!["--all", "--json"], vec!["usage", "--all", "--json"]),
@@ -460,7 +463,7 @@ fn help_comes_only_from_help_and_dash_dash_help() -> Result<()> {
   assert!(first_run.stdout.is_empty());
   sandbox.setup()?;
   sandbox.cached("work", ccusage::now(), 0)?;
-  sandbox.ok(&["use", "work"])?;
+  sandbox.ok(&["activate", "work"])?;
   let bare = sandbox.ok(&[])?;
   assert!(!bare.contains(synopsis));
   assert!(bare.contains("62%"));
@@ -517,7 +520,7 @@ fn private_config_state_cache_and_credentials_are_mode_600() -> Result<()> {
   let sandbox = Sandbox::new()?;
   sandbox.setup()?;
   sandbox.ok(&["login", "work"])?;
-  sandbox.ok(&["use", "work"])?;
+  sandbox.ok(&["activate", "work"])?;
   sandbox.cached("work", ccusage::now(), 0)?;
   for relative in [
     "config/ccusage/config.toml",
@@ -641,7 +644,7 @@ fn shared_mode_dir_prints_the_login_directory_only_when_shared_mode_is_on() -> R
   let sandbox = Sandbox::new()?;
   sandbox.setup()?;
   sandbox.ok(&["login", "work"])?;
-  sandbox.ok(&["use", "work"])?;
+  sandbox.ok(&["activate", "work"])?;
   let off = sandbox.run(&["dir"])?;
   assert!(!off.status.success() && off.stdout.is_empty());
   assert!(String::from_utf8(off.stderr)?.contains("shared mode is off"));
@@ -650,7 +653,7 @@ fn shared_mode_dir_prints_the_login_directory_only_when_shared_mode_is_on() -> R
   // No active profile: an empty value would mean ~/.claude to Claude Code.
   let none = sandbox.run(&["dir"])?;
   assert!(!none.status.success() && none.stdout.is_empty());
-  sandbox.ok(&["use", "work"])?;
+  sandbox.ok(&["activate", "work"])?;
   let dir = format!("{}\n", sandbox.profile("work").display());
   assert_eq!(sandbox.ok(&["dir"])?, dir);
   assert_eq!(sandbox.ok(&["dir", "work"])?, dir);
@@ -659,13 +662,13 @@ fn shared_mode_dir_prints_the_login_directory_only_when_shared_mode_is_on() -> R
 }
 
 #[test]
-fn shared_mode_use_copies_only_the_account_record_and_points_launchd() -> Result<()> {
+fn shared_mode_activate_copies_only_the_account_record_and_points_launchd() -> Result<()> {
   let sandbox = Sandbox::new()?;
   let shared = sandbox.shared()?;
   let settings = shared.join(".claude.json");
   // Claude Code saves its .claude.json at 0600, and so does a switch, whatever it found.
   fs::set_permissions(&settings, fs::Permissions::from_mode(0o644))?;
-  let said = sandbox.ok(&["use", "work"])?;
+  let said = sandbox.ok(&["activate", "work"])?;
   assert!(said.contains("New Claude sessions use this account"));
   assert_eq!(
     fs::read_to_string(&settings)?,
@@ -693,11 +696,11 @@ fn shared_mode_use_copies_only_the_account_record_and_points_launchd() -> Result
 }
 
 #[test]
-fn shared_mode_use_refuses_a_profile_without_an_account_record() -> Result<()> {
+fn shared_mode_activate_refuses_a_profile_without_an_account_record() -> Result<()> {
   let sandbox = Sandbox::new()?;
   let shared = sandbox.shared()?;
   fs::remove_file(sandbox.profile("work").join(".claude.json"))?;
-  let output = sandbox.run(&["use", "work"])?;
+  let output = sandbox.run(&["activate", "work"])?;
   assert!(!output.status.success());
   assert!(String::from_utf8(output.stderr)?.contains("records no oauthAccount"));
   assert_eq!(
@@ -715,7 +718,7 @@ fn shared_mode_run_borrows_the_profile_login_and_switches_first() -> Result<()> 
   let shared = sandbox.shared()?;
   sandbox.ok(&["add", "home"])?;
   sandbox.login_with_record("home", "u-home", "home@example.com")?;
-  sandbox.ok(&["use", "work"])?;
+  sandbox.ok(&["activate", "work"])?;
   let output = sandbox
     .command()
     .args(["run"])
@@ -770,7 +773,7 @@ fn a_profile_in_the_shared_config_directory_is_refused() -> Result<()> {
 fn shared_mode_doctor_warns_of_each_way_sessions_can_drift() -> Result<()> {
   let sandbox = Sandbox::new()?;
   let shared = sandbox.shared()?;
-  sandbox.ok(&["use", "work"])?;
+  sandbox.ok(&["activate", "work"])?;
   let clean = sandbox.ok(&["doctor"])?;
   assert!(clean.contains("OK   Shared mode: sessions use"), "{clean}");
   assert!(clean.contains("records work's account"), "{clean}");
@@ -794,7 +797,7 @@ fn shared_mode_doctor_warns_of_each_way_sessions_can_drift() -> Result<()> {
   assert!(output.status.success());
   let drift = String::from_utf8(output.stdout)?;
   for warning in [
-    "does not record work's account; run ccusage use work",
+    "does not record work's account; run ccusage activate work",
     "holds a login of its own",
     "engineering03 has no profile in the config",
     "CLAUDE_SECURESTORAGE_CONFIG_DIR=/nowhere names no profile's directory",
@@ -832,7 +835,7 @@ fn doctor_is_unchanged_with_shared_mode_off() -> Result<()> {
 }
 
 #[test]
-fn shared_mode_use_waits_for_claude_codes_settings_lock() -> Result<()> {
+fn shared_mode_activate_waits_for_claude_codes_settings_lock() -> Result<()> {
   use std::{process::Stdio, time::Duration};
   let sandbox = Sandbox::new()?;
   let shared = sandbox.shared()?;
@@ -841,13 +844,13 @@ fn shared_mode_use_waits_for_claude_codes_settings_lock() -> Result<()> {
   fs::create_dir(&lock)?;
   let mut child = sandbox
     .command()
-    .args(["use", "work"])
+    .args(["activate", "work"])
     .stdout(Stdio::null())
     .spawn()?;
   std::thread::sleep(Duration::from_millis(500));
   assert!(
     child.try_wait()?.is_none(),
-    "use went ahead while the lock was held"
+    "activate went ahead while the lock was held"
   );
   assert_eq!(
     fs::read_to_string(shared.join(".claude.json"))?,

@@ -92,7 +92,9 @@ fn shared_checks(store: &Store, shared: &Path) {
       ),
       (Ok(_), Ok(_)) => line(
         "WARN",
-        format!("The shared .claude.json does not record {name}'s account; run ccusage use {name}"),
+        format!(
+          "The shared .claude.json does not record {name}'s account; run ccusage activate {name}"
+        ),
       ),
       (Err(error), _) | (_, Err(error)) => line("WARN", format!("Account records: {error}")),
     }
@@ -136,7 +138,7 @@ fn shared_checks(store: &Store, shared: &Path) {
       Ok(value) if value.is_empty() => line(
         "WARN",
         format!(
-          "launchd has no {}, so Claude Code started from a GUI app uses the shared config's own login; run ccusage use NAME",
+          "launchd has no {}, so Claude Code started from a GUI app uses the shared config's own login; run ccusage activate NAME",
           shared::LOGIN_DIR
         ),
       ),
@@ -146,7 +148,7 @@ fn shared_checks(store: &Store, shared: &Path) {
       ),
       Ok(value) if names_a_profile(std::ffi::OsStr::new(&value)) => line(
         "WARN",
-        "launchd gives GUI-started Claude Code another profile's login than the active one; run ccusage use NAME",
+        "launchd gives GUI-started Claude Code another profile's login than the active one; run ccusage activate NAME",
       ),
       Ok(value) => line(
         "WARN",
@@ -274,11 +276,11 @@ pub fn run(path: &Path) -> Result<()> {
           }
           Ok(Some(_)) => line(
             "WARN",
-            "Active profile is no longer configured; run ccusage use NAME",
+            "Active profile is no longer configured; run ccusage activate NAME",
           ),
           Ok(None) => line(
             "INFO",
-            "No active profile; after login, run ccusage use NAME",
+            "No active profile; after login, run ccusage activate NAME",
           ),
           Err(error) => {
             line("FAIL", format!("Active selection: {error}"));
