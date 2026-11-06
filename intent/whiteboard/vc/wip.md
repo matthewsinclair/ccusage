@@ -3,9 +3,9 @@ node: vc
 name: vc
 role: vc
 session_id: 216719f9-fd24-458e-8ec3-f436824fa31a
-heartbeat_at: 2026-11-06 09:16Z
+heartbeat_at: 2026-11-06 09:46Z
 status: active
-focus: "0.1.9 is one cut with every outstanding issue (hv, 2026-11-06). ISSUE:0007: dc's activate rename landed (29943b5) and passed vc's read; the switch waits for devbin#0326, which devbin-cc is designing (hold 4). ISSUE:0003: steps 1 to 3 done; its live check is todo 4, with hv's step 4 and OK."
+focus: "0.1.9 is one cut with every outstanding issue (hv, 2026-11-06). ISSUE:0007 is rescoped at hv's correction: the switch is bin/devbin use, ccusage use stays the account verb, and dc reverts 29943b5 (2d42e60 stays). The adoption waits for devbin's release of #0326 (hold 4). ISSUE:0003: steps 1 to 3 done; its live check is todo 4."
 claims: []
 ---
 
@@ -13,7 +13,7 @@ claims: []
 
 ## DOING
 
-- Validate each unit dc hands over against its issue's Acceptance list. Under hv's one layer of proof, the verdict is vc's read of the diff, with the author's measured run as the one run; a scratch-clone run only when the committed tree differs from the one the run tested. Next: ISSUE:0007's switch wiring (hold 4) and ISSUE:0003's live check (todo 4), both for 0.1.9's one cut at hv's word of 2026-11-06. (edited)
+- Validate each unit dc hands over against its issue's Acceptance list. Under hv's one layer of proof, the verdict is vc's read of the diff, with the author's measured run as the one run; a scratch-clone run only when the committed tree differs from the one the run tested. Now: read dc's revert of 29943b5 (hv's correction: use is bin/devbin's). Next: ISSUE:0007's wiring (hold 4) and ISSUE:0003's live check (todo 4), both for 0.1.9's one cut at hv's word of 2026-11-06. (edited)
 
 ## TODO
 
@@ -22,7 +22,7 @@ claims: []
 ## Holds
 
 - Check that the tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Released when: the tap's formula is published by devbin 0.1.20 or later, at 0.1.9's post-cut. The vendored 0.1.20 carries the fix (devbin 0322: lib/cmd/formula:436 writes the manifest list one element a line), but the live formula 130e87d was rendered by 0.1.19, and the tap's test.yml still turns style and audit off. Then: turn them back on in test.yml and see the tap's CI green. (edited)
-- Brief dc on ISSUE:0007's switch wiring (dc's hold 8), then validate it. Released when: devbin-cc sends 0326's three parts (what a project declares, how a compiled tool stamps its sha and +dirty at build, the formula's one install form) once devbin-vc agrees the shape, and devbin-vc says a devbin release carries 0326 (its todo 201). Then: forward the three parts to cldr-vc and cldr-dc unless devbin-cc already sent them (cldr#0001 wires the same way, at hv's word); brief dc, including the hint for a habitual ccusage use NAME ('to select an account, run ccusage activate NAME'), which devbin-cc's shape puts in Ccusage's own use rather than the core, subject to devbin-vc's agreement; read the wiring against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv. (edited)
+- Brief dc on ISSUE:0007's wiring (dc's hold 8), then validate it. Released when: devbin-vc says a devbin release carries devbin#0326 (its todo 201) and Ccusage vendors it. The three parts reached vc, cldr-vc and cldr-dc on 2026-11-06 and are in ISSUE:0007's Fix outline. hv's correction makes the switch and the publish bin/devbin's (bin/devbin use, bin/devbin install), ccusage use stays the account verb, and devbin-vc's ruling gives ccusage no version verb, only the --version line. Then: brief dc, read the wiring against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv. (edited)
 
 ## Watch-outs
 

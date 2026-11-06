@@ -1,0 +1,16 @@
+{
+  "id": "01M6R40PAHFPC9HS3N852NTZFR",
+  "ts": "2026-11-06T09:46:09.617Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 4,
+    "text": "Brief dc on ISSUE:0007's wiring (dc's hold 8), then validate it. Released when: devbin-vc says a devbin release carries devbin#0326 (its todo 201) and Ccusage vendors it. The three parts reached vc, cldr-vc and cldr-dc on 2026-11-06 and are in ISSUE:0007's Fix outline. hv's correction makes the switch and the publish bin/devbin's (bin/devbin use, bin/devbin install), ccusage use stays the account verb, and devbin-vc's ruling gives ccusage no version verb, only the --version line. Then: brief dc, read the wiring against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv."
+  }
+}
