@@ -91,10 +91,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 4,
-      "text": "ISSUE:0003's live check, to close it in 0.1.9's cut (hv, 2026-11-06). Steps 1 to 3 are done, verified from metadata at 09:13Z: engineering04 is active, Molt 1.4.5's login shell and launchd give its directory, 13 Keychain items, none new. (a) When 7a2ec3d6 (engineering04's login) next renews, check that ca646b28 still reads 05:01:46Z; then hv retires ca646b28 (step 4, hv's own command). (b) With hv's OK, or as hv's own command: a session on a scratch config with the exported directory reports engineering.04 from claude auth status, and no new Keychain item appears. (c) After step 4, hv sees Claude Usage list exactly five accounts with nothing prompting, and vc counts the items. Then dc closes ISSUE:0003 (dc's hold 6).",
+      "text": "ISSUE:0003's live check, to close it in 0.1.9's cut (hv, 2026-11-06). BLOCKED at 12:57Z: step 3's check failed. ca646b28 was rewritten at 12:56:47Z while engineering04's 7a2ec3d6 has not moved since 04:54:53Z, because 19 of 29 claude processes launched with no CLAUDE_SECURESTORAGE_CONFIG_DIR and 9 with engineering00's, all inheriting from herdr shells older than the export or the last ccusage use (ISSUE:0003's record has the detail). Released when: hv has every session started from a fresh shell, or the launcher reads ccusage dir at each launch. Then: (a) re-check that ca646b28 stops moving while 7a2ec3d6 renews, and that every claude process carries the active profile's directory; hv retires ca646b28 (step 4, hv's own command); (b) with hv's OK, or as hv's own command, a session on a scratch config with the exported directory reports the active profile's email from claude auth status, and no new Keychain item appears; (c) after step 4, hv sees Claude Usage list exactly five accounts with nothing prompting, and vc counts the items. Then dc closes ISSUE:0003 (dc's hold 6).",
       "state": "live",
       "recorded_at": "2026-11-03T14:02:51.674Z",
-      "edited_at": "2026-11-06T09:16:33.038Z"
+      "edited_at": "2026-11-06T13:00:15.638Z"
     },
     {
       "node": "vc",

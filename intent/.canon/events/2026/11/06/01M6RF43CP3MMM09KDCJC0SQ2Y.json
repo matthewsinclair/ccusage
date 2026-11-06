@@ -1,0 +1,16 @@
+{
+  "id": "01M6RF43CP3MMM09KDCJC0SQ2Y",
+  "ts": "2026-11-06T13:00:15.638Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 4,
+    "text": "ISSUE:0003's live check, to close it in 0.1.9's cut (hv, 2026-11-06). BLOCKED at 12:57Z: step 3's check failed. ca646b28 was rewritten at 12:56:47Z while engineering04's 7a2ec3d6 has not moved since 04:54:53Z, because 19 of 29 claude processes launched with no CLAUDE_SECURESTORAGE_CONFIG_DIR and 9 with engineering00's, all inheriting from herdr shells older than the export or the last ccusage use (ISSUE:0003's record has the detail). Released when: hv has every session started from a fresh shell, or the launcher reads ccusage dir at each launch. Then: (a) re-check that ca646b28 stops moving while 7a2ec3d6 renews, and that every claude process carries the active profile's directory; hv retires ca646b28 (step 4, hv's own command); (b) with hv's OK, or as hv's own command, a session on a scratch config with the exported directory reports the active profile's email from claude auth status, and no new Keychain item appears; (c) after step 4, hv sees Claude Usage list exactly five accounts with nothing prompting, and vc counts the items. Then dc closes ISSUE:0003 (dc's hold 6)."
+  }
+}
