@@ -1,0 +1,15 @@
+{
+  "id": "01M6R1GATPHB11C86FE63VBQQ3",
+  "ts": "2026-11-06T09:02:16.406Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ISSUE:0007 on vc's split (hv's go, 2026-11-06): the account verb moves from ccusage use NAME to ccusage activate NAME, in one commit, and use stays free for the switch. No install, switch, version-line or manifest code until hv rules who builds devbin#0326, which deletes any copy. Handover to vc in its inbox and live."
+  }
+}

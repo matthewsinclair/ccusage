@@ -3,17 +3,17 @@ node: dc
 name: dc
 role: dc
 session_id: 75634c2d-6088-456d-bab9-0bd3330249b4
-heartbeat_at: 2026-11-06 08:53Z
+heartbeat_at: 2026-11-06 09:02Z
 status: active
-focus: "Folded for the night; nothing in flight. ISSUE:0003 step 1 is done and verified by vc; hold 6 waits on Molt 1.4.3 (step 2) and vc's restart slot. CI run 41874767445 on b824a5b is green after a re-run (an arm64 runner shortage, not the code)"
-claims: [ISSUE:0003]
+focus: "ISSUE:0007's activate rename, on vc's split and hv's go; no install, switch or version-line code until hv rules who builds devbin#0326. Hold 6 (ISSUE:0003) waits on vc's live checks and hv's step 4"
+claims: [ISSUE:0003, ISSUE:0007]
 ---
 
 # dc (dc)
 
 ## DOING
 
-_(none)_
+- ISSUE:0007 on vc's split (hv's go, 2026-11-06): the account verb moves from ccusage use NAME to ccusage activate NAME, in one commit, and use stays free for the switch. No install, switch, version-line or manifest code until hv rules who builds devbin#0326, which deletes any copy. Handover to vc in its inbox and live.
 
 ## TODO
 
@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Step 1 is done (hv ran it, vc verified it read-only). Released when Molt 1.4.3's launcher export (step 2) is in and the desk grants vc's restart slot 01M6K31TH20532K7NYN48GJE86 (vc todo 4). (edited)
+- ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Steps 1 and 2 are in (Molt 1.4.4 brought 1.4.3's export to brew), and this morning's bounce was step 3's restart, so the desk revoked slot 01M6K31TH20532K7NYN48GJE86 at 07:11Z. Released when vc's live checks (its todo 4) pass and hv has retired ca646b28 (step 4). (edited)
 
 ## Watch-outs
 
