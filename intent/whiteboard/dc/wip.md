@@ -1,7 +1,7 @@
 ---
 node: dc
-name: dc
-role: dc
+name: DevX Claude
+role: devx
 session_id: 75634c2d-6088-456d-bab9-0bd3330249b4
 heartbeat_at: 2026-11-06 13:39Z
 status: active
@@ -9,7 +9,7 @@ focus: "Folded for hv's compact and travel; nothing in flight. Hold 6 (ISSUE:000
 claims: [ISSUE:0003, ISSUE:0007]
 ---
 
-# dc (dc)
+# DevX Claude (dc)
 
 ## DOING
 

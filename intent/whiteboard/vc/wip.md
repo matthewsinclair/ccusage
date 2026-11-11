@@ -1,7 +1,7 @@
 ---
 node: vc
-name: vc
-role: vc
+name: Validation Claude
+role: validation
 session_id: 216719f9-fd24-458e-8ec3-f436824fa31a
 heartbeat_at: 2026-11-06 13:40Z
 status: active
@@ -9,7 +9,7 @@ focus: "Folded for hv's travel (2026-11-06 13:39Z by date -u); nothing in flight
 claims: []
 ---
 
-# vc (vc)
+# Validation Claude (vc)
 
 ## DOING
 

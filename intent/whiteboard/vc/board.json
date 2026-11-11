@@ -1,9 +1,9 @@
 {
-  "schema": "intent/board@4.0",
+  "schema": "intent/board@4.1",
   "node": {
     "moniker": "vc",
-    "name": "vc",
-    "role": "vc",
+    "name": "Validation Claude",
+    "role": "validation",
     "session_id": "216719f9-fd24-458e-8ec3-f436824fa31a",
     "heartbeat_at": "2026-11-06T13:40:18.286Z",
     "status": "active",

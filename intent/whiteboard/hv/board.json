@@ -1,5 +1,5 @@
 {
-  "schema": "intent/board@4.0",
+  "schema": "intent/board@4.1",
   "node": {
     "moniker": "hv",
     "name": "Hypervisor",
@@ -13,5 +13,11 @@
   },
   "items": [],
   "sent": [],
-  "handled": []
+  "handled": [
+    {
+      "id": "01M6GA9JN7TT7W5KNF9ABBJNGX",
+      "sender": "dc",
+      "handled_at": "2026-11-11T17:55:10.717Z"
+    }
+  ]
 }
