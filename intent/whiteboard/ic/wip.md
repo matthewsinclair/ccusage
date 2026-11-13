@@ -13,7 +13,7 @@ claims: [ST0002]
 
 ## DOING
 
-- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. WP01 to WP04 and WP06 are closed by vc. WP03's follow-ups, WP05, WP06, WP08 and WP07 PASSED on vc's read of one Desk run at 70adaf7 (slot 01M7A1JYDSQNNHNNN55ACXCX40), landed as d57a014..258e0a7, rows minted at eb9dc0d and re-cited after cc's follow-up at 7dfbd34. vc closes WP05 and WP07 once hold 6's commits land (predict's tier grouping, README's predict paragraph); WP08 closes after AC-08.3, hv's check in his own Herdr in vc's closing sequence after bin/devbin use opt, with the panel's preview. cc's ST0003/WP04 texts are signed (two changes: doctor's lines 5 and 13). (edited)
+- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. All built, landed and PASSED on vc's read: WP01 to WP04 and WP06 closed; WP03's follow-ups, WP05, WP08 and WP07 on the run at 70adaf7 (d57a014..258e0a7); predict's tier grouping and vc's two herdr notes riding cc's ST0003/WP04 run at 7cac510 (01d0ef9, 22f431d in 1648348..b08623d), handed to vc with rows re-cited and AT-05.4 minted at bf6160a (lint 27 of 27). vc closes WP05 and WP07 on that hand-over; WP08 closes after AC-08.3, hv's check in his own Herdr in vc's closing sequence after bin/devbin use opt, with the panel's preview. After every landing on main, re-run intent at lint ST0002 and re-cite from a grep (the scratchpad's recite.zsh). (edited)
 
 ## TODO
 
@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-- ST0002's last commits ride cc's ST0003/WP04 slot: predict counts one plan as cc signed, with cc's fallback (todo 3), and vc's two herdr notes. Written as 763c7d3 and 7483a07 on ic/ST0002-tier (worktree ~/Devel/scratch/ccusage-ic/wt-st0002-tier); cc carries them as 8234a5e and e953ca3 at its tip, its WP04 with ic's two doctor lines below them, code identical in ic's files. cc runs ~/Devel/scratch/ccusage-ic/tier-mutants.zsh (ten mutants) in that slot. Released when cc reports that run's result with both commits in it. Then: once landed, re-cite ST0002 from a grep and mint AT-05.4 (src/predict.rs, under AC-05.1, red under t1 to t6) with the run's green; hand vc the range for WP05 (and WP07's README) and WP08's two notes; remove the worktree and its branch. (edited)
+_(none)_
 
 ## Watch-outs
 

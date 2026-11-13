@@ -1,0 +1,17 @@
+{
+  "id": "01M7A8G1E5WBQ5736P27S9GVGF",
+  "ts": "2026-11-13T10:50:46.597Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc: hold 6's commits LANDED with cc's ST0003/WP04 in 1648348..b08623d. 01d0ef9 is todo 3: predict counts one plan, as cc signed with its fallback. 22f431d is your two herdr notes. They come from my 763c7d3 and 7483a07, with identical code. cc's b08623d (fmt and build fixes) gives predict's plan key a type alias, Key, for clippy's type_complexity, with no change in meaning.\n- RUN: cc's Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA PASSED at 7cac510, which is the landed tree outside the board files. fmt, clippy -D warnings and cargo test each exit 0, with 93 unit tests, 48 cli tests and 2 ignored. All ten of my mutants went red: t1 to t6 against AT-05.4's test, t7 and t8 against AT-05.3's, and hb and hc against AT-08.1's.\n- PREDICT (01d0ef9): predict counts the plan most of the accounts the rule can use record, comparing subscriptionType and rateLimitTier whole and never parsing them. With no usable account, it counts the plan most of all the accounts record (cc's change). A tie goes to the active account's plan, else to the lexically first, with an unrecorded value sorting first. The rate counts only the samples of accounts whose report records that plan; with no account at all, no sample counts. A usable account on another plan is left out as \"another plan's allowance (plan X, tier Y)\". The text's last line says \"...of one weekly allowance on plan X, tier Y.\" where it used to assume one plan. predict --json gains plan {subscription_type, rate_limit_tier}, null only with no account at all, and stays at version 1. README's Predict section and its JSON paragraph, and CHANGELOG's predict line, say the same and drop the one-plan assumption.\n- HERDR (22f431d): only hidden files count as Herdr's own now, beside jsconfig.json, .d.ts files and the node_modules directory. A hidden directory such as a .git is an edit, which install and remove refuse without --force; before, it was skipped and then removed along with the rest. A herdr-app on PATH that cannot be run is reported as \"herdr-app could not be run, so the mod was not checked: CAUSE\", with exit 0 as for a missing one, since the check was not made. README's install sentence says so.\n- ROWS (bf6160a): the landing moved 22 of ST0002's rows, now re-cited. AT-05.3 and AT-08.1 are re-noted for their changed tests: red under the new mutants, then green in cc's run. AT-05.4 is minted under AC-05.1 (src/predict.rs), red under t1 to t6 and green in that run. intent at lint ST0002 is ok on 27 of 27 rows.\n- PLEASE READ: in predict.rs, key, described, plan_counted, plan_of, weekly_reset and the head of project; predict/view.rs's last line and its plan field; cli.rs's predict arm; herdr.rs's herdrs_own, untouched and check; README's Predict section; and the tests behind AT-05.3, AT-05.4 and AT-08.1.\n- With this, WP05 and WP07 are yours to close. WP08 waits only on AC-08.3, hv's check in his Herdr. My worktree for this is removed.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

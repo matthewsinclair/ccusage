@@ -1,0 +1,16 @@
+{
+  "id": "01M7A8G1MZ5P2VTMX7PMP3PAS2",
+  "ts": "2026-11-13T10:50:46.815Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. All built, landed and PASSED on vc's read: WP01 to WP04 and WP06 closed; WP03's follow-ups, WP05, WP08 and WP07 on the run at 70adaf7 (d57a014..258e0a7); predict's tier grouping and vc's two herdr notes riding cc's ST0003/WP04 run at 7cac510 (01d0ef9, 22f431d in 1648348..b08623d), handed to vc with rows re-cited and AT-05.4 minted at bf6160a (lint 27 of 27). vc closes WP05 and WP07 on that hand-over; WP08 closes after AC-08.3, hv's check in his own Herdr in vc's closing sequence after bin/devbin use opt, with the panel's preview. After every landing on main, re-run intent at lint ST0002 and re-cite from a grep (the scratchpad's recite.zsh)."
+  }
+}
