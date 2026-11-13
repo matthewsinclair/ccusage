@@ -1,0 +1,16 @@
+{
+  "id": "01M7A18KM8XQJ6A1BY4PVDT9TG",
+  "ts": "2026-11-13T08:44:23.048Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 3,
+    "text": "hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. In cc's remit: (a) usage.rs: a login without usage access ends in an error (HTTP 403, lacks usage access), and an account whose snapshot holds no windows shows nothing useful; each should say what that account type gives instead. (b) for ic's predict (agreed with ic): each usage report carries the login's subscriptionType and rateLimitTier exactly as read from its claudeAiOauth, so predict sums only the accounts of the most common tier (a tie goes to the active account's tier, else the lexically first) and leaves the rest out as another plan's allowance. Not started; vc sequences it after WP03 and WP04."
+  }
+}

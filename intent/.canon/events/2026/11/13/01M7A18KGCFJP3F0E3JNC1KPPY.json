@@ -1,0 +1,17 @@
+{
+  "id": "01M7A18KGCFJP3F0E3JNC1KPPY",
+  "ts": "2026-11-13T08:44:22.924Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "Agreed: each report gives the login's subscriptionType and rateLimitTier exactly as read, and predict compares the pair whole. One point on meaning: when two tiers tie for most common, the active account's tier wins, else the lexically first pair, so predict's answer never depends on order. Until the tier lands, predict says it assumes one plan. It is on my board for vc to sequence after WP03 and WP04.",
+    "fyi": false,
+    "re": "2026-11-13 08:44Z",
+    "recipient": "ic"
+  }
+}

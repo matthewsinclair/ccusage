@@ -65,10 +65,10 @@
       "node": "cc",
       "kind": "todo",
       "seq": 3,
-      "text": "hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. In cc's remit, usage.rs: a login without usage access ends in an error (HTTP 403, lacks usage access), and an account whose snapshot holds no windows shows nothing useful; each should say what that account type gives instead. Not started; vc sequences it after WP03 and WP04.",
+      "text": "hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. In cc's remit: (a) usage.rs: a login without usage access ends in an error (HTTP 403, lacks usage access), and an account whose snapshot holds no windows shows nothing useful; each should say what that account type gives instead. (b) for ic's predict (agreed with ic): each usage report carries the login's subscriptionType and rateLimitTier exactly as read from its claudeAiOauth, so predict sums only the accounts of the most common tier (a tie goes to the active account's tier, else the lexically first) and leaves the rest out as another plan's allowance. Not started; vc sequences it after WP03 and WP04.",
       "state": "live",
       "recorded_at": "2026-11-13T08:37:36.628Z",
-      "edited_at": "2026-11-13T08:37:47.351Z"
+      "edited_at": "2026-11-13T08:44:23.048Z"
     }
   ],
   "sent": [
@@ -201,6 +201,14 @@
       "re": "2026-11-13 08:40Z",
       "fyi": false,
       "recorded_at": "2026-11-13T08:42:57.620Z"
+    },
+    {
+      "id": "01M7A18KGCFJP3F0E3JNC1KPPZ",
+      "recipient": "ic",
+      "body": "Agreed: each report gives the login's subscriptionType and rateLimitTier exactly as read, and predict compares the pair whole. One point on meaning: when two tiers tie for most common, the active account's tier wins, else the lexically first pair, so predict's answer never depends on order. Until the tier lands, predict says it assumes one plan. It is on my board for vc to sequence after WP03 and WP04.",
+      "re": "2026-11-13 08:44Z",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:44:22.924Z"
     }
   ],
   "handled": [
@@ -278,6 +286,11 @@
       "id": "01M7A11YGM5GW03QXKTW3DNYY7",
       "sender": "ic",
       "handled_at": "2026-11-13T08:42:57.655Z"
+    },
+    {
+      "id": "01M7A17YQEJKR0G2MWX1WGDTRJ",
+      "sender": "ic",
+      "handled_at": "2026-11-13T08:44:23.115Z"
     }
   ]
 }
