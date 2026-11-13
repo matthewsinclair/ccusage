@@ -1672,8 +1672,14 @@ fn herdr_install_writes_the_mod_and_replaces_or_removes_only_its_own_unedited_co
     fs::read_to_string(dir.join("lifetime.js"))?
       .contains(&format!("LIFETIME = {};", ccusage::usage::TTL))
   );
-  // A stand-in herdr-app, as launchctl has one: no test reaches the real Herdr.
+  // A herdr-app on PATH that cannot be run is said with its cause, not as missing.
   let stand_in = sandbox.root.join("bin/herdr-app");
+  fs::write(&stand_in, "")?;
+  fs::set_permissions(&stand_in, fs::Permissions::from_mode(0o600))?;
+  let output = herdr(&["herdr", "install"], false)?;
+  assert!(output.status.success());
+  assert!(String::from_utf8(output.stdout)?.contains("herdr-app could not be run"));
+  // A stand-in herdr-app, as launchctl has one: no test reaches the real Herdr.
   fs::write(
     &stand_in,
     "#!/bin/sh\nhere=$(/usr/bin/dirname \"$0\")\n/bin/echo \"$*\" >> \"$here/../herdr-app.log\"\nif [ -n \"$HERDR_CHECK_FAILS\" ]; then /bin/echo 'main.js: the stand-in refuses' >&2; exit 1; fi\n",
@@ -1688,6 +1694,13 @@ fn herdr_install_writes_the_mod_and_replaces_or_removes_only_its_own_unedited_co
     fs::read_to_string(sandbox.root.join("herdr-app.log"))?
       .contains(&format!("check {}", dir.display()))
   );
+  // A hidden directory, such as a .git, is no file Herdr writes: it is an edit, and
+  // neither install nor remove takes it without --force.
+  fs::create_dir(dir.join(".git"))?;
+  assert!(!herdr(&["herdr", "install"], false)?.status.success());
+  assert!(!herdr(&["herdr", "remove"], false)?.status.success());
+  assert!(dir.join(".git").is_dir());
+  fs::remove_dir(dir.join(".git"))?;
   // An edited copy is refused and left as it is, until --force replaces it.
   fs::write(dir.join("main.js"), "// mine")?;
   let output = herdr(&["herdr", "install"], false)?;

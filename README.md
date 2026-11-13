@@ -204,7 +204,7 @@ herdr-app do pane.split '{"direction":"right","mod":"ccusage"}'
 ccusage herdr remove
 ```
 
-`ccusage herdr install` puts the mod into Herdr's home, `$HERDR_APP_HOME` or else `~/.config/herdr-app`, and refuses when there is none. It writes `mods/ccusage/` and a record of what it wrote, replaces only a copy it wrote that nobody has edited, refuses anything else without `--force`, then runs `herdr-app check` on it when that is on `PATH` and reports the verdict, exiting nonzero when the check fails. It never touches a layout or `keys.json`. `ccusage herdr remove` takes the copy out on the same terms. The mod's files are built into ccusage, so each install carries the mod that matches it.
+`ccusage herdr install` puts the mod into Herdr's home, `$HERDR_APP_HOME` or else `~/.config/herdr-app`, and refuses when there is none. It writes `mods/ccusage/` and a record of what it wrote, replaces only a copy it wrote that nobody has edited, refuses anything else without `--force`, then runs `herdr-app check` on it when that is on `PATH` and reports the verdict, or why it could not run it, exiting nonzero when the check fails. It never touches a layout or `keys.json`. `ccusage herdr remove` takes the copy out on the same terms. The mod's files are built into ccusage, so each install carries the mod that matches it.
 
 ## Refresh policy
 

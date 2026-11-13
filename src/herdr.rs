@@ -65,13 +65,16 @@ fn digest(bytes: &[u8]) -> String {
   format!("{:x}", Sha256::digest(bytes))
 }
 
-/// Whether Herdr writes `name` into a mod's folder itself, so that it says nothing of
-/// an edit: `jsconfig.json`, type files, hidden files and `node_modules`.
-fn herdrs_own(name: &str) -> bool {
-  name.starts_with('.')
-    || name == "jsconfig.json"
-    || name.ends_with(".d.ts")
-    || name == "node_modules"
+/// Whether Herdr writes the entry `name`, a directory when `is_dir`, into a mod's folder
+/// itself, so that it says nothing of an edit: `jsconfig.json`, type files and hidden
+/// files, and the `node_modules` directory. Any other directory, a hidden one such as a
+/// `.git` included, is no file Herdr writes, and install and remove would take it.
+fn herdrs_own(name: &str, is_dir: bool) -> bool {
+  if is_dir {
+    name == "node_modules"
+  } else {
+    name.starts_with('.') || name == "jsconfig.json" || name.ends_with(".d.ts")
+  }
 }
 
 /// Whether `dir` holds a copy install wrote that nobody has edited since: its record
@@ -84,8 +87,9 @@ fn untouched(dir: &Path) -> Result<bool> {
     return Ok(false);
   };
   for entry in fs::read_dir(dir)? {
-    let name = entry?.file_name().to_string_lossy().into_owned();
-    if herdrs_own(&name) {
+    let entry = entry?;
+    let name = entry.file_name().to_string_lossy().into_owned();
+    if herdrs_own(&name, entry.file_type()?.is_dir()) {
       continue;
     }
     match (record.get(&name), fs::read(dir.join(&name))) {
@@ -157,7 +161,8 @@ pub fn remove(force: bool) -> Result<String> {
   Ok(format!("Removed the ccusage mod from {}.", dir.display()))
 }
 
-/// herdr-app check's verdict on `dir`, and whether it passed or could not be run.
+/// herdr-app check's verdict on `dir`, and whether it passed or was not made: when
+/// herdr-app is not on PATH, or cannot be run, which is said with its cause.
 fn check(dir: &Path) -> (String, bool) {
   match Command::new("herdr-app").arg("check").arg(dir).output() {
     Ok(output) if output.status.success() => ("herdr-app check passed.".into(), true),
@@ -173,8 +178,12 @@ fn check(dir: &Path) -> (String, bool) {
         false,
       )
     }
-    Err(_) => (
+    Err(error) if error.kind() == std::io::ErrorKind::NotFound => (
       "herdr-app is not on PATH, so the mod was not checked.".into(),
+      true,
+    ),
+    Err(error) => (
+      format!("herdr-app could not be run, so the mod was not checked: {error}"),
       true,
     ),
   }
