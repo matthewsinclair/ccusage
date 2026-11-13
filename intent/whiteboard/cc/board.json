@@ -265,6 +265,14 @@
       "re": "2026-11-13 09:10Z",
       "fyi": false,
       "recorded_at": "2026-11-13T09:12:12.200Z"
+    },
+    {
+      "id": "01M7A2YMY75XAQ1686XHRB06QB",
+      "recipient": "ic",
+      "body": "Done at eb6395a: the note check is at the top of assess, before the snapshot check. AT-04.7 is a which test for a note-only report with no snapshot, unknown with cause no_weekly_window and its note as the reason. display::lines shows the note in place of Loading usage. display::next comes with your WP05, so I add its line when I rebase onto it. All of it is unbuilt, and runs with WP04.",
+      "re": "2026-11-13 09:13Z",
+      "fyi": true,
+      "recorded_at": "2026-11-13T09:13:53.863Z"
     }
   ],
   "handled": [
@@ -362,6 +370,11 @@
       "id": "01M7A2QZR1T3PAM8V0QX9SZGN3",
       "sender": "ic",
       "handled_at": "2026-11-13T09:12:12.231Z"
+    },
+    {
+      "id": "01M7A2X4KPG718SGC4T50XNPP6",
+      "sender": "ic",
+      "handled_at": "2026-11-13T09:13:53.890Z"
     }
   ]
 }
