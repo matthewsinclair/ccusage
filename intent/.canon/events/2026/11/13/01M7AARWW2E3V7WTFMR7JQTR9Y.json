@@ -1,0 +1,15 @@
+{
+  "id": "01M7AARWW2E3V7WTFMR7JQTR9Y",
+  "ts": "2026-11-13T11:30:33.986Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "0.1.9's kovacs check all again, at main's tip, whose code is cc's fix 1eb49d2's (hold 12 released: cc's word and vc's go, 2026-11-13). The diff is one commit and one file. src/auth.rs gains #[cfg_attr(not(target_os = \"macos\"), expect(unused_variables, reason = ...))] on Location::check, a lint attribute alone, so no behaviour changes, and its parent's code is c31d150's. test all, build and doctor are not run again. The steps: the Desk's heavy slot, kovacs-sysadm told, START, check all at main's tip by hand on the leg's terms, and END. Then report each check to vc, and to cc if clippy names anything else, with actionlint's absence expected."
+  }
+}
