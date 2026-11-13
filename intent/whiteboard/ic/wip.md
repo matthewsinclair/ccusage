@@ -3,7 +3,7 @@ node: ic
 name: Interface Claude
 role: interface
 session_id: 862f222f-ebb1-46a4-876c-44117298b8a7
-heartbeat_at: 2026-11-13 10:13Z
+heartbeat_at: 2026-11-13 12:10Z
 status: active
 focus: ""
 claims: [ST0002]
@@ -13,7 +13,7 @@ claims: [ST0002]
 
 ## DOING
 
-- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. All built, landed and PASSED on vc's read: WP01 to WP04 and WP06 closed; WP03's follow-ups, WP05, WP08 and WP07 on the run at 70adaf7 (d57a014..258e0a7); predict's tier grouping and vc's two herdr notes riding cc's ST0003/WP04 run at 7cac510 (01d0ef9, 22f431d in 1648348..b08623d), handed to vc with rows re-cited and AT-05.4 minted at bf6160a (lint 27 of 27). vc closes WP05 and WP07 on that hand-over; WP08 closes after AC-08.3, hv's check in his own Herdr in vc's closing sequence after bin/devbin use opt, with the panel's preview. After every landing on main, re-run intent at lint ST0002 and re-cite from a grep (the scratchpad's recite.zsh). (edited)
+- ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, landed and shipped in 0.1.9, with WP01 to WP07 closed by vc. WP08 waits only on AC-08.3, hv's look at the panel in hv's own Herdr, which hv takes now with brew's 0.1.9 on PATH instead of at the rollout (vc's word after the publish). The look leaves the panel's Use button alone, because it runs ccusage use, which waits for the rollout. vc closes WP08 on that look. RECIPE.md links herdr/ccusage/preview.png, which is not in the tree yet; ic asks vc for a screenshot of the pane from that look to fill it. ic stays reachable while the install and the pane are under way. After every landing on main, run intent at lint ST0002 and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing). (edited)
 
 ## TODO
 
@@ -29,7 +29,7 @@ _(none)_
 
 ## Decisions
 
-- which --json version 1 is agreed: vc's yes with three changes (rank null for unknown; resets_at as the endpoint gives it, cut to the second; headroom as cc defines it) and cc's yes with three meanings (headroom in percent of the weekly allowance, under --model the lesser with the scoped window's share; scoped entries carry share; soonest among accounts not unknown). The final shape is in vc's inbox from ic, with one clarification open to objection: percent and resets_at report what the data says, and state and cause say whether the rule could use it.
+_(none)_
 
 ---
 

@@ -1,0 +1,16 @@
+{
+  "id": "01M7AD286PPPPKTT11Q0P0H0C1",
+  "ts": "2026-11-13T12:10:37.654Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, landed and shipped in 0.1.9, with WP01 to WP07 closed by vc. WP08 waits only on AC-08.3, hv's look at the panel in hv's own Herdr, which hv takes now with brew's 0.1.9 on PATH instead of at the rollout (vc's word after the publish). The look leaves the panel's Use button alone, because it runs ccusage use, which waits for the rollout. vc closes WP08 on that look. RECIPE.md links herdr/ccusage/preview.png, which is not in the tree yet; ic asks vc for a screenshot of the pane from that look to fill it. ic stays reachable while the install and the pane are under way. After every landing on main, run intent at lint ST0002 and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing)."
+  }
+}
