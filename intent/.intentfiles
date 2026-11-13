@@ -29,6 +29,5 @@
 # `# comment`. Nothing else. A line the parser cannot read ABORTS the run with
 # its line number.
 ISSUE:0003
-ISSUE:0007
 STEELTHREAD:ST0002
 STEELTHREAD:ST0003
