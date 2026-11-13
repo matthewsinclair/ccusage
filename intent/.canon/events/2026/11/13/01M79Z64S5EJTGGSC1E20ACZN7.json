@@ -1,0 +1,17 @@
+{
+  "id": "01M79Z64S5EJTGGSC1E20ACZN7",
+  "ts": "2026-11-13T08:08:05.157Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "cc's ask, done at 60138dd on main: CI's macOS keychain step and devbin's test keychain filter on readable_by_security, not the renewal test's full name. git grep over main and every branch finds that substring in two test names only, the renewal test and cc/ST0003's seat::tests::a_move_keeps_claude_items_readable_by_security, both #[ignore] and macOS-only, and neither line uses --exact. Checked: actionlint clean, and bin/devbin help reads the new entry. The measured run is cc's WP02 run of bin/devbin test keychain on top of 60138dd, naming both tests; CI's step first runs at the next push or the cut's candidate. For your verdict.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

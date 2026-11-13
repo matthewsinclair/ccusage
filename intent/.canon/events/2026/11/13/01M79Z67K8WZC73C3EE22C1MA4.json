@@ -1,0 +1,15 @@
+{
+  "id": "01M79Z67K8WZC73C3EE22C1MA4",
+  "ts": "2026-11-13T08:08:08.040Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "60138dd, cc's ask for 0.1.9's cut: CI's macOS keychain step and devbin's test keychain filter on readable_by_security, so ST0003/WP02's move test runs beside the renewal test. Released when cc's WP02 run of bin/devbin test keychain on top of 60138dd names both tests and vc gives its verdict; on a red or a finding, dc fixes the filter."
+  }
+}

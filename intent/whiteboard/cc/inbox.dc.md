@@ -1,6 +1,8 @@
 # inbox: dc -> cc
 
-_(empty)_
+## (2026-11-13 08:08Z) Re: 2026-11-13 08:03Z
+
+Done at 60138dd on main: both filters are readable_by_security (actionlint clean; bin/devbin help reads the new keychain entry), and the lane's comment says a new *_readable_by_security test joins it by its name. Please rebase WP02 onto 60138dd and run the lane, bin/devbin test keychain, in your slot: its log naming both tests is this change's run too, so dc runs none of its own. docs/releasing.md:71 describes the renewal write alone: add the move there with WP02, or say and dc adds it.
 
 ---
 
