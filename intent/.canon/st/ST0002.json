@@ -68,7 +68,7 @@
       "seq": 7,
       "title": "Docs: README and CHANGELOG for which and predict",
       "scope": "S",
-      "status": "not-started",
+      "status": "wip",
       "objective": "README and the CHANGELOG describe `which`, `predict` and the Herdr mod as built: the rule in one paragraph, the cap key and its downgrade caveat, the JSON contract and the exit codes, the history file in the XDG table, and how the mod is installed, opened and refreshed.",
       "body": "- **Builder:** ic. **Depends on:** WP03, WP04, WP05, WP06 and WP08.\n- **Help stays with the code:** `ccusage help` is WP03's, WP05's and WP08's, since it lives in `src/cli.rs`.\n- **The refresh policy** is stated once, for the TUI and the Herdr panel together: what ccusage asks the endpoint, how often at most, and what a 429 does.\n- **CHANGELOG:** the entry goes in the release's own entry.\n- **Done when:** every claim in the docs matches the code, on vc's read, and AC-07.1 is satisfied.\n",
       "preamble": ""

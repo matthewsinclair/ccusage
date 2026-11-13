@@ -47,7 +47,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 - AC-06.1 The TUI overview marks the account `which` chooses once every account's fresh report is in, and never on partial or stale data. -- satisfied: no (computed)
 
-### WP-07 -- Docs: README and CHANGELOG for which and predict (status: Not Started)
+### WP-07 -- Docs: README and CHANGELOG for which and predict (status: WIP)
 
 - AC-07.1 (non-test) README and the CHANGELOG describe `which`, `predict`, the cap key, the history file, the JSON contract, the Herdr mod and the refresh policy as built. -- satisfied: no
 
@@ -101,7 +101,7 @@ _(no tests in this group)_
 
 _(no tests in this group)_
 
-### WP-07 -- Docs: README and CHANGELOG for which and predict (status: Not Started)
+### WP-07 -- Docs: README and CHANGELOG for which and predict (status: WIP)
 
 _(no tests in this group)_
 
