@@ -2,7 +2,7 @@
 wp_id: WP-01
 title: Proof: a running session follows a login changed under it
 scope: XS
-status: WIP
+status: Done
 ---
 
 # WP-01: Proof: a running session follows a login changed under it
@@ -23,7 +23,21 @@ On the installed Claude Code, show that a session already running picks up a log
 - **Shortcut:** if hv already sees, on the current Claude Code, that sessions sharing one config follow a `/login` made in one of them, hv says so and that is the record.
 - **If it fails:** this thread stops, and ISSUE:0003 closes by its launcher fix instead.
 - **Done when:** AC-01.1 is satisfied by the record.
-- **The record:** not yet run. Steps given to hv at 2026-11-13 06:41Z.
+
+**The record: passed.** hv ran it on 2026-11-13 on rhadamanth, on Claude Code 2.1.323, and vc read the two debug logs, the scratch config and Keychain metadata. Times are UTC, from the logs and the Keychain.
+
+- **06:52:50 and 06:53:41:** sessions A and B started on the scratch config. Read from the processes, each carried `CLAUDE_CONFIG_DIR=/tmp/ccusage-trial` and no `CLAUDE_SECURESTORAGE_CONFIG_DIR`.
+- **06:55:33:** A logged in as hello. The trial's item, `Claude Code-credentials-b029a948`, was created: the hash is of `/tmp/ccusage-trial` as given, not resolved. A showed 77% of its weekly limit, resetting 2026-11-16 10:00.
+- **B on the first-run screen did not follow:** it stayed on "Select login method" for the three minutes before its own login, and its log shows nothing of A's. The first-run screen does not adopt a sibling's login.
+- **06:57:32:** A answered a prompt as hello.
+- **06:58:43:** B logged in as engineering.01. The item was rewritten and the account record became engineering.01@geodica.com. hv meant engineering00, and engineering01 served as well, being at 0% that morning.
+- **06:59:56:** A, not restarted and with no request since 06:57:32, fetched its usage with its own token: 1% used, resetting 2026-11-19 21:00. That is engineering01's window, and what B showed. So A held the new login 73 s after it was stored. That is an upper bound, since A was not asked sooner.
+- **07:01:08:** A's next prompt continued the conversation begun as hello. The API answered 404 `thread_not_found`: "No thread state was found for the requested `previous_message_id`. Replay the full conversation with `thread: {"type": "create"}` to start a new Thread." Claude Code retried at once (`[tether] forcing create for retry: replay_not_found`), and the answer streamed 0.8 s later. hv saw a normal answer, "Worked for 1s".
+- **After it:** `/status` in A named engineering.01@geodica.com, and the 77% warning line was gone.
+- **No prompt:** A showed no notice, refusal or session-owner question, and its log has no auth error. Neither `tengu_bubbly_fountain` nor `tengu_streamed_thimble` was among the 1283 flags in the scratch config's cache, so both stood at their defaults.
+- **What stayed the old account's:** A still listed the MCP servers it loaded at start, 2 connected and 3 needing auth, and its log has no MCP line after the switch.
+- **Nothing real was touched:** 13 `Claude Code-credentials*` items before, and those 13 and the trial's one during.
+- **What it adds to the design:** a session's first request after a switch costs one 404 and a replay of the whole conversation, uncached, on the new account. Claude Code does that itself, within its own retry allowance (attempt 1 of 11).
 
 ## Acceptance
 

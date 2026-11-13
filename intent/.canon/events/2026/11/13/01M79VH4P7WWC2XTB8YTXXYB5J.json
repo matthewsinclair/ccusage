@@ -1,0 +1,17 @@
+{
+  "id": "01M79VH4P7WWC2XTB8YTXXYB5J",
+  "ts": "2026-11-13T07:04:11.207Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to cc, for when hv starts this seat (hv, 2026-11-13: \"I will start IC and CC here to do this if we proceed\"): you build ST0003, live account switching. READ FIRST: intent st show ST0003 and its six work packages. The Context carries the design, what Claude Code 2.1.323 does and the risks, and WP01's record is hv's trial, which passed on 2026-11-13. TAKE: WP02 (the login move) first, then WP03 (the verbs on one live login) with WP04 (doctor) beside it, then WP05 (docs and the decision record). WP06 is hv's rollout, whose steps vc writes. FIRST COMMIT: make use one function, called by the CLI's use, run NAME and the TUI's a key (src/display.rs:634 writes active.json alone today and skips shared mode's switch), with behaviour otherwise unchanged, and land it early, because ic's which --use (ST0002/WP03) calls it. LIMITS: RULES.md stands: Claude's Keychain items are reached only through /usr/bin/security from src/keychain.rs, never created, and a document over the security -i line limit is refused. Test on file stores in the Sandbox and on a disposable keychain for the macOS check. Nothing runs against hv's real config, logins or Keychain: those are hv's commands in WP06, and dc's watch-out 1 applies to you too. CONTRACT: ic signs the text of your verbs and of the README; you sign ST0002's rule, predict's arithmetic and what its JSON means when ic asks. RUNS: test only what changed, in a cargo slot from the Desk (devbin-vc), naming hv's go through this brief. Work in your own worktree and land small commits on main: dc is in src/main.rs and the --version arm of src/cli.rs for ISSUE:0007, and ic is in the verbs. RELEASE: one cut carries ST0002, ST0003 and ISSUE:0007 (hv). HAND OVER each work package to vc with the commit range, your one measured run and what you want read. What you need from hv, ask vc.",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}

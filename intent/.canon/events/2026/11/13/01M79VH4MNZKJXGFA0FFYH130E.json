@@ -1,0 +1,14 @@
+{
+  "id": "01M79VH4MNZKJXGFA0FFYH130E",
+  "ts": "2026-11-13T07:04:11.157Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0003/AC-01.1"
+  },
+  "payload": {
+    "evidence": "ST0003/WP01's record of hv's trial, 2026-11-13 on Claude Code 2.1.323: session A held the login B stored 73 s earlier, with no restart and no prompt, and answered its next request after one automatic thread replay"
+  }
+}

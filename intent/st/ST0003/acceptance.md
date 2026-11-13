@@ -13,9 +13,9 @@ title: Live account switching: ccusage use moves the active login into the share
 
 ## Acceptance Criteria
 
-### WP-01 -- Proof: a running session follows a login changed under it (status: WIP)
+### WP-01 -- Proof: a running session follows a login changed under it (status: Done)
 
-- AC-01.1 (non-test) hv's trial on the installed Claude Code shows a running session following a login that another process changed, with no restart, and the record names the version, the delay and any prompt. -- satisfied: no
+- AC-01.1 (non-test) hv's trial on the installed Claude Code shows a running session following a login that another process changed, with no restart, and the record names the version, the delay and any prompt. -- evidence: ST0003/WP01's record of hv's trial, 2026-11-13 on Claude Code 2.1.323: session A held the login B stored 73 s earlier, with no restart and no prompt, and answered its next request after one automatic thread replay -- satisfied: yes
 
 ### WP-02 -- The login move: claudeAiOauth between stores, locked, journaled, never lossy (status: Not Started)
 
@@ -47,7 +47,7 @@ title: Live account switching: ccusage use moves the active login into the share
 
 ## Acceptance Tests
 
-### WP-01 -- Proof: a running session follows a login changed under it (status: WIP)
+### WP-01 -- Proof: a running session follows a login changed under it (status: Done)
 
 _(no tests in this group)_
 
