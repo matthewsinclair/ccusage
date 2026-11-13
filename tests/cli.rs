@@ -1444,3 +1444,73 @@ fn which_lists_an_account_without_a_weekly_window_with_what_it_reports_and_never
   assert_eq!(json["choice"], "work");
   Ok(())
 }
+
+// ST0002 AT-05.3: predict from a history, what it rests on, and too little said plainly.
+#[test]
+fn predict_projects_each_accounts_unused_share_from_the_history_and_says_when_it_has_too_little()
+-> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.which_accounts()?;
+  // With no history yet there is too little, which is said plainly and is no failure.
+  let text = sandbox.ok(&["predict"])?;
+  assert!(text.starts_with("Too little history to project: "));
+  assert!(text.contains("\nbroken: left out, "));
+  // A day of history with one rise in it, on work's window.
+  let (now, reset) = (ccusage::now(), reset_in(3 * DAY)?);
+  let (from, risen) = (10.0, 12.0);
+  let history = [(from, now - DAY), (from + risen, now)];
+  for (percent, sampled_at) in history {
+    let snapshot: ccusage::usage::Snapshot =
+      serde_json::from_value(resetting(percent, &reset, None))?;
+    ccusage::history::record(
+      &sandbox.root.join("state/ccusage"),
+      "work",
+      &snapshot,
+      sampled_at,
+    )?;
+  }
+  let per_hour = risen / ccusage::predict::hours(DAY);
+  let text = sandbox.ok(&["predict"])?;
+  assert!(text.starts_with(&format!(
+    "Burn rate: {per_hour:.1}% of one weekly allowance an hour, from {} samples over {} of history.",
+    history.len(),
+    ccusage::display::duration(DAY)
+  )));
+  assert!(text.contains("assuming every account is on one plan"));
+  assert!(text.contains("\nbroken: left out, "));
+  let json: serde_json::Value = serde_json::from_str(&sandbox.ok(&["predict", "--json"])?)?;
+  assert_eq!(json["version"], ccusage::predict::view::VERSION);
+  assert_eq!(json["rate"]["samples"], history.len());
+  assert_eq!(json["rate"]["hours"], ccusage::predict::hours(DAY));
+  assert_eq!(
+    json["rate"]["percent_per_hour"],
+    ccusage::display::tenth(per_hour)
+  );
+  let accounts = json["accounts"].as_array().ok_or("an accounts array")?;
+  let names: Vec<_> = accounts
+    .iter()
+    .map(|account| account["name"].clone())
+    .collect();
+  assert_eq!(names, ["work", "personal", "spare"]);
+  let mut unused = 0.0;
+  for account in accounts {
+    let (projected, left) = (
+      account["projected"].as_f64().ok_or("a projected percent")?,
+      account["unused"].as_f64().ok_or("an unused percent")?,
+    );
+    // Each is rounded to 0.1 on its own, so the two meet 100 within that rounding, and
+    // within a float's error of it.
+    assert!((projected + left - 100.0).abs() <= 0.1 + 1e-9);
+    let name = account["name"].as_str().ok_or("a name")?;
+    assert!(
+      text
+        .lines()
+        .any(|line| line.starts_with(&format!("{name}: ")) && line.ends_with("% unused"))
+    );
+    unused += left;
+  }
+  let total = json["unused"].as_f64().ok_or("a total")?;
+  assert!((total - unused).abs() <= 0.1 * accounts.len() as f64);
+  assert_eq!(json["left_out"][0]["name"], "broken");
+  Ok(())
+}

@@ -9,6 +9,7 @@ pub mod history;
 mod keychain;
 #[cfg(test)]
 mod loopback;
+pub mod predict;
 #[cfg(test)]
 mod scratch;
 mod seat;

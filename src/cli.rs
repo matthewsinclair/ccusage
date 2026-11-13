@@ -34,6 +34,8 @@ Usage: ccusage [--config PATH] [--no-color] [--verbose] [COMMAND]
   which [--json] [--model NAME] [--use] [--refresh]
                                Name the account to work on: the soonest weekly reset
                                with headroom below the cap; --use makes it active
+  predict [--json]             Project from the usage history how much of each account's
+                               weekly allowance goes unused at its reset, following which
   tui [--demo]                 Interactive account dashboard (demo works without setup)
   shell zsh|bash               Print an optional wrapper for plain claude
   paths                        Show resolved XDG directories
@@ -426,6 +428,21 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
           )
           .into(),
         );
+      }
+    }
+    "predict" => {
+      let json = flag(&mut args, "--json");
+      empty(&args)?;
+      let names: Vec<_> = store.config.profiles.keys().cloned().collect();
+      let reports = reports(&store, &names, false)?;
+      let samples = crate::history::samples(&store.state)?;
+      let (now, cap) = (crate::now(), store.config.cap());
+      let projection = crate::predict::project(&samples, &reports, now, cap)?;
+      // Too little history is said in the report, and is no failure.
+      if json {
+        println!("{}", crate::predict::view::json(&projection, now, cap)?);
+      } else {
+        println!("{}", crate::predict::view::text(&projection, now));
       }
     }
     "tui" => {
