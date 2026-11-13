@@ -1,0 +1,16 @@
+{
+  "id": "01M7A0ZA0D9T98PWKCXD6CQ25K",
+  "ts": "2026-11-13T08:39:18.285Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 10,
+    "text": "ISSUE:0007 closes at T10's proof with hv, its Acceptance 5, and at the kegs of Acceptance 3. vc's verdict on the wiring is PASS (2026-11-13: 9cc5f93, 78cabdc and 802de63, with the one run in Desk slots 01M79VNKJ75Q7EFHCF89QQS4TW and 01M79W3Q2Y21ACP1BWREJA13GA), and 782584d adds vc's docs line. hv took the opt route past devbin 0348 (hv's decision 3, through vc): just before the cut hv runs bin/devbin install and bin/devbin use opt, so the doctor gate passes with the link on opt, and vc writes the cut's steps. Released when 0.1.9's cut has published its formula. Then, after brew upgrade ccusage, T10 with hv: bin/devbin use dev, use opt and use brew in turn in this checkout, each followed by the version line and bin/devbin doctor, on hv's Mac and with brew alone on Linux; then dc closes ISSUE:0007."
+  }
+}
