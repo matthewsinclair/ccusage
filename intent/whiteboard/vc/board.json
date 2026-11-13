@@ -111,7 +111,8 @@
       "kind": "hold",
       "seq": 4,
       "text": "Brief dc on ISSUE:0007's wiring (dc's hold 8), then validate it. Released when: devbin-vc says a devbin release carries devbin#0326 (its todo 201) and Ccusage vendors it. The three parts reached vc, cldr-vc and cldr-dc on 2026-11-06 and are in ISSUE:0007's Fix outline. hv's correction makes the switch and the publish bin/devbin's (bin/devbin use, bin/devbin install), ccusage use stays the account verb, and devbin-vc's ruling gives ccusage no version verb, only the --version line. Then: brief dc, read the wiring against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-13T05:51:01.674Z",
       "recorded_at": "2026-11-06T09:16:33.099Z",
       "edited_at": "2026-11-06T09:46:09.617Z"
     },
@@ -119,10 +120,18 @@
       "node": "vc",
       "kind": "doing",
       "seq": 3,
-      "text": "ST0002, the which verb (hv, 2026-11-13): drafted from geodica-estate's brief and in front of hv for review: objective, context, seven sized WPs each with a proposed builder, and 14 ACs keyed AC-<wp>.<n>. No seat writes code until hv has reviewed. Gated on two things. First, vc's check-in with devbin-vc, which holds the Desk while devbin, intent and devvm are P0/P1 (sent at 05:48Z; hv arbitrates once it answers). Second, hv's answers on who builds, the burn rate predict projects with, whether the five accounts share one plan, and ST0002 joining 0.1.9's one cut. Then: brief the builders, WP01 first.",
+      "text": "ST0002, the which verb (hv, 2026-11-13): drafted from geodica-estate's brief and in front of hv for review: objective, context, seven sized WPs each with a proposed builder, and 14 ACs keyed AC-<wp>.<n>. No seat writes code until hv has reviewed. The Desk (devbin-vc) answered vc's check-in, read at 05:51Z: no freeze on Ccusage's tree; editing, reading and single unit tests are fine at any time; measured runs go in as normal slot asks, and the Desk holds rhadamanth's cargo slot until Intent's 3.3.1 cut ENDs, with the devvm build (P1) after it; gyges is free now under hv's decision 53, booked on the Desk. Waiting on hv's arbitration, and on hv's answers on who builds, the burn rate predict projects with, whether the five accounts share one plan, and ST0002 joining 0.1.9's one cut. Then: brief the builders, WP01 first.",
       "state": "live",
       "recorded_at": "2026-11-13T05:33:19.199Z",
-      "edited_at": "2026-11-13T05:48:52.399Z"
+      "edited_at": "2026-11-13T05:51:01.802Z"
+    },
+    {
+      "node": "vc",
+      "kind": "todo",
+      "seq": 5,
+      "text": "ISSUE:0007's wiring, released from hold 4 on 2026-11-13: devbin-vc says devbin 0.1.23, which Ccusage vendors since 3c1055a, carries every unit of devbin#0326 (0326-11 in 0.1.21; 0331-1 and 0332-1 in 0.1.22), so 0007 no longer waits on devbin. Next, at hv's word: brief dc on the wiring (bin/devbin install and bin/devbin use in the checkout, the version line from the core's stamp, the one formula form; ccusage use stays the account verb), read it against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv. When 0007 closes, tell devbin-vc, which closes devbin#0326 once pplr#0001 and cldr#0001 have closed too.",
+      "state": "live",
+      "recorded_at": "2026-11-13T05:51:01.697Z"
     }
   ],
   "sent": [

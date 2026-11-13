@@ -1,0 +1,15 @@
+{
+  "id": "01M79QB6214BRY5PBY7X2AMD36",
+  "ts": "2026-11-13T05:51:01.697Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ISSUE:0007's wiring, released from hold 4 on 2026-11-13: devbin-vc says devbin 0.1.23, which Ccusage vendors since 3c1055a, carries every unit of devbin#0326 (0326-11 in 0.1.21; 0331-1 and 0332-1 in 0.1.22), so 0007 no longer waits on devbin. Next, at hv's word: brief dc on the wiring (bin/devbin install and bin/devbin use in the checkout, the version line from the core's stamp, the one formula form; ccusage use stays the account verb), read it against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv. When 0007 closes, tell devbin-vc, which closes devbin#0326 once pplr#0001 and cldr#0001 have closed too."
+  }
+}

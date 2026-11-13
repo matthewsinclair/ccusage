@@ -1,0 +1,16 @@
+{
+  "id": "01M79QB65AXTX6M0K8FQXM5068",
+  "ts": "2026-11-13T05:51:01.802Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which verb (hv, 2026-11-13): drafted from geodica-estate's brief and in front of hv for review: objective, context, seven sized WPs each with a proposed builder, and 14 ACs keyed AC-<wp>.<n>. No seat writes code until hv has reviewed. The Desk (devbin-vc) answered vc's check-in, read at 05:51Z: no freeze on Ccusage's tree; editing, reading and single unit tests are fine at any time; measured runs go in as normal slot asks, and the Desk holds rhadamanth's cargo slot until Intent's 3.3.1 cut ENDs, with the devvm build (P1) after it; gyges is free now under hv's decision 53, booked on the Desk. Waiting on hv's arbitration, and on hv's answers on who builds, the burn rate predict projects with, whether the five accounts share one plan, and ST0002 joining 0.1.9's one cut. Then: brief the builders, WP01 first."
+  }
+}
