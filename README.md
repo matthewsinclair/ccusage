@@ -24,7 +24,7 @@ The demo uses fixture data, reads no credentials, and makes no network requests.
 
 ## Check the environment
 
-`ccusage doctor` checks that `claude --version` runs from `PATH`, validates the configuration, inspects XDG/profile directory permissions, and checks existing private files are `0600`. It reads no credential contents, does not invoke browser login or fetch usage, and makes no configuration changes. Missing initial setup is informational and includes the next commands; a missing/broken Claude executable, malformed config, inaccessible path, or unsafe private file exits nonzero. Directory permissions other than `0700` and a stale active profile produce warnings.
+`ccusage doctor` checks that `claude --version` runs from `PATH`, validates the configuration, inspects XDG/profile directory permissions, and checks existing private files are `0600`. It does not invoke browser login or fetch usage, and makes no configuration or login changes. Outside shared mode it reads no credential contents; in [shared mode](#shared-mode) it reads each credential store to say where each login is, and asks Claude's profile endpoint whose the shared login is, unless a usage fetch already verified it. Missing initial setup is informational and includes the next commands; a missing/broken Claude executable, malformed config, inaccessible path, or unsafe private file exits nonzero. Directory permissions other than `0700` and a stale active profile produce warnings.
 
 ## Set up accounts
 
@@ -50,7 +50,7 @@ ccusage run -- --model sonnet
 ccusage logout personal
 ```
 
-`use` checks that a login is stored, then changes the selection for future launches through Ccusage. It does not change a running Claude session. On Unix, `run` replaces itself with Claude, preserving signals and exit status. Arguments after `--` pass through unchanged. Inherited API-key, OAuth-token, provider, and API-base-URL environment overrides are removed for the launched Claude process so they do not override the named login. Organization-managed Claude settings still apply.
+`use` checks that a login is stored, then changes the selection for future launches through Ccusage. Outside shared mode it does not change a running Claude session; in [shared mode](#shared-mode) every session follows it. On Unix, `run` replaces itself with Claude, preserving signals and exit status. Arguments after `--` pass through unchanged. Inherited API-key, OAuth-token, provider, and API-base-URL environment overrides are removed for the launched Claude process so they do not override the named login. Organization-managed Claude settings still apply.
 
 To make plain `claude` use the selected account, review `ccusage shell zsh` (or `bash`) and add the printed function to your shell startup file:
 
@@ -62,23 +62,32 @@ The function requires `ccusage` on `PATH`. Without it, plain `claude` continues 
 
 ### Shared mode
 
-By default each profile is a whole Claude config directory, so a session's settings, history and projects belong to the profile it runs. Shared mode keeps one Claude config directory for every session instead, and gives each session the active profile's login. Each account then has one login, in its profile, and Claude's own config holds none. Turn it on with a top-level key in the config, before any `[profiles]` table:
+By default each profile is a whole Claude config directory, so a session's settings, history and projects belong to the profile it runs. Shared mode keeps one Claude config directory for every session instead, with one live login in it: the active profile's. Turn it on with a top-level key in the config, before any `[profiles]` table:
 
 ```toml
 claude_config_dir = "~/.config/claude"
 ```
 
+A session then needs only `CLAUDE_CONFIG_DIR` naming that directory, or nothing when it is Claude Code's default, `~/.claude`.
+
 In shared mode:
 
-- `ccusage use NAME` selects NAME and copies its account record (`oauthAccount`, which Claude Code shows as the session's account) from NAME's own `.claude.json` into the shared one, changing no other key. It refuses a profile that has no record yet; `ccusage login NAME` writes one. On macOS it also sets launchd's `CLAUDE_SECURESTORAGE_CONFIG_DIR`, so Claude Code started from a GUI app follows the active account too. New sessions use NAME, and running ones switch when they are restarted.
-- `ccusage run [NAME]` launches Claude with the shared config and NAME's login, switching to NAME first when it is not the active profile.
-- `ccusage dir [NAME]` prints the active or named profile's directory, for a launcher to export. When shared mode is off or no profile is active it prints nothing on stdout and fails, so a launcher can use it unconditionally:
+- The active profile's login is in the shared config's own store, its Keychain item on macOS or else its `.credentials.json`, and every session reads it there. Every other profile's login is parked in that profile's own store, so each account has one login.
+- `ccusage use NAME` moves logins: it parks the active profile's login in its own store, seats NAME's in the shared store, and copies NAME's account record (`oauthAccount`, which Claude Code shows as the session's account) from NAME's own `.claude.json` into the shared one, changing no other key. Every Claude session uses NAME from its next request, with no logout, login or restart. What a running session loaded when it started, such as connectors and Remote Control, stays the previous account's until it restarts, and a session's first request after a switch replays its conversation once, which Claude Code does by itself. `use` refuses a profile that has no account record yet; `ccusage login NAME` writes one. On macOS it also clears launchd's `CLAUDE_SECURESTORAGE_CONFIG_DIR`, so Claude Code started from a GUI app reads the shared login too.
+- `ccusage use --none` puts the active login back in its profile and leaves the shared config with none, the layout an older ccusage expects. On macOS it points launchd at the active profile's directory, as 0.1.8 did.
+- `ccusage run [NAME]` launches Claude with the shared config, switching to NAME first when it is not the active profile.
+- `ccusage login NAME` signs in within the profile's own directory, and for the active profile the fresh login then replaces the shared one. `ccusage logout NAME` refuses the profile whose login is in the shared config until a switch moves it out: `ccusage use` with another profile, or `ccusage use --none`.
+- `ccusage dir NAME` prints a parked profile's directory, for `CLAUDE_SECURESTORAGE_CONFIG_DIR` in a session that stays on that account; such a session does not follow a switch. For the active profile, whose login is in the shared config, `dir` prints nothing and fails, since every session reads that login there.
 
-```sh
-dir=$(ccusage dir 2>/dev/null) && export CLAUDE_CONFIG_DIR=~/.config/claude CLAUDE_SECURESTORAGE_CONFIG_DIR="$dir"
-```
+A switch that was interrupted, eg by a crash, is finished by the next `ccusage use`, and until then every command that would read a moving login says so.
 
-`ccusage login NAME` still signs in within the profile's own directory. `ccusage doctor` warns when the shared config still holds a login of its own, when its account record is not the active profile's, when `CLAUDE_SECURESTORAGE_CONFIG_DIR` or launchd's value names no profile or another one, and when a profile directory has no entry in the config. A profile may not use the shared directory as its own.
+To move from 0.1.8's shared mode:
+
+1. Take the line that exported `CLAUDE_SECURESTORAGE_CONFIG_DIR` out of your shell's startup file, and open new shells.
+2. Run `ccusage use NAME`. The first switch finds a login of the shared config's own, and replaces it only when Claude can no longer renew it, or when its account keeps another login in a profile; the replaced login is left to lapse. Otherwise the switch refuses, since that login may be its account's only one, and says how to keep it: add a profile for its account with `ccusage add NAME --email EMAIL` and `ccusage login NAME`, then switch again.
+3. Restart each session that `ccusage doctor` names as running with another login or config directory, from a new shell. Until it restarts, such a session stays on the account it started on, and one whose login the switch moved into the shared config asks for a login: restart it rather than log in.
+
+`ccusage doctor` says where each login is, and fails on a profile with no login or two, on a switch left unfinished, and on a shared login that is another account's, or too long for the Keychain to take in one write. It warns of a shared login that belongs to no profile, of a shared account record that is not the active profile's, of either Claude Code flag a switch relies on that is off its default, of `CLAUDE_SECURESTORAGE_CONFIG_DIR` set in the shell or in launchd, of each running session launched into another login or config directory, and of a profile directory with no entry in the config. A profile may not use the shared directory as its own.
 
 ## Configuration and XDG paths
 
