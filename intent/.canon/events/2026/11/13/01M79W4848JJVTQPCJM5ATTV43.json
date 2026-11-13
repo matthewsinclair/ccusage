@@ -1,0 +1,16 @@
+{
+  "id": "01M79W4848JJVTQPCJM5ATTV43",
+  "ts": "2026-11-13T07:14:37.320Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 8,
+    "text": "ISSUE:0007's wiring on vc's brief (hv's go of 2026-11-13; devbin 0.1.23 carries devbin#0326). Landed: 9cc5f93 (the version line, the install: block), 78cabdc (the formula on @@INSTALL@@, each archive rooted at the install root, the signer and its tests), 802de63 (bin/ccusage alone, since Homebrew moves LICENSE out of libexec). Run 1 (slot 01M79VNKJ75Q7EFHCF89QQS4TW): check all, cargo test --test cli 31 of 31, bats macos 45 of 45 and the stamped dev line all green; doctor red on the installed 0.1.8 keg, a devbin defect sent to vc as a cut blocker and to devbin-vc as a finding. Next: slot 01M79W3Q2Y21ACP1BWREJA13GA for bats at 802de63, install to a scratch prefix, use dev and opt under a scratch HOME, and doctor; then the hand-over to vc."
+  }
+}
