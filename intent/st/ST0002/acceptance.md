@@ -35,7 +35,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 - AC-03.3 `ccusage use`, the TUI's `a` key and `ccusage which --use` make an account active through one function, and `which --use` changes nothing when nothing is eligible. -- satisfied: no (computed)
 - AC-03.4 `ccusage which --model NAME` with a name no account's scoped window carries is refused, naming the models seen. -- satisfied: no (computed)
 
-### WP-04 -- Usage history: bounded samples under XDG_STATE_HOME (status: Not Started)
+### WP-04 -- Usage history: bounded samples under XDG_STATE_HOME (status: WIP)
 
 - AC-04.1 Each successful fetch records a sample for each window whose percent changed, in a 0600 file under XDG_STATE_HOME; a cache hit records nothing; and samples are dropped by age, one weekly window, not at a reset. -- satisfied: no (computed)
 
@@ -78,7 +78,7 @@ _(no tests in this group)_
 
 _(no tests in this group)_
 
-### WP-04 -- Usage history: bounded samples under XDG_STATE_HOME (status: Not Started)
+### WP-04 -- Usage history: bounded samples under XDG_STATE_HOME (status: WIP)
 
 _(no tests in this group)_
 
