@@ -12,6 +12,7 @@ pub mod shared;
 pub mod storage;
 pub mod switch;
 pub mod usage;
+pub mod which;
 
 pub type Error = Box<dyn std::error::Error + Send + Sync>;
 pub type Result<T> = std::result::Result<T, Error>;

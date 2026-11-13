@@ -81,6 +81,17 @@ impl Window {
       share,
     })
   }
+
+  /// The reset rounded to the nearest minute, counted in minutes from the epoch; none
+  /// when the window gives no reset. The which rule orders resets by it and history
+  /// tells one window from the next by it, so the endpoint's jitter of under a second
+  /// either side of the hour moves neither, and no reset falls in two minutes.
+  pub fn reset_minute(&self) -> Option<i128> {
+    const NANOS_PER_MINUTE: i128 = 60_000_000_000;
+    self.resets_at.map(|reset| {
+      (reset.unix_timestamp_nanos() + NANOS_PER_MINUTE / 2).div_euclid(NANOS_PER_MINUTE)
+    })
+  }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

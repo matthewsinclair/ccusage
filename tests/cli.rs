@@ -199,6 +199,27 @@ fn xdg_paths_and_no_overwrite() -> Result<()> {
 }
 
 #[test]
+fn init_and_add_write_the_which_cap_only_into_a_config_that_set_it() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  let path = sandbox.root.join("config/ccusage/config.toml");
+  let text = fs::read_to_string(&path)?;
+  assert!(!text.contains("[which]") && !text.contains("cap"));
+  let cap = ccusage::which::DEFAULT_CAP / 2.0;
+  storage::write_atomic(&path, format!("{text}\n[which]\ncap = {cap}\n").as_bytes())?;
+  sandbox.ok(&["add", "personal"])?;
+  let config: ccusage::config::Config = toml::from_str(&fs::read_to_string(&path)?)?;
+  assert_eq!(config.cap(), cap);
+  assert!(config.profiles.contains_key("personal"));
+  // A cap no rule could use is refused by every verb that loads the config.
+  storage::write_atomic(&path, format!("{text}\n[which]\ncap = 0\n").as_bytes())?;
+  let output = sandbox.run(&["list"])?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stderr)?.contains("[which] cap"));
+  Ok(())
+}
+
+#[test]
 fn login_select_run_logout_and_argument_isolation() -> Result<()> {
   let sandbox = Sandbox::new()?;
   sandbox.setup()?;

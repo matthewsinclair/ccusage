@@ -13,8 +13,43 @@ pub struct Config {
   /// borrow the active profile's login. Unset, ccusage behaves as it always has.
   #[serde(default, skip_serializing_if = "Option::is_none")]
   pub claude_config_dir: Option<PathBuf>,
+  /// The which rule's settings. A config that sets none is written back without the
+  /// table, because every ccusage older than the rule refuses a config that has it.
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub which: Option<Which>,
   #[serde(default)]
   pub profiles: BTreeMap<String, Profile>,
+}
+
+/// `[which]` in config.toml.
+#[derive(Default, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct Which {
+  /// The percent of an account's weekly allowance at which the rule moves on to the
+  /// next account; absent, the rule's one default.
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  pub cap: Option<f64>,
+}
+
+impl Config {
+  /// The cap in force: the config's own, else `which::DEFAULT_CAP`.
+  pub fn cap(&self) -> f64 {
+    self
+      .which
+      .as_ref()
+      .and_then(|which| which.cap)
+      .unwrap_or(crate::which::DEFAULT_CAP)
+  }
+
+  /// Refuses a setting no rule could use. A cap is a percent of the weekly allowance:
+  /// above 0, so the rule can choose at all, and at most 100.
+  fn check(&self) -> Result<()> {
+    let cap = self.cap();
+    if !cap.is_finite() || cap <= 0.0 || cap > 100.0 {
+      return Err(format!("invalid [which] cap {cap}; set it above 0 and at most 100").into());
+    }
+    Ok(())
+  }
 }
 
 #[derive(Default, Deserialize, Serialize)]
@@ -122,6 +157,7 @@ impl Store {
     // Decoder diagnostics may quote a misplaced secret from the source text.
     let config: Config = toml::from_str(std::str::from_utf8(&bytes)?)
       .map_err(|_| "invalid Ccusage config; check TOML syntax and supported profile fields (contents redacted)")?;
+    config.check()?;
     let root = path.parent().ok_or("config has no parent")?.to_path_buf();
     for name in config.profiles.keys() {
       if !valid_name(name) {
@@ -256,5 +292,37 @@ mod tests {
   fn typos_and_inline_secrets_are_rejected() {
     assert!(toml::from_str::<Config>("[profiles.work]\npassword='secret'").is_err());
     assert!(toml::from_str::<Config>("[profile.work]").is_err());
+  }
+
+  #[test]
+  fn the_cap_defaults_once_and_is_written_back_only_where_it_was_set() -> crate::Result<()> {
+    let plain: Config = toml::from_str("[profiles.work]\nemail = 'work@example.com'\n")?;
+    assert_eq!(plain.cap(), crate::which::DEFAULT_CAP);
+    let written = toml::to_string_pretty(&plain)?;
+    assert!(!written.contains("which") && !written.contains("cap"));
+    let cap = crate::which::DEFAULT_CAP / 2.0;
+    let set: Config = toml::from_str(&format!("[which]\ncap = {cap}\n"))?;
+    set.check()?;
+    assert_eq!(set.cap(), cap);
+    let again: Config = toml::from_str(&toml::to_string_pretty(&set)?)?;
+    assert_eq!(again.cap(), cap);
+    // An empty table keeps its place and takes the default.
+    let empty: Config = toml::from_str("[which]\n")?;
+    assert_eq!(empty.cap(), crate::which::DEFAULT_CAP);
+    assert!(toml::to_string_pretty(&empty)?.contains("[which]"));
+    Ok(())
+  }
+
+  #[test]
+  fn a_cap_that_is_not_a_percent_above_0_is_refused_as_is_an_unknown_which_key() -> crate::Result<()>
+  {
+    for cap in ["0", "-1", "100.5", "nan", "inf"] {
+      let config: Config = toml::from_str(&format!("[which]\ncap = {cap}\n"))?;
+      assert!(config.check().is_err(), "cap = {cap} passed");
+    }
+    let whole: Config = toml::from_str("[which]\ncap = 100\n")?;
+    whole.check()?;
+    assert!(toml::from_str::<Config>("[which]\ncaps = 90\n").is_err());
+    Ok(())
   }
 }
