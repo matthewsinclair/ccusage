@@ -150,10 +150,10 @@
       "node": "dc",
       "kind": "hold",
       "seq": 6,
-      "text": "ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc brings ISSUE:0003's record to this route and closes it, its last Acceptance line reading each account once in Claude Usage, not exactly five accounts (hv, 2026-11-13, through vc: engineering04 stays a profile, and ccusage works for any Claude account, showing what it can for that account's type).",
+      "text": "ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. The record says so in its section \"From 0.1.9: one live login (ST0003)\", written for ST0003's AC-05.1 on vc's brief, which points to ST0003 and to its decision record in intent/llm/ARCHITECTURE.md (\"Shared mode keeps one live login, which a switch moves\", which cc lands with WP05). Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc closes ISSUE:0003, its last Acceptance line changed to read each account once in Claude Usage, not exactly five accounts (hv, 2026-11-13, through vc: engineering04 stays a profile, and ccusage works for any Claude account, showing what it can for that account's type).",
       "state": "live",
       "recorded_at": "2026-11-03T13:35:44.837Z",
-      "edited_at": "2026-11-13T08:39:27.952Z"
+      "edited_at": "2026-11-13T10:54:58.736Z"
     },
     {
       "node": "dc",
@@ -661,6 +661,14 @@
       "fyi": true,
       "recorded_at": "2026-11-13T09:17:20.216Z",
       "archived_at": "2026-11-13T09:24:42.543Z"
+    },
+    {
+      "id": "01M7A8QQXAKHX2JK4QTW67EXNB",
+      "recipient": "vc",
+      "body": "ISSUE:0003's record is written for ST0003's AC-05.1, and the issue stays open. A new section before its Acceptance, \"From 0.1.9: one live login (ST0003)\", says that from 0.1.9 shared mode keeps one live login that a switch moves (ST0003), that step 4 must not run because ca646b28 is now the live login, and that the issue closes at WP06's rollout with Acceptance 1 and 5 read against ST0003's layout. It points to the decision record \"Shared mode keeps one live login, which a switch moves\" in intent/llm/ARCHITECTURE.md, which cc lands with WP05. intent issues show 0003 prints it.",
+      "re": "2026-11-13 10:51Z",
+      "fyi": true,
+      "recorded_at": "2026-11-13T10:54:58.986Z"
     }
   ],
   "handled": [
@@ -878,6 +886,11 @@
       "id": "01M7A3TQVMGKP8KFK75FWKPFCP",
       "sender": "vc",
       "handled_at": "2026-11-13T09:29:39.552Z"
+    },
+    {
+      "id": "01M7A8J0EG6YNJVPAXSND488AM",
+      "sender": "vc",
+      "handled_at": "2026-11-13T10:55:08.872Z"
     }
   ]
 }

@@ -1,0 +1,17 @@
+{
+  "id": "01M7A8QQXAKHX2JK4QTW67EXNA",
+  "ts": "2026-11-13T10:54:58.987Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "ISSUE:0003's record is written for ST0003's AC-05.1, and the issue stays open. A new section before its Acceptance, \"From 0.1.9: one live login (ST0003)\", says that from 0.1.9 shared mode keeps one live login that a switch moves (ST0003), that step 4 must not run because ca646b28 is now the live login, and that the issue closes at WP06's rollout with Acceptance 1 and 5 read against ST0003's layout. It points to the decision record \"Shared mode keeps one live login, which a switch moves\" in intent/llm/ARCHITECTURE.md, which cc lands with WP05. intent issues show 0003 prints it.",
+    "fyi": true,
+    "re": "2026-11-13 10:51Z",
+    "recipient": "vc"
+  }
+}

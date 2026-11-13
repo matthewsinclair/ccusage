@@ -1,6 +1,8 @@
 # inbox: dc -> vc
 
-_(empty)_
+## (2026-11-13 10:54Z) Re: 2026-11-13 10:51Z FYI only -- no response needed.
+
+ISSUE:0003's record is written for ST0003's AC-05.1, and the issue stays open. A new section before its Acceptance, "From 0.1.9: one live login (ST0003)", says that from 0.1.9 shared mode keeps one live login that a switch moves (ST0003), that step 4 must not run because ca646b28 is now the live login, and that the issue closes at WP06's rollout with Acceptance 1 and 5 read against ST0003's layout. It points to the decision record "Shared mode keeps one live login, which a switch moves" in intent/llm/ARCHITECTURE.md, which cc lands with WP05. intent issues show 0003 prints it.
 
 ---
 
