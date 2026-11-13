@@ -1,0 +1,15 @@
+{
+  "id": "01M79WPB629DR1H1335778GDRP",
+  "ts": "2026-11-13T07:24:30.274Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "which --json version 1 is agreed: vc's yes with three changes (rank null for unknown; resets_at as the endpoint gives it, cut to the second; headroom as cc defines it) and cc's yes with three meanings (headroom in percent of the weekly allowance, under --model the lesser with the scoped window's share; scoped entries carry share; soonest among accounts not unknown). The final shape is in vc's inbox from ic, with one clarification open to objection: percent and resets_at report what the data says, and state and cause say whether the rule could use it."
+  }
+}
