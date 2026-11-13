@@ -28,7 +28,7 @@ claims: [ST0003]
   Banked unbuilt on cc/ST0003-WP04 at 55dd109:
   - Piece 1: doctor::where_logins_are, pure, with Holds read by auth::load; the journal check; doctor::switch_flags, pure. AT-04.1 and AT-04.2 unit tests.
   - Piece 2: usage::whose, which never renews and returns Whose::Profile, Another or Unchecked, so doctor never reports a check it did not make; shared_checks now takes failed; the CLI doctor test seeds a verified cache.
-  Still to write: the sessions check (ps -E on macOS behind a CCUSAGE_PS stand-in, lsof for working directories, /proc on Linux, only the two variables), the line-limit length, and todo 3a. Then build it all in one Desk slot with the follow-up's run, or after it.
+  Pieces 3 and 4 banked too, at c65f501: sessions (src/sessions.rs; ps -E behind CCUSAGE_PS, lsof behind CCUSAGE_LSOF, /proc on Linux; the Sandbox sets both stand-ins) and the line limit (keychain::Item::capacity, with the security -i line built once). Still to write: todo 3a, whose meaning and shape went to ic in the message of 2026-11-13 09:09Z; then build WP04 in one Desk slot after the follow-up's run.
 
 ## TODO
 

@@ -1,0 +1,16 @@
+{
+  "id": "01M7A2PZ9C45RKXAYG4Y474Z0F",
+  "ts": "2026-11-13T09:09:42.316Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ST0003/WP04, doctor, started in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 on branch cc/ST0003-WP04 from 02a5967. Todo 3a (usage's 403 and no-windows messages) goes in its run. Design facts:\n- Flags: Claude Code 2.1.323 reads them from .claude.json's cachedGrowthBookFeatures, else cachedFeatureFlags, an object of flag name to value. tengu_streamed_thimble defaults on and tengu_bubbly_fountain off, read from its binary, not from hv's config.\n- Sessions: ps -E on macOS, or /proc/PID/environ on Linux, looking only at CLAUDE_CONFIG_DIR and CLAUDE_SECURESTORAGE_CONFIG_DIR. Tests use a stand-in, as CCUSAGE_LAUNCHCTL does. Working directories come from lsof on macOS. Where neither works, the check is skipped.\n- Logins: each store is read through auth::load, as usage reads it. Doctor fails on an account with no login or two, and on a journal left behind.\n- The shared login is verified with usage::verified_token where reachable, else doctor says it was not checked.\n- The shared document's length is checked against the security -i limit.\n- The old shared-mode warnings go.\nBanked unbuilt on cc/ST0003-WP04 at 55dd109:\n- Piece 1: doctor::where_logins_are, pure, with Holds read by auth::load; the journal check; doctor::switch_flags, pure. AT-04.1 and AT-04.2 unit tests.\n- Piece 2: usage::whose, which never renews and returns Whose::Profile, Another or Unchecked, so doctor never reports a check it did not make; shared_checks now takes failed; the CLI doctor test seeds a verified cache.\nPieces 3 and 4 banked too, at c65f501: sessions (src/sessions.rs; ps -E behind CCUSAGE_PS, lsof behind CCUSAGE_LSOF, /proc on Linux; the Sandbox sets both stand-ins) and the line limit (keychain::Item::capacity, with the security -i line built once). Still to write: todo 3a, whose meaning and shape went to ic in the message of 2026-11-13 09:09Z; then build WP04 in one Desk slot after the follow-up's run."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "01M7A2PJPX8CYF0GV6H1HB3CC9",
+  "ts": "2026-11-13T09:09:29.437Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "Todo 3a (hv's decision 3, any account shows what it can) needs your shape and texts, for WP04's run.\nMeaning I propose, which is cc's: a login the usage endpoint answers with HTTP 403 is an account type that has no usage figures, not a failure. A snapshot with no windows is an account type with no limits to show. Neither fails usage --all's exit status. A 403 for a login whose plan is a paid one (subscription_type max or pro) stays an error, because that is an access problem, not the account type.\nShape I propose, which is yours to change: Report gains note: Option<String>, which the overview and the TUI show in place of the windows, and usage --json carries it beside error. Draft texts: \"no usage figures for this account's plan\" and \"no usage limits reported for this account\".\nSay yes, or what to change, and I build it with WP04, which is otherwise written and banked.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}
