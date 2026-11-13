@@ -265,7 +265,7 @@
     {
       "id": "AT-02.1",
       "kind": "test",
-      "file": "src/which.rs:362",
+      "file": "src/which.rs:400",
       "covers": [
         "AC-02.1"
       ],
@@ -275,7 +275,7 @@
     {
       "id": "AT-02.2",
       "kind": "test",
-      "file": "src/which.rs:461",
+      "file": "src/which.rs:499",
       "covers": [
         "AC-02.2"
       ],
@@ -295,7 +295,7 @@
     {
       "id": "AT-02.4",
       "kind": "test",
-      "file": "tests/cli.rs:201",
+      "file": "tests/cli.rs:263",
       "covers": [
         "AC-02.3"
       ],
@@ -305,12 +305,52 @@
     {
       "id": "AT-02.5",
       "kind": "test",
-      "file": "src/which.rs:602",
+      "file": "src/which.rs:640",
       "covers": [
         "AC-02.4"
       ],
       "status": "green",
       "note": "With a model named, an account whose scoped window for it is at the cap is at cap and not chosen, the model matched regardless of case; an account with no scoped window for the model is bounded by the weekly window alone, and the headroom is the lesser of the weekly room and the scoped room in weekly terms; red before WP02: written against which::choose, it could not compile before it; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3"
+    },
+    {
+      "id": "AT-03.1",
+      "kind": "test",
+      "file": "tests/cli.rs:1045",
+      "covers": [
+        "AC-03.1"
+      ],
+      "status": "green",
+      "note": "which prints the chosen account's line first, with its room before the cap, its reset and its reason, then the rest in rank order, eligible, at the cap and unknown; with nothing eligible its first line says so and names the soonest reset, the reason goes to stderr and it exits 1; help lists the verb; red under the mutants that print the text in reverse order and that exit 0 with nothing eligible, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)"
+    },
+    {
+      "id": "AT-03.2",
+      "kind": "test",
+      "file": "tests/cli.rs:1077",
+      "covers": [
+        "AC-03.2"
+      ],
+      "status": "green",
+      "note": "which --json is version 1 of the shape cc and ic agreed: the top-level and per-account fields by name and in order, the scoped entries, states, ranks and causes, headroom rounded to 0.1, and every time RFC 3339 in UTC to the second with a Z, its accounts in the text's order; cc signed its meaning at 90ca48e; red under the mutants that spell at_cap otherwise and that keep a time's fraction, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)"
+    },
+    {
+      "id": "AT-03.3",
+      "kind": "test",
+      "file": "tests/cli.rs:1180",
+      "covers": [
+        "AC-03.3"
+      ],
+      "status": "green",
+      "note": "which --use makes the choice active through switch::to, the one use function the use verb and the TUI's a key call too; it says so when the choice is active already, reports activated only when it made the choice active, and leaves the active account as it was with nothing eligible; red under the mutant that switches when the choice is active already, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)"
+    },
+    {
+      "id": "AT-03.4",
+      "kind": "test",
+      "file": "tests/cli.rs:1215",
+      "covers": [
+        "AC-03.4"
+      ],
+      "status": "green",
+      "note": "which --model with a name no scoped window carries is refused before anything is printed, naming the models seen; any case of a model seen is that model, spelled as the usage spells it; red under the mutant that matches model names by case, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)"
     },
     {
       "id": "AT-04.1",
@@ -345,7 +385,7 @@
     {
       "id": "AT-04.4",
       "kind": "test",
-      "file": "tests/cli.rs:293",
+      "file": "tests/cli.rs:355",
       "covers": [
         "AC-04.1"
       ],
