@@ -1,0 +1,16 @@
+{
+  "id": "01M79WCPXXMBFMBPTZ58GY7EF8",
+  "ts": "2026-11-13T07:19:14.621Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 2,
+    "text": "which --json's code (ST0002/WP03) waits for cc's sign-off of the shape ic sent. vc said yes with three changes: (a) rank null for unknown accounts; (b) resets_at as the endpoint gives it, to the second, the minute rounding kept inside the rule; (c) headroom under --model as cc defines it (vc suggested weekly terms). Released when cc has signed; then ic sends vc the final shape, which vc gives geodica-estate."
+  }
+}

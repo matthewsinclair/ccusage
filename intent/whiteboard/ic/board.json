@@ -5,7 +5,7 @@
     "name": "Interface Claude",
     "role": "interface",
     "session_id": "862f222f-ebb1-46a4-876c-44117298b8a7",
-    "heartbeat_at": "2026-11-13T07:09:37.626Z",
+    "heartbeat_at": "2026-11-13T07:19:01.257Z",
     "status": "active",
     "focus": "",
     "claims": [
@@ -35,9 +35,10 @@
       "node": "ic",
       "kind": "hold",
       "seq": 2,
-      "text": "which --json's code (ST0002/WP03) waits for cc's and vc's yes on the shape ic sent them. Released when both have answered and the shape is agreed.",
+      "text": "which --json's code (ST0002/WP03) waits for cc's sign-off of the shape ic sent. vc said yes with three changes: (a) rank null for unknown accounts; (b) resets_at as the endpoint gives it, to the second, the minute rounding kept inside the rule; (c) headroom under --model as cc defines it (vc suggested weekly terms). Released when cc has signed; then ic sends vc the final shape, which vc gives geodica-estate.",
       "state": "live",
-      "recorded_at": "2026-11-13T07:15:04.367Z"
+      "recorded_at": "2026-11-13T07:15:04.367Z",
+      "edited_at": "2026-11-13T07:19:14.621Z"
     }
   ],
   "sent": [
@@ -68,6 +69,11 @@
       "id": "01M79VH4Q1W6Q4H69Z7GFH7ZDT",
       "sender": "vc",
       "handled_at": "2026-11-13T07:15:08.400Z"
+    },
+    {
+      "id": "01M79W8RW57Y31BFBV2J75DG5K",
+      "sender": "vc",
+      "handled_at": "2026-11-13T07:19:14.688Z"
     }
   ]
 }

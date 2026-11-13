@@ -3,7 +3,7 @@ node: ic
 name: Interface Claude
 role: interface
 session_id: 862f222f-ebb1-46a4-876c-44117298b8a7
-heartbeat_at: 2026-11-13 07:09Z
+heartbeat_at: 2026-11-13 07:19Z
 status: active
 focus: ""
 claims: [ST0002]
@@ -22,7 +22,7 @@ _(none)_
 ## Holds
 
 - which --use (ST0002/WP03) calls the one use function cc makes in ST0003/WP03's first commit; ic writes no second. Released when that function is on main.
-- which --json's code (ST0002/WP03) waits for cc's and vc's yes on the shape ic sent them. Released when both have answered and the shape is agreed.
+- which --json's code (ST0002/WP03) waits for cc's sign-off of the shape ic sent. vc said yes with three changes: (a) rank null for unknown accounts; (b) resets_at as the endpoint gives it, to the second, the minute rounding kept inside the rule; (c) headroom under --model as cc defines it (vc suggested weekly terms). Released when cc has signed; then ic sends vc the final shape, which vc gives geodica-estate. (edited)
 
 ## Watch-outs
 
