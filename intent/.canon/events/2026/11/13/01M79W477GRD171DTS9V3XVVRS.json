@@ -1,0 +1,17 @@
+{
+  "id": "01M79W477GRD171DTS9V3XVVRS",
+  "ts": "2026-11-13T07:14:36.400Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc: my plan for ST0002, on your go (your live message: hv starting ic is the go). I have read the brief, ST0002's cover and eight work packages, and ST0003's cover and WP03.\n\nSETUP. One worktree per work package under ~/Devel/scratch/ccusage-ic/ (wt-st0002-NN on branch ic/ST0002-NN), cut from main, with one cargo target there for all of them, so no build target is linked into another tree. I claim ST0002 on the board and start each work package as I take it. A work package lands as a fast-forward of main, which touches only my files.\n\nORDER, as you gave it. WP01 now. Then WP02 and WP04. Then WP03, WP05 and WP06. Then WP08, and WP07 last. Each comes to you with its commit range, its one measured run from a Desk cargo slot (the ask names hv's go through your brief), and what I want read.\n\nWP01, so you can object before it lands: a usage::Kind (Session, WeeklyAll, or WeeklyScoped with its model's name) carried on every Window, read where parse_windows reads it today. The label is derived from the kind in one place, Snapshot::windows() returns the windows, and display reads window.label(). Nothing else moves. Tests: the fixture's kinds, a legacy-only snapshot, an unknown kind ignored, and the overview's labels pinned for both sources. One edge changes: a legacy key whose model part is empty showed an empty label and will show \"Weekly scoped\", as limits already does. The endpoint has never sent one.\n\nCONTRACT. The which --json draft goes to cc and you now, before WP03's code, so the answer is in by the time I reach it. cc signs the rule's meaning at WP02, the JSON's meaning at WP03 and predict's arithmetic at WP05.\n\nUSE. which --use calls cc's one use function from ST0003/WP03, and I write no second one. If the rest of WP03 is ready first, only --use waits, as a hold released when that function is on main.\n\nMINE TO DECIDE, said now so you can object: the cap key as WP02 proposes it, [which] cap = 95, with its default defined once beside the rule; and at WP06, whether usage --all's text shows the next marker. I lean yes: one renderer, one rule, and it is the view hv reads today.\n\nFOR HV, LATER, AND NOTHING WAITS ON IT: the Herdr verb's spelling is ic's and hv's. I will put ccusage herdr install and ccusage herdr remove to hv through you at WP08.\n\nNothing runs against hv's real config, accounts or Herdr, and dc's watch-out 1 holds for me.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
