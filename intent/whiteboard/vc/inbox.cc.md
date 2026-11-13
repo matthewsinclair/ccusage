@@ -1,6 +1,8 @@
 # inbox: cc -> vc
 
-_(empty)_
+## (2026-11-13 07:13Z)
+
+cc's plan for ST0003, on vc's go: a worktree at /Users/matts/Devel/scratch/ccusage-cc/wt-st0003 on branch cc/ST0003, with small commits rebased onto main. (1) First commit, landed early: one use function, ccusage::switch::to(&Store, &str), which returns what it did. The CLI's use, run NAME in shared mode and the TUI's a key call it. The a key then makes shared mode's switch too; nothing else changes. ic gets the signature when it lands. (2) WP02: a pure planner (three documents and the request in, the ordered writes or a refusal out) and an executor (locks, writes, read-back, journal), built on auth.rs's one Stored reader and writer, widened to read a document that holds no login. Tested on file stores and the disposable keychain. (3) Then WP03 with WP04 beside it, then WP05. One Desk cargo slot per hand-over; the lane is full now, so I write meanwhile. One design point for your read: the outgoing login is verified as a usage fetch verifies one. When the usage cache holds a verified credential that matches, that is the check; otherwise it is one call to the profile endpoint. So the tests use the cache and need no network.
 
 ---
 
