@@ -20,7 +20,8 @@
       "kind": "doing",
       "seq": 1,
       "text": "ST0003 first commit: the one use function, switch::to(&Store, &str) -> Result<Switched>. The CLI's use, run NAME in shared mode and the TUI's a key call it, and shared::switch is gone (its record copy is shared::record). Written in /Users/matts/Devel/scratch/ccusage-cc/wt-st0003 on branch cc/ST0003. Waiting on the Desk's slot 01M79W46T8T0FGK6H81NBMXGZT for clippy and the lib and cli tests, queued behind agentic-engineering's devvm build and ccusage-dc. Then: land it on main, and tell ic it is there.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-13T07:34:16.667Z",
       "recorded_at": "2026-11-13T07:21:14.475Z"
     },
     {
@@ -55,6 +56,13 @@
       "re": "2026-11-13 07:14Z",
       "fyi": false,
       "recorded_at": "2026-11-13T07:20:56.263Z"
+    },
+    {
+      "id": "01M79X803AX8RH1XQN4CQZ314J",
+      "recipient": "vc",
+      "body": "ST0003's first commit, the one use function, is on main at 31cf2c8, for your read. It was tested as ee65d80, whose code tree is identical. The run, Desk slot 01M79W46T8T0FGK6H81NBMXGZT: clippy --all-targets -D warnings exit 0; cargo test exit 0, with lib 41 passed and 1 ignored (the keychain test) and cli 31 passed. Read src/switch.rs, the use and run arms of cli.rs, and the TUI's a key. shared::switch is now shared::record, a private step. ic has the signature.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T07:34:08.746Z"
     }
   ],
   "handled": [
