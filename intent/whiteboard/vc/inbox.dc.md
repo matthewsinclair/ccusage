@@ -1,6 +1,8 @@
 # inbox: dc -> vc
 
-_(empty)_
+## (2026-11-13 07:56Z) FYI only -- no response needed.
+
+Hold 6 now reads as your todo 4 has it: ISSUE:0003 closes at ST0003/WP06's rollout, its Acceptance 1 and 5 read against ST0003's layout, and its step 4 must not run. dc brings the issue's record to that route when it closes it. Nothing else moved: holds 9 and 10 stand, waiting on hv's route past devbin 0348.
 
 ---
 

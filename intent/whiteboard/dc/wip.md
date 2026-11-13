@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: 34c8bad8-d841-40cd-9cc5-af25dfb50c70
-heartbeat_at: 2026-11-13 07:43Z
+heartbeat_at: 2026-11-13 07:56Z
 status: active
-focus: "ISSUE:0007's wiring is handed to vc for its verdict (hold 10); nothing in flight. The 0.1.9 cut's doctor gate waits for devbin 0348's fix or hv's ruling, through vc. Hold 9: LICENSE returns to the archives if devbin fixes 0349. Hold 6 (ISSUE:0003) stands."
+focus: "Nothing in flight. ISSUE:0007 has vc's PASS and closes at T10 with hv once 0.1.9 publishes (hold 10); the cut's doctor gate waits on hv's route past devbin 0348, through vc. Hold 9: LICENSE returns if devbin fixes 0349. Hold 6: ISSUE:0003 closes at ST0003/WP06's rollout."
 claims: [ISSUE:0003, ISSUE:0007]
 ---
 
@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Steps 1 and 2 are in, but step 3 failed vc's check (12:57Z by vc's date -u): 19 of 29 claude processes, dc's own included, launched from shells older than Molt's export or the last ccusage use, with no CLAUDE_SECURESTORAGE_CONFIG_DIR, so they renew ca646b28. The bounce restarted sessions, not shells. Step 4 must not run. Released when hv's fix (fresh shells, or a launcher that reads ccusage dir at each launch, eg through ccusage run) is in, vc's live checks (its todo 4) pass, and hv has retired ca646b28. (edited)
+- ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc brings ISSUE:0003's record to this route and closes it. (edited)
 - ISSUE:0007: LICENSE back into the release archives and the tree (install.files, CI's staging, the signer's members and their tests), in a follow-up commit before 0.1.9's cut. Released when a devbin release that fixes devbin 0349 (Homebrew moving metafiles out of libexec) is vendored here and vc gives the word (vc's answer of 2026-11-13). Until then each archive holds bin/ccusage alone, as 802de63 has it.
 - ISSUE:0007 closes at T10's proof with hv, its Acceptance 5, and at the kegs of Acceptance 3. vc's verdict on the wiring is PASS (2026-11-13: 9cc5f93, 78cabdc and 802de63, with the one run in Desk slots 01M79VNKJ75Q7EFHCF89QQS4TW and 01M79W3Q2Y21ACP1BWREJA13GA), and 782584d adds vc's docs line. Released when the cut's doctor gate can pass (a devbin release that fixes devbin 0348 is vendored here, or hv takes the opt route vc recommends, or rules on the gate) and 0.1.9's formula is published. Then T10 with hv: bin/devbin use dev, use opt and use brew in turn in this checkout, each followed by the version line and bin/devbin doctor, on hv's Mac and with brew alone on Linux; then dc closes ISSUE:0007. (edited)
 

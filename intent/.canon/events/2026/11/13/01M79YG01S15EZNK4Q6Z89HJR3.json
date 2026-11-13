@@ -1,0 +1,16 @@
+{
+  "id": "01M79YG01S15EZNK4Q6Z89HJR3",
+  "ts": "2026-11-13T07:55:59.417Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 6,
+    "text": "ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc brings ISSUE:0003's record to this route and closes it."
+  }
+}
