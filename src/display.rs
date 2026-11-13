@@ -16,6 +16,31 @@ use std::{
   time::{Duration, Instant},
 };
 
+/// A time as every versioned JSON ccusage writes gives one: RFC 3339 in UTC, cut to the
+/// second, with a Z.
+pub fn stamp(at: time::OffsetDateTime) -> Result<String> {
+  Ok(
+    at.to_offset(time::UtcOffset::UTC)
+      .replace_nanosecond(0)?
+      .format(&time::format_description::well_known::Rfc3339)?,
+  )
+}
+
+/// A time given in seconds from the epoch, written as `stamp` writes every time.
+pub fn stamp_unix(seconds: i64) -> Result<String> {
+  stamp(time::OffsetDateTime::from_unix_timestamp(seconds)?)
+}
+
+/// A percent rounded to 0.1, as the versioned JSON gives a derived one.
+pub fn tenth(percent: f64) -> f64 {
+  (percent * 10.0).round() / 10.0
+}
+
+/// A percent to the whole number, as the overview shows one.
+pub fn whole(percent: f64) -> String {
+  format!("{percent:.0}")
+}
+
 pub fn duration(seconds: i64) -> String {
   let minutes = seconds.max(0) / 60;
   if minutes < 1 {

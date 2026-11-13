@@ -191,11 +191,23 @@ const DAY: i64 = 86_400;
 /// The Fable window's percent in the which tests.
 const FABLE: f64 = 10.0;
 
+/// The time `in_seconds` from now, in RFC 3339.
+fn reset_in(in_seconds: i64) -> Result<String> {
+  Ok(
+    (time::OffsetDateTime::now_utc() + time::Duration::seconds(in_seconds))
+      .format(&time::format_description::well_known::Rfc3339)?,
+  )
+}
+
 /// Usage whose weekly window is at `percent` and resets `in_seconds` from now, with a
 /// Fable window at `fable`, whose share is half the weekly allowance, when one is given.
 fn weekly(percent: f64, in_seconds: i64, fable: Option<f64>) -> Result<serde_json::Value> {
-  let reset = (time::OffsetDateTime::now_utc() + time::Duration::seconds(in_seconds))
-    .format(&time::format_description::well_known::Rfc3339)?;
+  Ok(resetting(percent, &reset_in(in_seconds)?, fable))
+}
+
+/// `weekly`'s usage, resetting at `reset`, so that usage built more than once is on the
+/// one window.
+fn resetting(percent: f64, reset: &str, fable: Option<f64>) -> serde_json::Value {
   let mut limits =
     vec![serde_json::json!({"kind": "weekly_all", "percent": percent, "resets_at": reset})];
   if let Some(fable) = fable {
@@ -204,8 +216,8 @@ fn weekly(percent: f64, in_seconds: i64, fable: Option<f64>) -> Result<serde_jso
       "scope": {"model": {"display_name": "Fable"}}}),
     );
   }
-  Ok(serde_json::json!({"limits": limits,
-    "weekly_scoped_shares": [{"limit_index": 1, "allowance_percent_of_weekly": 50}]}))
+  serde_json::json!({"limits": limits,
+    "weekly_scoped_shares": [{"limit_index": 1, "allowance_percent_of_weekly": 50}]})
 }
 
 /// The account each line of the which text is about, in order: the name before its
@@ -1199,6 +1211,12 @@ fn which_names_the_soonest_reset_with_headroom_then_ranks_the_rest() -> Result<(
   let text = String::from_utf8(output.stdout)?;
   assert_eq!(line_names(&text), ["work", "personal", "spare", "broken"]);
   let lines: Vec<_> = text.lines().collect();
+  // The headroom is what is below the cap, beside the percent used.
+  let used = cap / 2.0;
+  assert!(lines[0].starts_with(&format!(
+    "work: {used:.0}% used, {:.0}% below the {cap}% cap, resets in ",
+    cap - used
+  )));
   assert!(lines[0].ends_with(", soonest reset with headroom"));
   assert!(lines[0].contains(&format!("Fable {FABLE}% used")));
   assert!(lines[1].ends_with(", eligible"));
@@ -1372,6 +1390,57 @@ fn which_refuses_a_model_no_scoped_window_carries_and_names_the_models_seen() ->
   let json: serde_json::Value =
     serde_json::from_str(&sandbox.ok(&["which", "--model", "fable", "--json"])?)?;
   assert_eq!(json["model"], "Fable");
+  assert_eq!(json["choice"], "work");
+  // Under a model, the headroom is what the model may still use before the cap.
+  let text = sandbox.ok(&["which", "--model", "fable"])?;
+  assert!(
+    text
+      .lines()
+      .next()
+      .is_some_and(|line| line.contains("% more on Fable before the cap, "))
+  );
+  Ok(())
+}
+
+// hv's ruling 3: any Claude account works, and shows whatever its usage reports.
+#[test]
+fn which_lists_an_account_without_a_weekly_window_with_what_it_reports_and_never_chooses_it()
+-> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.which_accounts()?;
+  sandbox.ok(&["add", "free", "--email", "test@example.com"])?;
+  let session = 40.0;
+  sandbox.cached_usage(
+    "free",
+    ccusage::now(),
+    0,
+    serde_json::json!({"limits": [{"kind": "session", "percent": session, "resets_at": reset_in(DAY)?}]}),
+  )?;
+  let text = sandbox.ok(&["which"])?;
+  let free = text
+    .lines()
+    .find(|line| line.starts_with("free: "))
+    .ok_or("free's line")?;
+  assert_eq!(
+    free,
+    format!("free: unknown, session {session}% used, no weekly window in the usage")
+  );
+  let json: serde_json::Value = serde_json::from_str(&sandbox.ok(&["which", "--json"])?)?;
+  let entry = json["accounts"]
+    .as_array()
+    .ok_or("an accounts array")?
+    .iter()
+    .find(|account| account["name"] == "free")
+    .ok_or("free's entry")?;
+  assert_eq!(
+    (&entry["state"], &entry["cause"], &entry["rank"]),
+    (
+      &serde_json::json!("unknown"),
+      &serde_json::json!("no_weekly_window"),
+      &serde_json::Value::Null
+    )
+  );
+  assert_eq!(entry["session"]["percent"], session);
   assert_eq!(json["choice"], "work");
   Ok(())
 }

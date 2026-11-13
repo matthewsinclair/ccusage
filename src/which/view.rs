@@ -3,9 +3,13 @@
 //! panel depend on. Both are pure.
 
 use super::{Account, Cause, Choice, State};
-use crate::{Result, display, usage::Window};
+use crate::{
+  Result,
+  display::{self, stamp, stamp_unix, tenth, whole},
+  usage::Window,
+};
 use serde::Serialize;
-use time::{OffsetDateTime, UtcOffset, format_description::well_known::Rfc3339};
+use time::OffsetDateTime;
 
 /// The contract's version. A field added keeps it; a field removed, renamed or given a
 /// new meaning raises it.
@@ -13,8 +17,9 @@ pub const VERSION: u32 = 1;
 
 /// The text: with a choice, its line comes first with its reason on it; with none, a
 /// line saying why nothing is eligible, naming the soonest reset. Then every other
-/// account one line each, in the JSON's order.
-pub fn text(choice: &Choice, now: i64, cap: f64) -> String {
+/// account one line each, in the JSON's order. `model` is the --model given, spelled as
+/// the usage spells it.
+pub fn text(choice: &Choice, now: i64, cap: f64, model: Option<&str>) -> String {
   let mut lines = Vec::new();
   if choice.chosen().is_none() {
     lines.push(format!(
@@ -22,7 +27,12 @@ pub fn text(choice: &Choice, now: i64, cap: f64) -> String {
       nothing_eligible(choice, now, cap)
     ));
   }
-  lines.extend(choice.accounts.iter().map(|account| line(account, now)));
+  lines.extend(
+    choice
+      .accounts
+      .iter()
+      .map(|account| line(account, now, cap, model)),
+  );
   lines.join("\n")
 }
 
@@ -44,21 +54,29 @@ pub fn nothing_eligible(choice: &Choice, now: i64, cap: f64) -> String {
   }
 }
 
-/// One account's line: its name, then its weekly window's room or use and reset, its
-/// scoped and session windows, and the rule's reason. An unknown account gives its
-/// reason alone.
-fn line(account: &Account, now: i64) -> String {
-  let name = crate::clean(&account.name);
-  if matches!(account.state, State::Unknown(_)) {
-    return format!("{name}: unknown, {}", account.reason);
-  }
+/// One account's line: its name, then whatever windows its usage reports, whether or not
+/// the rule could use them: the weekly window's use, its headroom below the cap when the
+/// account is chosen or eligible, and its reset while that is ahead; its scoped and
+/// session windows; and last the rule's reason. An unknown account says so first.
+fn line(account: &Account, now: i64, cap: f64, model: Option<&str>) -> String {
   let mut parts = Vec::new();
+  if matches!(account.state, State::Unknown(_)) {
+    parts.push("unknown".to_owned());
+  }
   if let Some(weekly) = &account.weekly {
-    parts.push(match (account.state, account.headroom) {
-      (State::Chosen | State::Eligible, Some(headroom)) => format!("{}% left", whole(headroom)),
-      _ => format!("{}% used", whole(weekly.utilization)),
-    });
-    if let Some(reset) = weekly.resets_at {
+    parts.push(format!("{}% used", whole(weekly.utilization)));
+    if let (State::Chosen | State::Eligible, Some(headroom)) = (account.state, account.headroom) {
+      // Under a model the headroom may be bounded by the model's scoped window, so it is
+      // not the weekly percent's distance to the cap.
+      parts.push(match model {
+        None => format!("{}% below the {cap}% cap", whole(headroom)),
+        Some(model) => format!("{}% more on {model} before the cap", whole(headroom)),
+      });
+    }
+    if let Some(reset) = weekly
+      .resets_at
+      .filter(|reset| reset.unix_timestamp() > now)
+    {
       parts.push(format!(
         "resets in {}",
         display::duration(reset.unix_timestamp() - now)
@@ -76,12 +94,7 @@ fn line(account: &Account, now: i64) -> String {
     parts.push(format!("session {}% used", whole(session.utilization)));
   }
   parts.push(account.reason.clone());
-  format!("{name}: {}", parts.join(", "))
-}
-
-/// A percent to the whole number, as the overview shows one.
-fn whole(percent: f64) -> String {
-  format!("{percent:.0}")
+  format!("{}: {}", crate::clean(&account.name), parts.join(", "))
 }
 
 /// The JSON, version 1: every field the contract names, in its order. `active` is the
@@ -173,7 +186,7 @@ fn entry(account: &Account) -> Result<Entry<'_>> {
     state: state_name(account.state),
     rank: account.rank,
     percent: account.weekly.as_ref().map(|weekly| weekly.utilization),
-    headroom: account.headroom.map(|room| (room * 10.0).round() / 10.0),
+    headroom: account.headroom.map(tenth),
     resets_at: account.weekly.as_ref().map(reset).transpose()?.flatten(),
     reason: &account.reason,
     cause: match account.state {
@@ -209,24 +222,10 @@ fn soonest_reset(choice: &Choice) -> Option<(&Account, OffsetDateTime)> {
   Some((account, account.weekly.as_ref()?.resets_at?))
 }
 
-/// A window's reset as the contract writes it; none when it gives none.
+/// A window's reset as the contract writes every time, cut to the second, so the rule's
+/// rounding of resets to the minute stays inside the rule; none when it gives none.
 fn reset(window: &Window) -> Result<Option<String>> {
   window.resets_at.map(stamp).transpose()
-}
-
-/// A time as the contract writes every time: RFC 3339 in UTC, cut to the second, with
-/// a Z. The rule's rounding of resets to the minute stays inside the rule.
-fn stamp(at: OffsetDateTime) -> Result<String> {
-  Ok(
-    at.to_offset(UtcOffset::UTC)
-      .replace_nanosecond(0)?
-      .format(&Rfc3339)?,
-  )
-}
-
-/// A time given in seconds from the epoch, written as `stamp` writes every time.
-fn stamp_unix(seconds: i64) -> Result<String> {
-  stamp(OffsetDateTime::from_unix_timestamp(seconds)?)
 }
 
 /// A state as the contract spells it.

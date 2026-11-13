@@ -411,7 +411,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
           )?
         );
       } else {
-        println!("{}", which::view::text(&choice, now, cap));
+        println!("{}", which::view::text(&choice, now, cap, model.as_deref()));
         match (&chosen, switched) {
           (Some(name), Some(switched)) => println!("{}", switched.message(name)),
           (Some(name), None) if activate => println!("{name} is already the active account."),
