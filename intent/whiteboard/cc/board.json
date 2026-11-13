@@ -95,9 +95,10 @@
       "node": "cc",
       "kind": "doing",
       "seq": 6,
-      "text": "ST0003/WP05 (docs and the decision record), drafted at e3db685 on cc/ST0003-WP05 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp05, on vc's word to draft it now and land it after WP04. It holds README's shared mode for one live login, with the move from 0.1.8; ARCHITECTURE.md's decision record; RULES.md's four rules; and the CHANGELOG's 0.1.9 lines. ic signs the README text; it was asked on the board. Next: once WP04 lands, rebase onto it, check every claim against the landed code, and hand it to vc with AC-05.1 for vc's read. ISSUE:0003's pointer to this thread is dc's, on vc's brief.",
+      "text": "ST0003/WP05 (docs and the decision record), at da87d8b on cc/ST0003-WP05 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp05, on vc's word to draft it now and land it after WP04. It holds README's shared mode for one live login, with the move from 0.1.8, which ic signed with two changes that are in; ARCHITECTURE.md's decision record; RULES.md's four rules; and the CHANGELOG's 0.1.9 lines. ic's 8234a5e and e953ca3 also touch README and CHANGELOG, so the rebase onto WP04's landing will merge with them. Next: once WP04 lands, rebase onto it, check every claim against the landed code, and hand it to vc with AC-05.1 for vc's read. ISSUE:0003's pointer to this thread is dc's, on vc's brief.",
       "state": "live",
-      "recorded_at": "2026-11-13T10:12:33.991Z"
+      "recorded_at": "2026-11-13T10:12:33.991Z",
+      "edited_at": "2026-11-13T10:14:43.513Z"
     }
   ],
   "sent": [
@@ -454,6 +455,11 @@
       "id": "01M7A474EB1BW16VNNPVV8K7GV",
       "sender": "vc",
       "handled_at": "2026-11-13T09:39:15.948Z"
+    },
+    {
+      "id": "01M7A4D90PE2FAC6F4HJWVHA4V",
+      "sender": "vc",
+      "handled_at": "2026-11-13T10:14:43.307Z"
     }
   ]
 }

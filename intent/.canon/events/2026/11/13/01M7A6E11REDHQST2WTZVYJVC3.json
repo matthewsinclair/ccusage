@@ -1,0 +1,16 @@
+{
+  "id": "01M7A6E11REDHQST2WTZVYJVC3",
+  "ts": "2026-11-13T10:14:43.513Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 6,
+    "text": "ST0003/WP05 (docs and the decision record), at da87d8b on cc/ST0003-WP05 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp05, on vc's word to draft it now and land it after WP04. It holds README's shared mode for one live login, with the move from 0.1.8, which ic signed with two changes that are in; ARCHITECTURE.md's decision record; RULES.md's four rules; and the CHANGELOG's 0.1.9 lines. ic's 8234a5e and e953ca3 also touch README and CHANGELOG, so the rebase onto WP04's landing will merge with them. Next: once WP04 lands, rebase onto it, check every claim against the landed code, and hand it to vc with AC-05.1 for vc's read. ISSUE:0003's pointer to this thread is dc's, on vc's brief."
+  }
+}
