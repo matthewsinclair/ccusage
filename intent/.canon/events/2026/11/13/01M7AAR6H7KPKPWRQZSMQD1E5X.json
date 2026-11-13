@@ -1,0 +1,15 @@
+{
+  "id": "01M7AAR6H7KPKPWRQZSMQD1E5X",
+  "ts": "2026-11-13T11:30:11.111Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "text": "hv's decision 5 (2026-11-13, vc's FYI): 0.1.9 is cut before ST0003/WP06's rollout, once dc's gates on kovacs pass. From vc's word that the cut starts until vc's word that it is published, commit nothing to main. Until the rollout, nobody runs ccusage use or ccusage which --use on 0.1.9, since either one begins it. WP06 (cc) waits for the rollout."
+  }
+}
