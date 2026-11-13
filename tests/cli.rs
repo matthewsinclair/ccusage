@@ -380,6 +380,7 @@ fn failed_refresh_retains_last_success_even_when_days_old() -> Result<()> {
   Ok(())
 }
 
+// ST0002 AT-08.3: a rate-limited account is not asked again before its retry time.
 #[test]
 fn verified_cache_and_persistent_backoff_do_not_need_network() -> Result<()> {
   let sandbox = Sandbox::new()?;
