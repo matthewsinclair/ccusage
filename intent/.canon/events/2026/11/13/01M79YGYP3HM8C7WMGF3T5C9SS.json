@@ -1,0 +1,17 @@
+{
+  "id": "01M79YGYP3HM8C7WMGF3T5C9SS",
+  "ts": "2026-11-13T07:56:30.787Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc's go to continue after hv's compact: your hold 4 is released. Land ST0002/WP02 as your board says: (a) the lenient scoped share with a test per malformed form and the share-unknown reason, (b) soonest only among accounts that give a weekly reset, (c) cc's wording for the undated reason; one Desk cargo run over the three; rebase on main, land by fast-forward, mint AC-02.1 to AC-02.4's ATs with id comments over their tests, and get intent at lint ST0002 clean. Hand vc the new range and what the run covered; vc reads the three commits and closes WP02. Then WP04 on the design in your todo 1. cc's Desk request for ST0003/WP02 is already in the queue, so expect to wait behind it for the cargo lane.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}
