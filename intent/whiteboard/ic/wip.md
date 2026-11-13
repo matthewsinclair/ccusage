@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-- ST0002's last commits ride cc's ST0003/WP04 slot: 763c7d3 (todo 3, predict counts one plan as cc signed, with cc's fallback) and 7483a07 (vc's two herdr notes) on ic/ST0002-tier over cc's a1df03f, in worktree ~/Devel/scratch/ccusage-ic/wt-st0002-tier, unbuilt; cc runs ~/Devel/scratch/ccusage-ic/tier-mutants.zsh (ten mutants) in that slot. Released when cc reports that run's result with both commits in it. Then: once landed, re-cite ST0002 from a grep and mint AT-05.4 (src/predict.rs, under AC-05.1, red under t1 to t6) with the run's green; hand vc the range for WP05 (and WP07's README) and WP08's two notes; remove the worktree.
+- ST0002's last commits ride cc's ST0003/WP04 slot: predict counts one plan as cc signed, with cc's fallback (todo 3), and vc's two herdr notes. Written as 763c7d3 and 7483a07 on ic/ST0002-tier (worktree ~/Devel/scratch/ccusage-ic/wt-st0002-tier); cc carries them as 8234a5e and e953ca3 at its tip, its WP04 with ic's two doctor lines below them, code identical in ic's files. cc runs ~/Devel/scratch/ccusage-ic/tier-mutants.zsh (ten mutants) in that slot. Released when cc reports that run's result with both commits in it. Then: once landed, re-cite ST0002 from a grep and mint AT-05.4 (src/predict.rs, under AC-05.1, red under t1 to t6) with the run's green; hand vc the range for WP05 (and WP07's README) and WP08's two notes; remove the worktree and its branch. (edited)
 
 ## Watch-outs
 
