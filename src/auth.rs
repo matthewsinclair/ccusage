@@ -87,6 +87,13 @@ impl Location {
 
   /// Check, before anything is written, that `bytes` can be saved here: for a Keychain
   /// item, that it exists and that a document this size fits on `security -i`'s line.
+  #[cfg_attr(
+    not(target_os = "macos"),
+    expect(
+      unused_variables,
+      reason = "only a Keychain item, which macOS alone has, limits the document's size"
+    )
+  )]
   pub(crate) fn check(&self, bytes: &[u8]) -> Result<()> {
     match self {
       Self::File(_) => Ok(()),
