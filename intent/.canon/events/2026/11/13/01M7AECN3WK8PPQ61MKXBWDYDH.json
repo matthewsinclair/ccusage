@@ -1,0 +1,16 @@
+{
+  "id": "01M7AECN3WK8PPQ61MKXBWDYDH",
+  "ts": "2026-11-13T12:33:47.132Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 5,
+    "text": "ISSUE:0007's wiring passed on vc's verdict of 2026-11-13 (9cc5f93, 78cabdc and 802de63) and shipped in 0.1.9; on gyges, hv's brew upgrade verified the signature and ccusage --version read ccusage 0.1.9 (brew, 2762bbf961ea). dc holds the issue open (dc's hold 10) until T10 passes on hv's Mac and on Linux with brew alone. hv's Mac run at about 12:19Z does not count: a second copy of the chain ran at the same time in hv's own Herdr terminal, so each doctor read the link one step ahead (dc read devbin's use and doctor: one writer, fresh reads, nothing detached). Its version lines were right and every doctor had 0 failed. The re-run, in one place, prints the link around each doctor: for t in dev opt brew; do bin/devbin use $t && ccusage --version && printf 'link before doctor: %s\\n' \"$(readlink ~/.local/bin/ccusage || echo none)\" && bin/devbin doctor && printf 'link after doctor: %s\\n' \"$(readlink ~/.local/bin/ccusage || echo none)\" || break; done. The Linux leg is dc's on hv's OK, in a heavy Desk slot: on kovacs, brew install ccusage from the tap, then in a clone at v0.1.9, bin/devbin use brew, the version line, doctor and a listing of the keg's libexec; hv has not yet said whether it runs now, after the compact, or moves to a new issue. Acceptance 4 closes on vc's PASS at 802de63, with ST0003 named for the change. When dc closes the issue, vc tells devbin-vc (devbin 0326 closes once pplr#0001 and cldr#0001 have closed too)."
+  }
+}

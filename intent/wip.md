@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-13T12:18:12Z:v0.30: vc - localfold for hv's compact; 0.1.9 cut, rollout later"
+verblock: "2026-11-13T12:34:36Z:v0.31: vc - Herdr look: bars draw no fill; Mac T10 re-run; hello's login"
 ---
 
 # Work In Progress
@@ -14,12 +14,12 @@ In 0.1.9. WP01 to WP05 are closed. Left: WP06, hv's rollout (below), later on hv
 
 **ST0002: the which and predict verbs and the Herdr mod (hv, 2026-11-13), built by ic**
 
-In 0.1.9. WP01 to WP07 are closed. Left: AC-08.3, hv's look at the mod in hv's own Herdr, taken now rather than at the rollout: `ccusage herdr install`, then `herdr-app do pane.split '{"direction":"right","mod":"ccusage"}'`; each account's weekly bar, reset, state and `next` marker, refreshing by itself, with `herdr-app check` passed. A card's dialog has a `Use NAME` button that runs `ccusage use`, so it is left alone until the rollout. Then vc closes WP08, and AC-00.1 is the thread's sign-off. Open with hv, from ic: a screenshot of the pane as `herdr/ccusage/preview.png` (it shows hv's account names and usage), or `RECIPE.md` drops the link.
+In 0.1.9. WP01 to WP07 are closed. Left: AC-08.3. hv's first look (12:29Z) passed `herdr-app check` and showed each account's reset, state and `next` marker, but the weekly bars draw no fill, so it is not met. ic fixes `bar()` in `herdr/ccusage/main.js` (the fill has no height inside an `h_flex`); the mod is built into the binary, so the fix takes a Desk build, then hv's `ccusage herdr install --force` from the dev build and a second look, which also checks that the pane refreshes by itself. A card's dialog has a `Use NAME` button that runs `ccusage use`, so it is left alone until the rollout. Open with hv: `herdr/ccusage/preview.png` (vc recommends hv's capture, cropped with the names blurred), and, for ic, a way into the mod from inside Herdr, which has no menu for a mod pane (today: `herdr-app do tab.new '{"name":"ccusage","mod":"ccusage"}'`, or a key in Molt-matts' keys.json). Then vc closes WP08, and AC-00.1 is the thread's sign-off.
 
 **Ccusage 0.1.9: cut now, roll out later (hv's decision 5, 2026-11-13)**
 
 - Nobody runs `ccusage use` or `ccusage which --use` on 0.1.9 before the rollout, on any Mac: either one moves that account's login into the shared config, and every session pinned to it loses its login (25 on hello and 2 on engineering01 at 10:55Z).
-- ISSUE:0007 (medium) stays open on dc's hold 10 until T10 passes on hv's Mac and on Linux with brew alone. Mac, hv in the checkout: `bin/devbin use dev`, `use opt` and `use brew` in turn, each followed by `ccusage --version` and `bin/devbin doctor`, the link resting at brew. Linux, dc on hv's OK in a heavy Desk slot: on kovacs, `brew install ccusage` from the tap, then in a clone at v0.1.9 `bin/devbin use brew`, the version line, doctor and a listing of the keg's libexec. Acceptance 4 closes on vc's PASS at 802de63, with ST0003 named for the change.
+- ISSUE:0007 (medium) stays open on dc's hold 10 until T10 passes on hv's Mac and on Linux with brew alone. hv's first Mac run does not count: a second copy ran at the same time in hv's own terminal, so each doctor read the link one step ahead. Mac re-run, in one place, in the checkout: `bin/devbin use dev`, `use opt` and `use brew` in turn, each followed by `ccusage --version` and `bin/devbin doctor`, the link printed before and after each doctor (dc's loop, on vc's todo 5), resting at brew. Linux, dc on hv's OK in a heavy Desk slot: on kovacs, `brew install ccusage` from the tap, then in a clone at v0.1.9 `bin/devbin use brew`, the version line, doctor and a listing of the keg's libexec. Acceptance 4 closes on vc's PASS at 802de63, with ST0003 named for the change.
 - The rollout, later (ST0003/WP06):
   1. `ccusage doctor`: exit 0; the shared config's own login warned as no profile's, each profile's login OK in its own store, each running session warned as pinned.
   2. `ccusage which`, then `ccusage use <account>` for the higher ranked account no running session is pinned to (engineering02 or engineering04 at 10:55Z), or, once every session has quit, the account `which` names.
@@ -38,6 +38,7 @@ In 0.1.9. WP01 to WP07 are closed. Left: AC-08.3, hv's look at the mod in hv's o
 ## Upcoming Work
 
 - cc's two nits from WP04's verdict, in one Desk slot after vc's compact: `sessions::parse` takes the first NAME=value among the arguments and the environment (take the last, so the environment wins); `usage::verified_token_at` renews before refusing Unverified when nothing names the account (refuse first).
+- hello's stored login does not match hello's email (the Herdr pane, 12:29Z), and 25 running sessions use hello's store. vc reads which account it is, from files only, on hv's OK, and puts it to hv; it is put right before anything switches to hello (vc todo 10).
 - The tap's CI runs `brew style` and `brew audit --strict` again (hv's ISSUE:0004 ruling 3): 0.1.9's formula, rendered by devbin 0.1.23, meets the condition. Turn them back on in the tap's test.yml, push on hv's OK, and see it green (vc todo 9).
 - ISSUE:0003 (medium) closes at ST0003/WP06; its last acceptance line reads each account once in Claude Usage (hv's decision 3).
 - devbin#0349 (LICENSE back in the archives) waits for a later devbin (dc's hold 9).

@@ -1,0 +1,16 @@
+{
+  "id": "01M7AECMZ0ZPKD41T27RDSJYFH",
+  "ts": "2026-11-13T12:33:46.976Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13), shipped in 0.1.9. WP01 to WP07 are closed, and intent at lint ST0002 is clean (27 of 27 rows). Left: AC-08.3, which hv's first look (2026-11-13 12:29Z, the mod as a split beside a terminal) did not meet. herdr-app check passed (about two minutes under a load average near 230, Herdr's check job waiting on the window server), and each account's reset, state and the next marker show, but the weekly bars draw no fill (22% and 39% look like 0%). The likely cause, sent to ic: bar() at herdr/ccusage/main.js:40 sits in an h_flex, which centres its children, so the fill div has no height; give it h_full(). main.js is built in (include_str in src/herdr.rs), so ic's fix needs a Desk build after vc's compact, then hv's ccusage herdr install --force from the dev build and a second look, which also checks that the pane refreshes by itself. ic's nits from the look: hello's reason prints twice, and the title shows twice. Open with hv: preview.png (vc recommends hv's capture, cropped with the names blurred by ic; or as is; or drop the link). Open for ic after the compact: a way into the mod from inside Herdr, since Herdr 0.1.15 has no menu for a mod pane (today: herdr-app do tab.new with mod ccusage, or a key in Molt-matts' keys.json). Then vc satisfies AC-08.3 and closes WP08; AC-00.1 follows."
+  }
+}
