@@ -75,7 +75,9 @@ fn empty(args: &[String]) -> Result<()> {
   }
 }
 
-pub fn run(mut args: Vec<String>) -> Result<()> {
+/// `version` gives the binary's --version line (devbin's T4), which the binary reads,
+/// since only it knows its own name and tree.
+pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
   // Only parse global flags before the command, so Claude arguments pass through intact.
   let mut path = config::default_path()?;
   let mut no_color = false;
@@ -102,7 +104,7 @@ pub fn run(mut args: Vec<String>) -> Result<()> {
         return Ok(());
       }
       "--version" => {
-        println!("ccusage {}", env!("CARGO_PKG_VERSION"));
+        println!("{}", version());
         return Ok(());
       }
       flag if USAGE_FLAGS.contains(&flag) => break,

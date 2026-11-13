@@ -14,8 +14,24 @@ project:
   # usage-rules.md rules them out.
   version_from: Cargo.toml
 
-# The devbin this project expects. Enforced by: devbin doctor
-devbin_version: "^0.1.19"
+# The devbin this project expects. Enforced by: devbin doctor. 0.1.23 carries all
+# of devbin#0326, which install:, the version line and the formula's one install
+# body below rest on.
+devbin_version: "^0.1.23"
+
+# Ccusage's own tool, under devbin's dev/opt/brew contract (docs/dev-opt-brew.md in
+# devbin's repository; ISSUE:0007). In this checkout bin/devbin install publishes it
+# to the opt prefix, and bin/devbin use [dev|opt|brew] points its link in
+# ~/.local/bin; ccusage itself has no install, use or version verb for them. Each
+# tree holds bin/ccusage and LICENSE, as each release archive does, and the manifest
+# .ccusage-install, whose line an opt or brew ccusage prints for --version.
+install:
+  prefix: ~/Devel/opt/ccusage
+  links:
+    ccusage: target/release/ccusage
+  files:
+    license:
+      path: LICENSE
 
 # This file is the one home of Ccusage's checks and release; README,
 # docs/releasing.md and usage-rules.md say to run them through bin/devbin. Every
@@ -101,9 +117,10 @@ release:
   after:
     - bin/devbin post-cut
 
-# The Homebrew formula: the signed Mac archives on macOS, and a build from the
-# tag's commit on Linux, from the template packaging/homebrew/ccusage.rb. The tap
-# is named because its remote goes through hv's ssh host alias.
+# The Homebrew formula, from the template packaging/homebrew/ccusage.rb. On macOS it
+# lays the signed Mac archive out in the keg, and on Linux it publishes from the
+# tag's checkout with bin/devbin install, so both kegs hold the tree install:
+# declares. The tap is named because its remote goes through hv's ssh host alias.
 formula:
   mode: assets
   tap: git@github.com-matthewsinclair:matthewsinclair/homebrew-ccusage.git
@@ -112,5 +129,12 @@ formula:
   assets:
     - "ccusage-v{version}-aarch64-apple-darwin.tar.gz"
     - "ccusage-v{version}-x86_64-apple-darwin.tar.gz"
-  bin:
-    - ccusage
+
+# What the build reads beyond the sources cargo's dep-info names, so the line
+# bin/devbin build stamps carries +dirty for a changed manifest or lock file too
+# (T4). It declares no artefact, so nothing is cached.
+build:
+  inputs:
+    - Cargo.toml
+    - Cargo.lock
+    - src

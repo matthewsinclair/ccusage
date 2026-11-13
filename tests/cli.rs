@@ -4,7 +4,7 @@ use ccusage::{Result, storage};
 use std::{
   fs,
   os::unix::fs::PermissionsExt,
-  path::PathBuf,
+  path::{Path, PathBuf},
   process::{Command, Output},
   sync::atomic::{AtomicU64, Ordering},
 };
@@ -68,7 +68,11 @@ esac
     Ok(Self { root })
   }
   fn command(&self) -> Command {
-    let mut command = Command::new(env!("CARGO_BIN_EXE_ccusage"));
+    self.command_at(Path::new(env!("CARGO_BIN_EXE_ccusage")))
+  }
+  /// The sandbox's environment for `program`, such as a copy of ccusage in an install tree.
+  fn command_at(&self, program: &Path) -> Command {
+    let mut command = Command::new(program);
     command
       .env("HOME", self.root.join("home"))
       .env("XDG_CONFIG_HOME", self.root.join("config"))
@@ -464,6 +468,61 @@ fn help_comes_only_from_help_and_dash_dash_help() -> Result<()> {
   let bare = sandbox.ok(&[])?;
   assert!(!bare.contains(synopsis));
   assert!(bare.contains("62%"));
+  Ok(())
+}
+
+/// The version line this test build of ccusage carries: the one bin/devbin build
+/// stamped, or devbin's T4 line for a build it did not stamp, as from cargo test.
+fn build_line() -> String {
+  match option_env!("DEVBIN_VERSION_LINE") {
+    Some(line) if !line.is_empty() => line.to_owned(),
+    _ => format!("ccusage {} (unknown, unknown)", env!("CARGO_PKG_VERSION")),
+  }
+}
+
+#[test]
+fn version_prints_the_line_its_build_carries_outside_an_install_tree() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  assert_eq!(sandbox.ok(&["--version"])?, format!("{}\n", build_line()));
+  assert_eq!(
+    sandbox.ok(&["--no-color", "--version"])?,
+    format!("{}\n", build_line())
+  );
+  Ok(())
+}
+
+#[test]
+fn version_prints_its_trees_manifest_line_in_an_opt_or_brew_tree() -> Result<()> {
+  const LINE: &str = "ccusage 0.0.1 (brew, 0123456789ab)";
+  let manifest = |tool: &str| {
+    format!(
+      "# tool: {tool}\n# version: 0.0.1\n# source_commit: 0123456789abcdef0123456789abcdef01234567\n# managed_by: brew\n# line: {LINE}\n"
+    )
+  };
+  let sandbox = Sandbox::new()?;
+  // An install tree as bin/devbin install and the formula lay one out, and a link
+  // into it from outside, as Homebrew's bin and ~/.local/bin hold
+  let tree = sandbox.root.join("tree");
+  fs::create_dir_all(tree.join("bin"))?;
+  let binary = tree.join("bin/ccusage");
+  fs::copy(env!("CARGO_BIN_EXE_ccusage"), &binary)?;
+  fs::create_dir_all(sandbox.root.join("links"))?;
+  let link = sandbox.root.join("links/ccusage");
+  std::os::unix::fs::symlink(&binary, &link)?;
+  fs::write(tree.join(".ccusage-install"), manifest("ccusage"))?;
+  for program in [&binary, &link] {
+    let output = sandbox.command_at(program).arg("--version").output()?;
+    assert!(output.status.success());
+    assert_eq!(String::from_utf8(output.stdout)?, format!("{LINE}\n"));
+  }
+  // A manifest another tool wrote is no tree of ccusage's
+  fs::write(tree.join(".ccusage-install"), manifest("other"))?;
+  let output = sandbox.command_at(&binary).arg("--version").output()?;
+  assert!(output.status.success());
+  assert_eq!(
+    String::from_utf8(output.stdout)?,
+    format!("{}\n", build_line())
+  );
   Ok(())
 }
 
