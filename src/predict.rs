@@ -328,7 +328,7 @@ mod tests {
     let now = at("2026-11-13T05:00:00Z")?;
     let cap = which::DEFAULT_CAP;
     // A history whose rate is `per_hour`: one rise over exactly one day.
-    let per_hour = 2.0;
+    let per_hour = 3.5;
     let risen = per_hour * hours(MIN_SPAN);
     let history = [
       sample("soon", 0.0, now + WEEK, now - MIN_SPAN)?,
@@ -337,6 +337,9 @@ mod tests {
     // soon resets before it can reach the cap; later then reaches it before its own
     // reset, the horizon, after which soon's next window takes the rest.
     let (soon, later) = (50.0, 0.0);
+    // At this rate later's climb to the cap ends part way through a second, so the step
+    // to it overshoots, and a climb not held at the cap would show.
+    assert!(((cap - later) / per_hour * SECONDS_PER_HOUR).fract() > 0.0);
     let (soon_reset, later_reset) = (now + 10 * HOUR, now + 100 * HOUR);
     let reports = [
       report("soon", now, soon, soon_reset)?,
