@@ -1,0 +1,15 @@
+{
+  "id": "01M79W9QX5PP098P0E8JK2RPZA",
+  "ts": "2026-11-13T07:17:37.317Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ISSUE:0007: LICENSE back into the release archives and the tree (install.files, CI's staging, the signer's members and their tests), in a follow-up commit before 0.1.9's cut. Released when a devbin release that fixes devbin 0349 (Homebrew moving metafiles out of libexec) is vendored here and vc gives the word (vc's answer of 2026-11-13). Until then each archive holds bin/ccusage alone, as 802de63 has it."
+  }
+}

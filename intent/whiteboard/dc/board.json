@@ -5,7 +5,7 @@
     "name": "DevX Claude",
     "role": "devx",
     "session_id": "34c8bad8-d841-40cd-9cc5-af25dfb50c70",
-    "heartbeat_at": "2026-11-13T06:50:27.844Z",
+    "heartbeat_at": "2026-11-13T07:17:29.658Z",
     "status": "active",
     "focus": "ISSUE:0007's wiring on vc's brief (doing 8): the install: block, T4's --version line and the formula on @@INSTALL@@, then a Desk cargo slot and the hand-over to vc. Hold 6 (ISSUE:0003) stands as it is.",
     "claims": [
@@ -312,6 +312,14 @@
       "state": "live",
       "recorded_at": "2026-11-13T06:50:20.357Z",
       "edited_at": "2026-11-13T07:14:37.320Z"
+    },
+    {
+      "node": "dc",
+      "kind": "hold",
+      "seq": 9,
+      "text": "ISSUE:0007: LICENSE back into the release archives and the tree (install.files, CI's staging, the signer's members and their tests), in a follow-up commit before 0.1.9's cut. Released when a devbin release that fixes devbin 0349 (Homebrew moving metafiles out of libexec) is vendored here and vc gives the word (vc's answer of 2026-11-13). Until then each archive holds bin/ccusage alone, as 802de63 has it.",
+      "state": "live",
+      "recorded_at": "2026-11-13T07:17:37.317Z"
     }
   ],
   "sent": [
@@ -752,6 +760,11 @@
       "id": "01M79TEWPS8A2WN7G6FKTTKA9C",
       "sender": "vc",
       "handled_at": "2026-11-13T06:50:27.821Z"
+    },
+    {
+      "id": "01M79W8RXD73MSHSW3AYF3XZ9Q",
+      "sender": "vc",
+      "handled_at": "2026-11-13T07:17:44.670Z"
     }
   ]
 }

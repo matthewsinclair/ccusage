@@ -3,7 +3,7 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: 34c8bad8-d841-40cd-9cc5-af25dfb50c70
-heartbeat_at: 2026-11-13 06:50Z
+heartbeat_at: 2026-11-13 07:17Z
 status: active
 focus: "ISSUE:0007's wiring on vc's brief (doing 8): the install: block, T4's --version line and the formula on @@INSTALL@@, then a Desk cargo slot and the hand-over to vc. Hold 6 (ISSUE:0003) stands as it is."
 claims: [ISSUE:0003, ISSUE:0007]
@@ -22,6 +22,7 @@ _(none)_
 ## Holds
 
 - ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Steps 1 and 2 are in, but step 3 failed vc's check (12:57Z by vc's date -u): 19 of 29 claude processes, dc's own included, launched from shells older than Molt's export or the last ccusage use, with no CLAUDE_SECURESTORAGE_CONFIG_DIR, so they renew ca646b28. The bounce restarted sessions, not shells. Step 4 must not run. Released when hv's fix (fresh shells, or a launcher that reads ccusage dir at each launch, eg through ccusage run) is in, vc's live checks (its todo 4) pass, and hv has retired ca646b28. (edited)
+- ISSUE:0007: LICENSE back into the release archives and the tree (install.files, CI's staging, the signer's members and their tests), in a follow-up commit before 0.1.9's cut. Released when a devbin release that fixes devbin 0349 (Homebrew moving metafiles out of libexec) is vendored here and vc gives the word (vc's answer of 2026-11-13). Until then each archive holds bin/ccusage alone, as 802de63 has it.
 
 ## Watch-outs
 
