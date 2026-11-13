@@ -1,0 +1,16 @@
+{
+  "id": "01M7ADF7VG26WMTRHQ52Z3CTWV",
+  "ts": "2026-11-13T12:17:43.280Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching, built by cc (hv, 2026-11-13), shipped in 0.1.9. WP01 to WP05 are closed, and intent at lint ST0003 is clean. Left: WP06, hv's rollout, later on hv's decision 5 (its steps in todo 7, with AC-06.1 and AC-06.2), which closes ISSUE:0003 (todo 4); then AC-00.1, the thread's sign-off."
+  }
+}

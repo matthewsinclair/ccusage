@@ -1,0 +1,16 @@
+{
+  "id": "01M7ADF6YBWNG49VAJB878XWCC",
+  "ts": "2026-11-13T12:17:42.347Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13), shipped in 0.1.9. WP01 to WP07 are closed, each PASS by vc, and intent at lint ST0002 is clean (27 of 27 rows at d07b2ed). Left: AC-08.3, hv's look at the mod in hv's own Herdr, taken now rather than at the rollout: ccusage herdr install reports herdr-app check passed, and the pane shows each account's weekly bar, reset, state and next marker and refreshes by itself. A card's dialog has a Use button that runs ccusage use, so it is left alone until the rollout. On hv's word that the look passed, vc satisfies AC-08.3 and closes WP08; AC-00.1, the thread's sign-off, follows. Open with hv, from ic: a screenshot of the pane as herdr/ccusage/preview.png (it shows hv's account names and usage), or RECIPE.md drops the link."
+  }
+}

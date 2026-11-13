@@ -1,0 +1,16 @@
+{
+  "id": "01M7ADF9VAHTPS3SMV8WVKGDG0",
+  "ts": "2026-11-13T12:17:45.323Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 7,
+    "text": "0.1.9's rollout, later (hv's decision 5, 2026-11-13; ST0003/WP06, closing ISSUE:0003). The cut is out: v0.1.9 at 2762bbf, published 12:04:31Z with signed and notarized Mac archives, formula cf77911 in the tap. The rollout's steps: ccusage doctor; ccusage which, then the first ccusage use for an account no running session is pinned to (25 sessions on hello and 2 on engineering01 at 10:55Z; engineering02 and engineering04 had none); doctor again; fresh shells, which Molt's env.sh leaves without CLAUDE_SECURESTORAGE_CONFIG_DIR once ccusage dir prints nothing; sessions restarted, never switching to an account a session is still pinned to; the live switch (AC-06.1, AC-06.2); then dc closes ISSUE:0003 and vc closes WP06. Back-out: ccusage use --none. Until the rollout nobody runs ccusage use or ccusage which --use on 0.1.9, on any Mac, gyges included. The steps are in intent/wip.md and in vc's scratchpad file closing-sequence-0.1.9.md."
+  }
+}
