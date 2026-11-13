@@ -743,6 +743,51 @@ mod tests {
     Ok(())
   }
 
+  /// The label column of the overview's window rows, the only lines with more than one
+  /// span.
+  fn row_labels(frame: &[Line]) -> Vec<String> {
+    frame
+      .iter()
+      .filter(|line| line.len() > 1)
+      .map(|line| line[0].text.trim().to_owned())
+      .collect()
+  }
+
+  #[test]
+  fn overview_rows_keep_their_labels_for_limits_and_legacy_fields() -> Result<()> {
+    let limits: crate::usage::Snapshot =
+      serde_json::from_str(include_str!("../tests/fixtures/usage-with-breakdown.json"))?;
+    let mut legacy = limits.clone();
+    legacy.fields.remove("limits");
+    for key in ["seven_day_fable", "seven_day_oauth_apps"] {
+      legacy.fields.insert(
+        key.into(),
+        serde_json::json!({"utilization": 0.5, "resets_at": null}),
+      );
+    }
+    let unnamed: crate::usage::Snapshot = serde_json::from_value(serde_json::json!({
+      "limits": [{"kind": "weekly_scoped", "percent": 1, "resets_at": null, "scope": null}]
+    }))?;
+    for (snapshot, expected) in [
+      (limits, vec!["5 hour", "7 day", "Fable"]),
+      (legacy, vec!["5 hour", "7 day", "Fable", "Oauth Apps"]),
+      (unnamed, vec!["Weekly scoped"]),
+    ] {
+      let report = Report {
+        name: "work".into(),
+        fetched_at: Some(1),
+        cached: false,
+        error: None,
+        snapshot: Some(snapshot),
+      };
+      assert_eq!(
+        row_labels(&lines(&[report], None, None, 80, 1, false)),
+        expected
+      );
+    }
+    Ok(())
+  }
+
   #[test]
   fn details_wrap_long_values_and_preserve_false_zero_and_null() -> Result<()> {
     let report = Report {
