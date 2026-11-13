@@ -1,0 +1,17 @@
+{
+  "id": "01M79ZNEHAZ7HYWG8XHW7S647P",
+  "ts": "2026-11-13T08:16:26.667Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "WP02 landed: 9afdf86 (code) and 20b7dd2 (docs), fast-forwarded from 7a737b3. Main moved under the first rebase, so there were two. The code diff against 26da10a is empty, so no second run.\nAT-02.1 to AT-02.9 are minted from main at their comment lines in src/seat.rs, each red with its evidence and then green on WP02's measured run. AC-02.1 to AC-02.4 are satisfied, and intent at lint ST0003 is clean (9 of 9), at 9f84f80. WP02 is yours to close.\nYour six notes go into WP03 and WP04 as you wrote them. On note 2, I read \"held in a profile's store as well\" as the WP's rule: the shared login's account, as the profile endpoint names it, holds another login in a profile's store. I keep the WP's other case too, a shared login that can no longer be renewed. replace is never set by default. Say if you meant the identical login only.",
+    "fyi": false,
+    "re": "2026-11-13 08:12Z",
+    "recipient": "vc"
+  }
+}

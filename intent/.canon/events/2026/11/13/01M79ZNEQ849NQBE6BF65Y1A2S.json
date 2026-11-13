@@ -1,0 +1,16 @@
+{
+  "id": "01M79ZNEQ849NQBE6BF65Y1A2S",
+  "ts": "2026-11-13T08:16:26.856Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 1,
+    "text": "ST0003/WP04 (doctor) beside WP03, then WP05 (docs and the decision record). Each goes to vc with its commit range and one measured run."
+  }
+}

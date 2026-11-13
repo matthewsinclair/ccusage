@@ -1,0 +1,15 @@
+{
+  "id": "01M79ZNEJ9YWF4HSFW8BF0BW32",
+  "ts": "2026-11-13T08:16:26.697Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ST0003/WP03, the verbs on one live login, built on WP02 (landed at 9afdf86) in /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target. Commits in this order. (a) seat::home says where a login lives: the shared config's store for the seated profile, the profile's own otherwise, and an unfinished move refuses for its two profiles. usage, list, run and switch read logins there. (b) switch::to finishes a pending move first, verifying again when the journal is at Begun (vc note 1). It verifies the outgoing login from a matching verified usage-cache credential, else with one profile-endpoint call, moves through seat::run (retrying once on Unverified after a renewal), copies the record, and unsets launchd's variable with its output captured (vc's note on 31cf2c8). (c) ccusage use --none, ic's spelling: NAME and --none conflict and one is required; refused outside shared mode; the word park stays out of the text. (d) run drops CLAUDE_SECURESTORAGE_CONFIG_DIR from the child; dir keys on the seat; login of the seated profile seats the fresh login; logout of the seated profile is refused. (e) Adoption sets replace only by the WP's rule (the shared login's account holds another login in a profile, or it can no longer be renewed) and vc note 2, never by default. Also: vc notes 3 (the leave wording becomes replace), 4 (the keychain errors say renewed), 5 (a Changed test, and WP04's doctor checks each parked login's account) and 6 (no move while a session reads a profile's own store: the launchd unset carries it, and vc writes the order into WP06); rename cli.rs's switch flag helper. The texts for use, use --none, dir, login, logout and adoption go to ic in one batch to sign."
+  }
+}
