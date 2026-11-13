@@ -82,12 +82,13 @@ impl Choice {
   }
 
   /// The usable account whose weekly reset is soonest, as the rule orders resets, the
-  /// higher ranked on a tie: what the text names when nothing is eligible.
+  /// higher ranked on a tie; none when no usable account's weekly window gives a reset.
+  /// What the text names when nothing is eligible.
   pub fn soonest(&self) -> Option<&Account> {
     self
       .accounts
       .iter()
-      .filter(|account| account.rank.is_some())
+      .filter(|account| account.rank.is_some() && dated(account))
       .min_by_key(|account| reset_order(account.weekly.as_ref()))
   }
 }
@@ -552,6 +553,28 @@ mod tests {
     assert_eq!(choice.accounts[0].headroom, Some(0.0));
     let unknown = choose(&reports[2..], now, DEFAULT_CAP, None, usage::TTL);
     assert!(unknown.soonest().is_none());
+    Ok(())
+  }
+
+  #[test]
+  fn the_soonest_reset_is_named_only_among_accounts_that_give_one() -> Result<()> {
+    let now = at("2026-11-13T05:27:00Z")?;
+    let capped = |name, reset| report(name, now, DEFAULT_CAP, reset, &[]);
+    let mut reports = vec![capped("a-undated", None)?, capped("b-undated", None)?];
+    let choice = choose(&reports, now, DEFAULT_CAP, None, usage::TTL);
+    assert!(
+      choice
+        .accounts
+        .iter()
+        .all(|account| account.state == State::AtCap)
+    );
+    assert!(choice.soonest().is_none());
+    reports.push(capped("c-dated", Some("2026-11-19T00:00:00Z"))?);
+    let choice = choose(&reports, now, DEFAULT_CAP, None, usage::TTL);
+    assert_eq!(
+      choice.soonest().map(|account| account.name.as_str()),
+      Some("c-dated")
+    );
     Ok(())
   }
 
