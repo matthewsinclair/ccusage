@@ -3,9 +3,9 @@ node: vc
 name: Validation Claude
 role: validation
 session_id: b4050368-cdbf-407f-bcaa-8ceee438c695
-heartbeat_at: 2026-11-13 05:29Z
+heartbeat_at: 2026-11-13 07:10Z
 status: active
-focus: "Folded for hv's travel (2026-11-06 13:39Z by date -u); nothing in flight. 0.1.9 is one cut: ISSUE:0007 waits for devbin's release of #0326 (hold 4); ISSUE:0003 is blocked at step 3 on hv's choice of launcher fix (todo 4); the tap's checks return at 0.1.9's formula publish (hold 3)."
+focus: "Sequencing 0.1.9's one cut (hv, 2026-11-13): dc wires ISSUE:0007 and is in its measured run; ic builds ST0002 from WP01 and cc builds ST0003 from WP02, each on vc's brief in its inbox; vc validates each hand-over on its builder's one run. ST0003/WP01's trial passed."
 claims: []
 ---
 
