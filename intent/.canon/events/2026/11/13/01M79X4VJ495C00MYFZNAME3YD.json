@@ -1,0 +1,15 @@
+{
+  "id": "01M79X4VJ495C00MYFZNAME3YD",
+  "ts": "2026-11-13T07:32:25.796Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ISSUE:0007 closes at T10's proof with hv, its Acceptance 5. The wiring went to vc on 2026-11-13 (9cc5f93, 78cabdc, 802de63; the one run in Desk slots 01M79VNKJ75Q7EFHCF89QQS4TW and 01M79W3Q2Y21ACP1BWREJA13GA). Released when vc's verdict is in, the cut's doctor gate can pass (a devbin release that fixes devbin 0348 is vendored here, or hv rules on the gate or takes the opt route), and 0.1.9's formula is published. Then T10 with hv: bin/devbin use dev, use opt and use brew in turn in this checkout, each followed by the version line and bin/devbin doctor, on hv's Mac and with brew alone on Linux; then dc closes ISSUE:0007."
+  }
+}

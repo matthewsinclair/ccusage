@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: 34c8bad8-d841-40cd-9cc5-af25dfb50c70
-heartbeat_at: 2026-11-13 07:17Z
+heartbeat_at: 2026-11-13 07:32Z
 status: active
-focus: "ISSUE:0007's wiring on vc's brief (doing 8): the install: block, T4's --version line and the formula on @@INSTALL@@, then a Desk cargo slot and the hand-over to vc. Hold 6 (ISSUE:0003) stands as it is."
+focus: "ISSUE:0007's wiring is handed to vc for its verdict (hold 10); nothing in flight. The 0.1.9 cut's doctor gate waits for devbin 0348's fix or hv's ruling, through vc. Hold 9: LICENSE returns to the archives if devbin fixes 0349. Hold 6 (ISSUE:0003) stands."
 claims: [ISSUE:0003, ISSUE:0007]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0003, ISSUE:0007]
 
 ## DOING
 
-- ISSUE:0007's wiring on vc's brief (hv's go of 2026-11-13; devbin 0.1.23 carries devbin#0326). Landed: 9cc5f93 (the version line, the install: block), 78cabdc (the formula on @@INSTALL@@, each archive rooted at the install root, the signer and its tests), 802de63 (bin/ccusage alone, since Homebrew moves LICENSE out of libexec). Run 1 (slot 01M79VNKJ75Q7EFHCF89QQS4TW): check all, cargo test --test cli 31 of 31, bats macos 45 of 45 and the stamped dev line all green; doctor red on the installed 0.1.8 keg, a devbin defect sent to vc as a cut blocker and to devbin-vc as a finding. Next: slot 01M79W3Q2Y21ACP1BWREJA13GA for bats at 802de63, install to a scratch prefix, use dev and opt under a scratch HOME, and doctor; then the hand-over to vc. (edited)
+_(none)_
 
 ## TODO
 
@@ -23,6 +23,7 @@ _(none)_
 
 - ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Steps 1 and 2 are in, but step 3 failed vc's check (12:57Z by vc's date -u): 19 of 29 claude processes, dc's own included, launched from shells older than Molt's export or the last ccusage use, with no CLAUDE_SECURESTORAGE_CONFIG_DIR, so they renew ca646b28. The bounce restarted sessions, not shells. Step 4 must not run. Released when hv's fix (fresh shells, or a launcher that reads ccusage dir at each launch, eg through ccusage run) is in, vc's live checks (its todo 4) pass, and hv has retired ca646b28. (edited)
 - ISSUE:0007: LICENSE back into the release archives and the tree (install.files, CI's staging, the signer's members and their tests), in a follow-up commit before 0.1.9's cut. Released when a devbin release that fixes devbin 0349 (Homebrew moving metafiles out of libexec) is vendored here and vc gives the word (vc's answer of 2026-11-13). Until then each archive holds bin/ccusage alone, as 802de63 has it.
+- ISSUE:0007 closes at T10's proof with hv, its Acceptance 5. The wiring went to vc on 2026-11-13 (9cc5f93, 78cabdc, 802de63; the one run in Desk slots 01M79VNKJ75Q7EFHCF89QQS4TW and 01M79W3Q2Y21ACP1BWREJA13GA). Released when vc's verdict is in, the cut's doctor gate can pass (a devbin release that fixes devbin 0348 is vendored here, or hv rules on the gate or takes the opt route), and 0.1.9's formula is published. Then T10 with hv: bin/devbin use dev, use opt and use brew in turn in this checkout, each followed by the version line and bin/devbin doctor, on hv's Mac and with brew alone on Linux; then dc closes ISSUE:0007.
 
 ## Watch-outs
 
