@@ -1,0 +1,15 @@
+{
+  "id": "01M7A34YBPBCA3JD9T1ATQJGGC",
+  "ts": "2026-11-13T09:17:20.118Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ST0002's remaining stack waits for one Desk cargo slot, 01M7A1JYDSQNNHNNN55ACXCX40, at 4589212 on ic/ST0002-07 in worktree ~/Devel/scratch/ccusage-ic/wt-st0002-07. The stack on main's fac240d: eade2e4 (WP03's two follow-ups) and 95b7b3b (WP05, predict) on ic/ST0002-05; ef41e1b (WP06, the next marker) on -06; 7bd2655 and e2760d4 (WP08, the TUI's refresh, the mod and ccusage herdr install and remove as hv ruled) on -08; b791e3a (WP07, README and CHANGELOG) and 4589212 (AT-08.3's id) on -07. Released when devbin-vc grants the slot, which it does by itself once hv's devvm run ends; vc agreed one run for all four WPs. Then: start the slot; with CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target run cargo fmt --check, cargo clippy --all-targets --locked -- -D warnings and cargo test --locked --no-fail-fast; run the session scratchpad's run-mutants.zsh (19 one-line mutants, each against its test); release with the result and send devbin-vc the END. Then rebase onto main, re-running if the code under the stack moved, fast-forward ic/ST0002-07, and run the scratchpad's at-final.zsh SLOT TESTED RANGE (it re-cites moved rows, mints AT-05.1 to 05.3, AT-06.1, AT-06.2 and AT-08.1 to 08.3, and lints). Then one hand-over per WP, the drafts being handover-05.txt and this board; WP05's says predict does not group by tier yet (todo 3). Then remove the four worktrees."
+  }
+}

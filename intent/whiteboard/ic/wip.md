@@ -3,7 +3,7 @@ node: ic
 name: Interface Claude
 role: interface
 session_id: 862f222f-ebb1-46a4-876c-44117298b8a7
-heartbeat_at: 2026-11-13 07:55Z
+heartbeat_at: 2026-11-13 09:17Z
 status: active
 focus: ""
 claims: [ST0002]
@@ -13,17 +13,16 @@ claims: [ST0002]
 
 ## DOING
 
-- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 to WP04 done, closed by vc. WP05 (predict, with WP03's two text follow-ups) and WP06 (the next marker) are built and stacked, eade2e4, 95b7b3b and ef41e1b on main's fac240d, waiting for one Desk slot (01M7A1JYDSQNNHNNN55ACXCX40), first in line once hv's devvm build frees the cargo lane; cc signed predict's arithmetic. WP08 (the Herdr mod, the herdr verb and the TUI's refresh) is built on top, 7bd2655 and e2760d4; herdr-app check passes on a scratch copy; its verb's spelling is with vc for hv. WP07, the docs, comes last. (edited)
+- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then a hand-over to vc. WHERE EACH STANDS at the fold for hv's compact: WP01 to WP04 are done, closed by vc. WP05, WP06, WP08 and WP07 are built, committed and stacked, with WP03's two follow-ups, and wait for one Desk run at 4589212 (hold 5 has the slot, the tree and every step after it). hv ruled the verb ccusage herdr install and remove (decision 4). hv's own check in his Herdr (AC-08.3) and the panel's preview come in vc's closing sequence after bin/devbin use opt. cc signed predict's arithmetic, the which JSON and the which line for todo 3a's note. Todo 3 is predict's tier grouping once cc's 02a5967 lands, and todo 4 is signing cc's two display lines for the note. (edited)
 
 ## TODO
 
-- ST0002/WP05's run carries two WP03 follow-ups from vc (inbox 2026-11-13, after its PASS of WP03 and WP04): (1) a line gives the headroom as what is below the cap, eg hello: 73% used, 22% below the 95% cap, resets in 3d04h, since hv reads left as what remains of the allowance; (2) hv's ruling 3, that ccusage works for any Claude account and shows whatever it reports: which's text lists an unknown account with the windows it does report, and a CLI test shows an account with a session window only listed as unknown with it, and never chosen.
 - ST0002/WP05 follow-up, once cc's tier recording lands (cc's todo 3, which vc sequences): predict sums the accounts of the most common subscriptionType and rateLimitTier pair among those the rule can use, compared whole; a tie goes to the active account's tier, else to the lexically first pair (cc's meaning); every other account is left out as another plan's allowance, and the text drops its one-plan assumption.
 - Sign cc's two display lines for todo 3a's note when cc's ST0003/WP04 rebases onto ST0002's stack: display::lines shows a report's note in place of its windows, not Loading usage..., and display::next counts a note-only report as in. cc's which line is signed with the note check moved above the snapshot check (2026-11-13).
 
 ## Holds
 
-_(none)_
+- ST0002's remaining stack waits for one Desk cargo slot, 01M7A1JYDSQNNHNNN55ACXCX40, at 4589212 on ic/ST0002-07 in worktree ~/Devel/scratch/ccusage-ic/wt-st0002-07. The stack on main's fac240d: eade2e4 (WP03's two follow-ups) and 95b7b3b (WP05, predict) on ic/ST0002-05; ef41e1b (WP06, the next marker) on -06; 7bd2655 and e2760d4 (WP08, the TUI's refresh, the mod and ccusage herdr install and remove as hv ruled) on -08; b791e3a (WP07, README and CHANGELOG) and 4589212 (AT-08.3's id) on -07. Released when devbin-vc grants the slot, which it does by itself once hv's devvm run ends; vc agreed one run for all four WPs. Then: start the slot; with CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target run cargo fmt --check, cargo clippy --all-targets --locked -- -D warnings and cargo test --locked --no-fail-fast; run the session scratchpad's run-mutants.zsh (19 one-line mutants, each against its test); release with the result and send devbin-vc the END. Then rebase onto main, re-running if the code under the stack moved, fast-forward ic/ST0002-07, and run the scratchpad's at-final.zsh SLOT TESTED RANGE (it re-cites moved rows, mints AT-05.1 to 05.3, AT-06.1, AT-06.2 and AT-08.1 to 08.3, and lints). Then one hand-over per WP, the drafts being handover-05.txt and this board; WP05's says predict does not group by tier yet (todo 3). Then remove the four worktrees.
 
 ## Watch-outs
 

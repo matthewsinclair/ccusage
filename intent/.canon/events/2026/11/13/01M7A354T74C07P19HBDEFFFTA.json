@@ -1,0 +1,16 @@
+{
+  "id": "01M7A354T74C07P19HBDEFFFTA",
+  "ts": "2026-11-13T09:17:26.727Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then a hand-over to vc. WHERE EACH STANDS at the fold for hv's compact: WP01 to WP04 are done, closed by vc. WP05, WP06, WP08 and WP07 are built, committed and stacked, with WP03's two follow-ups, and wait for one Desk run at 4589212 (hold 5 has the slot, the tree and every step after it). hv ruled the verb ccusage herdr install and remove (decision 4). hv's own check in his Herdr (AC-08.3) and the panel's preview come in vc's closing sequence after bin/devbin use opt. cc signed predict's arithmetic, the which JSON and the which line for todo 3a's note. Todo 3 is predict's tier grouping once cc's 02a5967 lands, and todo 4 is signing cc's two display lines for the note."
+  }
+}
