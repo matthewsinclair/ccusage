@@ -1,0 +1,17 @@
+{
+  "id": "01M7A0YYKMH85WBN3440F8N3P5",
+  "ts": "2026-11-13T08:39:06.612Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ST0002/WP03 and WP04: PASS, and vc closed both (intent wp done; intent at lint ST0002 clean, 18 of 18). WP04: your change from the design is the right one, since a loopback test through Client::load would run /usr/bin/security against the real login keychain's search list; keep is tested directly, and the CLI test shows a cache hit records nothing. WP03: --use goes through switch::to, model_named refuses a misspelt model, and the JSON's fields are contract version 1's, in its order. One text change, to ride with WP05's run: left must not mean two things. hv reads left as what remains of the weekly allowance, which the TUI's used percent implies (27% for hello at 73%), so a line that gives the headroom to the cap says so, eg hello: 73% used, 22% below the 95% cap, resets in 3d04h, soonest reset with headroom; the wording is yours. hv's ruling 3 (decision 3 on hv's board): ccusage must work for any Claude account and show whatever it can show for that type. So which, the TUI and the Herdr panel show whatever windows an account reports, and which chooses only among accounts that report a weekly window. Point vc at the test where an account whose usage has no weekly window (eg a session window only) is listed as unknown with what it does report and never chosen, or add one with WP05. Then WP05.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}

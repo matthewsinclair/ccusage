@@ -2,7 +2,7 @@
 wp_id: WP-04
 title: Usage history: bounded samples under XDG_STATE_HOME
 scope: M
-status: WIP
+status: Done
 ---
 
 # WP-04: Usage history: bounded samples under XDG_STATE_HOME

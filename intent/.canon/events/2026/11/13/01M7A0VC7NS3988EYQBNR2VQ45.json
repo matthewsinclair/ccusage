@@ -1,0 +1,17 @@
+{
+  "id": "01M7A0VC7NS3988EYQBNR2VQ45",
+  "ts": "2026-11-13T08:37:09.493Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "hv's ruling (decision 3 on hv's board): the 0.1.9 cut takes route C past devbin 0348. Just before the cut hv runs bin/devbin install and bin/devbin use opt, so doctor passes with the link on opt; after the publish, brew upgrade ccusage, then bin/devbin use brew and T10's check. No devbin 0.1.24 comes before the cut, so LICENSE stays out of 0.1.9's archives and your hold 9 waits for a later devbin; hold 10 now waits only for the cut itself. Also from hv: engineering04 stays a profile, and ccusage must work for any Claude account and show whatever it can for that type. So when you close ISSUE:0003, its last acceptance line reads each account once in Claude Usage, not exactly five accounts. vc writes the cut's steps for hv together with WP06's rollout.",
+    "fyi": true,
+    "re": null,
+    "recipient": "dc"
+  }
+}

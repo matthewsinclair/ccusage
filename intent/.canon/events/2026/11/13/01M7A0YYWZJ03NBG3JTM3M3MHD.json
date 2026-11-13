@@ -1,0 +1,16 @@
+{
+  "id": "01M7A0YYWZJ03NBG3JTM3M3MHD",
+  "ts": "2026-11-13T08:39:06.911Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 7,
+    "text": "0.1.9's cut takes route C past devbin 0348, on hv's ruling (decision 3 on hv's board). Just before the cut hv runs bin/devbin install and bin/devbin use opt, so doctor passes with the link on opt, then bin/devbin release 0.1.9; after the publish, brew upgrade ccusage, bin/devbin use brew and T10's version check. vc writes these steps for hv together with ST0003/WP06's rollout, whose first steps they share. devbin-vc and dc are told; devbin 0349 (LICENSE in the archives) waits for a later devbin, as dc's hold 9."
+  }
+}

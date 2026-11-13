@@ -28,14 +28,14 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 - AC-02.3 The cap comes from config.toml, with one default when the key is absent; a config that does not set the key is written back without it; and no test writes the cap as a literal. -- satisfied: yes (computed)
 - AC-02.4 With a model named, an account is eligible only while its scoped window for that model is below the cap too. -- satisfied: yes (computed)
 
-### WP-03 -- The which verb: text, versioned JSON and --use (status: WIP)
+### WP-03 -- The which verb: text, versioned JSON and --use (status: Done)
 
 - AC-03.1 `ccusage which` prints the choice with one reason line, then the rest in rank order one line each, and exits 0; with nothing eligible it says so on stdout, names the soonest reset and exits 1. -- satisfied: yes (computed)
 - AC-03.2 `ccusage which --json` emits the versioned shape cc and ic agreed, with the same choice and order as the text. -- satisfied: yes (computed)
 - AC-03.3 `ccusage use`, the TUI's `a` key and `ccusage which --use` make an account active through one function, and `which --use` changes nothing when nothing is eligible. -- satisfied: yes (computed)
 - AC-03.4 `ccusage which --model NAME` with a name no account's scoped window carries is refused, naming the models seen. -- satisfied: yes (computed)
 
-### WP-04 -- Usage history: bounded samples under XDG_STATE_HOME (status: WIP)
+### WP-04 -- Usage history: bounded samples under XDG_STATE_HOME (status: Done)
 
 - AC-04.1 Each successful fetch records a sample for each window whose percent changed, in a 0600 file under XDG_STATE_HOME; a cache hit records nothing; and samples are dropped by age, one weekly window, not at a reset. -- satisfied: yes (computed)
 
@@ -78,14 +78,14 @@ _(no tests in this group)_
 - AT-02.4 `tests/cli.rs:263` -- covers AC-02.3 -- status: green -- init and add write back a config that set no cap without a [which] table, and keep the cap of one that set it; list refuses a cap of 0; every cap in the test derives from which::DEFAULT_CAP; red under the cap-of-0 mutant in the first WP02 run at fdfe1e5, Desk slot 01M79X4M2FR0A8NCRRNG412NQG; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3
 - AT-02.5 `src/which.rs:640` -- covers AC-02.4 -- status: green -- With a model named, an account whose scoped window for it is at the cap is at cap and not chosen, the model matched regardless of case; an account with no scoped window for the model is bounded by the weekly window alone, and the headroom is the lesser of the weekly room and the scoped room in weekly terms; red before WP02: written against which::choose, it could not compile before it; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3
 
-### WP-03 -- The which verb: text, versioned JSON and --use (status: WIP)
+### WP-03 -- The which verb: text, versioned JSON and --use (status: Done)
 
 - AT-03.1 `tests/cli.rs:1045` -- covers AC-03.1 -- status: green -- which prints the chosen account's line first, with its room before the cap, its reset and its reason, then the rest in rank order, eligible, at the cap and unknown; with nothing eligible its first line says so and names the soonest reset, the reason goes to stderr and it exits 1; help lists the verb; red under the mutants that print the text in reverse order and that exit 0 with nothing eligible, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)
 - AT-03.2 `tests/cli.rs:1077` -- covers AC-03.2 -- status: green -- which --json is version 1 of the shape cc and ic agreed: the top-level and per-account fields by name and in order, the scoped entries, states, ranks and causes, headroom rounded to 0.1, and every time RFC 3339 in UTC to the second with a Z, its accounts in the text's order; cc signed its meaning at 90ca48e; red under the mutants that spell at_cap otherwise and that keep a time's fraction, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)
 - AT-03.3 `tests/cli.rs:1180` -- covers AC-03.3 -- status: green -- which --use makes the choice active through switch::to, the one use function the use verb and the TUI's a key call too; it says so when the choice is active already, reports activated only when it made the choice active, and leaves the active account as it was with nothing eligible; red under the mutant that switches when the choice is active already, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)
 - AT-03.4 `tests/cli.rs:1215` -- covers AC-03.4 -- status: green -- which --model with a name no scoped window carries is refused before anything is printed, naming the models seen; any case of a model seen is that model, spelled as the usage spells it; red under the mutant that matches model names by case, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)
 
-### WP-04 -- Usage history: bounded samples under XDG_STATE_HOME (status: WIP)
+### WP-04 -- Usage history: bounded samples under XDG_STATE_HOME (status: Done)
 
 - AT-04.1 `src/usage.rs:1117` -- covers AC-04.1 -- status: green -- A fetch that succeeds saves its cache and records a sample of each of its windows in the history under the state directory; a history that cannot be written joins the report error, and the cache is saved all the same; red under the mutant whose successful fetch records nothing, in the first WP04 run at 31c0482, Desk slot 01M79ZVHT2C8B2ADTBWY7YQ73W; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP
 - AT-04.2 `src/history.rs:255` -- covers AC-04.1 -- status: green -- A window keeps its first sample, then one each time its percent changes; an unchanged percent adds nothing, and each account keeps its own windows; red under the mutant that samples an unchanged percent, in the first WP04 run at 31c0482, Desk slot 01M79ZVHT2C8B2ADTBWY7YQ73W; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP

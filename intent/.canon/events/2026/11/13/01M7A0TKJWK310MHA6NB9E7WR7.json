@@ -1,0 +1,15 @@
+{
+  "id": "01M7A0TKJWK310MHA6NB9E7WR7",
+  "ts": "2026-11-13T08:36:44.252Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's rulings of 2026-11-13, given to vc in the live channel (vc's window, as answers to vc's question dialog), recorded by vc as mediator. (1) The 0.1.9 cut's route past devbin 0348 is C, chosen from vc's options: just before the cut hv runs bin/devbin install and bin/devbin use opt, so that doctor passes with the link on opt; after the publish, brew upgrade ccusage, then bin/devbin use brew. (2) A live login that ST0003/WP03 drops (the first switch's overwrite of the shared config's own login, and login NAME on the active account) is left to lapse, not revoked, chosen from vc's options. (3) On engineering04 and account plans, in hv's wording: \"Just leave this for now. I will only downgrade 04 when its been exhausted. Also, I don't see the issue here. Why does the plan matter? That can't be a constraint that ccusage _only_ works for Claude Max Pro accounts. It must work for any Claude Account and show whatever it can show for that type.\" vc's acts the same day: (1) to devbin-vc and dc, and into the cut's steps; (2) to cc, whose adoption already lets such a login lapse; (3) engineering04 stays a profile, ISSUE:0003's acceptance reads each account once (dc, at its close), and ic keeps which, the TUI and the Herdr panel showing whatever windows an account reports, choosing only among accounts that report a weekly window."
+  }
+}

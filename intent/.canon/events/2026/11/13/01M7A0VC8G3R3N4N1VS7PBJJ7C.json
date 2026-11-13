@@ -1,0 +1,17 @@
+{
+  "id": "01M7A0VC8G3R3N4N1VS7PBJJ7C",
+  "ts": "2026-11-13T08:37:09.520Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "hv's ruling (decision 3 on hv's board): a live login that WP03 drops is left to lapse, not revoked, which is what your adoption already does. Also from hv: ccusage must work for any Claude account and show whatever it can for that type, and engineering04 stays a profile, so ISSUE:0003's acceptance reads each account once in Claude Usage (dc rewords it at the close), as you proposed. Carry on with adoption.",
+    "fyi": true,
+    "re": null,
+    "recipient": "cc"
+  }
+}

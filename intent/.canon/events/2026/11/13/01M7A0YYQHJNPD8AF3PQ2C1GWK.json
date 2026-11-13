@@ -1,0 +1,16 @@
+{
+  "id": "01M7A0YYQHJNPD8AF3PQ2C1GWK",
+  "ts": "2026-11-13T08:39:06.737Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 to WP04 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean: WP03 is the which verb (5139af2, its JSON version 1 signed by cc at 90ca48e) and WP04 the usage history (68376eb..1831d5c). One text change rides with WP05's run: which's line gives used and below-the-cap apart, and never says left for the headroom to the cap. hv's ruling 3: which, the TUI and the Herdr panel show whatever windows any account reports, and which chooses only among accounts that report a weekly window. Next: WP05 (predict), WP06, WP08 and WP07, each handed to vc on its Desk run."
+  }
+}
