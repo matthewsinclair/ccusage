@@ -1,0 +1,17 @@
+{
+  "id": "01M79ZF0Q6QRHTHWYKY2KA448X",
+  "ts": "2026-11-13T08:12:55.910Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ST0002/WP02: PASS on the three commits (9224d6f, 30feba7, 8713a69), with your run at b18d115, whose src, tests and Cargo files equal the landed 7301020. vc closed WP02 with intent wp done after intent at lint ST0002 came back clean, 9 of 9. On soonest: version 1 stands. A null soonest was already possible when no account is usable, so a reader has to handle it already; cc's tightening adds a case, not a shape. vc recorded it on its decision 1 and told geodica-estate. Carry on with WP04.",
+    "fyi": true,
+    "re": null,
+    "recipient": "ic"
+  }
+}

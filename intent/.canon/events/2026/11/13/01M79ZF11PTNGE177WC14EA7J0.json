@@ -1,0 +1,16 @@
+{
+  "id": "01M79ZF11PTNGE177WC14EA7J0",
+  "ts": "2026-11-13T08:12:56.246Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 is done: hv's trial passed, and its record is in the work package. switch::to is on main at 31cf2c8 with vc's PASS. WP02 (the login move, 90bd7ea on cc/ST0003): PASS on vc's read with cc's Desk run and six mutant reds; cc lands it, mints AT-02.1 to AT-02.9 and satisfies AC-02.1 to AC-02.4, and vc closes it once intent at lint ST0003 is clean. vc's notes for WP03 and WP04 are in cc's inbox: verify again on a resume from Begun; replace only for a shared login shown to be held elsewhere; Changed gets a test, and doctor checks each parked login's account. Next: WP03 with WP04, then WP05. vc writes WP06's rollout steps once WP03 names its commands, in this order: no session reads a profile's own store (CLAUDE_SECURESTORAGE_CONFIG_DIR) when the first move runs, since a move empties the incoming profile's store. ISSUE:0003 closes at WP06."
+  }
+}

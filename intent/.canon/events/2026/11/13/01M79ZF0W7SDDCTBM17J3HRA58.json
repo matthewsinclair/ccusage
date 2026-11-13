@@ -1,0 +1,16 @@
+{
+  "id": "01M79ZF0W7SDDCTBM17J3HRA58",
+  "ts": "2026-11-13T08:12:56.071Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 and WP02 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean; WP02 landed as cec942a..7301020, its run at b18d115 equal to the landed tree. The which --json contract, version 1, is final and with geodica-estate (vc's decision 1). Next: WP04 (history, which ic is building on the design on its board), then WP03, WP05, WP06, WP08 and WP07, each handed to vc on its Desk run."
+  }
+}

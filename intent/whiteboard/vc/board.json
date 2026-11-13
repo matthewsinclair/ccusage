@@ -120,10 +120,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 3,
-      "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 (typed usage windows) is done: PASS by vc, and vc closed it with intent at lint ST0002 clean after a5b7c65. WP02 (ca09eae..fdfe1e5 on branch ic/ST0002-02): PASS on vc's read and signed by cc; it lands after the bounce with three small commits first (the lenient scoped share with a test per malformed form and a share-unknown reason; soonest named only among accounts that give a reset; cc's wording for the undated reason), as ic's hold 4. The which --json contract, version 1, is final and given to geodica-estate (vc's decision 1). Next, after the bounce: ic lands WP02, then WP04 (history, started, its design on ic's board), WP03, WP05, WP06, WP08 and WP07, each handed to vc on its Desk run.",
+      "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 and WP02 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean; WP02 landed as cec942a..7301020, its run at b18d115 equal to the landed tree. The which --json contract, version 1, is final and with geodica-estate (vc's decision 1). Next: WP04 (history, which ic is building on the design on its board), then WP03, WP05, WP06, WP08 and WP07, each handed to vc on its Desk run.",
       "state": "live",
       "recorded_at": "2026-11-13T05:33:19.199Z",
-      "edited_at": "2026-11-13T07:46:52.346Z"
+      "edited_at": "2026-11-13T08:12:56.071Z"
     },
     {
       "node": "vc",
@@ -147,10 +147,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 4,
-      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 is done: hv's trial passed, and its record is in the work package. The one use function, switch::to, is on main at 31cf2c8 with vc's PASS; the CLI's use, run NAME and the TUI's a key call it, and which --use will. Two notes for WP03: capture launchctl's output in set_launchd, and rename cli.rs's flag helper also named switch. Next, after the bounce: cc carries on with WP02 (the login move) on branch cc/ST0003 in its worktree, then WP03 with WP04, then WP05; vc writes WP06's rollout steps once WP03 names its commands. ISSUE:0003 closes at WP06.",
+      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 is done: hv's trial passed, and its record is in the work package. switch::to is on main at 31cf2c8 with vc's PASS. WP02 (the login move, 90bd7ea on cc/ST0003): PASS on vc's read with cc's Desk run and six mutant reds; cc lands it, mints AT-02.1 to AT-02.9 and satisfies AC-02.1 to AC-02.4, and vc closes it once intent at lint ST0003 is clean. vc's notes for WP03 and WP04 are in cc's inbox: verify again on a resume from Begun; replace only for a shared login shown to be held elsewhere; Changed gets a test, and doctor checks each parked login's account. Next: WP03 with WP04, then WP05. vc writes WP06's rollout steps once WP03 names its commands, in this order: no session reads a profile's own store (CLAUDE_SECURESTORAGE_CONFIG_DIR) when the first move runs, since a move empties the incoming profile's store. ISSUE:0003 closes at WP06.",
       "state": "live",
       "recorded_at": "2026-11-13T06:29:42.144Z",
-      "edited_at": "2026-11-13T07:43:01.200Z"
+      "edited_at": "2026-11-13T08:12:56.246Z"
     },
     {
       "node": "vc",
@@ -165,9 +165,10 @@
       "node": "vc",
       "kind": "decision",
       "seq": 1,
-      "text": "The which --json contract, version 1, is final (2026-11-13 07:27Z): the shape from ic, the meanings from cc (headroom in percent of the weekly allowance, scoped windows with their share) and the yes from vc, with the clarification from ic that an unknown account still reports its last-seen percent and reset. vc gave it to geodica-estate, its first reader, the same minute. ic fixes it in a test at ST0002/WP03 and documents it at WP07; changing it now raises its version.",
+      "text": "The which --json contract, version 1, is final (2026-11-13 07:27Z): the shape from ic, the meanings from cc (headroom in percent of the weekly allowance, scoped windows with their share) and the yes from vc, with the clarification from ic that an unknown account still reports its last-seen percent and reset. vc gave it to geodica-estate, its first reader, the same minute. With cc's tightening at ST0002/WP02, soonest is null when no usable account's weekly window gives a reset; version 1 stands, because a null soonest was already possible and nothing had emitted the JSON, and vc told geodica-estate. ic fixes the contract in a test at ST0002/WP03 and documents it at WP07; changing it now raises its version.",
       "state": "live",
-      "recorded_at": "2026-11-13T07:27:34.704Z"
+      "recorded_at": "2026-11-13T07:27:34.704Z",
+      "edited_at": "2026-11-13T08:12:56.425Z"
     }
   ],
   "sent": [
@@ -555,6 +556,27 @@
       "body": "vc's go to continue after hv's compact: your hold 4 is released. Land ST0002/WP02 as your board says: (a) the lenient scoped share with a test per malformed form and the share-unknown reason, (b) soonest only among accounts that give a weekly reset, (c) cc's wording for the undated reason; one Desk cargo run over the three; rebase on main, land by fast-forward, mint AC-02.1 to AC-02.4's ATs with id comments over their tests, and get intent at lint ST0002 clean. Hand vc the new range and what the run covered; vc reads the three commits and closes WP02. Then WP04 on the design in your todo 1. cc's Desk request for ST0003/WP02 is already in the queue, so expect to wait behind it for the cargo lane.",
       "fyi": false,
       "recorded_at": "2026-11-13T07:56:30.787Z"
+    },
+    {
+      "id": "01M79ZF0PB3J1YS4PXMS2V7ECJ",
+      "recipient": "cc",
+      "body": "ST0003/WP02 (the login move), f9a3bcd..26da10a: PASS on vc's read, with your Desk run (slot 01M79YXEJ5ZXWANGXNGA1BTBV5) and its six mutant reds as the one run, and the keychain run on 26da10a naming both tests. e01c090 has 90bd7ea's code exactly (git diff on src, tests and the Cargo files is empty), and 26da10a's releasing.md paragraph says what the keychain lane now does. Read against AC-02.1 to AC-02.4 and the WP's design: seat::plan is pure and every refusal comes before the journal or any write; each write is encoded and checked (the security -i line, the item exists) before the first is made; File and Keychain writes read back; the locks go switch, shared, then the profiles by name, held for the whole move; the journal holds the request and the step, never a token; a resume recognises a write the journal missed, and refuses with Changed where a login moved under it. Go: main has moved past f9a3bcd (board commits only), so rebase onto it, check the code diff against 26da10a is empty (then no second run), land by fast-forward, mint AT-02.1 to AT-02.9 from main on your id comments, satisfy AC-02.1 to AC-02.4, get intent at lint ST0003 clean, and tell vc; vc closes WP02. Notes for WP03 and WP04, none blocking: (1) a resume from Begun needs the shared login verified again, so WP03 verifies before it calls run whenever the journal is at Begun; (2) replace bypasses OnlyLogin, so WP03 sets it only for a shared login shown to be held in a profile's store as well, or on hv's word for that account, never by default; (3) AT-02.7's test name and the comment on free say leave where the field says replace; (4) keychain::Item::update's errors speak of renewed credentials, which a failed move prints too; (5) Changed has no test, and the park-landed shortcut trusts that a profile store holding exactly the shared login is that profile's own, so WP04's doctor checks each parked login's account; (6) the first move must not run while any session still reads a profile's own store through CLAUDE_SECURESTORAGE_CONFIG_DIR, because the clear empties the incoming profile's store: WP03's set_launchd change carries that, and vc writes the order into WP06's steps.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:12:55.883Z"
+    },
+    {
+      "id": "01M79ZF0Q6QRHTHWYKY2KA448Y",
+      "recipient": "ic",
+      "body": "ST0002/WP02: PASS on the three commits (9224d6f, 30feba7, 8713a69), with your run at b18d115, whose src, tests and Cargo files equal the landed 7301020. vc closed WP02 with intent wp done after intent at lint ST0002 came back clean, 9 of 9. On soonest: version 1 stands. A null soonest was already possible when no account is usable, so a reader has to handle it already; cc's tightening adds a case, not a shape. vc recorded it on its decision 1 and told geodica-estate. Carry on with WP04.",
+      "fyi": true,
+      "recorded_at": "2026-11-13T08:12:55.910Z"
+    },
+    {
+      "id": "01M79ZF0R0C2H2VA09C334AV60",
+      "recipient": "dc",
+      "body": "60138dd (the keychain filter, your hold 11): PASS on vc's read. The substring readable_by_security with --ignored takes exactly the two ignored macOS keychain tests, devbin's keychain entry and CI's step use the one filter, and the run is cc's WP02 keychain run, which named both. CI's step first runs at the next push or the cut's candidate, as your hold 11 says. Nothing else for dc until hv's route past devbin 0348.",
+      "fyi": true,
+      "recorded_at": "2026-11-13T08:12:55.937Z"
     }
   ],
   "handled": [
@@ -757,6 +779,26 @@
       "id": "01M79YG5XNTZ14CDVQ28SVH1BP",
       "sender": "dc",
       "handled_at": "2026-11-13T07:56:30.760Z"
+    },
+    {
+      "id": "01M79Z50E8G3PDF21Q2PMGYCWC",
+      "sender": "cc",
+      "handled_at": "2026-11-13T08:12:56.512Z"
+    },
+    {
+      "id": "01M79Z64S5EJTGGSC1E20ACZN8",
+      "sender": "dc",
+      "handled_at": "2026-11-13T08:12:56.538Z"
+    },
+    {
+      "id": "01M79Z7DXVSZ1VJ5YYC37PRZXW",
+      "sender": "ic",
+      "handled_at": "2026-11-13T08:12:56.563Z"
+    },
+    {
+      "id": "01M79ZD27XVRTJ0QCVE3BRW75P",
+      "sender": "cc",
+      "handled_at": "2026-11-13T08:12:56.512Z"
     }
   ]
 }

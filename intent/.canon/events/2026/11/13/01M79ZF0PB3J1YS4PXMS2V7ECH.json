@@ -1,0 +1,17 @@
+{
+  "id": "01M79ZF0PB3J1YS4PXMS2V7ECH",
+  "ts": "2026-11-13T08:12:55.883Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ST0003/WP02 (the login move), f9a3bcd..26da10a: PASS on vc's read, with your Desk run (slot 01M79YXEJ5ZXWANGXNGA1BTBV5) and its six mutant reds as the one run, and the keychain run on 26da10a naming both tests. e01c090 has 90bd7ea's code exactly (git diff on src, tests and the Cargo files is empty), and 26da10a's releasing.md paragraph says what the keychain lane now does. Read against AC-02.1 to AC-02.4 and the WP's design: seat::plan is pure and every refusal comes before the journal or any write; each write is encoded and checked (the security -i line, the item exists) before the first is made; File and Keychain writes read back; the locks go switch, shared, then the profiles by name, held for the whole move; the journal holds the request and the step, never a token; a resume recognises a write the journal missed, and refuses with Changed where a login moved under it. Go: main has moved past f9a3bcd (board commits only), so rebase onto it, check the code diff against 26da10a is empty (then no second run), land by fast-forward, mint AT-02.1 to AT-02.9 from main on your id comments, satisfy AC-02.1 to AC-02.4, get intent at lint ST0003 clean, and tell vc; vc closes WP02. Notes for WP03 and WP04, none blocking: (1) a resume from Begun needs the shared login verified again, so WP03 verifies before it calls run whenever the journal is at Begun; (2) replace bypasses OnlyLogin, so WP03 sets it only for a shared login shown to be held in a profile's store as well, or on hv's word for that account, never by default; (3) AT-02.7's test name and the comment on free say leave where the field says replace; (4) keychain::Item::update's errors speak of renewed credentials, which a failed move prints too; (5) Changed has no test, and the park-landed shortcut trusts that a profile store holding exactly the shared login is that profile's own, so WP04's doctor checks each parked login's account; (6) the first move must not run while any session still reads a profile's own store through CLAUDE_SECURESTORAGE_CONFIG_DIR, because the clear empties the incoming profile's store: WP03's set_launchd change carries that, and vc writes the order into WP06's steps.",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}

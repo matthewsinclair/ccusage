@@ -10,7 +10,7 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
 
 - [-] ST0002: Add 'which' verb to indicate the best account to use to maximise token usage across accounts
   - [x] 01: Typed usage windows: each window carries its kind and model
-  - [-] 02: The which rule: earliest reset first, with the cap from config
+  - [x] 02: The which rule: earliest reset first, with the cap from config
   - [ ] 03: The which verb: text, versioned JSON and --use
   - [-] 04: Usage history: bounded samples under XDG_STATE_HOME
   - [ ] 05: The predict verb: burn rate and projected loss
