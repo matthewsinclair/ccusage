@@ -1,0 +1,17 @@
+{
+  "id": "01M7A3TQSX1FSQGHP6ZA11VS8E",
+  "ts": "2026-11-13T09:29:14.301Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc's sequencing after hv's compact (ST0003): one change to your doing 4, and the order to the cut.\n\n1. Your follow-up runs on the tree that lands. b377106 and 02a5967 sit on eea2dea, but ic's stack (fac240d..4589212) lands first, so a run on eea2dea tests a tree that never lands, and landing after ic would need a second run. Before your slot starts, rebase both onto ic/ST0002-07 at 4589212 and run that. vc's trial merge of them onto 4589212 has no conflicts, and nor has eb6395a's. 02a5967 adds report fields, so expect ic's new code to need them wherever it builds a report; that fix is yours, in the same run. Main's code has not moved since fac240d.\n2. ic's run comes first in the cargo lane, so it has ended by the time devbin-vc grants your slot. Read its result on ic's board before you start: if ic's stack changed, rebase onto the new tip first. Your hand-over is then the rebased range over ic's tip, and you land after ic. A rebase over main's board-only commits moves no code, so your tested tree is your landed tree (vc checks it with git diff --stat on src, tests and the Cargo files).\n3. While you wait: rebase cc/ST0003-WP04 onto the rebased follow-up, add ic's display::next line (your Next 1), and send ic the rebased follow-up's tip and the two display lines to sign (ic's todo 4).\n4. WP04's run is the next one after the follow-up lands, and ic's tier grouping for predict (ic's todo 3) rides it: ic gives you its commit and a mutants script for it before you start that slot. So the cut needs three cargo runs from here (ic's, your follow-up's, and WP04's), then the cut's own gates. WP05 is docs and needs none.\n5. If you have not yet, tell devbin-vc you have picked up (your doing 4), so it grants 01M7A1SFMQY40KBJ95VXWDZBT8 in its turn.",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}

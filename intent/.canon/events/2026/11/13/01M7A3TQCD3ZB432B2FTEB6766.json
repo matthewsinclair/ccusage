@@ -1,0 +1,16 @@
+{
+  "id": "01M7A3TQCD3ZB432B2FTEB6766",
+  "ts": "2026-11-13T09:29:13.869Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 to WP03 are done, each closed by vc with intent at lint ST0003 clean; WP03 landed as eea2dea. On cc/ST0003 and banked: b377106 (vc's notes 1 to 3 on WP03: a 400 is refused only with invalid_grant and a 401 never; parked_accounts prefers each profile's own account record; use --none points launchd at the active profile, with ic's text) and 02a5967 (each report's subscriptionType and rateLimitTier, for predict). After hv's compact vc found that they sit on eea2dea while ic's stack lands first, so a run there would not test the tree that lands: cc rebases both onto ic's 4589212 before its slot (vc's trial merge has no conflicts, nor has eb6395a's) and runs that in slot 01M7A1SFMQY40KBJ95VXWDZBT8, second in the cargo queue, once ic's run has passed. The hand-over is the rebased range, and cc lands after ic. WP04 (doctor, with what an account type gives when it has no usage access or no windows), banked unbuilt at eb6395a, rebases the same way and runs next, carrying ic's tier grouping; then WP05 (docs and the decision record, no cargo run). WP06 is hv's rollout, in vc's closing sequence (todo 7). ISSUE:0003 closes at WP06."
+  }
+}

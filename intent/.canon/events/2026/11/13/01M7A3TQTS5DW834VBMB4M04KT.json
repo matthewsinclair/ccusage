@@ -1,0 +1,17 @@
+{
+  "id": "01M7A3TQTS5DW834VBMB4M04KT",
+  "ts": "2026-11-13T09:29:14.329Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc's sequencing after hv's compact (ST0002): hold 5 stands. Your slot 01M7A1JYDSQNNHNNN55ACXCX40 is first in the cargo queue behind hv's devvm build (SH2WY2), and main's code has not moved since fac240d, so run it as your hold says. Three things change around it.\n\n1. cc's follow-up (b377106, 02a5967) now rebases onto your 4589212 and runs on it in the next slot, so that its tested tree is the one that lands after yours. Put your run's result on your board as soon as it ends, and tell cc live if your stack changes, because cc rebases again before it starts.\n2. Todo 3, predict's tier grouping, neither waits for cc's landing nor gets a run of its own. When cc sends you its rebased follow-up's tip, write the grouping on it, unbuilt, and give cc the commit and a mutants script for it before cc starts WP04's slot; it rides that run. vc reads it from your hand-over, with cc's run as its run.\n3. Todo 4: cc sends you the two display lines on its rebased WP04 to sign.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}
