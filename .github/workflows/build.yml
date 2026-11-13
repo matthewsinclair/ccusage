@@ -58,9 +58,11 @@ jobs:
       - run: cargo fmt --check
       - run: cargo clippy --all-targets --locked --target "${{ matrix.target }}" -- -D warnings
       - run: cargo test --locked --no-fail-fast --target "${{ matrix.target }}"
-      - name: Native Keychain renewal storage test
+      # Each ignored keychain test is named *_readable_by_security, the filter
+      # bin/.devbin/config.yaml's keychain test uses too.
+      - name: Native Keychain storage tests
         if: runner.os == 'macOS'
-        run: cargo test --locked --no-fail-fast --target "${{ matrix.target }}" renewal_write_keeps_claude_items_readable_by_security -- --ignored
+        run: cargo test --locked --no-fail-fast --target "${{ matrix.target }}" readable_by_security -- --ignored
       - run: cargo build --release --locked --target "${{ matrix.target }}"
       - name: Package executable
         env:

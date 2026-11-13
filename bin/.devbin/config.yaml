@@ -72,11 +72,13 @@ commands:
         summary: The bats suites for the project commands
         platforms:
           - macos
-      # The ignored renewal test needs the macOS Security service and makes
-      # its own disposable keychain under ~/Library/Keychains.
+      # The ignored keychain tests need the macOS Security service, and each
+      # makes its own disposable keychain under ~/Library/Keychains. Each is
+      # named *_readable_by_security, which is the filter, so a new one joins
+      # this run, and CI's macOS step, by its name.
       keychain:
-        summary: Renewal write against a disposable keychain
-        run: cargo test --locked --no-fail-fast renewal_write_keeps_claude_items_readable_by_security -- --ignored
+        summary: Keychain writes against a disposable keychain
+        run: cargo test --locked --no-fail-fast readable_by_security -- --ignored
         grammar: cargo
         log: true
         platforms:
