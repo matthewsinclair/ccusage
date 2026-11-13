@@ -13,16 +13,15 @@
 #                                     draft. A release already public is verified and
 #                                     left alone.
 #
-# An archive is unpacked only when it holds exactly LICENSE and bin/ccusage, each
-# once and each a regular file, named bare or under a ./ root directory, with bin/
-# the one directory it may list. Its binary must be its target's architecture, and
-# each signature must carry the hardened runtime, a secure timestamp and a designated
-# requirement with no cdhash. Each signed binary is then notarized, and the run stops
-# unless Apple answers Accepted. The facts it signs and checks with, and the login
-# keychain's prefix for the notary credentials, live once, in
-# packaging/macos/signing; the release's repository is bin/.devbin/config.yaml's
-# release.repo, and its targets are the build workflow's matrix, in
-# .github/workflows/build.yml.
+# An archive is unpacked only when it holds exactly bin/ccusage, once and a regular
+# file, named bare or under a ./ root directory, with bin/ the one directory it may
+# list. Its binary must be its target's architecture, and each signature must carry
+# the hardened runtime, a secure timestamp and a designated requirement with no
+# cdhash. Each signed binary is then notarized, and the run stops unless Apple
+# answers Accepted. The facts it signs and checks with, and the login keychain's
+# prefix for the notary credentials, live once, in packaging/macos/signing; the
+# release's repository is bin/.devbin/config.yaml's release.repo, and its targets are
+# the build workflow's matrix, in .github/workflows/build.yml.
 #
 # IT RUNS ON THE MAINTAINER'S MAC ONLY. It refuses on CI ($CI set) and off macOS,
 # and, before it downloads anything for a draft, when the Developer ID identity is
@@ -37,9 +36,10 @@ setopt err_exit no_unset pipe_fail
 source ${0:A:h}/common/handler.zsh
 signing=packaging/macos/signing
 # What each archive holds, rooted at the install root as devbin's formula lays it out
-# in the keg (ISSUE:0007): the binary under bin/, and LICENSE beside it
+# in the keg (ISSUE:0007): the binary under bin/ alone, the tree config.yaml's
+# install: block declares
 exe=bin/ccusage
-files=(LICENSE $exe)
+files=($exe)
 # The one directory a member lies in, which CI's tar lists as an entry of its own
 dirs=(${exe:h})
 # The release's targets live once, in the build matrix, where CI builds one archive

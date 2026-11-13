@@ -156,7 +156,6 @@ FAKE
 # stage <dir> <binary contents>: what an archive holds, rooted at the install root
 stage() {
   mkdir -p "$1/bin"
-  printf LICENSE > "$1/LICENSE"
   printf '%s' "$2" > "$1/bin/ccusage"
 }
 
@@ -261,7 +260,7 @@ copy_tree() {
     [ "$(cat "$unpacked/bin/ccusage")" = "$(printf '%s\n%s' "$target" "$MARKER")" ]
     [ "$(stat -f %Lp "$unpacked/bin/ccusage")" = 755 ]
     # Rooted at the install root, as devbin's formula lays the archive out in the keg
-    [ "$(bsdtar -tzf "$FAKE_RELEASE/ccusage-$TAG-$target.tar.gz" | LC_ALL=C sort | xargs)" = "LICENSE bin/ccusage" ]
+    [ "$(bsdtar -tzf "$FAKE_RELEASE/ccusage-$TAG-$target.tar.gz")" = bin/ccusage ]
     [ "$(bsdtar -tvzf "$FAKE_RELEASE/ccusage-$TAG-$target.tar.gz" | awk '{ print $3 $4 }' | sort -u)" = 00 ]
   done
   grep -qxF "codesign --force --sign Developer ID Application: Geodica Pty Ltd (76BQL8L47U) --identifier com.geodica.ccusage --options runtime --timestamp $(grep '^codesign --force' "$FAKE_LOG" | head -1 | awk '{ print $NF }')" "$FAKE_LOG"
@@ -504,23 +503,17 @@ copy_tree() {
   finalize; refused "Unexpected or missing release archives"
 }
 
-@test "archives with a name other than the members are refused" {
+@test "archives with a name other than the member are refused" {
   local from=$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin rename
-  for rename in ../LICENSE sub/LICENSE license ./sub/LICENSE bin/LICENSE; do
-    : > "$FAKE_LOG"
-    arm -C "$from" -s ",^LICENSE\$,$rename," LICENSE bin/ccusage
-    finalize
-    refused "Unexpected release archive member" || { echo "for $rename"; return 1; }
-  done
   # The binary anywhere but bin/, the layout before the install root's included
-  for rename in ccusage libexec/bin/ccusage bin/bin/ccusage; do
+  for rename in ccusage ../ccusage ./sub/ccusage bin/ccusage2 libexec/bin/ccusage bin/bin/ccusage; do
     : > "$FAKE_LOG"
-    arm -C "$from" -s ",^bin/ccusage\$,$rename," LICENSE bin/ccusage
+    arm -C "$from" -s ",^bin/ccusage\$,$rename," bin/ccusage
     finalize
     refused "Unexpected release archive member" || { echo "for $rename"; return 1; }
   done
   : > "$FAKE_LOG"
-  arm -P -C "$from" -s ',^LICENSE$,/LICENSE,' LICENSE bin/ccusage
+  arm -P -C "$from" -s ',^bin/ccusage$,/bin/ccusage,' bin/ccusage
   finalize
   refused "Unexpected release archive member"
 }
@@ -528,32 +521,36 @@ copy_tree() {
 @test "archives with a member too many, too few or twice are refused" {
   local from=$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin
   printf extra > "$BATS_TEST_TMPDIR/extra"
-  arm -C "$from" LICENSE bin/ccusage -C "$BATS_TEST_TMPDIR" extra
+  arm -C "$from" bin/ccusage -C "$BATS_TEST_TMPDIR" extra
   finalize; refused "Unexpected release archive member"
-  : > "$FAKE_LOG"; arm -C "$from" bin/ccusage
+  # LICENSE, which an archive carried before the install root, is one too many
+  printf LICENSE > "$from/LICENSE"
+  : > "$FAKE_LOG"; arm -C "$from" LICENSE bin/ccusage
   finalize; refused "Unexpected release archive member"
-  : > "$FAKE_LOG"; arm -C "$from" LICENSE LICENSE bin/ccusage
+  # bin/ with nothing in it
+  mkdir -p "$BATS_TEST_TMPDIR/empty/bin"
+  : > "$FAKE_LOG"; arm -C "$BATS_TEST_TMPDIR/empty" bin
+  finalize; refused "Unexpected release archive member"
+  : > "$FAKE_LOG"; arm -C "$from" bin/ccusage bin/ccusage
   finalize; refused "Unexpected release archive member"
 }
 
 @test "archives with a directory but bin/ are refused, even an empty one" {
   local from=$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin
   mkdir "$from/share"
-  arm -C "$from" LICENSE bin/ccusage share
+  arm -C "$from" bin/ccusage share
   finalize; refused "Unexpected release archive member"
 }
 
 @test "archives whose binary is a link or a directory are refused" {
   local odd=$BATS_TEST_TMPDIR/odd
   stage "$odd" aarch64-apple-darwin
-  rm "$odd/bin/ccusage" && ln -s ../LICENSE "$odd/bin/ccusage"
-  arm -C "$odd" LICENSE bin/ccusage
-  finalize; refused "Unexpected release archive member"
-  : > "$FAKE_LOG"; rm "$odd/bin/ccusage" && ln "$odd/LICENSE" "$odd/bin/ccusage"
-  arm -C "$odd" LICENSE bin/ccusage
+  printf other > "$odd/other"
+  rm "$odd/bin/ccusage" && ln -s ../other "$odd/bin/ccusage"
+  arm -C "$odd" bin/ccusage
   finalize; refused "Unexpected release archive member"
   : > "$FAKE_LOG"; rm "$odd/bin/ccusage" && mkdir "$odd/bin/ccusage"
-  arm -C "$odd" LICENSE bin/ccusage
+  arm -C "$odd" bin/ccusage
   finalize; refused "Unexpected release archive member"
 }
 
@@ -562,14 +559,14 @@ copy_tree() {
   # mac-ext option is off, so a listing that left it on would never show it
   local from=$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin
   printf 'not metadata' > "$from/bin/._ccusage"
-  COPYFILE_DISABLE=1 arm -C "$from" LICENSE bin/._ccusage bin/ccusage
+  COPYFILE_DISABLE=1 arm -C "$from" bin/._ccusage bin/ccusage
   finalize
   refused "Unexpected release archive member"
 }
 
 @test "bare names unpack as well as CI's ./ root" {
-  # Named members carry no entry for bin/, where CI's tar of . carries one
-  arm -C "$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin" LICENSE bin/ccusage
+  # A named member carries no entry for bin/, where CI's tar of . carries one
+  arm -C "$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin" bin/ccusage
   finalize
   [ "$status" -eq 0 ] || { echo "$output"; return 1; }
 }

@@ -13,8 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - `ccusage --version` names the tree it runs from and the commit it was built from: `ccusage X.Y.Z (brew, <sha12>)` from Homebrew, `(opt, <sha12>)` from an opt install, and `(dev, <sha12>)` from `bin/devbin build`, with `+dirty` for a build from uncommitted inputs (ISSUE:0007).
-- The Homebrew formula installs one tree on macOS and Linux: `bin/ccusage` and `LICENSE` in the keg's `libexec`, with a manifest. On Linux it builds with `bin/devbin install` instead of `cargo install`, and it no longer installs the logo (ISSUE:0007).
-- Release archives hold `bin/ccusage` and `LICENSE`, rooted at the install root, and no longer carry `README.md` or the logo (ISSUE:0007).
+- The Homebrew formula installs one tree on macOS and Linux: `bin/ccusage` in the keg's `libexec`, with a manifest. On Linux it builds with `bin/devbin install` instead of `cargo install`, and it no longer installs the logo (ISSUE:0007).
+- Release archives hold `bin/ccusage` alone, rooted at the install root, and no longer carry `LICENSE`, `README.md` or the logo (ISSUE:0007).
 
 ## [0.1.8] - 2026-11-04
 

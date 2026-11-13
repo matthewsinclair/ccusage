@@ -23,15 +23,15 @@ devbin_version: "^0.1.23"
 # devbin's repository; ISSUE:0007). In this checkout bin/devbin install publishes it
 # to the opt prefix, and bin/devbin use [dev|opt|brew] points its link in
 # ~/.local/bin; ccusage itself has no install, use or version verb for them. Each
-# tree holds bin/ccusage and LICENSE, as each release archive does, and the manifest
-# .ccusage-install, whose line an opt or brew ccusage prints for --version.
+# tree holds bin/ccusage alone, as each release archive does, and the manifest
+# .ccusage-install, whose line an opt or brew ccusage prints for --version. No
+# LICENSE or README joins it: after a formula's install Homebrew moves such files out
+# of libexec when the keg's root has none, as a keg laid out from an archive has, and
+# the manifest would then name files the keg does not hold.
 install:
   prefix: ~/Devel/opt/ccusage
   links:
     ccusage: target/release/ccusage
-  files:
-    license:
-      path: LICENSE
 
 # This file is the one home of Ccusage's checks and release; README,
 # docs/releasing.md and usage-rules.md say to run them through bin/devbin. Every
