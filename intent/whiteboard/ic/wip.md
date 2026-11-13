@@ -19,6 +19,7 @@ claims: [ST0002]
 
 - ST0002/WP05's run carries two WP03 follow-ups from vc (inbox 2026-11-13, after its PASS of WP03 and WP04): (1) a line gives the headroom as what is below the cap, eg hello: 73% used, 22% below the 95% cap, resets in 3d04h, since hv reads left as what remains of the allowance; (2) hv's ruling 3, that ccusage works for any Claude account and shows whatever it reports: which's text lists an unknown account with the windows it does report, and a CLI test shows an account with a session window only listed as unknown with it, and never chosen.
 - ST0002/WP05 follow-up, once cc's tier recording lands (cc's todo 3, which vc sequences): predict sums the accounts of the most common subscriptionType and rateLimitTier pair among those the rule can use, compared whole; a tie goes to the active account's tier, else to the lexically first pair (cc's meaning); every other account is left out as another plan's allowance, and the text drops its one-plan assumption.
+- Sign cc's two display lines for todo 3a's note when cc's ST0003/WP04 rebases onto ST0002's stack: display::lines shows a report's note in place of its windows, not Loading usage..., and display::next counts a note-only report as in. cc's which line is signed with the note check moved above the snapshot check (2026-11-13).
 
 ## Holds
 

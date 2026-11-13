@@ -93,6 +93,14 @@
       "text": "ST0002/WP05 follow-up, once cc's tier recording lands (cc's todo 3, which vc sequences): predict sums the accounts of the most common subscriptionType and rateLimitTier pair among those the rule can use, compared whole; a tie goes to the active account's tier, else to the lexically first pair (cc's meaning); every other account is left out as another plan's allowance, and the text drops its one-plan assumption.",
       "state": "live",
       "recorded_at": "2026-11-13T08:53:19.741Z"
+    },
+    {
+      "node": "ic",
+      "kind": "todo",
+      "seq": 4,
+      "text": "Sign cc's two display lines for todo 3a's note when cc's ST0003/WP04 rebases onto ST0002's stack: display::lines shows a report's note in place of its windows, not Loading usage..., and display::next counts a note-only report as in. cc's which line is signed with the note check moved above the snapshot check (2026-11-13).",
+      "state": "live",
+      "recorded_at": "2026-11-13T09:13:22.377Z"
     }
   ],
   "sent": [
