@@ -234,7 +234,8 @@ fn scoped_for<'a>(scoped: &'a [Window], model: &str) -> Option<&'a Window> {
 fn below_cap(account: &Account, model: Option<&str>) -> String {
   let standing = match (account.state == State::Chosen, dated(account)) {
     (true, true) => "soonest reset with headroom",
-    (true, false) => "headroom, though no account gives a weekly reset",
+    // An account at the cap may give a reset, so the choice speaks of eligible ones.
+    (true, false) => "headroom, though no eligible account gives a weekly reset",
     (false, true) => "eligible",
     (false, false) => "eligible, but with no weekly reset it ranks after every dated one",
   };
@@ -517,6 +518,24 @@ mod tests {
     let choice = choose(&reports, now, DEFAULT_CAP, None, usage::TTL);
     assert_eq!(names(&choice), ["b-dated", "a-undated"]);
     assert!(choice.accounts[1].reason.contains("no weekly reset"));
+    // Chosen with no reset of its own, it says no eligible account gives one, though an
+    // account at the cap does.
+    let reports = [
+      report("a-undated", now, 0.0, None, &[])?,
+      report(
+        "b-capped",
+        now,
+        DEFAULT_CAP,
+        Some("2026-11-18T00:00:00Z"),
+        &[],
+      )?,
+    ];
+    let choice = choose(&reports, now, DEFAULT_CAP, None, usage::TTL);
+    assert_eq!(chosen(&choice), Some("a-undated"));
+    assert_eq!(
+      choice.accounts[0].reason,
+      "headroom, though no eligible account gives a weekly reset"
+    );
     Ok(())
   }
 
