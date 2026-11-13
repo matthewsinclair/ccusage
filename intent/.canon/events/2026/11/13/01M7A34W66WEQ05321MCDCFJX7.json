@@ -1,0 +1,16 @@
+{
+  "id": "01M7A34W66WEQ05321MCDCFJX7",
+  "ts": "2026-11-13T09:17:17.895Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 to WP04 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean. Built and stacked on main's fac240d: eade2e4 (WP03's follow-ups: below the cap, and what an unusable account reports), 95b7b3b (WP05, predict), ef41e1b (WP06, the TUI's next marker), 7bd2655 and e2760d4 (WP08: the TUI asks again once a lifetime, the mod, and ccusage herdr install and remove as hv ruled in decision 4), b791e3a (WP07, README and CHANGELOG), and 4589212 (AT-08.3's id). One Desk run at 4589212 is queued behind hv's devvm build; vc reads each WP's hand-over and they land together. predict groups accounts by plan tier once cc's 02a5967 lands (ic's todo 3), before the cut. AC-08.3, hv's own check in his Herdr, is in the closing sequence (todo 7)."
+  }
+}

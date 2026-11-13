@@ -1,0 +1,16 @@
+{
+  "id": "01M7A34WC6VE60FVXWFGFKMN2H",
+  "ts": "2026-11-13T09:17:18.086Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 to WP03 are done, each closed by vc with intent at lint ST0003 clean; WP03 landed as eea2dea. On cc/ST0003 and banked: b377106 (vc's notes 1 to 3 on WP03: a 400 is refused only with invalid_grant and a 401 never; parked_accounts prefers each profile's own account record; use --none points launchd at the active profile, with ic's text) and 02a5967 (each report's subscriptionType and rateLimitTier, for predict); their one run is queued behind hv's devvm build and ic's run, then the hand-over eea2dea..02a5967. WP04 (doctor, with what an account type gives when it has no usage access or no windows) is under way on cc/ST0003-WP04; then WP05 (docs and the decision record). WP06 is hv's rollout, in vc's closing sequence (todo 7). ISSUE:0003 closes at WP06."
+  }
+}
