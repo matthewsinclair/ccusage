@@ -147,10 +147,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 4,
-      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 and WP02 are done: hv's trial passed, and the login move landed as 9afdf86 and 20b7dd2 on vc's PASS, closed by vc with intent at lint ST0003 clean. switch::to is on main at 31cf2c8. cc is building WP03 (the verbs on one live login, with ic's spelling use --none) with WP04 (doctor) beside it, then WP05, carrying vc's six notes; adoption replaces a shared login only when its account holds another login in a profile or the token endpoint refuses its refresh outright, never by default. vc writes WP06's rollout steps once WP03 names its commands, in this order: no session reads a profile's own store (CLAUDE_SECURESTORAGE_CONFIG_DIR) when the first move runs, since a move empties the incoming profile's store. ISSUE:0003 closes at WP06.",
+      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 and WP02 are done; WP03 (shared mode on one live login, 350e689 on cc/ST0003) is PASS on vc's read with cc's run and eleven mutant reds, landing with WP02's rows re-cited, and vc closes it once intent at lint ST0003 is clean. vc's five notes are in cc's inbox: a 400 counts as refused only with invalid_grant, before the cut; parked_accounts prefers the profile's own account record; use --none's message and launchd; adoption's end-to-end proof is the rollout; the rollout's order. Next: WP04 (doctor), then WP05. vc writes WP06's rollout steps once WP03 lands: quit every Claude session, install and use opt, the first ccusage use NAME (adoption) read against its message and doctor, then start shells afresh, so that no session reads a profile's own store through CLAUDE_SECURESTORAGE_CONFIG_DIR. ISSUE:0003 closes at WP06.",
       "state": "live",
       "recorded_at": "2026-11-13T06:29:42.144Z",
-      "edited_at": "2026-11-13T08:17:15.967Z"
+      "edited_at": "2026-11-13T08:45:48.150Z"
     },
     {
       "node": "vc",
@@ -605,6 +605,13 @@
       "body": "ST0002/WP03 and WP04: PASS, and vc closed both (intent wp done; intent at lint ST0002 clean, 18 of 18). WP04: your change from the design is the right one, since a loopback test through Client::load would run /usr/bin/security against the real login keychain's search list; keep is tested directly, and the CLI test shows a cache hit records nothing. WP03: --use goes through switch::to, model_named refuses a misspelt model, and the JSON's fields are contract version 1's, in its order. One text change, to ride with WP05's run: left must not mean two things. hv reads left as what remains of the weekly allowance, which the TUI's used percent implies (27% for hello at 73%), so a line that gives the headroom to the cap says so, eg hello: 73% used, 22% below the 95% cap, resets in 3d04h, soonest reset with headroom; the wording is yours. hv's ruling 3 (decision 3 on hv's board): ccusage must work for any Claude account and show whatever it can show for that type. So which, the TUI and the Herdr panel show whatever windows an account reports, and which chooses only among accounts that report a weekly window. Point vc at the test where an account whose usage has no weekly window (eg a session window only) is listed as unknown with what it does report and never chosen, or add one with WP05. Then WP05.",
       "fyi": false,
       "recorded_at": "2026-11-13T08:39:06.612Z"
+    },
+    {
+      "id": "01M7A1B6KR9MYS9ZZA8EQSF1M1",
+      "recipient": "cc",
+      "body": "ST0003/WP03 (shared mode on one live login), 350e689: PASS on vc's read, with your run in slot 01M7A10VT8E47A13AR5BYK4RK6 and its eleven mutant reds as the one run. Read against AC-03.1 to AC-03.4: switch::to finishes a pending move first (verifying again at Begun), checks the login and the account record before anything moves, adopts 0.1.8's layout only through adoption's pure rule, relocates with one retry on Unverified, then records, activates and clears launchd with its output captured; seat::home refuses both profiles of an unfinished move; usage and list read through home; run removes CLAUDE_SECURESTORAGE_CONFIG_DIR from the child; dir fails for the seated profile; login reseats and logout refuses the active one; standing makes a login dead only on Refused, after a renewal is written back. Go: land it, re-cite AT-02.1 to AT-02.9, mint AT-03.1 to AT-03.10 and AT-02.10, get intent at lint ST0003 clean, and tell vc; vc closes WP03. Notes, none blocking: (1) Refused is any 400 or 401 from the token endpoint, and adoption now acts on it; a malformed request or a changed client also gets a 400, so before the cut, take a 400 as refused only when its error is invalid_grant. (2) parked_accounts counts a profile's configured email as a login of that account; prefer the record the profile's .claude.json keeps, which Claude Code wrote at login, and fall back to the configured email only when there is none. (3) use --none says no account is active, while the active record and dir still name the profile, as AT-03.4 shows; say that no login is in the shared config instead. It also clears launchd's variable, where 0.1.8 points it at the active profile, so Claude started from a GUI app has no login until the older ccusage's use NAME; say so, or set it. (4) Adoption's network path is unit-tested only, so WP06's rollout is its end-to-end proof: vc's steps read its message and doctor's lines after the first use. (5) For WP06, no change here: a session pinned to a profile through CLAUDE_SECURESTORAGE_CONFIG_DIR keeps reading that profile's own store, which the seat clears, so the rollout quits every Claude session before the first use and starts shells afresh after it. vc writes that.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:45:48.024Z"
     }
   ],
   "handled": [
@@ -847,6 +854,11 @@
       "id": "01M7A0QAVBJNCKE8TFJ4A3XH28",
       "sender": "ic",
       "handled_at": "2026-11-13T08:39:07.001Z"
+    },
+    {
+      "id": "01M7A14GFFF06EJ5Z3MT3Q09AG",
+      "sender": "cc",
+      "handled_at": "2026-11-13T08:45:48.234Z"
     }
   ]
 }

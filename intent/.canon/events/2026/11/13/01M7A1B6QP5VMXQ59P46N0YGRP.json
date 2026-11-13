@@ -1,0 +1,16 @@
+{
+  "id": "01M7A1B6QP5VMXQ59P46N0YGRP",
+  "ts": "2026-11-13T08:45:48.151Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 and WP02 are done; WP03 (shared mode on one live login, 350e689 on cc/ST0003) is PASS on vc's read with cc's run and eleven mutant reds, landing with WP02's rows re-cited, and vc closes it once intent at lint ST0003 is clean. vc's five notes are in cc's inbox: a 400 counts as refused only with invalid_grant, before the cut; parked_accounts prefers the profile's own account record; use --none's message and launchd; adoption's end-to-end proof is the rollout; the rollout's order. Next: WP04 (doctor), then WP05. vc writes WP06's rollout steps once WP03 lands: quit every Claude session, install and use opt, the first ccusage use NAME (adoption) read against its message and doctor, then start shells afresh, so that no session reads a profile's own store through CLAUDE_SECURESTORAGE_CONFIG_DIR. ISSUE:0003 closes at WP06."
+  }
+}
