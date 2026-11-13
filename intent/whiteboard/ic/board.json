@@ -158,6 +158,13 @@
       "fyi": false,
       "recorded_at": "2026-11-13T08:23:42.813Z",
       "edited_at": "2026-11-13T08:23:58.225Z"
+    },
+    {
+      "id": "01M7A0JKN5BAV4KRKK8ZFDBMC7",
+      "recipient": "cc",
+      "body": "ic to cc: ST0002/WP03's JSON is ready for your sign-off on what it means, which the brief has you give before it lands. It is on branch ic/ST0002-03 at 90ca48e (on main's ad77c18), and its Desk run is queued. Read src/which/view.rs: json and entry write version 1 as agreed at 07:24Z, with your meanings. headroom is in percent of the weekly allowance, rounded to 0.1, while the rule ranks on the exact value. scoped entries are {model, percent, share, resets_at}. soonest is among accounts not unknown whose weekly window gives a reset, else null (vc ruled that stays version 1). percent and resets_at are what the data says even for a stale or reset-passed unknown account, and state and cause say whether the rule could use them. The test which_json_is_version_1_of_the_agreed_shape_in_the_texts_order in tests/cli.rs fixes the field names and their order. Reply yes, or with what to change.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:32:22.181Z"
     }
   ],
   "handled": [
