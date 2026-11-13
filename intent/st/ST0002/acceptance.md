@@ -23,10 +23,10 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 ### WP-02 -- The which rule: earliest reset first, with the cap from config (status: WIP)
 
-- AC-02.1 On the worked example's windows at 2026-11-13T05:27Z, with the caches' own reset times, the rule chooses hello and ranks engineering04, then engineering01 and engineering02, then engineering00. -- satisfied: no (computed)
-- AC-02.2 An account whose data is older than the usage cache's lifetime, whose weekly reset has passed, or that has no weekly window is unknown: listed with its reason and never chosen. -- satisfied: no (computed)
-- AC-02.3 The cap comes from config.toml, with one default when the key is absent; a config that does not set the key is written back without it; and no test writes the cap as a literal. -- satisfied: no (computed)
-- AC-02.4 With a model named, an account is eligible only while its scoped window for that model is below the cap too. -- satisfied: no (computed)
+- AC-02.1 On the worked example's windows at 2026-11-13T05:27Z, with the caches' own reset times, the rule chooses hello and ranks engineering04, then engineering01 and engineering02, then engineering00. -- satisfied: yes (computed)
+- AC-02.2 An account whose data is older than the usage cache's lifetime, whose weekly reset has passed, or that has no weekly window is unknown: listed with its reason and never chosen. -- satisfied: yes (computed)
+- AC-02.3 The cap comes from config.toml, with one default when the key is absent; a config that does not set the key is written back without it; and no test writes the cap as a literal. -- satisfied: yes (computed)
+- AC-02.4 With a model named, an account is eligible only while its scoped window for that model is below the cap too. -- satisfied: yes (computed)
 
 ### WP-03 -- The which verb: text, versioned JSON and --use (status: Not Started)
 
@@ -65,14 +65,18 @@ _(no tests in this group)_
 
 ### WP-01 -- Typed usage windows: each window carries its kind and model (status: Done)
 
-- AT-01.1 `src/usage.rs:729` -- covers AC-01.1 -- status: green -- The kinds and model read from the limits fixture, with the scoped window's share; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
-- AT-01.2 `src/usage.rs:817` -- covers AC-01.1 -- status: green -- A legacy-only snapshot maps onto the same kinds; breakdown metadata is not a window; red under the legacy-kind mutant (seven_day read as the session) in WP01's run; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
-- AT-01.3 `src/usage.rs:870` -- covers AC-01.1 -- status: green -- An unknown limits kind stays ignored, and limits supersede legacy duplicates; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
+- AT-01.1 `src/usage.rs:741` -- covers AC-01.1 -- status: green -- The kinds and model read from the limits fixture, with the scoped window's share; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
+- AT-01.2 `src/usage.rs:849` -- covers AC-01.1 -- status: green -- A legacy-only snapshot maps onto the same kinds; breakdown metadata is not a window; red under the legacy-kind mutant (seven_day read as the session) in WP01's run; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
+- AT-01.3 `src/usage.rs:902` -- covers AC-01.1 -- status: green -- An unknown limits kind stays ignored, and limits supersede legacy duplicates; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
 - AT-01.4 `src/display.rs:753` -- covers AC-01.1 -- status: green -- The overview's labels are unchanged: the pin passed on the parser before WP01 and after it; red in WP01's first run at d3a24e5 (its own expectation was wrong) and under the label mutant; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
 
 ### WP-02 -- The which rule: earliest reset first, with the cap from config (status: WIP)
 
-_(no tests in this group)_
+- AT-02.1 `src/which.rs:362` -- covers AC-02.1 -- status: green -- The worked example at 2026-11-13T05:27Z, with the resets as the endpoint gave them, jitter included, chooses hello and ranks engineering04, then engineering01 and engineering02, then engineering00; red under the raw-instant mutant (resets ranked unrounded) in the first WP02 run at fdfe1e5, Desk slot 01M79X4M2FR0A8NCRRNG412NQG; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3
+- AT-02.2 `src/which.rs:461` -- covers AC-02.2 -- status: green -- Accounts with no usage, stale usage, a passed weekly reset or no weekly window are unknown with their reasons, unranked and never chosen, and a fresh fetch whose cache save failed stays usable; red before WP02: written against which::choose, it could not compile before it; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3
+- AT-02.3 `src/config.rs:297` -- covers AC-02.3 -- status: green -- The cap reads from the [which] table with which::DEFAULT_CAP when the key is absent, and a config that did not set it is written back without it; no test writes the cap as a literal, every one derives from DEFAULT_CAP; red before WP02: written against Config::cap and the [which] table, it could not compile before them; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3
+- AT-02.4 `tests/cli.rs:201` -- covers AC-02.3 -- status: green -- init and add write back a config that set no cap without a [which] table, and keep the cap of one that set it; list refuses a cap of 0; every cap in the test derives from which::DEFAULT_CAP; red under the cap-of-0 mutant in the first WP02 run at fdfe1e5, Desk slot 01M79X4M2FR0A8NCRRNG412NQG; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3
+- AT-02.5 `src/which.rs:602` -- covers AC-02.4 -- status: green -- With a model named, an account whose scoped window for it is at the cap is at cap and not chosen, the model matched regardless of case; an account with no scoped window for the model is bounded by the weekly window alone, and the headroom is the lesser of the weekly room and the scoped room in weekly terms; red before WP02: written against which::choose, it could not compile before it; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3
 
 ### WP-03 -- The which verb: text, versioned JSON and --use (status: Not Started)
 
