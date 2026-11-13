@@ -290,6 +290,24 @@ fn verified_cache_and_persistent_backoff_do_not_need_network() -> Result<()> {
   Ok(())
 }
 
+// ST0002 AT-04.4: usage read from the cache, or held back by a cooldown, records nothing.
+#[test]
+fn a_cache_hit_or_a_cooldown_records_no_usage_history() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  let history = sandbox
+    .root
+    .join("state/ccusage")
+    .join(ccusage::history::FILE);
+  sandbox.cached("work", ccusage::now(), 0)?;
+  sandbox.ok(&["usage", "work", "--json"])?;
+  assert!(!history.exists());
+  sandbox.cached("work", ccusage::now() - 900, ccusage::now() + 1800)?;
+  sandbox.run(&["usage", "work", "--refresh", "--json"])?;
+  assert!(!history.exists());
+  Ok(())
+}
+
 #[test]
 fn all_accounts_continue_after_one_fails_and_directory_change_invalidates_cache() -> Result<()> {
   let sandbox = Sandbox::new()?;
@@ -714,6 +732,28 @@ fn doctor_fails_when_claude_is_missing_or_private_files_are_insecure() -> Result
   let output = sandbox.run(&["doctor"])?;
   assert!(!output.status.success());
   assert!(String::from_utf8(output.stdout)?.contains("Cannot run claude from PATH"));
+  Ok(())
+}
+
+#[test]
+fn doctor_checks_the_usage_history_is_private() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  let history = sandbox
+    .root
+    .join("state/ccusage")
+    .join(ccusage::history::FILE);
+  storage::write_atomic(&history, b"")?;
+  assert!(
+    sandbox
+      .ok(&["doctor"])?
+      .contains(&format!("Private file: {}", history.display()))
+  );
+  fs::set_permissions(&history, fs::Permissions::from_mode(0o644))?;
+  let output = sandbox.run(&["doctor"])?;
+  assert!(!output.status.success());
+  let text = String::from_utf8(output.stdout)?;
+  assert!(text.contains(ccusage::history::FILE) && text.contains("mode 0644"));
   Ok(())
 }
 

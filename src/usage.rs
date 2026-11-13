@@ -1,7 +1,7 @@
 use crate::{Result, auth, config::Store, storage};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::{collections::BTreeMap, time::Duration};
+use std::{collections::BTreeMap, path::Path, time::Duration};
 
 const ENDPOINT: &str = "https://api.anthropic.com/api/oauth/usage";
 /// How long a fetched snapshot stays fresh, in seconds: the usage cache's lifetime. The
@@ -583,11 +583,7 @@ impl Client {
           cache.fetched_at = now;
           cache.retry_at = 0;
           cached = false;
-          if let Err(failure) = storage::write_atomic(&path, &serde_json::to_vec(&cache)?) {
-            error = Some(format!(
-              "usage fetched, but could not save cache: {failure}"
-            ));
-          }
+          error = keep(&path, &store.state, name, &cache)?;
         }
         Ok(Fetch::Limited(retry_at)) => {
           cache.retry_at = retry_at;
@@ -617,6 +613,22 @@ impl Client {
       error,
     })
   }
+}
+
+/// Keeps a fetch that succeeded: saves `cache` at `cache_path`, and records each of its
+/// windows whose percent changed in the usage history under `state`. Neither failure
+/// discards the usage: each comes back in the error the report carries.
+fn keep(cache_path: &Path, state: &Path, name: &str, cache: &Cache) -> Result<Option<String>> {
+  let saved = storage::write_atomic(cache_path, &serde_json::to_vec(cache)?)
+    .err()
+    .map(|failure| format!("could not save cache: {failure}"));
+  let recorded = cache
+    .snapshot
+    .as_ref()
+    .and_then(|snapshot| crate::history::record(state, name, snapshot, cache.fetched_at).err())
+    .map(|failure| format!("could not record history: {failure}"));
+  let failures: Vec<_> = saved.into_iter().chain(recorded).collect();
+  Ok((!failures.is_empty()).then(|| format!("usage fetched, but {}", failures.join("; "))))
 }
 
 pub fn demo() -> Vec<Report> {
@@ -1099,6 +1111,41 @@ mod tests {
       }
       assert_eq!(matches!(outcome, Ok(Fetch::Success(_))), succeeds);
     }
+    Ok(())
+  }
+
+  // ST0002 AT-04.1: a fetch that succeeds records each of its windows in the history.
+  #[test]
+  fn a_fetch_that_succeeds_saves_its_cache_and_records_its_windows() -> Result<()> {
+    let scratch = crate::scratch::Scratch::new()?;
+    let (state, cache_path) = (
+      scratch.path().join("state"),
+      scratch.path().join("cache/work.json"),
+    );
+    let snapshot: Snapshot =
+      serde_json::from_str(include_str!("../tests/fixtures/usage-with-breakdown.json"))?;
+    let cache = Cache {
+      fetched_at: crate::now(),
+      snapshot: Some(snapshot.clone()),
+      ..Cache::default()
+    };
+    assert_eq!(keep(&cache_path, &state, "work", &cache)?, None);
+    assert!(storage::read_optional(&cache_path)?.is_some());
+    let samples = crate::history::samples(&state)?;
+    assert_eq!(samples.len(), snapshot.windows()?.len());
+    assert!(
+      samples
+        .iter()
+        .all(|sample| sample.account == "work" && sample.sampled_at == cache.fetched_at)
+    );
+    // A history that cannot be written costs the record and never the usage: the cache
+    // is saved all the same, and the report's error says what was lost.
+    std::fs::remove_file(&cache_path)?;
+    let blocked = scratch.path().join("blocked");
+    std::fs::write(&blocked, "")?;
+    let error = keep(&cache_path, &blocked, "work", &cache)?.ok_or("the report says so")?;
+    assert!(error.starts_with("usage fetched, but could not record history"));
+    assert!(storage::read_optional(&cache_path)?.is_some());
     Ok(())
   }
 }

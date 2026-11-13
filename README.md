@@ -89,6 +89,7 @@ Ccusage follows the [XDG Base Directory Specification](https://specifications.fr
 | Profile configuration                         | `XDG_CONFIG_HOME`    | `~/.config/ccusage/config.toml`         |
 | Persistent Claude profile data                | `XDG_DATA_HOME`      | `~/.local/share/ccusage/profiles/NAME/` |
 | Active account selection                      | `XDG_STATE_HOME`     | `~/.local/state/ccusage/active.json`    |
+| Usage history, kept for one weekly window     | `XDG_STATE_HOME`     | `~/.local/state/ccusage/history.jsonl`  |
 | Last successful usage and rate-limit cooldown | `XDG_CACHE_HOME`     | `~/.cache/ccusage/NAME.json`            |
 
 `ccusage paths` shows resolved paths. `CCUSAGE_CONFIG` or a leading `--config PATH` overrides the config file only; the other XDG locations remain independently controlled. Configurations using the same XDG data/state/cache directories share named profile storage and the active selection. To create a fully independent environment, override all four XDG variables.

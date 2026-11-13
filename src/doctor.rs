@@ -241,6 +241,7 @@ pub fn run(path: &Path) -> Result<()> {
           directory_check(root, &mut failed);
         }
         file_check(&store.state.join("active.json"), &mut failed);
+        file_check(&store.state.join(crate::history::FILE), &mut failed);
         for name in store.config.profiles.keys() {
           match store.profile_dir(name) {
             Ok(dir) => {
