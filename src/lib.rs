@@ -4,10 +4,13 @@ pub mod cli;
 pub mod config;
 pub mod display;
 pub mod doctor;
+pub mod history;
 #[cfg(target_os = "macos")]
 mod keychain;
 #[cfg(test)]
 mod loopback;
+#[cfg(test)]
+mod scratch;
 mod seat;
 pub mod shared;
 pub mod storage;

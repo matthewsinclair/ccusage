@@ -7,6 +7,8 @@ const ENDPOINT: &str = "https://api.anthropic.com/api/oauth/usage";
 /// How long a fetched snapshot stays fresh, in seconds: the usage cache's lifetime. The
 /// which rule takes it as its lifetime, so data it may use is never older than this.
 pub const TTL: i64 = 300;
+/// One weekly window's length, in seconds: how long the usage history keeps a sample.
+pub const WEEK: i64 = 7 * 24 * 60 * 60;
 const BACKOFF: i64 = 1800;
 
 /// Whether data fetched at `fetched_at` is still fresh at `now`, under `lifetime`. A
@@ -39,6 +41,34 @@ impl Kind {
       Self::WeeklyScoped(None) => "Weekly scoped".into(),
     }
   }
+
+  /// The name `limits` gives this kind, which the usage history records too.
+  pub fn name(&self) -> &'static str {
+    match self {
+      Self::Session => "session",
+      Self::WeeklyAll => "weekly_all",
+      Self::WeeklyScoped(_) => "weekly_scoped",
+    }
+  }
+
+  /// The kind `name` names, for the model `display_name` names when it is weekly_scoped;
+  /// none for a name this build does not know.
+  pub fn from_name(name: &str, display_name: Option<&str>) -> Option<Self> {
+    match name {
+      "session" => Some(Self::Session),
+      "weekly_all" => Some(Self::WeeklyAll),
+      "weekly_scoped" => Some(Self::WeeklyScoped(display_name.and_then(model))),
+      _ => None,
+    }
+  }
+
+  /// The model a weekly_scoped window is for, when the usage names one.
+  pub fn model(&self) -> Option<&str> {
+    match self {
+      Self::WeeklyScoped(model) => model.as_deref(),
+      Self::Session | Self::WeeklyAll => None,
+    }
+  }
 }
 
 #[derive(Clone, Debug)]
@@ -55,9 +85,9 @@ pub struct Window {
 }
 
 impl Window {
-  /// A window from a response row's parts, refused at `context` when its percent is
-  /// outside 0..100 or its reset is not RFC 3339.
-  fn checked(
+  /// A window from a response row's parts, or a history line's, refused at `context`
+  /// when its percent is outside 0..100 or its reset is not RFC 3339.
+  pub(crate) fn checked(
     kind: Kind,
     utilization: f64,
     resets_at: Option<&str>,
@@ -115,17 +145,16 @@ impl Snapshot {
       let shares = self.shares();
       let mut result = Vec::new();
       for (index, entry) in entries.iter().enumerate() {
-        let kind = match entry.get("kind").and_then(serde_json::Value::as_str) {
-          Some("session") => Kind::Session,
-          Some("weekly_all") => Kind::WeeklyAll,
-          Some("weekly_scoped") => Kind::WeeklyScoped(model(
-            entry
-              .pointer("/scope/model/display_name")
-              .and_then(serde_json::Value::as_str)
-              .unwrap_or_default(),
-          )),
+        let display_name = entry
+          .pointer("/scope/model/display_name")
+          .and_then(serde_json::Value::as_str);
+        let Some(kind) = entry
+          .get("kind")
+          .and_then(serde_json::Value::as_str)
+          .and_then(|name| Kind::from_name(name, display_name))
+        else {
           // Unknown future categories and unrelated metadata aren't quota rows.
-          _ => continue,
+          continue;
         };
         let context = format!("limits[{index}]");
         let row: Limit = serde_json::from_value(entry.clone())
