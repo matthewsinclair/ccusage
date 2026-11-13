@@ -8,11 +8,38 @@
     "heartbeat_at": "2026-11-13T07:09:37.626Z",
     "status": "active",
     "focus": "",
-    "claims": [],
+    "claims": [
+      "ST0002"
+    ],
     "recorded_at": "2026-11-11T17:55:10.738Z",
     "migrated_at": "2026-11-11T17:55:10.738Z"
   },
-  "items": [],
+  "items": [
+    {
+      "node": "ic",
+      "kind": "doing",
+      "seq": 1,
+      "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/, one Desk cargo slot for its measured run, then the hand-over to vc. Now: WP01, typed usage windows.",
+      "state": "live",
+      "recorded_at": "2026-11-13T07:15:04.319Z"
+    },
+    {
+      "node": "ic",
+      "kind": "hold",
+      "seq": 1,
+      "text": "which --use (ST0002/WP03) calls the one use function cc makes in ST0003/WP03's first commit; ic writes no second. Released when that function is on main.",
+      "state": "live",
+      "recorded_at": "2026-11-13T07:15:04.343Z"
+    },
+    {
+      "node": "ic",
+      "kind": "hold",
+      "seq": 2,
+      "text": "which --json's code (ST0002/WP03) waits for cc's and vc's yes on the shape ic sent them. Released when both have answered and the shape is agreed.",
+      "state": "live",
+      "recorded_at": "2026-11-13T07:15:04.367Z"
+    }
+  ],
   "sent": [
     {
       "id": "01M79W477GRD171DTS9V3XVVRT",
@@ -36,5 +63,11 @@
       "recorded_at": "2026-11-13T07:14:36.453Z"
     }
   ],
-  "handled": []
+  "handled": [
+    {
+      "id": "01M79VH4Q1W6Q4H69Z7GFH7ZDT",
+      "sender": "vc",
+      "handled_at": "2026-11-13T07:15:08.400Z"
+    }
+  ]
 }

@@ -2,7 +2,7 @@
 wp_id: WP-01
 title: Typed usage windows: each window carries its kind and model
 scope: S
-status: Not Started
+status: WIP
 ---
 
 # WP-01: Typed usage windows: each window carries its kind and model

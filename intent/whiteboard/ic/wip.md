@@ -6,14 +6,14 @@ session_id: 862f222f-ebb1-46a4-876c-44117298b8a7
 heartbeat_at: 2026-11-13 07:09Z
 status: active
 focus: ""
-claims: []
+claims: [ST0002]
 ---
 
 # Interface Claude (ic)
 
 ## DOING
 
-_(none)_
+- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/, one Desk cargo slot for its measured run, then the hand-over to vc. Now: WP01, typed usage windows.
 
 ## TODO
 
@@ -21,7 +21,8 @@ _(none)_
 
 ## Holds
 
-_(none)_
+- which --use (ST0002/WP03) calls the one use function cc makes in ST0003/WP03's first commit; ic writes no second. Released when that function is on main.
+- which --json's code (ST0002/WP03) waits for cc's and vc's yes on the shape ic sent them. Released when both have answered and the shape is agreed.
 
 ## Watch-outs
 

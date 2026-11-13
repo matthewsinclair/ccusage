@@ -17,7 +17,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 - AC-00.1 (non-test) On hv's five accounts, hv's own `ccusage which` names the account the rule picks from `ccusage --all`, and `ccusage predict` runs without error. -- satisfied: no
 
-### WP-01 -- Typed usage windows: each window carries its kind and model (status: Not Started)
+### WP-01 -- Typed usage windows: each window carries its kind and model (status: WIP)
 
 - AC-01.1 Every parsed usage window carries its kind, and its model when scoped, read from the `limits` array and the legacy fields alike, and the output of `usage` and of the TUI is unchanged. -- satisfied: no (computed)
 
@@ -63,7 +63,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 _(no tests in this group)_
 
-### WP-01 -- Typed usage windows: each window carries its kind and model (status: Not Started)
+### WP-01 -- Typed usage windows: each window carries its kind and model (status: WIP)
 
 _(no tests in this group)_
 

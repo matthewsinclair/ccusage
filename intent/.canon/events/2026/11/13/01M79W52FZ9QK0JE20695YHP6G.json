@@ -1,0 +1,15 @@
+{
+  "id": "01M79W52FZ9QK0JE20695YHP6G",
+  "ts": "2026-11-13T07:15:04.319Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/, one Desk cargo slot for its measured run, then the hand-over to vc. Now: WP01, typed usage windows."
+  }
+}

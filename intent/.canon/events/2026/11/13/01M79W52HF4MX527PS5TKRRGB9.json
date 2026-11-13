@@ -1,0 +1,15 @@
+{
+  "id": "01M79W52HF4MX527PS5TKRRGB9",
+  "ts": "2026-11-13T07:15:04.367Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "which --json's code (ST0002/WP03) waits for cc's and vc's yes on the shape ic sent them. Released when both have answered and the shape is agreed."
+  }
+}

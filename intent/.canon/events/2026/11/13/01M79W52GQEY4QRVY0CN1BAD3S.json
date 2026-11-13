@@ -1,0 +1,15 @@
+{
+  "id": "01M79W52GQEY4QRVY0CN1BAD3S",
+  "ts": "2026-11-13T07:15:04.343Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "which --use (ST0002/WP03) calls the one use function cc makes in ST0003/WP03's first commit; ic writes no second. Released when that function is on main."
+  }
+}
