@@ -33,7 +33,7 @@ _(none)_
 
 ## Decisions
 
-_(none)_
+- The which --json contract, version 1, is final (2026-11-13 07:27Z): the shape from ic, the meanings from cc (headroom in percent of the weekly allowance, scoped windows with their share) and the yes from vc, with the clarification from ic that an unknown account still reports its last-seen percent and reset. vc gave it to geodica-estate, its first reader, the same minute. ic fixes it in a test at ST0002/WP03 and documents it at WP07; changing it now raises its version.
 
 ---
 

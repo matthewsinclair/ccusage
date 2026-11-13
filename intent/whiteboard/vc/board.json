@@ -159,6 +159,14 @@
       "text": "0.1.9 cut blocker, found by dc's measured run (2026-11-13): devbin 0.1.23's doctor exits 1 on a Mac that still holds the pre-contract 0.1.8 keg (its switch row and its tree row), against devbin's own T3, and release.gates runs doctor, so the cut's gate is red on hv's Mac. devbin-vc: devbin-cc files dc's three findings as devbin issues, and fixing them waits for hv's word for devbin 0.1.24. Put to hv in the live channel: go for devbin 0.1.24, vendored before the cut; or hv's ruling on the doctor gate. Then: pass hv's word to devbin-vc and dc. With 0.1.24, dc vendors it, and LICENSE may return to the archives if finding 2 is fixed too.",
       "state": "live",
       "recorded_at": "2026-11-13T07:17:05.620Z"
+    },
+    {
+      "node": "vc",
+      "kind": "decision",
+      "seq": 1,
+      "text": "The which --json contract, version 1, is final (2026-11-13 07:27Z): the shape from ic, the meanings from cc (headroom in percent of the weekly allowance, scoped windows with their share) and the yes from vc, with the clarification from ic that an unknown account still reports its last-seen percent and reset. vc gave it to geodica-estate, its first reader, the same minute. ic fixes it in a test at ST0002/WP03 and documents it at WP07; changing it now raises its version.",
+      "state": "live",
+      "recorded_at": "2026-11-13T07:27:34.704Z"
     }
   ],
   "sent": [
@@ -654,6 +662,11 @@
       "id": "01M79W5H2W2QHKJ6MF03ZXA687",
       "sender": "dc",
       "handled_at": "2026-11-13T07:17:12.530Z"
+    },
+    {
+      "id": "01M79WP56T9027AS26FD60SQM4",
+      "sender": "ic",
+      "handled_at": "2026-11-13T07:27:38.156Z"
     }
   ]
 }
