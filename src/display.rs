@@ -29,11 +29,8 @@ pub fn duration(seconds: i64) -> String {
   }
 }
 
-fn reset_at(reset: Option<&str>, now: i64) -> String {
+fn reset_at(reset: Option<time::OffsetDateTime>, now: i64) -> String {
   reset
-    .and_then(|text| {
-      time::OffsetDateTime::parse(text, &time::format_description::well_known::Rfc3339).ok()
-    })
     .map(|date| {
       if date.unix_timestamp() <= now {
         "due".into()
@@ -116,7 +113,7 @@ fn lines(
         } else {
           Color::Green
         };
-        let reset = reset_at(window.resets_at.as_deref(), now);
+        let reset = reset_at(window.resets_at, now);
         let mut row = plain(format!("  {label:<12} "));
         if width >= 52 {
           row.push(Span {

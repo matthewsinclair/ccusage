@@ -37,11 +37,42 @@ impl Kind {
 pub struct Window {
   pub kind: Kind,
   pub utilization: f64,
-  pub resets_at: Option<String>,
+  /// When the window resets, parsed once from the response's RFC 3339 text; none when
+  /// the response gives no reset.
+  pub resets_at: Option<time::OffsetDateTime>,
   /// A weekly_scoped window's allowance as a percent of the weekly one, from the
   /// response's `weekly_scoped_shares`; none for the other kinds, for the legacy
   /// fields, and when the response gives no share for the window.
   pub share: Option<f64>,
+}
+
+impl Window {
+  /// A window from a response row's parts, refused at `context` when its percent is
+  /// outside 0..100 or its reset is not RFC 3339.
+  fn checked(
+    kind: Kind,
+    utilization: f64,
+    resets_at: Option<&str>,
+    share: Option<f64>,
+    context: &str,
+  ) -> Result<Self> {
+    let context = crate::clean(context);
+    if !utilization.is_finite() || !(0.0..=100.0).contains(&utilization) {
+      return Err(format!("usage percentage at {context} is outside 0..100").into());
+    }
+    let resets_at = resets_at
+      .map(|reset| {
+        time::OffsetDateTime::parse(reset, &time::format_description::well_known::Rfc3339)
+          .map_err(|_| format!("invalid usage reset timestamp at {context}"))
+      })
+      .transpose()?;
+    Ok(Self {
+      kind,
+      utilization,
+      resets_at,
+      share,
+    })
+  }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -84,14 +115,13 @@ impl Snapshot {
           Kind::WeeklyScoped(_) => shares.get(&index).copied(),
           Kind::Session | Kind::WeeklyAll => None,
         };
-        let window = Window {
+        result.push(Window::checked(
           kind,
-          utilization: row.percent,
-          resets_at: row.resets_at,
+          row.percent,
+          row.resets_at.as_deref(),
           share,
-        };
-        validate_window(&window, &context)?;
-        result.push(window);
+          &context,
+        )?);
       }
       if !result.is_empty() {
         return Ok(result);
@@ -177,26 +207,13 @@ fn parse_legacy(value: &serde_json::Value, key: &str) -> Result<Window> {
       crate::clean(key)
     )
   })?;
-  let window = Window {
-    kind: legacy_kind(key),
-    utilization: row.utilization,
-    resets_at: row.resets_at,
-    share: None,
-  };
-  validate_window(&window, key)?;
-  Ok(window)
-}
-
-fn validate_window(window: &Window, context: &str) -> Result<()> {
-  let context = crate::clean(context);
-  if !window.utilization.is_finite() || !(0.0..=100.0).contains(&window.utilization) {
-    return Err(format!("usage percentage at {context} is outside 0..100").into());
-  }
-  if let Some(reset) = &window.resets_at {
-    time::OffsetDateTime::parse(reset, &time::format_description::well_known::Rfc3339)
-      .map_err(|_| format!("invalid usage reset timestamp at {context}"))?;
-  }
-  Ok(())
+  Window::checked(
+    legacy_kind(key),
+    row.utilization,
+    row.resets_at.as_deref(),
+    None,
+    key,
+  )
 }
 
 /// The kind a legacy top-level key names: `five_hour` is the session, `seven_day` the
@@ -726,6 +743,19 @@ mod tests {
     assert_eq!(windows[0].utilization, 23.5);
     assert_eq!(windows[2].utilization, 0.0);
     assert!(windows[2].resets_at.is_none());
+    // The reset is parsed once, keeping the fixture's 20:00:00.123456 to the nanosecond.
+    let reset = windows[0]
+      .resets_at
+      .ok_or("the session window has a reset")?;
+    assert_eq!(
+      (
+        reset.hour(),
+        reset.minute(),
+        reset.second(),
+        reset.nanosecond()
+      ),
+      (20, 0, 0, 123_456_000)
+    );
     assert_eq!(
       windows
         .iter()
