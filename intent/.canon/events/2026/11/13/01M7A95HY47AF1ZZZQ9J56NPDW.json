@@ -1,0 +1,16 @@
+{
+  "id": "01M7A95HY47AF1ZZZQ9J56NPDW",
+  "ts": "2026-11-13T11:02:31.623Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 7,
+    "text": "0.1.9's cut and, later, its rollout, on hv's decision 5 (2026-11-13): cut now, once the tests on rhadamanth and kovacs have passed, and roll out later, fixing forward. The cut: dc runs the project's gates on kovacs at main's tip (vc's brief of 11:02Z); then hv runs bin/devbin install and bin/devbin use opt (route C, hv's decision 3), vc books the Desk and holds the seats' writes, and hv runs bin/devbin release 0.1.9, whose own gates are rhadamanth's run; after the publish, brew upgrade ccusage, bin/devbin use brew and T10's version check, then dc closes ISSUE:0007 and vc's hold 3 (the tap's CI) is released. The rollout, later: ccusage doctor; the first ccusage use for an account no running session is pinned to (25 sessions on hello and 2 on engineering01 at 10:55Z); doctor again; fresh shells, which Molt's env.sh leaves without CLAUDE_SECURESTORAGE_CONFIG_DIR once ccusage dir prints nothing; sessions restarted, never switching to an account a session is still pinned to; the live switch (AC-06.1, AC-06.2); ccusage herdr install and hv's look (AC-08.3); then dc closes ISSUE:0003. Until the rollout nobody runs ccusage use or ccusage which --use on 0.1.9. The steps are in vc's scratchpad file closing-sequence-0.1.9.md."
+  }
+}

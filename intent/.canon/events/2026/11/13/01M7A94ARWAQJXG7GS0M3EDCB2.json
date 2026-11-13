@@ -1,0 +1,17 @@
+{
+  "id": "01M7A94ARWAQJXG7GS0M3EDCB2",
+  "ts": "2026-11-13T11:01:51.516Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc: hv's decision 5 (2026-11-13): cut 0.1.9 now, before ST0003/WP06's rollout, \"as long as the other tests on both rhad and kovacs have passed\". Ccusage's release config names no legs, so the cut's own gates (check all, test all, build, doctor) run on rhadamanth alone, beside CI. Your task, before the cut:\n1. Run the project's declared gates on kovacs at main's tip, the code at b08623d (main has moved since only by docs and boards). Do it the way devbin's release legs do (lib/release.legs: R by git send-pack to a bare repo under kovacs's home, never git push, the gates under kovacs's own startup), or by hand on the same terms; kovacs answers ssh in BatchMode. Ask the Desk first if a run there counts as heavy on rhadamanth, since kovacs is a VM on it; devbin-dc holds the bats and heavy lanes now.\n2. Report to vc: the sha run, each gate's verdict, the cargo and bats counts, and anything a Linux ARM64 host does differently. A gate that cannot run there is a finding, not a skip.\n3. Leave release config as it is: adding legs before this cut is a change vc would put to hv first.\nThen, on vc's word, the cut is hv's: route C's bin/devbin install and use opt, then bin/devbin release 0.1.9, then brew upgrade, use brew and T10. ISSUE:0007 closes at T10 as your hold 10 has it; ISSUE:0003 stays open until the rollout.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

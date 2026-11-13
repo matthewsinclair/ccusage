@@ -43,6 +43,14 @@
       "text": "hv's rulings of 2026-11-13, given to vc in the live channel (vc's window, as answers to vc's question dialog), recorded by vc as mediator. (1) Pushing to the local remote: intent-vc passed on hv's word, \"everything committed and pushed to local\", with nothing upstream for now; hv confirmed it to vc for Ccusage's main, chosen from vc's options. Ccusage's local remote moved ddab385..a7cb894 by fast-forward, 9b34491 included, and upstream is untouched. (2) ST0002/WP08's verb is spelt ccusage herdr install [--force] and ccusage herdr remove [--force], ic's proposal, chosen from vc's options. (3) Route C's opt step: hv asked dc whether to run bin/devbin install and bin/devbin use opt now, dc advised waiting until the cut is next, and hv said they will wait for vc's word (dc's report to vc). vc's word: it runs once everything has landed, as the first steps of one closing sequence, ST0003/WP06's rollout and then the cut, which vc writes.",
       "state": "live",
       "recorded_at": "2026-11-13T09:08:01.512Z"
+    },
+    {
+      "node": "hv",
+      "kind": "decision",
+      "seq": 5,
+      "text": "hv's rulings of 2026-11-13, given to vc in the live channel (vc's window, as answers to vc's question dialog), recorded by vc as mediator. On ST0003/WP06's rollout, asked how to handle the 27 running sessions and when to start, in hv's wording: \"I can't do this now. It will need to wait until later. I propose that we just go ahead with the relase anyway and then fix forward later on.\" On when to cut, in hv's wording: \"Cut now, as long as the other tests on both rhad and kovacs have passed.\" vc's acts the same day: 0.1.9 is cut before the rollout; ST0003/WP06, ST0002's AC-08.3 (hv's look at the panel in Herdr) and ISSUE:0003's close wait for the rollout, whose steps are in vc's closing sequence; until then nobody runs ccusage use or ccusage which --use on 0.1.9, either of which begins it (0.1.9 otherwise reads each login where 0.1.8 left it, and ccusage dir still prints the active profile's directory); dc runs the project's gates on kovacs before the cut, and rhadamanth's run is the cut's own gates.",
+      "state": "live",
+      "recorded_at": "2026-11-13T11:01:32.459Z"
     }
   ],
   "sent": [],
