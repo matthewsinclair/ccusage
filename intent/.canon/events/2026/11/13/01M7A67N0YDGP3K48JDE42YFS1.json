@@ -1,0 +1,16 @@
+{
+  "id": "01M7A67N0YDGP3K48JDE42YFS1",
+  "ts": "2026-11-13T10:11:14.590Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. WP01 to WP04 and WP06 are closed by vc. WP03's follow-ups, WP05, WP06, WP08 and WP07 PASSED on vc's read of one Desk run at 70adaf7 (slot 01M7A1JYDSQNNHNNN55ACXCX40), landed as d57a014..258e0a7, rows minted at eb9dc0d and re-cited after cc's follow-up at 7dfbd34. vc closes WP05 and WP07 once hold 6's commits land (predict's tier grouping, README's predict paragraph); WP08 closes after AC-08.3, hv's check in his own Herdr in vc's closing sequence after bin/devbin use opt, with the panel's preview. cc's ST0003/WP04 texts are signed (two changes: doctor's lines 5 and 13)."
+  }
+}

@@ -19,10 +19,10 @@
       "node": "ic",
       "kind": "doing",
       "seq": 1,
-      "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. WP01 to WP04 are done, closed by vc. WP05, WP06, WP08 and WP07, with WP03's two follow-ups, PASSED one Desk run in slot 01M7A1JYDSQNNHNNN55ACXCX40 (released 09:29Z): at 70adaf7 on ic/ST0002-07, fmt, clippy and cargo test exit 0 (84 unit passed, 2 ignored; 45 cli passed), and 19 of 19 mutants are red. At 4589212, p5 (no cap on predict's climb) survived because AT-05.2's fixture reached the cap on a whole second; 70adaf7 sets a rate whose climb ends part way through a second and asserts that premise, and the checks and p4 to p6 were re-run there. cc was told live to rebase its follow-up onto 70adaf7. NEXT: rebase onto main (whiteboard-only since fac240d), land by fast-forward with the code equal to 70adaf7's, run the scratchpad's at-final.zsh (re-cite, mint AT-05.1 to 05.3, AT-06.1, AT-06.2 and AT-08.1 to 08.3, lint), one hand-over per WP to vc, then remove the four worktrees. hv's own check in his Herdr (AC-08.3) and the panel's preview come in vc's closing sequence after bin/devbin use opt.",
+      "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. WP01 to WP04 and WP06 are closed by vc. WP03's follow-ups, WP05, WP06, WP08 and WP07 PASSED on vc's read of one Desk run at 70adaf7 (slot 01M7A1JYDSQNNHNNN55ACXCX40), landed as d57a014..258e0a7, rows minted at eb9dc0d and re-cited after cc's follow-up at 7dfbd34. vc closes WP05 and WP07 once hold 6's commits land (predict's tier grouping, README's predict paragraph); WP08 closes after AC-08.3, hv's check in his own Herdr in vc's closing sequence after bin/devbin use opt, with the panel's preview. cc's ST0003/WP04 texts are signed (two changes: doctor's lines 5 and 13).",
       "state": "live",
       "recorded_at": "2026-11-13T07:15:04.319Z",
-      "edited_at": "2026-11-13T09:30:27.121Z"
+      "edited_at": "2026-11-13T10:11:14.590Z"
     },
     {
       "node": "ic",
@@ -92,7 +92,8 @@
       "kind": "todo",
       "seq": 3,
       "text": "ST0002/WP05 follow-up and two WP08 fixes, on vc's verdicts of 2026-11-13, one commit set riding cc's WP04 run (no run of its own); vc closes WP05 and WP07 once it lands. (a) Predict's tier grouping: predict counts the plan most of the accounts the rule can use record, subscriptionType and rateLimitTier compared whole; a tie goes to the active account's plan, else to the lexically first (cc's meaning); every other usable account is left out as another plan's allowance; the text and README drop the one-plan assumption; the burn rate counts only that plan's accounts' samples (put to cc to sign). (b) herdr::check names the cause when herdr-app cannot be started for any reason but not being found. (c) herdrs_own narrowed so a hidden directory, eg a .git, counts as an edit and is refused without --force. Written on main (cc's follow-up landed as 26f373f..ed77832), unbuilt; cc gets the commits and a mutants script before its WP04 slot.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-13T10:11:07.104Z",
       "recorded_at": "2026-11-13T08:53:19.741Z",
       "edited_at": "2026-11-13T09:41:15.886Z"
     },
@@ -101,7 +102,8 @@
       "kind": "todo",
       "seq": 4,
       "text": "Sign cc's two display lines for todo 3a's note when cc's ST0003/WP04 rebases onto ST0002's stack: display::lines shows a report's note in place of its windows, not Loading usage..., and display::next counts a note-only report as in. cc's which line is signed with the note check moved above the snapshot check (2026-11-13).",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-13T10:11:07.005Z",
       "recorded_at": "2026-11-13T09:13:22.377Z"
     },
     {
@@ -112,6 +114,14 @@
       "state": "archived",
       "archived_at": "2026-11-13T09:30:27.198Z",
       "recorded_at": "2026-11-13T09:17:20.118Z"
+    },
+    {
+      "node": "ic",
+      "kind": "hold",
+      "seq": 6,
+      "text": "ST0002's last commits ride cc's ST0003/WP04 slot: 763c7d3 (todo 3, predict counts one plan as cc signed, with cc's fallback) and 7483a07 (vc's two herdr notes) on ic/ST0002-tier over cc's a1df03f, in worktree ~/Devel/scratch/ccusage-ic/wt-st0002-tier, unbuilt; cc runs ~/Devel/scratch/ccusage-ic/tier-mutants.zsh (ten mutants) in that slot. Released when cc reports that run's result with both commits in it. Then: once landed, re-cite ST0002 from a grep and mint AT-05.4 (src/predict.rs, under AC-05.1, red under t1 to t6) with the run's green; hand vc the range for WP05 (and WP07's README) and WP08's two notes; remove the worktree.",
+      "state": "live",
+      "recorded_at": "2026-11-13T10:11:07.164Z"
     }
   ],
   "sent": [
@@ -428,6 +438,11 @@
       "id": "01M7A4DE89N7BAM0GS7QG34SZF",
       "sender": "vc",
       "handled_at": "2026-11-13T09:41:19.234Z"
+    },
+    {
+      "id": "01M7A4Q52XGWS26JPYFN3N12DA",
+      "sender": "cc",
+      "handled_at": "2026-11-13T10:11:14.343Z"
     }
   ]
 }

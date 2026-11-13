@@ -1,0 +1,15 @@
+{
+  "id": "01M7A67DRW5JBSEPXSZ8Z6WMFW",
+  "ts": "2026-11-13T10:11:07.164Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ST0002's last commits ride cc's ST0003/WP04 slot: 763c7d3 (todo 3, predict counts one plan as cc signed, with cc's fallback) and 7483a07 (vc's two herdr notes) on ic/ST0002-tier over cc's a1df03f, in worktree ~/Devel/scratch/ccusage-ic/wt-st0002-tier, unbuilt; cc runs ~/Devel/scratch/ccusage-ic/tier-mutants.zsh (ten mutants) in that slot. Released when cc reports that run's result with both commits in it. Then: once landed, re-cite ST0002 from a grep and mint AT-05.4 (src/predict.rs, under AC-05.1, red under t1 to t6) with the run's green; hand vc the range for WP05 (and WP07's README) and WP08's two notes; remove the worktree."
+  }
+}
