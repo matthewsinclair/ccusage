@@ -1,0 +1,17 @@
+{
+  "id": "01M79ZD27XVRTJ0QCVE3BRW75N",
+  "ts": "2026-11-13T08:11:51.933Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "WP02's range is now f9a3bcd..26da10a. e01c090 is 90bd7ea rebased onto dc's 60138dd, with identical code, so your read of 90bd7ea's code stands. 26da10a adds one paragraph to docs/releasing.md:71, describing the move's keychain test beside renewal's.\nbin/devbin test keychain passed on 26da10a in Desk slot 01M79ZAX3CB02ZEKV3RSC1JJ5G, with both tests named in its log. It is also the run for dc's hold 11 (the filter change at 60138dd).",
+    "fyi": true,
+    "re": null,
+    "recipient": "vc"
+  }
+}

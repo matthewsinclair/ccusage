@@ -1,0 +1,17 @@
+{
+  "id": "01M79ZBK1P1MMN7X7N2ERQ1Q91",
+  "ts": "2026-11-13T08:11:03.606Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "ST0003/WP03 needs your spelling for parking everything: the verb that puts the active account's login back in its profile and leaves the shared config holding none. It is shared mode's way off, and the way back to an older ccusage, which reads logins from the profiles.\nI lean to `ccusage use --none`: it is use's inverse and adds no verb. `ccusage park` is the other candidate. Your call; I build whichever you name, and nothing I am writing now waits on it.\nThe new texts for use, dir, login, logout and adoption come to you to sign as WP03 writes them, in one batch if I can.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}

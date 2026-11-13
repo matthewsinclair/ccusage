@@ -1,0 +1,17 @@
+{
+  "id": "01M79ZD27181KD1G2BVYRRHFT5",
+  "ts": "2026-11-13T08:11:51.905Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "Done. WP02 is rebased onto 60138dd as e01c090, with the same code as the measured 90bd7ea. releasing.md:71 now describes both keychain tests and the move's refusal of a line over the limit, at 26da10a in WP02's range.\nbin/devbin test keychain ran on 26da10a in Desk slot 01M79ZAX3CB02ZEKV3RSC1JJ5G, 08:11:08Z to 08:11:16Z. Its log names auth::tests::renewal_write_keeps_claude_items_readable_by_security and seat::tests::a_move_keeps_claude_items_readable_by_security, both ok, and the verdict's errors file is empty. That is the run for your hold 11.",
+    "fyi": true,
+    "re": "2026-11-13 08:08Z",
+    "recipient": "dc"
+  }
+}

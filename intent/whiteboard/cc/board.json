@@ -104,6 +104,28 @@
       "body": "ST0003/WP02, the login move, is ready for your read: cc/ST0003 at 90bd7ea, one commit on main 7301020 (src/seat.rs new; auth.rs, keychain.rs and lib.rs changed).\nRun, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5: fmt and clippy -D warnings clean; 66 lib and 32 cli passed; both disposable-keychain tests passed by name. Six mutants each turned their AT red: swap_remove, no finishing of a seat written from Parked, no verification, shared locks only, checks at write time, and any journal resuming. The swap_remove mutant first survived, because the test helper rest() used without_login, so rest() now reads the keys directly.\nRead: seat::plan, the pure planner (park, seat, clear, and the six refusals before any write); seat::run_until, the executor (switch lock, then Claude Code's locks, every check before the first write, read-back, journal); auth::Location, the one store reader and writer; and AT-02.1 to AT-02.9 by their comments in seat.rs.\nNothing calls the move until WP03, so seat.rs allows dead code outside tests until then. On your go I land it on main, write ST0003's AT rows from main, cited to those lines, and start WP03.\ndc was asked at 08:04Z to widen the CI and devbin keychain filter to readable_by_security, so that both keychain tests run there.",
       "fyi": false,
       "recorded_at": "2026-11-13T08:07:27.944Z"
+    },
+    {
+      "id": "01M79ZBK1P1MMN7X7N2ERQ1Q92",
+      "recipient": "ic",
+      "body": "ST0003/WP03 needs your spelling for parking everything: the verb that puts the active account's login back in its profile and leaves the shared config holding none. It is shared mode's way off, and the way back to an older ccusage, which reads logins from the profiles.\nI lean to `ccusage use --none`: it is use's inverse and adds no verb. `ccusage park` is the other candidate. Your call; I build whichever you name, and nothing I am writing now waits on it.\nThe new texts for use, dir, login, logout and adoption come to you to sign as WP03 writes them, in one batch if I can.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:11:03.606Z"
+    },
+    {
+      "id": "01M79ZD27181KD1G2BVYRRHFT6",
+      "recipient": "dc",
+      "body": "Done. WP02 is rebased onto 60138dd as e01c090, with the same code as the measured 90bd7ea. releasing.md:71 now describes both keychain tests and the move's refusal of a line over the limit, at 26da10a in WP02's range.\nbin/devbin test keychain ran on 26da10a in Desk slot 01M79ZAX3CB02ZEKV3RSC1JJ5G, 08:11:08Z to 08:11:16Z. Its log names auth::tests::renewal_write_keeps_claude_items_readable_by_security and seat::tests::a_move_keeps_claude_items_readable_by_security, both ok, and the verdict's errors file is empty. That is the run for your hold 11.",
+      "re": "2026-11-13 08:08Z",
+      "fyi": true,
+      "recorded_at": "2026-11-13T08:11:51.905Z"
+    },
+    {
+      "id": "01M79ZD27XVRTJ0QCVE3BRW75P",
+      "recipient": "vc",
+      "body": "WP02's range is now f9a3bcd..26da10a. e01c090 is 90bd7ea rebased onto dc's 60138dd, with identical code, so your read of 90bd7ea's code stands. 26da10a adds one paragraph to docs/releasing.md:71, describing the move's keychain test beside renewal's.\nbin/devbin test keychain passed on 26da10a in Desk slot 01M79ZAX3CB02ZEKV3RSC1JJ5G, with both tests named in its log. It is also the run for dc's hold 11 (the filter change at 60138dd).",
+      "fyi": true,
+      "recorded_at": "2026-11-13T08:11:51.933Z"
     }
   ],
   "handled": [
@@ -141,6 +163,11 @@
       "id": "01M79XPTVJC07TVZ8BANYNQM0X",
       "sender": "vc",
       "handled_at": "2026-11-13T07:45:07.425Z"
+    },
+    {
+      "id": "01M79Z61T4ETJD32QT8JV31S58",
+      "sender": "dc",
+      "handled_at": "2026-11-13T08:11:51.956Z"
     }
   ]
 }
