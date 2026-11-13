@@ -13,19 +13,19 @@ claims: [ST0003]
 
 ## DOING
 
-- ST0003/WP04 (doctor) and todo 3a, on cc/ST0003-WP04 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target), rebased onto the follow-up (46295e6) and not yet built. WP04's ACs are AC-04.1 (where each login is, an interrupted move, a shared login that is not the active profile's, either flag off its default) and AC-04.2 (sessions that will not follow a switch); todo 3a joins AC-04.3. (edited)
+- ST0003/WP04 (doctor) and todo 3a, at 0465377 on cc/ST0003-WP04 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target), on main and not yet built. WP04's ACs are AC-04.1 (where each login is, an interrupted move, a shared login that is not the active profile's, either flag off its default) and AC-04.2 (sessions that will not follow a switch); todo 3a joins AC-04.3. (edited)
   What it holds:
-  - doctor::where_logins_are (pure): each login found once, failing none or two; the shared login that belongs to no profile warns; a journal left behind fails.
-  - usage::whose, which never renews and never reports a check it did not make, sharing one identity rule with use's verified_token.
+  - doctor::where_logins_are (pure): each login found once, failing none or two, with ccusage login NAME as the remedy; the shared login that belongs to no profile warns; a journal left behind fails.
+  - usage::whose, which never renews and never reports a check it did not make, sharing one identity rule (Expected) with use's verified_token.
   - doctor::switch_flags (pure), from Claude Code's flag cache as Claude Code reads it.
-  - src/sessions.rs: ps -E behind CCUSAGE_PS, /proc on Linux, keeping only the two variables; lsof behind CCUSAGE_LSOF, only for a session that drifts.
-  - doctor::line_room with keychain::Item::capacity, the security -i line built in one place.
+  - src/sessions.rs: ps -E behind CCUSAGE_PS, /proc on Linux reading only a claude process's environment, keeping only the two variables; lsof behind CCUSAGE_LSOF, only for a session doctor reports.
+  - doctor::line_room with keychain::Item::capacity and the pure keychain::room, tested against update_line.
   - Todo 3a, with ic's shape and texts: Report.note, which, display::lines and display::next.
-  Its tests are AT-04.1 to AT-04.8, and AT-04.10 and AT-04.11 for whose and the interrupted move.
+  Its tests are AT-04.1 to AT-04.8, AT-04.10 and AT-04.11; the mutants are in the scratchpad's wp04-mutants.zsh, one or two per AT.
   Next:
-  1. Finish the desk-check fixes, rebase onto main (946daaf), and send ic the tip with the display and doctor texts to sign.
-  2. Ask the Desk for one slot, carrying ic's tier grouping for predict with ic's commit and mutants: build, fix, mutants, the measured run.
-  3. Hand WP04 to vc.
+  1. ic signs the texts sent on the board (the two display lines, doctor's 21 lines) and gives its tier-grouping commit and mutants.
+  2. Ask the Desk for one slot: cargo fmt, build, fix, both mutant scripts, the measured run.
+  3. Hand WP04 and todo 3a to vc.
 
 ## TODO
 

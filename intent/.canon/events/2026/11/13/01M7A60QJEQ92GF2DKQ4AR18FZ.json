@@ -1,0 +1,16 @@
+{
+  "id": "01M7A60QJEQ92GF2DKQ4AR18FZ",
+  "ts": "2026-11-13T10:07:27.822Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ST0003/WP04 (doctor) and todo 3a, at 0465377 on cc/ST0003-WP04 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target), on main and not yet built. WP04's ACs are AC-04.1 (where each login is, an interrupted move, a shared login that is not the active profile's, either flag off its default) and AC-04.2 (sessions that will not follow a switch); todo 3a joins AC-04.3.\nWhat it holds:\n- doctor::where_logins_are (pure): each login found once, failing none or two, with ccusage login NAME as the remedy; the shared login that belongs to no profile warns; a journal left behind fails.\n- usage::whose, which never renews and never reports a check it did not make, sharing one identity rule (Expected) with use's verified_token.\n- doctor::switch_flags (pure), from Claude Code's flag cache as Claude Code reads it.\n- src/sessions.rs: ps -E behind CCUSAGE_PS, /proc on Linux reading only a claude process's environment, keeping only the two variables; lsof behind CCUSAGE_LSOF, only for a session doctor reports.\n- doctor::line_room with keychain::Item::capacity and the pure keychain::room, tested against update_line.\n- Todo 3a, with ic's shape and texts: Report.note, which, display::lines and display::next.\nIts tests are AT-04.1 to AT-04.8, AT-04.10 and AT-04.11; the mutants are in the scratchpad's wp04-mutants.zsh, one or two per AT.\nNext:\n1. ic signs the texts sent on the board (the two display lines, doctor's 21 lines) and gives its tier-grouping commit and mutants.\n2. Ask the Desk for one slot: cargo fmt, build, fix, both mutant scripts, the measured run.\n3. Hand WP04 and todo 3a to vc."
+  }
+}
