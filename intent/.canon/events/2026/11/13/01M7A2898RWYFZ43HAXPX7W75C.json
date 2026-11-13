@@ -1,0 +1,15 @@
+{
+  "id": "01M7A2898RWYFZ43HAXPX7W75C",
+  "ts": "2026-11-13T09:01:41.016Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ST0003/WP04, doctor, started in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 on branch cc/ST0003-WP04 from 02a5967. Todo 3a (usage's 403 and no-windows messages) goes in its run. Design facts:\n- Flags: Claude Code 2.1.323 reads them from .claude.json's cachedGrowthBookFeatures, else cachedFeatureFlags, an object of flag name to value. tengu_streamed_thimble defaults on and tengu_bubbly_fountain off, read from its binary, not from hv's config.\n- Sessions: ps -E on macOS, or /proc/PID/environ on Linux, looking only at CLAUDE_CONFIG_DIR and CLAUDE_SECURESTORAGE_CONFIG_DIR. Tests use a stand-in, as CCUSAGE_LAUNCHCTL does. Working directories come from lsof on macOS. Where neither works, the check is skipped.\n- Logins: each store is read through auth::load, as usage reads it. Doctor fails on an account with no login or two, and on a journal left behind.\n- The shared login is verified with usage::verified_token where reachable, else doctor says it was not checked.\n- The shared document's length is checked against the security -i limit.\n- The old shared-mode warnings go."
+  }
+}

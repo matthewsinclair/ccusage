@@ -13,15 +13,22 @@ claims: [ST0003]
 
 ## DOING
 
-- ST0003/WP03, the verbs on one live login, is with vc for its read (handed over in the message of 2026-11-13 08:42Z). It is one commit, 350e689, on cc/ST0003 over main 810d961; main has since taken board and intent commits only, and the code diff is empty. Worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target. Measured run in Desk slot 01M7A10VT8E47A13AR5BYK4RK6: eleven mutants each red, fmt and clippy clean, 78 lib and 41 cli passed, both keychain tests passed by name. ic signed the texts with eleven changes, all applied. (edited)
-  Next, on vc's go:
-  1. Rebase onto main and check the code diff against 350e689 is empty (then no second run), and fast-forward main.
-  2. From main, re-cite AT-02.1 to AT-02.9 to their moved lines in src/seat.rs (intent at edit --file, from grep -n "ST0003 AT-02" src/seat.rs). Mint AT-03.1 to AT-03.10 and AT-02.10, each red with its mutant and then green on the measured run; AT-03.2 to AT-03.7 are in tests/cli.rs, AT-03.8 and AT-03.10 in src/usage.rs, AT-03.9 in src/switch.rs, and the rest in src/seat.rs. Then intent at lint ST0003, and tell vc.
-  3. Then WP04 (doctor, AC-04.1 and AC-04.2).
+- ST0003's follow-up to WP03 sits on cc/ST0003 over main's WP03 (eea2dea), in worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, as two commits:
+  - b377106, vc's notes 1 to 3 on WP03: a refusal counts only for invalid_grant; parked accounts are matched by their recorded account; use --none points launchd at the active profile.
+  - 02a5967, todo 3b: each usage report carries subscription_type and rate_limit_tier as the login records them, for ic's predict.
+  ic signed both texts and the shape. Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8 is queued behind the devvm build and ic's WP05. Its run is the three mutants in the scratchpad's followup-mutants.zsh, then the measured run (fmt, clippy, cargo test, the keychain tests by name), all in wt-st0003.
+  Then hand eea2dea..02a5967 to vc. On its go: land, re-mint the changed rows AT-03.4 and AT-03.10, and ask vc which AC the plan test covers.
+- ST0003/WP04, doctor, started in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 on branch cc/ST0003-WP04 from 02a5967. Todo 3a (usage's 403 and no-windows messages) goes in its run. Design facts:
+  - Flags: Claude Code 2.1.323 reads them from .claude.json's cachedGrowthBookFeatures, else cachedFeatureFlags, an object of flag name to value. tengu_streamed_thimble defaults on and tengu_bubbly_fountain off, read from its binary, not from hv's config.
+  - Sessions: ps -E on macOS, or /proc/PID/environ on Linux, looking only at CLAUDE_CONFIG_DIR and CLAUDE_SECURESTORAGE_CONFIG_DIR. Tests use a stand-in, as CCUSAGE_LAUNCHCTL does. Working directories come from lsof on macOS. Where neither works, the check is skipped.
+  - Logins: each store is read through auth::load, as usage reads it. Doctor fails on an account with no login or two, and on a journal left behind.
+  - The shared login is verified with usage::verified_token where reachable, else doctor says it was not checked.
+  - The shared document's length is checked against the security -i limit.
+  - The old shared-mode warnings go.
 
 ## TODO
 
-- ST0003/WP04 (doctor) beside WP03, then WP05 (docs and the decision record). Each goes to vc with its commit range and one measured run. (edited)
+- ST0003/WP05 (docs and the decision record) after WP04, to vc with its commit range and one measured run. (edited)
 - hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. In cc's remit: (a) usage.rs: a login without usage access ends in an error (HTTP 403, lacks usage access), and an account whose snapshot holds no windows shows nothing useful; each should say what that account type gives instead. (b) for ic's predict (agreed with ic): each usage report carries the login's subscriptionType and rateLimitTier exactly as read from its claudeAiOauth, so predict sums only the accounts of the most common tier (a tie goes to the active account's tier, else the lexically first) and leaves the rest out as another plan's allowance. Not started; vc sequences it after WP03 and WP04. (edited)
 
 ## Holds

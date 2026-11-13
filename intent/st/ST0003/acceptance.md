@@ -31,7 +31,7 @@ title: Live account switching: ccusage use moves the active login into the share
 - AC-03.3 `ccusage dir` prints no directory for the active account and fails, `ccusage run` gives its child no login directory, `login` of the active profile seats the new login, and `logout` of the active profile is refused. -- satisfied: yes (computed)
 - AC-03.4 The first `use` on 0.1.8's layout adopts it, replacing the shared config's login only when its account has another login parked or it can no longer be renewed; parking everything restores that layout; and with shared mode off every existing test passes unchanged. -- satisfied: yes (computed)
 
-### WP-04 -- Doctor for the one live login (status: Not Started)
+### WP-04 -- Doctor for the one live login (status: WIP)
 
 - AC-04.1 `ccusage doctor` reports where each login is, an interrupted move, a shared login that is not the active profile's, and either Claude Code flag that is off its default. -- satisfied: no (computed)
 - AC-04.2 `ccusage doctor` lists running Claude sessions whose launch environment names another login directory or another config directory. -- satisfied: no (computed)
@@ -77,7 +77,7 @@ _(no tests in this group)_
 - AT-03.9 `src/switch.rs:216` -- covers AC-03.4 -- status: green -- Adoption replaces the shared config's own login only when Claude can no longer renew it, or when its account keeps another login in a profile, and otherwise refuses saying how to keep it; red under the mutant that always replaces, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea
 - AT-03.10 `src/usage.rs:912` -- covers AC-03.4 -- status: green -- A login is dead only when the token endpoint refuses its refresh outright, and a 5xx is an error, so adoption stops instead of replacing; red under the mutant that takes any failure for dead, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea
 
-### WP-04 -- Doctor for the one live login (status: Not Started)
+### WP-04 -- Doctor for the one live login (status: WIP)
 
 _(no tests in this group)_
 
