@@ -2,7 +2,7 @@
 wp_id: WP-08
 title: Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy
 scope: M
-status: Not Started
+status: WIP
 ---
 
 # WP-08: Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy

@@ -51,7 +51,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 - AC-07.1 (non-test) README and the CHANGELOG describe `which`, `predict`, the cap key, the history file, the JSON contract, the Herdr mod and the refresh policy as built. -- satisfied: no
 
-### WP-08 -- Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy (status: Not Started)
+### WP-08 -- Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy (status: WIP)
 
 - AC-08.1 The Herdr verb writes the mod into a Herdr home, replaces only a copy it wrote that nobody has edited, refuses anything else without `--force`, reports `herdr-app check`'s verdict, and never touches a layout or `keys.json`. -- satisfied: no (computed)
 - AC-08.2 The TUI re-fetches an account once its data has passed the usage cache's lifetime and no sooner, and a rate-limited account is not asked again before its retry time. -- satisfied: no (computed)
@@ -105,7 +105,7 @@ _(no tests in this group)_
 
 _(no tests in this group)_
 
-### WP-08 -- Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy (status: Not Started)
+### WP-08 -- Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy (status: WIP)
 
 _(no tests in this group)_
 
