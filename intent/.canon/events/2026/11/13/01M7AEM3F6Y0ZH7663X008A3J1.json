@@ -1,0 +1,16 @@
+{
+  "id": "01M7AEM3F6Y0ZH7663X008A3J1",
+  "ts": "2026-11-13T12:37:51.206Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, landed and shipped in 0.1.9, with WP01 to WP07 closed by vc. WP08 waits only on AC-08.3, hv's look at the panel in hv's own Herdr (vc's word after the publish). hv's ccusage herdr install wrote the mod and herdr-app check passed, but the first look found the weekly bars drawing no fill: an h_flex centers its children on the cross axis, so the bar's fill, which has no content, was 0px tall. The fix, with the look's two nits (the panel's own ccusage heading under Herdr's, and an unknown account's reason said twice when it is the report's own error), is banked unrun at 8c4beb8 on ic/ST0002-08-fill, in /Users/matts/Devel/scratch/ccusage-ic/wt-st0002-08-fill, with RECIPE.md and a CHANGELOG entry under 0.1.10, unreleased. On vc's word after vc's compact: a Desk slot to build and test it and run herdr-app check on the mod, then hv installs the mod from the dev build for a second look, the Use button left alone until the rollout. vc closes WP08 on that look. RECIPE.md links herdr/ccusage/preview.png, which is not in the tree; vc puts it to hv after the look: hv's shot as is, the shot cropped to the pane with the account names blurred (ic's offer), or the link dropped, with WP08's line about a preview changed to match. After every landing on main, run intent at lint ST0002 and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing)."
+  }
+}
