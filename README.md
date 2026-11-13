@@ -139,6 +139,8 @@ ccusage --all --json
 ccusage usage work
 ccusage usage work --refresh
 ccusage tui
+ccusage which
+ccusage predict
 ```
 
 `ccusage` with no command runs `usage`, and `--all`, `--json` or `--refresh` may take the command's place, so `ccusage --all --json` is `ccusage usage --all --json`. `usage` without a name, like bare `ccusage`, queries the selected account. `ccusage help` and `ccusage --help` print the help. Every successful fetch is persisted with its retrieval timestamp. Cached results are reused for five minutes. `--refresh` bypasses that freshness cache, but respects an active rate-limit cooldown. A failed request keeps the last successful data indefinitely and displays `as of TIMESTAMP`, its age, and the error. A reset countdown reaching `due` does not imply the stored percentage has refreshed. A successful newer fetch replaces the old data. Login and logout invalidate that profile's cache to avoid displaying usage from an earlier login.
@@ -147,9 +149,66 @@ The undocumented `GET https://api.anthropic.com/api/oauth/usage` endpoint report
 
 The dashboard fetches accounts in a background worker, keeps the terminal responsive, and updates reset countdowns while open. Use arrows or `j`/`k` to select an account and Enter to open its detail page. The detail page shows only that account, using the same full formatting as `usage --verbose`. Use arrows or Page Up/Down to scroll; Escape, Backspace, or `b` returns to the overview. Press `a` to activate the selected account from either page. Press `r` to refresh all accounts on the overview or just the current account on a detail page. `q` or Ctrl-C quits from either page; Escape also quits from the overview. It does not switch accounts automatically. The colors, sparse layout, and usage bars are inspired by Claude Code. `NO_COLOR` or a leading `--no-color` disables colors; redirected output is also plain. Small terminals omit bars so percentages and reset times remain visible.
 
+The overview marks the account [`which`](#which-account-next) would choose with `· next` beside `· active`, once every account's report is in and none of their usage is older than five minutes, so the marker never stands on partial or stale data. Until then it says that `r` refreshes for the marker. An account that failed counts as in, and the rule passes over it. `usage --all` marks the next account on the same terms, and one account's usage never does. The dashboard keeps itself current as the [refresh policy](#refresh-policy) says.
+
 Each failed account gets its own error, so `usage --all` continues through the remaining profiles. Usage commands exit nonzero when any account has an error, even if last-known data is displayed. JSON output includes `name`, `fetched_at` (Unix seconds, UTC), `cached`, `snapshot`, and `error`. Raw usage percentages are retained; the terminal rounds them for display. Optional weekly model windows appear when the API returns them.
 
 Ccusage targets Claude subscription accounts on macOS and Linux. Console/API-billing and cloud-provider accounts are outside its usage model, and native Windows operation has not been validated.
+
+## Which account next
+
+`ccusage which` names the account to work on now, so that no weekly allowance goes unused at its reset: of the accounts below the cap, the one whose weekly window resets soonest. The accounts whose resets are further off are the reserve. An account is usable when its usage was fetched within the cache's five minutes and has a weekly window whose reset is still ahead, and eligible when it is usable and its weekly percent is below the cap. The eligible accounts rank by their weekly reset, rounded to the nearest minute so that the endpoint's jitter of under a second cannot decide a rank, then by most headroom, then by name, and the first is the choice. The accounts at the cap follow, then those the rule cannot use, each with why: an error, usage older than the cache's lifetime, no weekly window, or a weekly reset that has passed.
+
+```sh
+ccusage which
+ccusage which --json
+ccusage which --model Fable
+ccusage which --use
+```
+
+The first line is the choice: what it has used, its headroom below the cap, when its weekly window resets, its other windows, and the rule's reason. Every other account follows on a line of its own, in rank order. An account the rule cannot use still shows whatever its usage reports. With nothing eligible, the first line says so and names the soonest weekly reset. `which` exits 0 with a choice and 1 without one; the report goes to stdout either way, and the reason for a 1 to stderr.
+
+`--model NAME` also bounds each account by that model's weekly window, when its usage has one: the account must be below the cap there too, and its headroom is the lesser of the weekly window's room and the model's room, counted in the weekly allowance through the model's share of it. When the usage gives no share for the model, the headroom is unknown, and the reason says so. NAME matches the windows' model names regardless of case, and a name no account's usage carries is refused, naming the models it does carry. `--use` makes the choice the active account, as `ccusage use` does, says so when it is active already, and changes nothing when nothing is eligible. `--refresh` fetches every account first, within any rate-limit cooldown.
+
+The cap is `[which] cap` in `config.toml`, a percent of the weekly allowance above 0 and at most 100, and 95 when the key is absent. `ccusage init` and `add` write the table back only into a config that sets it. Every ccusage before 0.1.9 refuses a config that sets it, so take the table out before going back to one.
+
+```toml
+[which]
+cap = 90
+```
+
+`which --json` is a contract other programs read, at version 1. A field added keeps the version; a field removed, renamed or given a new meaning raises it, and readers ignore fields they do not know. Every time is RFC 3339 in UTC, to the second, with a `Z`.
+
+- `version`; `now`, when the rule ran; `cap`, the cap in force; `model`, the `--model` given, spelled as the usage spells it, else null.
+- `active`, the active account after the call, else null; `choice`, the chosen account, else null; `activated`, true only when `--use` made the choice active in this call.
+- `soonest`: `{name, resets_at}` for the usable account whose weekly reset is soonest, else null. The text names it when nothing is eligible.
+- `accounts`, every account in the text's order, each with: `name`; `state`, one of `chosen`, `eligible`, `at_cap` and `unknown`; `rank`, its 1-based place in the rule's ranking, null when unknown; `percent` and `resets_at`, the weekly window's as the account's usage gives them, even when the rule could not use them, null without one; `headroom`, the room left before the cap in percent of the weekly allowance, rounded to 0.1, 0 at the cap, and null when unknown or, under `--model`, when the model's share is unknown; `reason`, the line the text prints for it; `cause`, for an unknown account one of `error`, `stale`, `reset_passed` and `no_weekly_window`, else null; `scoped`, each model's weekly window as `{model, percent, share, resets_at}`; `session`, `{percent, resets_at}` when the usage has a session window, else null; `fetched_at`, when its usage was fetched, else null; and `error`, the report's own error line, else null.
+
+## Predict
+
+`ccusage predict` estimates your burn rate from the [usage history](#usage-history) and projects, following `which` from now, how much of each account's weekly allowance will go unused at its current reset. The rate is the rises in every account's weekly window over the hours the history spans, idle hours included, in percent of one weekly allowance an hour. A rise across a reset counts from 0, and an account's first sample adds nothing. With under a day of history, or no rise in it, `predict` says there is too little, projects nothing and exits 0. Otherwise it steps from now to the last of the accounts' current resets, with the which rule choosing the account at each step: the chosen account rises at the rate until it reaches the cap or a reset comes, and an account whose window resets starts again at 0 a week on. Each account's unused share at its current reset is 100 less its projected percent, so it counts what lies above the cap, and the total adds them up in percent of one weekly allowance, which assumes every account is on one plan. An account the rule cannot use now is left out of the arithmetic, with why. It is arithmetic on the history alone, and no model inference is made.
+
+`predict --json` is versioned as `which --json` is, at version 1: `version`; `now`; `cap`; `rate`, as `{percent_per_hour, samples, hours}`, with `percent_per_hour` null when there is too little history; `accounts`, each projected account in the rule's order now as `{name, percent, resets_at, projected, unused}`; `unused`, the total, null with too little history; and `left_out`, each account left out as `{name, reason}`. Derived percents are rounded to 0.1.
+
+## Usage history
+
+Every successful fetch records a sample of each window whose percent has changed in `history.jsonl` under `XDG_STATE_HOME`: the account's name and the window's kind, model, percent, share and reset, with the time it was sampled, and nothing else from the response. A window's first sample is kept, then one each time its percent changes. A sample older than one weekly window is dropped, and one from a window that has since reset stays until then, since what was used on it still counts toward the burn rate. A cache hit records nothing, and a failed record shows in the report's error without discarding the usage. The file is mode `0600`, `ccusage doctor` checks it, and one ccusage writes it at a time.
+
+## Herdr panel
+
+Ccusage carries a [Herdr](https://herdr.dev) mod: a panel that shows each account's weekly bar, reset, `active` and `next` tags and the rule's reason, and below them predict's rate and projection. It runs `ccusage` and nothing else: `which --json` and `predict --json` on its timer, `usage NAME --verbose` when you click an account, and `use NAME` when you confirm a switch from there. No rule runs in the panel, so it cannot drift from the CLI.
+
+```sh
+ccusage herdr install
+herdr-app do pane.split '{"direction":"right","mod":"ccusage"}'
+ccusage herdr remove
+```
+
+`ccusage herdr install` puts the mod into Herdr's home, `$HERDR_APP_HOME` or else `~/.config/herdr-app`, and refuses when there is none. It writes `mods/ccusage/` and a record of what it wrote, replaces only a copy it wrote that nobody has edited, refuses anything else without `--force`, then runs `herdr-app check` on it when that is on `PATH` and reports the verdict, exiting nonzero when the check fails. It never touches a layout or `keys.json`. `ccusage herdr remove` takes the copy out on the same terms. The mod's files are built into ccusage, so each install carries the mod that matches it.
+
+## Refresh policy
+
+Only ccusage asks Claude's usage endpoint, and only through its cache: an account's usage fetched within the last five minutes is reused, so each account is fetched at most once in five minutes however many dashboards, panels and scripts are open. A 429 response parks that account for at least 30 minutes for all of them at once. The dashboard asks again for each account whose usage has passed five minutes, at most once in five minutes, so `ccusage tui` left open stays current and its next marker stays on screen. The Herdr panel asks ccusage on a timer of five minutes, or longer when its `every` prop sets one in seconds, and never shorter, and Herdr keeps a hidden panel's timer under the same bound. Countdowns tick from the clock and ask nothing. With five accounts, that is at most 60 requests an hour.
 
 ## Development
 
