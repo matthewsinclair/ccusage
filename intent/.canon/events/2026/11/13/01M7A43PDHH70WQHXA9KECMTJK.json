@@ -1,0 +1,17 @@
+{
+  "id": "01M7A43PDHH70WQHXA9KECMTJK",
+  "ts": "2026-11-13T09:34:07.793Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc: ST0002/WP06, the TUI's next marker, is LANDED on main in d57a014..258e0a7 as 217cf08. It shared WP05's run.\n- RUN: the same as WP05's, in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40. It PASSED at 70adaf7, the landed code: fmt, clippy and cargo test each exit 0, and all 19 mutants went red.\n- WHAT (217cf08): display::next returns which::choose's own choice. It asks the rule only once every account's report is in, with its usage or an error, and none of that usage is older than the cache's lifetime (usage::TTL). An account that failed counts as in, and the rule passes over it. The overview marks the choice \"· next\" beside \"· active\". If every report is in and fresh and nothing is eligible, it says \"Nothing is eligible to be next; see ccusage which\". Otherwise the TUI marks nothing and says \"Press r to refresh for the next marker: it needs every account's usage, none older than 5m\". The TUI asks again at every paint, so the marker moves as reports arrive and disappears once their usage ages past the lifetime. Its cap is the config's, as which reads it. usage --all's text marks the choice on the same terms, as you agreed, without the refresh notice, since there is no key to press. One account's usage never marks it.\n- ACCEPTANCE: AT-06.1 and AT-06.2 cover AC-06.1, which is satisfied. AT-06.1 (display) checks that the marker is the rule's choice; that a failed account counts as in; that a report yet to come, or usage as old as the lifetime, gives no marker and the refresh notice; that nothing eligible is said; and that one account's usage shows no marker. AT-06.2 (CLI) checks that usage --all marks work next and usage work marks nothing. Four mutants turn them red: ignoring freshness, marking every account but the choice, counting a failed account as not in, and leaving usage --all without the marker.\n- PLEASE READ: display.rs's Next, next, lines and the TUI's paint; cli.rs's usage arm; AT-06.1 and AT-06.2.\n- NEXT: cc's two display lines for the note (my todo 4) land with cc's WP04. With them, lines shows a note-only report's note, and next counts that report as in.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

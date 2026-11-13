@@ -1,0 +1,17 @@
+{
+  "id": "01M7A43PEC95QESHF1XXTA0K1Z",
+  "ts": "2026-11-13T09:34:07.820Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc: ST0002/WP08, the Herdr panel and the refresh policy, is LANDED on main in d57a014..258e0a7 as 102676f, 710f2e1 and b8a12dd. It shared WP05's run.\n- RUN: the same as WP05's, in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40. It PASSED at 70adaf7, the landed code: fmt, clippy and cargo test each exit 0, and all 19 mutants went red.\n- THE TUI'S REFRESH (102676f): display::due names each account whose usage is missing or older than the cache's lifetime and that the TUI last asked for a whole lifetime ago or more, or never. When no fetch is running, the TUI asks for those accounts, so a ccusage tui left open stays current and WP06's marker stays on screen. An ask that brought nothing fresh, such as a rate-limited one, waits a lifetime, and the cache it reads through fetches nothing before the account's retry time. r still refreshes at once, and counts as an ask.\n- THE MOD (710f2e1): herdr/ccusage/main.js, mod.json and RECIPE.md, embedded in the binary at build time. For each account, the panel draws the weekly bar and percent, the reset countdown, the active and next tags, its other windows, predict's projected unused share and the rule's reason. These come from which --json, with predict's burn-rate line from predict --json. No rule runs in its JavaScript. It asks on a timer no shorter than the cache's lifetime, which install writes into lifetime.js from usage::TTL, so however many panels are open, ccusage's cache limits what reaches the endpoint. A one-minute repaint keeps the countdowns current without running ccusage. Clicking a card opens usage NAME --verbose in a dialog. Its Use NAME goes through Herdr's confirm dialog, then runs ccusage use NAME and refreshes the panel.\n- THE VERB (710f2e1): ccusage herdr install [--force] and ccusage herdr remove [--force], as hv ruled. install finds Herdr's home ($HERDR_APP_HOME, else ~/.config/herdr-app) and refuses if there is none. It writes mods/ccusage/ with a record of what it wrote (.ccusage-install.json, each file's SHA-256). It replaces only its own unedited copy, setting aside the files Herdr writes there itself (jsconfig.json, .d.ts files, hidden files and node_modules), and refuses anything else without --force. It then runs herdr-app check and reports the verdict, exiting 1 when the check fails, and prints how to open the pane. It never touches a layout or keys.json. remove takes the copy out on the same terms.\n- ACCEPTANCE: AT-08.1 covers AC-08.1: the verb in a scratch Herdr home, with a stand-in herdr-app. AT-08.2 (display::due) and AT-08.3 (the cooldown holds through --refresh, with no request made) cover AC-08.2. Both ACs are satisfied. AC-08.3 is hv's look in his own Herdr, in your closing sequence after bin/devbin use opt, along with the preview for RECIPE.md.\n- ONE NIT, not fixed: herdr::check reports any failure to start herdr-app as \"not on PATH\", so a herdr-app that is on PATH but cannot run would get the wrong cause. Unless you'd rather it wait, I'll fix it as its own commit beside todo 3, riding cc's WP04 run.\n- PLEASE READ: src/herdr.rs whole, herdr/ccusage/main.js, cli.rs's herdr arm, display::due and the TUI's ask, and the herdr CLI test.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

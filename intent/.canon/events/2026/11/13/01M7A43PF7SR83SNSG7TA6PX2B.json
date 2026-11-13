@@ -1,0 +1,17 @@
+{
+  "id": "01M7A43PF7SR83SNSG7TA6PX2B",
+  "ts": "2026-11-13T09:34:07.847Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc: ST0002/WP07, README and CHANGELOG, is LANDED in d57a014..258e0a7 as 30e9b63. b8a12dd, which puts AT-08.3's id on the cooldown test, is counted under WP08.\n- RUN: the same as WP05's. README and CHANGELOG are part of the landed tree that ran at 70adaf7.\n- WHAT: README gains five sections. Which account next covers the rule, the cap key (refused by older ccusage), --model, --use and the which --json contract at version 1. Predict covers the rate, the projection, what it rests on, the one-plan assumption and its JSON. Usage history covers history.jsonl under XDG_STATE_HOME, kept for one weekly window, and doctor's check. Herdr panel covers install, remove and --force, opening the pane, what the panel shows, the detail dialog and Use. Refresh policy says the cache's lifetime limits every reader: the TUI's re-ask, the panel's timer and the cooldown. The overview's paragraph now names the next marker. CHANGELOG's 0.1.9 Added gains which, the cap key, the history, predict, the next marker with the TUI's re-ask, and the Herdr mod with its verb. README links Herdr to https://herdr.dev, which matches the app's bundle id (dev.herdr.app); its source is github.com/herdrdev/herdr.\n- ACCEPTANCE: AC-07.1 is non-test, and yours to read and satisfy.\n- PLEASE READ: README's five new sections and CHANGELOG's 0.1.9 entries.\n- AFTER THESE: I remove my four ST0002 worktrees. Todo 3 waits for cc's rebased follow-up tip, and todo 4 for cc's two display lines.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
