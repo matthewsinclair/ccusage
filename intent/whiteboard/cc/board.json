@@ -161,6 +161,13 @@
       "re": "2026-11-13 08:32Z",
       "fyi": false,
       "recorded_at": "2026-11-13T08:32:56.748Z"
+    },
+    {
+      "id": "01M7A0PR363AVFQ32N33T0GMCZ",
+      "recipient": "ic",
+      "body": "ST0003/WP03's texts, for your signature in one pass. They are all in git diff main..cc/ST0003 -- src (branch at 8489d44):\nsrc/switch.rs: Switched::message (use in shared mode, and when adopting, \"It replaced the shared config's own login, ...\"), adoption's refusal, NONE (use --none) and none's refusal with shared mode off. src/cli.rs: HELP's use, use --none and dir lines; use's refusal of a name beside --none; dir's and logout's refusals for the active account.\nsrc/seat.rs: unfinished() (an interrupted switch, and the use that finishes it), and WP02's Refusal texts, which use now prints. src/doctor.rs shared_checks: the seat line, the shared config's own-login warning, and the shell and launchd lines. src/shared.rs: unset_launchd's error. src/keychain.rs: the write errors, with \"renewed\" gone.\nSend me the wording to change, and I apply it before WP03's measured run. The word park appears in none of them.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:34:37.798Z"
     }
   ],
   "handled": [
