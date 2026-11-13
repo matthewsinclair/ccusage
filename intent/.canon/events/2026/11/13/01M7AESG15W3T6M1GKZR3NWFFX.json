@@ -1,0 +1,16 @@
+{
+  "id": "01M7AESG15W3T6M1GKZR3NWFFX",
+  "ts": "2026-11-13T12:40:47.910Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 4,
+    "text": "On vc's word, in a Desk slot in the next Ccusage session, since hv's decision 6 closed the day (vc's todo 8): vc's two nits on ST0003/WP04 (vc's verdict of 2026-11-13 on 348a1a1..7cac510), neither worth a run before 0.1.9's cut: sessions::parse takes the last NAME=value match, since ps -E prints the environment after the arguments; and verified_token_at refuses before renewing when its profile has neither an email nor an account record to check against."
+  }
+}

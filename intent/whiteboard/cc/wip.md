@@ -3,8 +3,8 @@ node: cc
 name: Control Claude
 role: control
 session_id: aabdcc9a-ae49-43bd-86e3-efc6a4724e5d
-heartbeat_at: 2026-11-13 12:25Z
-status: active
+heartbeat_at: 2026-11-13 12:40Z
+status: paused
 focus: ""
 claims: [ST0003]
 ---
@@ -17,7 +17,7 @@ _(none)_
 
 ## TODO
 
-- On vc's word, in a Desk slot after the ccusage seats' compact (vc's todo 8): vc's two nits on ST0003/WP04 (vc's verdict of 2026-11-13 on 348a1a1..7cac510), neither worth a run before 0.1.9's cut: sessions::parse takes the last NAME=value match, since ps -E prints the environment after the arguments; and verified_token_at refuses before renewing when its profile has neither an email nor an account record to check against. (edited)
+- On vc's word, in a Desk slot in the next Ccusage session, since hv's decision 6 closed the day (vc's todo 8): vc's two nits on ST0003/WP04 (vc's verdict of 2026-11-13 on 348a1a1..7cac510), neither worth a run before 0.1.9's cut: sessions::parse takes the last NAME=value match, since ps -E prints the environment after the arguments; and verified_token_at refuses before renewing when its profile has neither an email nor an account record to check against. (edited)
 - ST0003/WP06, the rollout of the one live login on rhadamanth, later and on hv's word (hv's decision 5), now that 0.1.9 is published. hv runs every step, vc writes the commands and checks from metadata, and dc closes ISSUE:0003 at its end. cc stands by for anything the rollout finds in the code: doctor's report of the layout before the rollout, use's adoption of 0.1.8's shared login, launchd's variable, and the live switch under running sessions. AC-06.1 and AC-06.2 stay open until its record satisfies them.
 
 ## Holds
