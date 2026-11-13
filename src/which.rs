@@ -125,11 +125,7 @@ pub fn choose(
     .filter(|account| account.state == State::Eligible)
   {
     first.state = State::Chosen;
-    first.reason = if dated(first) {
-      "soonest reset with headroom".into()
-    } else {
-      "headroom, though no account gives a weekly reset".into()
-    };
+    first.reason = below_cap(first, model);
   }
   unknown.sort_by(|a, b| a.name.cmp(&b.name));
   accounts.extend(unknown);
@@ -200,12 +196,7 @@ fn assess(report: &Report, now: i64, cap: f64, model: Option<&str>, lifetime: i6
     return account;
   }
   let weekly_room = cap - weekly.utilization;
-  let scoped = model.and_then(|model| {
-    account.scoped.iter().find(|window| match &window.kind {
-      Kind::WeeklyScoped(Some(name)) => name.to_lowercase() == model.to_lowercase(),
-      _ => false,
-    })
-  });
+  let scoped = model.and_then(|model| scoped_for(&account.scoped, model));
   let over = scoped.filter(|window| window.utilization >= cap);
   if weekly.utilization >= cap || over.is_some() {
     account.state = State::AtCap;
@@ -224,12 +215,38 @@ fn assess(report: &Report, now: i64, cap: f64, model: Option<&str>, lifetime: i6
   };
   account.state = State::Eligible;
   account.headroom = headroom.map(|room| room.max(0.0));
-  account.reason = if dated(&account) {
-    "eligible".into()
-  } else {
-    "eligible, but with no weekly reset it ranks after every dated one".into()
-  };
+  account.reason = below_cap(&account, model);
   account
+}
+
+/// The account's scoped window for `model`, matched by name regardless of case.
+fn scoped_for<'a>(scoped: &'a [Window], model: &str) -> Option<&'a Window> {
+  scoped.iter().find(|window| match &window.kind {
+    Kind::WeeklyScoped(Some(name)) => name.to_lowercase() == model.to_lowercase(),
+    _ => false,
+  })
+}
+
+/// Why a usable account below the cap stands where it does: chosen or eligible, after
+/// every dated reset when its weekly window gives none, and with `model` named and its
+/// scoped window giving no share, that the share is unknown, as its headroom then is.
+fn below_cap(account: &Account, model: Option<&str>) -> String {
+  let standing = match (account.state == State::Chosen, dated(account)) {
+    (true, true) => "soonest reset with headroom",
+    (true, false) => "headroom, though no account gives a weekly reset",
+    (false, true) => "eligible",
+    (false, false) => "eligible, but with no weekly reset it ranks after every dated one",
+  };
+  match model
+    .and_then(|model| scoped_for(&account.scoped, model))
+    .filter(|window| window.share.is_none())
+  {
+    Some(window) => format!(
+      "{standing}; {}'s share of the weekly allowance is unknown",
+      window.kind.label()
+    ),
+    None => standing.into(),
+  }
 }
 
 /// Whether the account's weekly window gives a reset.
@@ -578,17 +595,52 @@ mod tests {
   }
 
   #[test]
-  fn under_a_model_a_scoped_window_with_no_share_has_no_headroom_and_ranks_after() -> Result<()> {
+  fn under_a_model_a_scoped_window_with_no_share_has_no_headroom_and_says_so() -> Result<()> {
     let now = at("2026-11-13T05:27:00Z")?;
-    let reset = Some("2026-11-16T00:00:00Z");
-    let reports = [
-      report("a-unshared", now, 10.0, reset, &[("Fable", 10.0, None)])?,
-      report("b-shared", now, 10.0, reset, &[("Fable", 10.0, Some(50.0))])?,
-    ];
-    let choice = choose(&reports, now, DEFAULT_CAP, Some("Fable"), usage::TTL);
+    let (sooner, later) = (Some("2026-11-15T00:00:00Z"), Some("2026-11-16T00:00:00Z"));
+    let unshared = |reset| report("a-unshared", now, 10.0, reset, &[("Fable", 10.0, None)]);
+    let shared = report("b-shared", now, 10.0, later, &[("Fable", 10.0, Some(50.0))])?;
+    let unknown = "Fable's share of the weekly allowance is unknown";
+    // On the same reset, the known headroom ranks first. The reason names the model as
+    // the usage spells it, whatever the case it was asked for in.
+    let choice = choose(
+      &[unshared(later)?, shared.clone()],
+      now,
+      DEFAULT_CAP,
+      Some("fable"),
+      usage::TTL,
+    );
     assert_eq!(names(&choice), ["b-shared", "a-unshared"]);
-    assert_eq!(choice.accounts[1].headroom, None);
-    assert_eq!(choice.accounts[1].state, State::Eligible);
+    let account = &choice.accounts[1];
+    assert_eq!((account.state, account.headroom), (State::Eligible, None));
+    assert_eq!(account.reason, format!("eligible; {unknown}"));
+    // With the sooner reset it is the choice all the same, and says so too.
+    let choice = choose(
+      &[unshared(sooner)?, shared.clone()],
+      now,
+      DEFAULT_CAP,
+      Some("fable"),
+      usage::TTL,
+    );
+    assert_eq!(chosen(&choice), Some("a-unshared"));
+    assert_eq!(
+      choice.accounts[0].reason,
+      format!("soonest reset with headroom; {unknown}")
+    );
+    // With no model named, no share is read, and none is said to be unknown.
+    let choice = choose(
+      &[unshared(sooner)?, shared],
+      now,
+      DEFAULT_CAP,
+      None,
+      usage::TTL,
+    );
+    assert!(
+      choice
+        .accounts
+        .iter()
+        .all(|account| !account.reason.contains(unknown))
+    );
     Ok(())
   }
 }

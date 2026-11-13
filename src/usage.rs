@@ -50,7 +50,7 @@ pub struct Window {
   pub resets_at: Option<time::OffsetDateTime>,
   /// A weekly_scoped window's allowance as a percent of the weekly one, from the
   /// response's `weekly_scoped_shares`; none for the other kinds, for the legacy
-  /// fields, and when the response gives no share for the window.
+  /// fields, and when the response gives the window no share it can read.
   pub share: Option<f64>,
 }
 
@@ -65,7 +65,7 @@ impl Window {
     context: &str,
   ) -> Result<Self> {
     let context = crate::clean(context);
-    if !utilization.is_finite() || !(0.0..=100.0).contains(&utilization) {
+    if !is_percent(utilization) {
       return Err(format!("usage percentage at {context} is outside 0..100").into());
     }
     let resets_at = resets_at
@@ -112,7 +112,7 @@ impl Snapshot {
       let entries = value
         .as_array()
         .ok_or("usage field limits must be an array")?;
-      let shares = self.shares()?;
+      let shares = self.shares();
       let mut result = Vec::new();
       for (index, entry) in entries.iter().enumerate() {
         let kind = match entry.get("kind").and_then(serde_json::Value::as_str) {
@@ -164,33 +164,21 @@ impl Snapshot {
   }
 
   /// Each weekly_scoped window's allowance as a percent of the weekly one, by the index
-  /// of its row in `limits`.
-  fn shares(&self) -> Result<BTreeMap<usize, f64>> {
-    let mut shares = BTreeMap::new();
-    let Some(value) = self
+  /// of its row in `limits`. Only the which rule reads a share, and only with a model
+  /// named, so a share it cannot read refuses nothing: a field that is not a list gives
+  /// no window a share, and an entry that does not parse, or whose share is not a
+  /// percent, is passed over. Its window then has no share, and the rule says so.
+  fn shares(&self) -> BTreeMap<usize, f64> {
+    self
       .fields
       .get("weekly_scoped_shares")
-      .filter(|value| !value.is_null())
-    else {
-      return Ok(shares);
-    };
-    let entries = value
-      .as_array()
-      .ok_or("usage field weekly_scoped_shares must be an array")?;
-    for (index, entry) in entries.iter().enumerate() {
-      let context = format!("weekly_scoped_shares[{index}]");
-      let row: Share = serde_json::from_value(entry.clone()).map_err(|_| {
-        format!(
-          "invalid usage share at {context}; expected numeric limit_index and allowance_percent_of_weekly"
-        )
-      })?;
-      let share = row.allowance_percent_of_weekly;
-      if !share.is_finite() || !(0.0..=100.0).contains(&share) {
-        return Err(format!("usage share at {context} is outside 0..100").into());
-      }
-      shares.insert(row.limit_index, share);
-    }
-    Ok(shares)
+      .and_then(serde_json::Value::as_array)
+      .into_iter()
+      .flatten()
+      .filter_map(|entry| serde_json::from_value::<Share>(entry.clone()).ok())
+      .filter(|row| is_percent(row.allowance_percent_of_weekly))
+      .map(|row| (row.limit_index, row.allowance_percent_of_weekly))
+      .collect()
   }
 
   fn validate(&self) -> Result<()> {
@@ -256,6 +244,11 @@ fn legacy_kind(key: &str) -> Kind {
         .join(" "),
     )),
   }
+}
+
+/// Whether `value` is a percent: a number from 0 to 100, which no NaN or infinity is.
+fn is_percent(value: f64) -> bool {
+  (0.0..=100.0).contains(&value)
 }
 
 /// A model's display name with any control characters taken out, or none when nothing
@@ -786,49 +779,69 @@ mod tests {
     Ok(())
   }
 
-  #[test]
-  fn a_share_attaches_to_its_scoped_row_alone_and_a_bad_one_names_its_place() -> Result<()> {
+  /// Each window's share, in the order the parser gives them, from a snapshot with a
+  /// weekly window and Fable's and Sonnet's scoped ones, and `shares` as its
+  /// weekly_scoped_shares. The usage stands whatever `shares` holds.
+  fn window_shares(shares: serde_json::Value) -> Result<Vec<Option<f64>>> {
     let snapshot: Snapshot = serde_json::from_value(serde_json::json!({
       "limits": [
         {"kind": "weekly_all", "percent": 1},
-        {"kind": "weekly_scoped", "percent": 2, "scope": {"model": {"display_name": "Fable"}}}
+        {"kind": "weekly_scoped", "percent": 2, "scope": {"model": {"display_name": "Fable"}}},
+        {"kind": "weekly_scoped", "percent": 3, "scope": {"model": {"display_name": "Sonnet"}}}
       ],
-      "weekly_scoped_shares": [
-        {"limit_index": 0, "allowance_percent_of_weekly": 40},
-        {"limit_index": 1, "allowance_percent_of_weekly": 50}
-      ]
+      "weekly_scoped_shares": shares
     }))?;
-    assert_eq!(
+    snapshot.validate()?;
+    Ok(
       snapshot
         .windows()?
-        .iter()
+        .into_iter()
         .map(|window| window.share)
-        .collect::<Vec<_>>(),
-      [None, Some(50.0)]
-    );
-    for (shares, location) in [
-      (
-        serde_json::json!([{"limit_index": 1, "allowance_percent_of_weekly": "PRIVATE_VALUE"}]),
-        "weekly_scoped_shares[0]",
-      ),
-      (
-        serde_json::json!([{"limit_index": 1, "allowance_percent_of_weekly": 101}]),
-        "weekly_scoped_shares[0]",
-      ),
-      (
-        serde_json::json!({"PRIVATE_VALUE": 1}),
-        "weekly_scoped_shares",
-      ),
-    ] {
-      let mut bad = snapshot.clone();
-      bad.fields.insert("weekly_scoped_shares".into(), shares);
-      let error = bad
-        .validate()
-        .err()
-        .ok_or("expected an invalid share")?
-        .to_string();
-      assert!(error.contains(location));
-      assert!(!error.contains("PRIVATE_VALUE"));
+        .collect(),
+    )
+  }
+
+  #[test]
+  fn a_share_attaches_to_its_scoped_row_alone() -> Result<()> {
+    let (fable, sonnet) = (50.0, 30.0);
+    let shares = window_shares(serde_json::json!([
+      {"limit_index": 0, "allowance_percent_of_weekly": 40},
+      {"limit_index": 1, "allowance_percent_of_weekly": fable},
+      {"limit_index": 2, "allowance_percent_of_weekly": sonnet}
+    ]))?;
+    assert_eq!(shares, [None, Some(fable), Some(sonnet)]);
+    Ok(())
+  }
+
+  #[test]
+  fn a_shares_field_that_is_not_a_list_gives_no_window_a_share() -> Result<()> {
+    let shares =
+      window_shares(serde_json::json!({"limit_index": 1, "allowance_percent_of_weekly": 50}))?;
+    assert!(shares.iter().all(Option::is_none));
+    Ok(())
+  }
+
+  #[test]
+  fn a_share_entry_that_does_not_parse_is_passed_over_and_the_rest_stand() -> Result<()> {
+    let sonnet = 30.0;
+    let shares = window_shares(serde_json::json!([
+      {"limit_index": 1, "allowance_percent_of_weekly": "50"},
+      {"allowance_percent_of_weekly": 50},
+      {"limit_index": 2, "allowance_percent_of_weekly": sonnet}
+    ]))?;
+    assert_eq!(shares, [None, None, Some(sonnet)]);
+    Ok(())
+  }
+
+  #[test]
+  fn a_share_that_is_not_a_percent_is_passed_over_and_the_rest_stand() -> Result<()> {
+    let sonnet = 30.0;
+    for outside in [-1.0, 101.0] {
+      let shares = window_shares(serde_json::json!([
+        {"limit_index": 1, "allowance_percent_of_weekly": outside},
+        {"limit_index": 2, "allowance_percent_of_weekly": sonnet}
+      ]))?;
+      assert_eq!(shares, [None, None, Some(sonnet)]);
     }
     Ok(())
   }
