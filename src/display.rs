@@ -121,6 +121,34 @@ pub fn next(reports: &[Report], now: i64, cap: f64) -> Next {
   }
 }
 
+/// The accounts the TUI asks for again at `now`: each whose usage is missing or older
+/// than the cache's lifetime, and that it last asked for (`asked`, by name) a whole
+/// lifetime ago or more, or never. So an account is asked at most once a lifetime, and
+/// one whose ask brought nothing fresh, as a rate-limited one's does, waits a lifetime
+/// before it is asked again; the cache it is read through then fetches nothing before
+/// the account's retry time.
+pub fn due(
+  reports: &[Report],
+  asked: &std::collections::BTreeMap<String, i64>,
+  now: i64,
+) -> Vec<String> {
+  let lifetime = crate::usage::TTL;
+  reports
+    .iter()
+    .filter(|report| {
+      !report
+        .fetched_at
+        .is_some_and(|at| crate::usage::fresh(at, now, lifetime))
+    })
+    .filter(|report| {
+      asked
+        .get(&report.name)
+        .is_none_or(|at| now.saturating_sub(*at) >= lifetime)
+    })
+    .map(|report| report.name.clone())
+    .collect()
+}
+
 /// The overview's lines. `next`, when given, marks the rule's choice on its account,
 /// says when nothing is eligible, and with `Next::Refresh` says a refresh is needed,
 /// which only the TUI passes.
@@ -573,6 +601,14 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
       .collect()
   };
   let mut receiver = store.map(|store| worker(store.path.clone(), names.clone(), false));
+  // When each account was last asked for, so that none is asked more than once a lifetime.
+  let mut asked: std::collections::BTreeMap<String, i64> = match store {
+    Some(_) => names
+      .iter()
+      .map(|name| (name.clone(), crate::now()))
+      .collect(),
+    None => std::collections::BTreeMap::new(),
+  };
   let mut active = store.map(Store::active).transpose()?.flatten();
   let mut selected = 0;
   let mut detail = false;
@@ -621,6 +657,18 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
       }
       if finished {
         receiver = None;
+      }
+      // With no fetch running, ask again for each account whose usage has passed the
+      // cache's lifetime, at most once a lifetime, so the next marker stays on screen.
+      if receiver.is_none()
+        && let Some(store) = store
+      {
+        let now = crate::now();
+        let targets = due(&reports, &asked, now);
+        if !targets.is_empty() {
+          asked.extend(targets.iter().map(|name| (name.clone(), now)));
+          receiver = Some(worker(store.path.clone(), targets, false));
+        }
       }
       if dirty || last_paint.elapsed() >= Duration::from_secs(30) {
         let (width, height) = terminal::size()?;
@@ -752,6 +800,8 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
                 } else {
                   names.clone()
                 };
+                let now = crate::now();
+                asked.extend(targets.iter().map(|name| (name.clone(), now)));
                 receiver = Some(worker(store.path.clone(), targets, true));
                 notice = if detail {
                   "Refreshing this account"
@@ -1033,6 +1083,30 @@ mod tests {
     assert!(frame.contains("Nothing is eligible to be next"));
     // One account's usage, which passes no marker, shows none.
     assert!(marked(lines(&reports[1..2], None, None, None, 80, now, false))?.is_empty());
+    Ok(())
+  }
+
+  // ST0002 AT-08.2: the TUI asks again once usage passes the cache's lifetime, and no sooner.
+  #[test]
+  fn the_tui_asks_again_once_usage_passes_the_lifetime_and_no_sooner() -> Result<()> {
+    let now = crate::now();
+    let lifetime = crate::usage::TTL;
+    let reports = [
+      weekly_report("fresh", now, now, 10.0, 3)?,
+      weekly_report("aged", now, now - lifetime, 10.0, 3)?,
+      // An ask that brought nothing fresh, as a rate-limited one's does.
+      Report::failed("limited", "usage rate limited; retry in 28m"),
+    ];
+    let mut asked = std::collections::BTreeMap::new();
+    // Never asked: each account without fresh usage is due, and the fresh one is not.
+    assert_eq!(due(&reports, &asked, now), ["aged", "limited"]);
+    // Asked within the lifetime: not yet, though the ask brought nothing fresh.
+    for name in ["aged", "limited"] {
+      asked.insert(name.to_owned(), now - lifetime + 1);
+    }
+    assert!(due(&reports, &asked, now).is_empty());
+    // A whole lifetime after the ask: due again.
+    assert_eq!(due(&reports, &asked, now + 1), ["aged", "limited"]);
     Ok(())
   }
 }
