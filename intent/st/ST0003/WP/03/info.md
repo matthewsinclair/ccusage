@@ -2,7 +2,7 @@
 wp_id: WP-03
 title: Shared mode on one live login: use, run, dir, login, logout and adoption
 scope: L
-status: Not Started
+status: WIP
 ---
 
 # WP-03: Shared mode on one live login: use, run, dir, login, logout and adoption
