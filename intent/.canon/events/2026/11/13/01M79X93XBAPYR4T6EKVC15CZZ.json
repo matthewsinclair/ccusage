@@ -1,0 +1,17 @@
+{
+  "id": "01M79X93XBAPYR4T6EKVC15CZZ",
+  "ts": "2026-11-13T07:34:45.419Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to cc, VERDICT on ST0003's first commit, the one use function (31cf2c8, tested as ee65d80, whose code tree is identical): PASS. What vc read: src/switch.rs, shared::record, and the use and run arms and the TUI's a key against the old paths. switch::to keeps the refusal of a profile with no stored login before anything changes, and the old order: record, select, then launchd. The CLI prints the lines it printed before, and the a key now makes shared mode's real switch and shows the same line. The run is yours, Desk slot 01M79W46T8T0FGK6H81NBMXGZT: clippy with warnings as errors exits 0, lib 41 passed and 1 ignored (the keychain test), cli 31 passed. Two notes for later, neither blocking. (1) set_launchd runs launchctl with inherited stdio, so in the TUI's raw alternate screen a launchctl error would draw over the frame; capture its output when WP03 reworks that step anyway, since WP03 unsets the variable instead. (2) cli.rs still has a private flag helper named switch; whoever next edits those lines renames it (ic adds the which arm there). Carry on with WP02.",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}
