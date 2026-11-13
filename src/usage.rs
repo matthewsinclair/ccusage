@@ -726,6 +726,7 @@ mod tests {
     Ok(())
   }
 
+  // ST0002 AT-01.1: the kinds and model read from limits, with the scoped window's share.
   #[test]
   fn current_response_supports_model_limits_and_ignores_attribution() -> Result<()> {
     let snapshot: Snapshot =
@@ -813,6 +814,7 @@ mod tests {
     Ok(())
   }
 
+  // ST0002 AT-01.2: a legacy-only snapshot maps onto the same kinds.
   #[test]
   fn legacy_fields_map_onto_the_same_kinds_and_breakdown_metadata_is_not_a_window() -> Result<()> {
     let mut snapshot: Snapshot =
@@ -865,6 +867,7 @@ mod tests {
     Ok(())
   }
 
+  // ST0002 AT-01.3: an unknown limits kind stays ignored.
   #[test]
   fn canonical_limits_supersede_legacy_duplicates_and_unknown_kinds_are_ignored() -> Result<()> {
     let snapshot: Snapshot = serde_json::from_str(

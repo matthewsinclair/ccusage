@@ -750,6 +750,7 @@ mod tests {
       .collect()
   }
 
+  // ST0002 AT-01.4: the overview's labels, the same before WP01 and after it.
   #[test]
   fn overview_rows_keep_their_labels_for_limits_and_legacy_fields() -> Result<()> {
     let limits: crate::usage::Snapshot =
