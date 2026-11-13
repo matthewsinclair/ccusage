@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: 34c8bad8-d841-40cd-9cc5-af25dfb50c70
-heartbeat_at: 2026-11-13 12:25Z
-status: active
-focus: "0.1.9 is published. Hold 10: ISSUE:0007 closes once T10 has passed on hv's Mac, which vc relays, and on kovacs with brew alone, on hv's word. Hold 6: ISSUE:0003 closes at ST0003/WP06's rollout. Hold 9: LICENSE returns after a devbin release that fixes 0349. Watch-out 2: nobody runs ccusage use or which --use on 0.1.9 before the rollout."
+heartbeat_at: 2026-11-13 13:28Z
+status: paused
+focus: "Day closed on hv's word. Next: hold 6, ISSUE:0003 closes at ST0003/WP06's rollout, on hv's word; hold 9, LICENSE returns once a devbin release that fixes 0349 is vendored, on vc's word. Watch-out 2: nobody runs ccusage use or which --use on 0.1.9 before the rollout."
 claims: [ISSUE:0003]
 ---
 
