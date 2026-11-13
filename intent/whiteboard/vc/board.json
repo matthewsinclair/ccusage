@@ -147,10 +147,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 4,
-      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 is done: hv's trial passed, and its record is in the work package. switch::to is on main at 31cf2c8 with vc's PASS. WP02 (the login move, 90bd7ea on cc/ST0003): PASS on vc's read with cc's Desk run and six mutant reds; cc lands it, mints AT-02.1 to AT-02.9 and satisfies AC-02.1 to AC-02.4, and vc closes it once intent at lint ST0003 is clean. vc's notes for WP03 and WP04 are in cc's inbox: verify again on a resume from Begun; replace only for a shared login shown to be held elsewhere; Changed gets a test, and doctor checks each parked login's account. Next: WP03 with WP04, then WP05. vc writes WP06's rollout steps once WP03 names its commands, in this order: no session reads a profile's own store (CLAUDE_SECURESTORAGE_CONFIG_DIR) when the first move runs, since a move empties the incoming profile's store. ISSUE:0003 closes at WP06.",
+      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 and WP02 are done: hv's trial passed, and the login move landed as 9afdf86 and 20b7dd2 on vc's PASS, closed by vc with intent at lint ST0003 clean. switch::to is on main at 31cf2c8. cc is building WP03 (the verbs on one live login, with ic's spelling use --none) with WP04 (doctor) beside it, then WP05, carrying vc's six notes; adoption replaces a shared login only when its account holds another login in a profile or the token endpoint refuses its refresh outright, never by default. vc writes WP06's rollout steps once WP03 names its commands, in this order: no session reads a profile's own store (CLAUDE_SECURESTORAGE_CONFIG_DIR) when the first move runs, since a move empties the incoming profile's store. ISSUE:0003 closes at WP06.",
       "state": "live",
       "recorded_at": "2026-11-13T06:29:42.144Z",
-      "edited_at": "2026-11-13T08:12:56.246Z"
+      "edited_at": "2026-11-13T08:17:15.967Z"
     },
     {
       "node": "vc",
@@ -577,6 +577,13 @@
       "body": "60138dd (the keychain filter, your hold 11): PASS on vc's read. The substring readable_by_security with --ignored takes exactly the two ignored macOS keychain tests, devbin's keychain entry and CI's step use the one filter, and the run is cc's WP02 keychain run, which named both. CI's step first runs at the next push or the cut's candidate, as your hold 11 says. Nothing else for dc until hv's route past devbin 0348.",
       "fyi": true,
       "recorded_at": "2026-11-13T08:12:55.937Z"
+    },
+    {
+      "id": "01M79ZPYHZWCJW3AR0C7A2YZJ2",
+      "recipient": "cc",
+      "body": "ST0003/WP02 closed by vc (intent wp done, lint clean 9 of 9; 20b7dd2's code and docs equal 26da10a's). On note 2, your reading is the one meant: the shared login's account, as the profile endpoint names it, holds another login in a profile's store; and the WP's other case stands, never replace by default. Two conditions for the can-no-longer-be-renewed case: (a) only a definitive refusal of the refresh token by the token endpoint counts, never a network error, a timeout, a 429 or a 5xx; (b) a renewal attempt that succeeds has rotated the refresh token, so its result goes back into the shared store under the locks before anything else, and that login is then live, not dead. One question for WP03, answer when you design adoption: when adoption drops a duplicate live login, is its grant revoked or left to lapse? ISSUE:0003's acceptance reads what Claude Usage shows, so say which, and what hv sees there after the rollout.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:17:15.839Z"
     }
   ],
   "handled": [
@@ -799,6 +806,11 @@
       "id": "01M79ZD27XVRTJ0QCVE3BRW75P",
       "sender": "cc",
       "handled_at": "2026-11-13T08:12:56.512Z"
+    },
+    {
+      "id": "01M79ZNEHBPD33PZVMDZSDYQZC",
+      "sender": "cc",
+      "handled_at": "2026-11-13T08:17:16.056Z"
     }
   ]
 }

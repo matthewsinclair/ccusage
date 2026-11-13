@@ -17,7 +17,7 @@ title: Live account switching: ccusage use moves the active login into the share
 
 - AC-01.1 (non-test) hv's trial on the installed Claude Code shows a running session following a login that another process changed, with no restart, and the record names the version, the delay and any prompt. -- evidence: ST0003/WP01's record of hv's trial, 2026-11-13 on Claude Code 2.1.323: session A held the login B stored 73 s earlier, with no restart and no prompt, and answered its next request after one automatic thread replay -- satisfied: yes
 
-### WP-02 -- The login move: claudeAiOauth between stores, locked, journaled, never lossy (status: WIP)
+### WP-02 -- The login move: claudeAiOauth between stores, locked, journaled, never lossy (status: Done)
 
 - AC-02.1 A move leaves each account with exactly one login, moves only `claudeAiOauth`, and leaves every other key of each document unchanged. -- satisfied: yes (computed)
 - AC-02.2 A move interrupted after any step is finished by the next run, and at no point is an account without a login. -- satisfied: yes (computed)
@@ -51,7 +51,7 @@ title: Live account switching: ccusage use moves the active login into the share
 
 _(no tests in this group)_
 
-### WP-02 -- The login move: claudeAiOauth between stores, locked, journaled, never lossy (status: WIP)
+### WP-02 -- The login move: claudeAiOauth between stores, locked, journaled, never lossy (status: Done)
 
 - AT-02.1 `src/seat.rs:703` -- covers AC-02.1 -- status: green -- A move leaves each account one login, and every other key of each document, in its order, as it was; red under the swap_remove mutant in WP02's mutant run at ffc95a1, whose move code 90bd7ea keeps, once the test's rest() stopped reading through without_login; green in WP02's measured run at 90bd7ea, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5, landed as 9afdf86
 - AT-02.2 `src/seat.rs:734` -- covers AC-02.1 -- status: green -- Parking the seated login leaves the shared store holding none, its other keys as they were; red before WP02: written against seat::run, it could not compile before it; green in WP02's measured run at 90bd7ea, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5, landed as 9afdf86

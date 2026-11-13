@@ -1,0 +1,17 @@
+{
+  "id": "01M79ZPYHZWCJW3AR0C7A2YZJ1",
+  "ts": "2026-11-13T08:17:15.839Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "ST0003/WP02 closed by vc (intent wp done, lint clean 9 of 9; 20b7dd2's code and docs equal 26da10a's). On note 2, your reading is the one meant: the shared login's account, as the profile endpoint names it, holds another login in a profile's store; and the WP's other case stands, never replace by default. Two conditions for the can-no-longer-be-renewed case: (a) only a definitive refusal of the refresh token by the token endpoint counts, never a network error, a timeout, a 429 or a 5xx; (b) a renewal attempt that succeeds has rotated the refresh token, so its result goes back into the shared store under the locks before anything else, and that login is then live, not dead. One question for WP03, answer when you design adoption: when adoption drops a duplicate live login, is its grant revoked or left to lapse? ISSUE:0003's acceptance reads what Claude Usage shows, so say which, and what hv sees there after the rollout.",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}

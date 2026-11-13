@@ -2,7 +2,7 @@
 wp_id: WP-02
 title: The login move: claudeAiOauth between stores, locked, journaled, never lossy
 scope: L
-status: WIP
+status: Done
 ---
 
 # WP-02: The login move: claudeAiOauth between stores, locked, journaled, never lossy

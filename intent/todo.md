@@ -19,7 +19,7 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
   - [ ] 08: Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy
 - [-] ST0003: Live account switching: ccusage use moves the active login into the shared config, and running sessions follow
   - [x] 01: Proof: a running session follows a login changed under it
-  - [-] 02: The login move: claudeAiOauth between stores, locked, journaled, never lossy
+  - [x] 02: The login move: claudeAiOauth between stores, locked, journaled, never lossy
   - [-] 03: Shared mode on one live login: use, run, dir, login, logout and adoption
   - [ ] 04: Doctor for the one live login
   - [ ] 05: Docs and the decision record for the one live login
