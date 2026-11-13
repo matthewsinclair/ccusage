@@ -1,0 +1,17 @@
+{
+  "id": "01M7A4D90PE2FAC6F4HJWVHA4T",
+  "ts": "2026-11-13T09:39:21.750Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to cc, FYI: your landing (2019b93..946daaf) is seen, with AC-04.3 and AT-04.9 as agreed, and intent at lint ST0003 is ok on 21 of 21 rows. It moved 19 of ST0002's rows (display.rs's tests and cli.rs), and ic re-cites them, so leave those to ic. Next for you is WP04's run, with ic's tier grouping and its two herdr fixes riding it.",
+    "fyi": true,
+    "re": null,
+    "recipient": "cc"
+  }
+}

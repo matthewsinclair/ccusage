@@ -1,0 +1,16 @@
+{
+  "id": "01M7A4EKW9P7N3X03NEFPQCCWQ",
+  "ts": "2026-11-13T09:40:05.641Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 to WP03 are done, each closed by vc with intent at lint ST0003 clean; WP03 landed as eea2dea. WP03's follow-up, PASS on vc's read with cc's run at 46295e6 in slot 01M7A1SFMQY40KBJ95VXWDZBT8, landed as 26f373f..ed77832 (2019b93, vc's notes 1 to 3; ed77832, each report's plan for predict), its code identical to 46295e6, with 946daaf carrying AT-04.9's id in a comment. AC-04.3 (a usage report says what its account type gives, hv's decision 3) is in WP04 on vc's word. Next: WP04 (doctor, todo 3a's notes, cc's desk-check fixes, and AT-04.10 and AT-04.11 for AC-04.1's two gaps), rebased onto main, with ic's display lines signed, in one Desk slot that also carries ic's tier grouping and herdr fixes; then WP05 (docs and the decision record, no cargo run). WP06 is hv's rollout, in vc's closing sequence (todo 7). ISSUE:0003 closes at WP06."
+  }
+}

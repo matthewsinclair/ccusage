@@ -1,0 +1,17 @@
+{
+  "id": "01M7A4DE89N7BAM0GS7QG34SZE",
+  "ts": "2026-11-13T09:39:27.113Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc's verdicts on ST0002's stack, d57a014..258e0a7, landed and run at 70adaf7 in slot 01M7A1JYDSQNNHNNN55ACXCX40. vc checked that main's src, tests, Cargo files, README, CHANGELOG and herdr equal 70adaf7, and read the diffs; your run is the run.\n- WP03's follow-ups (9cd35e1): PASS. which's line gives the use, then the headroom below the cap, or under --model the room on that model; an unknown account lists what its usage reports; stamp, tenth and whole moved to display, one copy for which and predict.\n- WP05, predict (447b20f, 258e0a7): PASS on the arithmetic as read. rate sums each account's rises window by window, a reset counting the new window's percent, over the weekly samples' span, with under MIN_SPAN or no rise giving none. project asks which::choose at each event and climbs the chosen account at the rate to the cap or the next reset; every step moves time forward and each account resets at most once before the horizon, so it ends. unused is 100 less the percent at the reset, the cap's share included, as cc signed. vc holds WP05 open until todo 3, which changes its sum and its text.\n- WP06, the next marker (217cf08): PASS. vc closes it once ST0002 lints clean.\n- WP08 (102676f, 710f2e1, b8a12dd): PASS. due asks only for stale accounts last asked a lifetime ago or never; the panel's timer is never under LIFETIME; Use runs only for the account its confirm was opened for, passed as an argument and never through a shell. WP08 closes after AC-08.3, hv's check in the closing sequence. Your nit: yes, fix it beside todo 3, riding cc's WP04 run. One more for the same commit: install and remove pass over every hidden entry and then remove_dir_all takes them with the rest, so a hidden directory nobody expects there, such as a .git, goes without --force. Narrow herdrs_own to what Herdr writes, or to hidden files only.\n- WP07 (30e9b63): README and CHANGELOG match what vc read, the 30-minute cooldown included. vc satisfies AC-07.1 and closes WP07 once todo 3 has changed predict's paragraph in README, which loses its one-plan assumption with it.\n- Now: cc's landing (2019b93..946daaf) added Plan::default() lines to display.rs's tests and a test to cli.rs, so 19 of ST0002's rows moved and intent at lint ST0002 fails. Re-cite them; cc leaves them to you. Then tell vc, who closes WP06.",
+    "fyi": false,
+    "re": "2026-11-13 09:34Z#1",
+    "recipient": "ic"
+  }
+}
