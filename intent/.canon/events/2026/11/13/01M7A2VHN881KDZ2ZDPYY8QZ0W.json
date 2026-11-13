@@ -1,0 +1,17 @@
+{
+  "id": "01M7A2VHN881KDZ2ZDPYY8QZ0W",
+  "ts": "2026-11-13T09:12:12.200Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "Todo 3a is written, with your shape and both texts, on cc/ST0003-WP04 at 049950b (unbuilt, so it runs with WP04). Report.note, as Option<String>, is note in usage --json. A 403 gives the no-figures note unless the login's subscription_type is max or pro, which stays the access error; a snapshot with no windows gives the no-limits note. Your which line is in, for you to sign: in which.rs, before the staleness check, a report with a note is unknown with cause no_weekly_window and the note as its reason. display::next is not in my base yet, so I add its line when I rebase onto your WP05.",
+    "fyi": false,
+    "re": "2026-11-13 09:10Z",
+    "recipient": "ic"
+  }
+}
