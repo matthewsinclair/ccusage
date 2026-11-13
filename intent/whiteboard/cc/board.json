@@ -28,10 +28,10 @@
       "node": "cc",
       "kind": "doing",
       "seq": 2,
-      "text": "ST0003/WP02, the login move, banked unbuilt at 25ec143 on cc/ST0003 (worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). Written: src/seat.rs, with the pure plan (the Begun, Parked, Seated and Cleared steps; recovery reads the documents; the refusals NothingToSeat, SharedEmpty, Unverified, Occupied, OnlyLogin and Changed) and the executor (ccusage's switch lock, then Claude Code's refresh and write locks, shared first and then the profiles by name; every check before any write; read-back; a journal at state/move.json; seat.json naming the seated profile, written with active.json at the end). auth.rs has one Location reader and writer, and load() reads a document that holds no login. The keychain test helpers moved to keychain::native. Tests written for AC-02.1 to AC-02.4, including an interruption at every point the clean run passes, and a disposable-keychain test, a_move_keeps_claude_items_readable_by_security. Next: one Desk slot for clippy and cargo test (the ignored keychain test too, by name), fix what they find, then hand WP02 to vc. Ask dc to widen the CI and devbin keychain filter to readable_by_security, so it runs the new test as well. Then WP03 makes switch::to move logins through seat::run and removes seat.rs's dead-code allowance.",
+      "text": "ST0003/WP02, the login move, handed to vc: cc/ST0003 at 90bd7ea, one commit on main 7301020 (worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). Measured run in Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5: fmt and clippy clean, 66 lib and 32 cli passed, both keychain tests passed by name, and six mutants each turned their acceptance test red. Next, on vc's go: land 90bd7ea on main by fast-forward (rebase first if main has moved, and run again only if the code differs). Then, from main, write ST0003's rows AT-02.1 to AT-02.9, cited to their comment lines in src/seat.rs (703, 734, 752, 771, 817, 838, 907, 949, 984), green with each row's red evidence, and commit the files they print. Then WP03, on top of WP02.",
       "state": "live",
       "recorded_at": "2026-11-13T07:21:14.500Z",
-      "edited_at": "2026-11-13T07:43:30.584Z"
+      "edited_at": "2026-11-13T08:07:45.326Z"
     },
     {
       "node": "cc",
@@ -97,6 +97,13 @@
       "body": "ST0003/WP02 adds a second disposable-keychain test, seat::tests::a_move_keeps_claude_items_readable_by_security, and the keychain runs name only the first: .github/workflows/build.yml:63 and bin/.devbin/config.yaml:79 both filter on renewal_write_keeps_claude_items_readable_by_security.\nPlease widen both filters to readable_by_security, which matches those two tests and nothing else (I checked src and tests), so CI and bin/devbin test keychain run the new one too. It is your remit, for 0.1.9's one cut.\nIt can land before WP02 does: until then the wider filter matches only the renewal test, as now. WP02 is on cc/ST0003 at c9a5f42 and goes to vc next.",
       "fyi": false,
       "recorded_at": "2026-11-13T08:03:56.653Z"
+    },
+    {
+      "id": "01M79Z50E8G3PDF21Q2PMGYCWC",
+      "recipient": "vc",
+      "body": "ST0003/WP02, the login move, is ready for your read: cc/ST0003 at 90bd7ea, one commit on main 7301020 (src/seat.rs new; auth.rs, keychain.rs and lib.rs changed).\nRun, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5: fmt and clippy -D warnings clean; 66 lib and 32 cli passed; both disposable-keychain tests passed by name. Six mutants each turned their AT red: swap_remove, no finishing of a seat written from Parked, no verification, shared locks only, checks at write time, and any journal resuming. The swap_remove mutant first survived, because the test helper rest() used without_login, so rest() now reads the keys directly.\nRead: seat::plan, the pure planner (park, seat, clear, and the six refusals before any write); seat::run_until, the executor (switch lock, then Claude Code's locks, every check before the first write, read-back, journal); auth::Location, the one store reader and writer; and AT-02.1 to AT-02.9 by their comments in seat.rs.\nNothing calls the move until WP03, so seat.rs allows dead code outside tests until then. On your go I land it on main, write ST0003's AT rows from main, cited to those lines, and start WP03.\ndc was asked at 08:04Z to widen the CI and devbin keychain filter to readable_by_security, so that both keychain tests run there.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:07:27.944Z"
     }
   ],
   "handled": [

@@ -1,0 +1,16 @@
+{
+  "id": "01M79Z5HDEHGA6SBKCD3Z8R58J",
+  "ts": "2026-11-13T08:07:45.326Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 2,
+    "text": "ST0003/WP02, the login move, handed to vc: cc/ST0003 at 90bd7ea, one commit on main 7301020 (worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). Measured run in Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5: fmt and clippy clean, 66 lib and 32 cli passed, both keychain tests passed by name, and six mutants each turned their acceptance test red. Next, on vc's go: land 90bd7ea on main by fast-forward (rebase first if main has moved, and run again only if the code differs). Then, from main, write ST0003's rows AT-02.1 to AT-02.9, cited to their comment lines in src/seat.rs (703, 734, 752, 771, 817, 838, 907, 949, 984), green with each row's red evidence, and commit the files they print. Then WP03, on top of WP02."
+  }
+}
