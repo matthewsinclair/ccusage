@@ -2,7 +2,7 @@
 wp_id: WP-02
 title: The which rule: earliest reset first, with the cap from config
 scope: M
-status: Not Started
+status: WIP
 ---
 
 # WP-02: The which rule: earliest reset first, with the cap from config

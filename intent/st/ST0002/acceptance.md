@@ -21,7 +21,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 - AC-01.1 Every parsed usage window carries its kind, and its model when scoped, read from the `limits` array and the legacy fields alike, and the output of `usage` and of the TUI is unchanged. -- satisfied: no (computed)
 
-### WP-02 -- The which rule: earliest reset first, with the cap from config (status: Not Started)
+### WP-02 -- The which rule: earliest reset first, with the cap from config (status: WIP)
 
 - AC-02.1 On the worked example's windows at 2026-11-13T05:27Z, with the caches' own reset times, the rule chooses hello and ranks engineering04, then engineering01 and engineering02, then engineering00. -- satisfied: no (computed)
 - AC-02.2 An account whose data is older than the usage cache's lifetime, whose weekly reset has passed, or that has no weekly window is unknown: listed with its reason and never chosen. -- satisfied: no (computed)
@@ -67,7 +67,7 @@ _(no tests in this group)_
 
 _(no tests in this group)_
 
-### WP-02 -- The which rule: earliest reset first, with the cap from config (status: Not Started)
+### WP-02 -- The which rule: earliest reset first, with the cap from config (status: WIP)
 
 _(no tests in this group)_
 
