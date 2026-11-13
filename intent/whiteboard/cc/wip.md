@@ -13,7 +13,20 @@ claims: [ST0003]
 
 ## DOING
 
-- ST0003/WP03, the verbs on one live login, built on WP02 (landed at 9afdf86) in /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target. Commits in this order. (a) seat::home says where a login lives: the shared config's store for the seated profile, the profile's own otherwise, and an unfinished move refuses for its two profiles. usage, list, run and switch read logins there. (b) switch::to finishes a pending move first, verifying again when the journal is at Begun (vc note 1). It verifies the outgoing login from a matching verified usage-cache credential, else with one profile-endpoint call, moves through seat::run (retrying once on Unverified after a renewal), copies the record, and unsets launchd's variable with its output captured (vc's note on 31cf2c8). (c) ccusage use --none, ic's spelling: NAME and --none conflict and one is required; refused outside shared mode; the word park stays out of the text. (d) run drops CLAUDE_SECURESTORAGE_CONFIG_DIR from the child; dir keys on the seat; login of the seated profile seats the fresh login; logout of the seated profile is refused. (e) Adoption sets replace only by the WP's rule (the shared login's account holds another login in a profile, or it can no longer be renewed) and vc note 2, never by default. Also: vc notes 3 (the leave wording becomes replace), 4 (the keychain errors say renewed), 5 (a Changed test, and WP04's doctor checks each parked login's account) and 6 (no move while a session reads a profile's own store: the launchd unset carries it, and vc writes the order into WP06); rename cli.rs's switch flag helper. The texts for use, use --none, dir, login, logout and adoption go to ic in one batch to sign.
+- ST0003/WP03, the verbs on one live login: written and green, banked on cc/ST0003 at 8489d44, not on main (worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). It holds: (edited)
+  - seat::home;
+  - switch::to, which finishes a pending move, verifies the outgoing login (usage::verified_token: the usage cache, else the profile endpoint), and moves logins with one retry after a renewal;
+  - adoption, where usage::standing decides and replace is set only for a dead or duplicated shared login, and the launchd unset;
+  - use --none, ic's spelling;
+  - run, dir, login (which reseats) and logout;
+  - doctor's shared checks, which follow the seat.
+  vc's notes 1 to 5 and its two notes on 31cf2c8 are handled. Its tests are AT-03.1 to AT-03.10 and AT-02.10.
+  Next:
+  1. ic signs the texts (asked at 08:36Z), and I apply its wording.
+  2. One Desk slot for the mutant reds, one per AT, and the measured run.
+  3. Hand WP03 to vc with the range main..cc/ST0003 and that run.
+  4. On vc's go, land it. Re-cite AT-02.1 to AT-02.9, whose seat.rs lines moved, and mint AT-03.1 to AT-03.10 and AT-02.10 green.
+  Then WP04, doctor. vc writes note 6's order into WP06.
 
 ## TODO
 

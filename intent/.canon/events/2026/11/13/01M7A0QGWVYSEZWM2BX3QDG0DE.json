@@ -1,0 +1,16 @@
+{
+  "id": "01M7A0QGWVYSEZWM2BX3QDG0DE",
+  "ts": "2026-11-13T08:35:03.195Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0003/WP03, the verbs on one live login: written and green, banked on cc/ST0003 at 8489d44, not on main (worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). It holds:\n- seat::home;\n- switch::to, which finishes a pending move, verifies the outgoing login (usage::verified_token: the usage cache, else the profile endpoint), and moves logins with one retry after a renewal;\n- adoption, where usage::standing decides and replace is set only for a dead or duplicated shared login, and the launchd unset;\n- use --none, ic's spelling;\n- run, dir, login (which reseats) and logout;\n- doctor's shared checks, which follow the seat.\nvc's notes 1 to 5 and its two notes on 31cf2c8 are handled. Its tests are AT-03.1 to AT-03.10 and AT-02.10.\nNext:\n1. ic signs the texts (asked at 08:36Z), and I apply its wording.\n2. One Desk slot for the mutant reds, one per AT, and the measured run.\n3. Hand WP03 to vc with the range main..cc/ST0003 and that run.\n4. On vc's go, land it. Re-cite AT-02.1 to AT-02.9, whose seat.rs lines moved, and mint AT-03.1 to AT-03.10 and AT-02.10 green.\nThen WP04, doctor. vc writes note 6's order into WP06."
+  }
+}
