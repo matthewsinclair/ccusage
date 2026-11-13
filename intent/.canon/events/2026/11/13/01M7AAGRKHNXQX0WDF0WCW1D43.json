@@ -1,0 +1,15 @@
+{
+  "id": "01M7AAGRKHNXQX0WDF0WCW1D43",
+  "ts": "2026-11-13T11:26:07.473Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "0.1.9's kovacs gates, again after cc's fix (hv's decision 5, through vc). The first run, at c31d150 on 2026-11-13 from 11:23:03Z to 11:23:40Z in the Desk's heavy slot 01M7A9BZ7RHSZC32FW0GY5YTJ6, was not a pass. Off macOS, clippy fails on src/auth.rs:90: Location::check uses bytes only in its macOS Keychain arm, so -D warnings fails the lib and lib test (9afdf86, ST0003/WP02). CI's two Linux clippy steps would fail the cut's candidate the same way. actionlint is not on kovacs's PATH, which vc accepts. Every other check, test all (cargo 134 of 134), build and doctor were green. Released when cc's fix is on main and vc gives the word. Then the same by-hand leg again: ask the Desk for a heavy slot, tell kovacs-sysadm, send START and END, and report each verdict to vc, clippy's on every target first."
+  }
+}

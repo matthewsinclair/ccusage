@@ -5,9 +5,9 @@
     "name": "DevX Claude",
     "role": "devx",
     "session_id": "34c8bad8-d841-40cd-9cc5-af25dfb50c70",
-    "heartbeat_at": "2026-11-13T11:05:38.941Z",
+    "heartbeat_at": "2026-11-13T11:26:24.104Z",
     "status": "active",
-    "focus": "Running 0.1.9's pre-cut gates on kovacs for vc (doing 9, hv's decision 5); then the cut is hv's, and T10 follows its publish (hold 10). Holds 6 and 9 stand.",
+    "focus": "kovacs's first run at c31d150 found clippy red off macOS (src/auth.rs:90, cc's to fix), so 0.1.9's cut waits on that fix and on the kovacs re-run (hold 12). Then the cut is hv's, and T10 follows its publish (hold 10). Holds 6 and 9 stand.",
     "claims": [
       "ISSUE:0003",
       "ISSUE:0007"
@@ -346,7 +346,8 @@
       "kind": "doing",
       "seq": 9,
       "text": "0.1.9's pre-cut gates on kovacs, on hv's decision 5 through vc's brief of 2026-11-13 11:01Z. Run as devbin's leg runs, by hand because release.legs names no host and vc said to leave the release config alone: main's tip sent by git send-pack (never git push) into ~/work/ccusage-leg.git on kovacs, with v0.1.8 beside it, then bin/devbin release gates in a worktree there under kovacs's own startup, driven through devbin's own leg functions (lib/release.legs), with its records kept in dc's scratch rather than this checkout. The Desk is asked first whether a kovacs run counts as heavy on rhadamanth. Then report to vc: the sha, each gate's verdict, the cargo and bats counts, and what Linux ARM64 does differently. Known before the run: actionlint is not on kovacs's PATH, so check all cannot pass there.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-13T11:26:07.428Z",
       "recorded_at": "2026-11-13T11:05:34.325Z"
     },
     {
@@ -356,6 +357,14 @@
       "text": "0.1.9's cut (hv's decision 5, through vc, 2026-11-13): from vc's word that the cut starts until its word that the release is published, commit nothing to main, whiteboard verbs included; until ST0003/WP06's rollout, nobody runs ccusage use or ccusage which --use on 0.1.9, since either begins the rollout.",
       "state": "live",
       "recorded_at": "2026-11-13T11:05:34.449Z"
+    },
+    {
+      "node": "dc",
+      "kind": "hold",
+      "seq": 12,
+      "text": "0.1.9's kovacs gates, again after cc's fix (hv's decision 5, through vc). The first run, at c31d150 on 2026-11-13 from 11:23:03Z to 11:23:40Z in the Desk's heavy slot 01M7A9BZ7RHSZC32FW0GY5YTJ6, was not a pass. Off macOS, clippy fails on src/auth.rs:90: Location::check uses bytes only in its macOS Keychain arm, so -D warnings fails the lib and lib test (9afdf86, ST0003/WP02). CI's two Linux clippy steps would fail the cut's candidate the same way. actionlint is not on kovacs's PATH, which vc accepts. Every other check, test all (cargo 134 of 134), build and doctor were green. Released when cc's fix is on main and vc gives the word. Then the same by-hand leg again: ask the Desk for a heavy slot, tell kovacs-sysadm, send START and END, and report each verdict to vc, clippy's on every target first.",
+      "state": "live",
+      "recorded_at": "2026-11-13T11:26:07.473Z"
     }
   ],
   "sent": [
@@ -693,6 +702,14 @@
       "re": "2026-11-13 11:01Z#1",
       "fyi": false,
       "recorded_at": "2026-11-13T11:08:15.745Z"
+    },
+    {
+      "id": "01M7AAH5PHE7ZVEH59NWZEJCZ2",
+      "recipient": "vc",
+      "body": "kovacs at c31d150 (b08623d's code), run 11:23:03Z to 11:23:40Z on the Desk's heavy slot, now ended, with the run cleared from kovacs once its log came back. It is not a pass: check all is red on two checks, and one of them is a code defect that blocks the cut.\nclippy fails off macOS. src/auth.rs:90's Location::check uses bytes only in its macOS Keychain arm, so on Linux bytes is unused and -D warnings fails the lib and lib test (9afdf86, ST0003/WP02). CI's two Linux clippy steps would fail the cut's candidate the same way. It is cc's to fix, perhaps by the File arm discarding bytes; then clippy on Linux again, since the lib's error stopped clippy before the other targets. I have not asked cc, as you sequence it.\nactionlint is not on kovacs's PATH (exit 127), as expected. Every other check passed: shellcheck, nopython (no Python in 1380 tracked files), format (rust), autotests, targetdir, toolchain, and critic (nothing staged, so it examined no file). 9 of 11 options ran, and 2 were inactive there.\ntest all green: cargo 134 of 134 (lib 86, cli 48, main and doc-tests 0), 0 failed, 0 ignored, since the keychain tests are macOS-only. bats 0, because the shell and keychain options are macOS-only by the config. build green (release in 12.8s, with the same unused-variable warning). doctor green: 20 checks, 0 failed, 2 notes. One note says kovacs has no ccusage link and no Linuxbrew ccusage, so T10's brew on Linux starts with brew install ccusage.\nThe tree was clean and HEAD unmoved after the gates; rustc 1.99.1 there. The re-run after cc's fix is my hold 12, on your word and a new heavy slot.",
+      "re": "2026-11-13 11:08Z",
+      "fyi": false,
+      "recorded_at": "2026-11-13T11:26:20.881Z"
     }
   ],
   "handled": [
@@ -925,6 +942,11 @@
       "id": "01M7A94AWEVG3SYZM1HEP4J34R",
       "sender": "vc",
       "handled_at": "2026-11-13T11:05:38.821Z"
+    },
+    {
+      "id": "01M7A9H0CHXDEHVH11A4SAWQ7X",
+      "sender": "vc",
+      "handled_at": "2026-11-13T11:26:24.064Z"
     }
   ]
 }

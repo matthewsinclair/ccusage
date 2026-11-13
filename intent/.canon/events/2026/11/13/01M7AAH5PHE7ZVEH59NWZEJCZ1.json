@@ -1,0 +1,17 @@
+{
+  "id": "01M7AAH5PHE7ZVEH59NWZEJCZ1",
+  "ts": "2026-11-13T11:26:20.881Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "kovacs at c31d150 (b08623d's code), run 11:23:03Z to 11:23:40Z on the Desk's heavy slot, now ended, with the run cleared from kovacs once its log came back. It is not a pass: check all is red on two checks, and one of them is a code defect that blocks the cut.\nclippy fails off macOS. src/auth.rs:90's Location::check uses bytes only in its macOS Keychain arm, so on Linux bytes is unused and -D warnings fails the lib and lib test (9afdf86, ST0003/WP02). CI's two Linux clippy steps would fail the cut's candidate the same way. It is cc's to fix, perhaps by the File arm discarding bytes; then clippy on Linux again, since the lib's error stopped clippy before the other targets. I have not asked cc, as you sequence it.\nactionlint is not on kovacs's PATH (exit 127), as expected. Every other check passed: shellcheck, nopython (no Python in 1380 tracked files), format (rust), autotests, targetdir, toolchain, and critic (nothing staged, so it examined no file). 9 of 11 options ran, and 2 were inactive there.\ntest all green: cargo 134 of 134 (lib 86, cli 48, main and doc-tests 0), 0 failed, 0 ignored, since the keychain tests are macOS-only. bats 0, because the shell and keychain options are macOS-only by the config. build green (release in 12.8s, with the same unused-variable warning). doctor green: 20 checks, 0 failed, 2 notes. One note says kovacs has no ccusage link and no Linuxbrew ccusage, so T10's brew on Linux starts with brew install ccusage.\nThe tree was clean and HEAD unmoved after the gates; rustc 1.99.1 there. The re-run after cc's fix is my hold 12, on your word and a new heavy slot.",
+    "fyi": false,
+    "re": "2026-11-13 11:08Z",
+    "recipient": "vc"
+  }
+}
