@@ -225,7 +225,7 @@
     {
       "id": "AT-01.1",
       "kind": "test",
-      "file": "src/usage.rs:1023",
+      "file": "src/usage.rs:1253",
       "covers": [
         "AC-01.1"
       ],
@@ -235,7 +235,7 @@
     {
       "id": "AT-01.2",
       "kind": "test",
-      "file": "src/usage.rs:1131",
+      "file": "src/usage.rs:1361",
       "covers": [
         "AC-01.1"
       ],
@@ -245,7 +245,7 @@
     {
       "id": "AT-01.3",
       "kind": "test",
-      "file": "src/usage.rs:1184",
+      "file": "src/usage.rs:1414",
       "covers": [
         "AC-01.1"
       ],
@@ -255,7 +255,7 @@
     {
       "id": "AT-01.4",
       "kind": "test",
-      "file": "src/display.rs:931",
+      "file": "src/display.rs:939",
       "covers": [
         "AC-01.1"
       ],
@@ -265,7 +265,7 @@
     {
       "id": "AT-02.1",
       "kind": "test",
-      "file": "src/which.rs:401",
+      "file": "src/which.rs:409",
       "covers": [
         "AC-02.1"
       ],
@@ -275,7 +275,7 @@
     {
       "id": "AT-02.2",
       "kind": "test",
-      "file": "src/which.rs:500",
+      "file": "src/which.rs:508",
       "covers": [
         "AC-02.2"
       ],
@@ -295,7 +295,7 @@
     {
       "id": "AT-02.4",
       "kind": "test",
-      "file": "tests/cli.rs:310",
+      "file": "tests/cli.rs:323",
       "covers": [
         "AC-02.3"
       ],
@@ -305,7 +305,7 @@
     {
       "id": "AT-02.5",
       "kind": "test",
-      "file": "src/which.rs:641",
+      "file": "src/which.rs:649",
       "covers": [
         "AC-02.4"
       ],
@@ -315,7 +315,7 @@
     {
       "id": "AT-03.1",
       "kind": "test",
-      "file": "tests/cli.rs:1217",
+      "file": "tests/cli.rs:1278",
       "covers": [
         "AC-03.1"
       ],
@@ -325,7 +325,7 @@
     {
       "id": "AT-03.2",
       "kind": "test",
-      "file": "tests/cli.rs:1255",
+      "file": "tests/cli.rs:1316",
       "covers": [
         "AC-03.2"
       ],
@@ -335,7 +335,7 @@
     {
       "id": "AT-03.3",
       "kind": "test",
-      "file": "tests/cli.rs:1358",
+      "file": "tests/cli.rs:1419",
       "covers": [
         "AC-03.3"
       ],
@@ -345,7 +345,7 @@
     {
       "id": "AT-03.4",
       "kind": "test",
-      "file": "tests/cli.rs:1393",
+      "file": "tests/cli.rs:1454",
       "covers": [
         "AC-03.4"
       ],
@@ -355,7 +355,7 @@
     {
       "id": "AT-04.1",
       "kind": "test",
-      "file": "src/usage.rs:1358",
+      "file": "src/usage.rs:1593",
       "covers": [
         "AC-04.1"
       ],
@@ -385,7 +385,7 @@
     {
       "id": "AT-04.4",
       "kind": "test",
-      "file": "tests/cli.rs:403",
+      "file": "tests/cli.rs:416",
       "covers": [
         "AC-04.1"
       ],
@@ -405,7 +405,7 @@
     {
       "id": "AT-05.1",
       "kind": "test",
-      "file": "src/predict.rs:277",
+      "file": "src/predict.rs:388",
       "covers": [
         "AC-05.1"
       ],
@@ -415,7 +415,7 @@
     {
       "id": "AT-05.2",
       "kind": "test",
-      "file": "src/predict.rs:326",
+      "file": "src/predict.rs:437",
       "covers": [
         "AC-05.1"
       ],
@@ -425,17 +425,27 @@
     {
       "id": "AT-05.3",
       "kind": "test",
-      "file": "tests/cli.rs:1462",
+      "file": "tests/cli.rs:1523",
       "covers": [
         "AC-05.1"
       ],
       "status": "green",
-      "note": "ccusage predict says plainly when there is too little history and exits 0, then from a fixture history gives the rate, the samples and hours it rests on, each account's unused share and the total, and the accounts left out, in text and in its versioned JSON; red under the mutant whose JSON gives no samples, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+      "note": "ccusage predict says plainly when there is too little history and exits 0, then from a fixture history gives the rate, the samples and hours it rests on, each account's unused share and the total, and the accounts left out, in text and in its versioned JSON; red under the mutant whose JSON gives no samples, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7); then its test writes plans into the logins and checks that the text and the JSON name the plan counted, with spare left out as another plan's allowance, red under the mutants whose text names no plan and whose JSON gives none, in cc's ST0003/WP04 run in Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, which carried ic's tier grouping and herdr notes; green at 7cac510 in that run (landed as 1648348..b08623d)"
+    },
+    {
+      "id": "AT-05.4",
+      "kind": "test",
+      "file": "src/predict.rs:513",
+      "covers": [
+        "AC-05.1"
+      ],
+      "status": "green",
+      "note": "predict counts one plan's accounts: the plan most of the usable accounts record, compared whole, a tie going to the active account's plan, else to the lexically first, and with no usable account the plan most of all the accounts record; a usable account on another plan is left out as another plan's allowance, and the rate counts that plan's samples alone; red under the mutants that let a tie ignore the active account, that give it to the lexically last, that project a usable account on another plan, that count every plan's samples in the rate, that count the least common plan, and that leave no plan when no account is usable, in cc's ST0003/WP04 run in Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, which carried ic's tier grouping and herdr notes; green at 7cac510 in that run (landed as 1648348..b08623d)"
     },
     {
       "id": "AT-06.1",
       "kind": "test",
-      "file": "src/display.rs:1035",
+      "file": "src/display.rs:1046",
       "covers": [
         "AC-06.1"
       ],
@@ -445,7 +455,7 @@
     {
       "id": "AT-06.2",
       "kind": "test",
-      "file": "tests/cli.rs:1532",
+      "file": "tests/cli.rs:1625",
       "covers": [
         "AC-06.1"
       ],
@@ -455,17 +465,17 @@
     {
       "id": "AT-08.1",
       "kind": "test",
-      "file": "tests/cli.rs:1548",
+      "file": "tests/cli.rs:1641",
       "covers": [
         "AC-08.1"
       ],
       "status": "green",
-      "note": "ccusage herdr install writes the mod and a record of it into a scratch Herdr home, refuses a missing home, replaces only its own unedited copy (files Herdr writes there aside), refuses an edited one until --force, reports herdr-app check's verdict and exits 1 when it fails; remove takes out an unedited copy, and an edited one only with --force; layouts and keys.json are as they were; red under the mutants that replace an edited copy, that count Herdr's jsconfig.json as an edit, and that take a failed check for a pass, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+      "note": "ccusage herdr install writes the mod and a record of it into a scratch Herdr home, refuses a missing home, replaces only its own unedited copy (files Herdr writes there aside), refuses an edited one until --force, reports herdr-app check's verdict and exits 1 when it fails; remove takes out an unedited copy, and an edited one only with --force; layouts and keys.json are as they were; red under the mutants that replace an edited copy, that count Herdr's jsconfig.json as an edit, and that take a failed check for a pass, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7); then its test adds a herdr-app on PATH that cannot be run, said with its cause, and a hidden .git, which install and remove refuse without --force, red under the mutants that call a herdr-app that cannot run missing and that take a hidden directory for Herdr's own, in cc's ST0003/WP04 run in Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, which carried ic's tier grouping and herdr notes; green at 7cac510 in that run (landed as 1648348..b08623d)"
     },
     {
       "id": "AT-08.2",
       "kind": "test",
-      "file": "src/display.rs:1094",
+      "file": "src/display.rs:1136",
       "covers": [
         "AC-08.2"
       ],
@@ -475,7 +485,7 @@
     {
       "id": "AT-08.3",
       "kind": "test",
-      "file": "tests/cli.rs:383",
+      "file": "tests/cli.rs:396",
       "covers": [
         "AC-08.2"
       ],
