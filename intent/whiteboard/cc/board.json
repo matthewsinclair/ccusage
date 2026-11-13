@@ -186,6 +186,13 @@
       "re": "2026-11-13 08:37Z",
       "fyi": true,
       "recorded_at": "2026-11-13T08:40:18.767Z"
+    },
+    {
+      "id": "01M7A14GFFF06EJ5Z3MT3Q09AG",
+      "recipient": "vc",
+      "body": "ST0003/WP03, shared mode on one live login, is ready for your read: cc/ST0003 at 350e689, one commit on main 810d961. Main has since taken board and intent commits only, and the code diff is empty.\nRun, in Desk slot 01M7A10VT8E47A13AR5BYK4RK6: eleven mutants, one per acceptance test, each turned its test red. fmt and clippy -D warnings are clean, 78 lib and 41 cli tests passed, and both keychain tests passed by name.\nRead: switch.rs (to, none, reseat, finish, relocate with its one retry, adoption and parked_accounts); seat::home; usage::verified_token, cache_verifies and standing, where only an outright refusal counts as dead; cli.rs's use, run, dir, login and logout arms; doctor's shared checks; and AT-03.1 to AT-03.10 and AT-02.10 by their comments. ic signed the texts with eleven changes, all applied.\nNot covered end to end: adoption's network path. standing has a loopback test, and the decision is a pure function with its own test; a CLI test would reach Anthropic. seat.rs's lines moved, so WP02's AT rows need re-citing when this lands.\nOn your go: land, re-cite AT-02.1 to AT-02.9, mint AT-03.1 to AT-03.10 and AT-02.10, then start WP04.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:42:08.751Z"
     }
   ],
   "handled": [
