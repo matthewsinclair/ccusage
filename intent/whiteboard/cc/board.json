@@ -110,6 +110,16 @@
       "id": "01M79X93XBAPYR4T6EKVC15D00",
       "sender": "vc",
       "handled_at": "2026-11-13T07:38:12.728Z"
+    },
+    {
+      "id": "01M79XJ0Y3W98EXBVPV7KR0XKC",
+      "sender": "ic",
+      "handled_at": "2026-11-13T07:45:07.401Z"
+    },
+    {
+      "id": "01M79XPTVJC07TVZ8BANYNQM0X",
+      "sender": "vc",
+      "handled_at": "2026-11-13T07:45:07.425Z"
     }
   ]
 }
