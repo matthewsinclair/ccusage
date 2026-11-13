@@ -294,6 +294,7 @@ mod tests {
     assert!(toml::from_str::<Config>("[profile.work]").is_err());
   }
 
+  // ST0002 AT-02.3: the cap's one default, written back only into a config that set it.
   #[test]
   fn the_cap_defaults_once_and_is_written_back_only_where_it_was_set() -> crate::Result<()> {
     let plain: Config = toml::from_str("[profiles.work]\nemail = 'work@example.com'\n")?;

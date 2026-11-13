@@ -359,6 +359,7 @@ mod tests {
   /// gave them, jitter included: hello and engineering04 a fraction of a second before
   /// the hour, engineering01 a fraction after, engineering02 and engineering00 on it.
   /// Ranked on the raw instants, engineering02 would come before engineering01.
+  // ST0002 AT-02.1: the worked example's choice and ranking.
   #[test]
   fn the_worked_example_chooses_hello_and_keeps_the_later_resets_in_reserve() -> Result<()> {
     let now = at("2026-11-13T05:27:00Z")?;
@@ -457,6 +458,7 @@ mod tests {
     Ok(())
   }
 
+  // ST0002 AT-02.2: stale, reset-passed and no-weekly-window accounts are unknown.
   #[test]
   fn an_account_the_rule_cannot_read_is_unknown_with_its_reason_and_never_chosen() -> Result<()> {
     let now = at("2026-11-13T05:27:00Z")?;
@@ -597,6 +599,7 @@ mod tests {
     Ok(())
   }
 
+  // ST0002 AT-02.5: with a model named, its scoped window must be below the cap too.
   #[test]
   fn with_a_model_named_its_scoped_window_must_be_below_the_cap_too() -> Result<()> {
     let now = at("2026-11-13T05:27:00Z")?;

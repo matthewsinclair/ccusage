@@ -198,6 +198,7 @@ fn xdg_paths_and_no_overwrite() -> Result<()> {
   Ok(())
 }
 
+// ST0002 AT-02.4: init and add keep the cap out of a config that did not set it.
 #[test]
 fn init_and_add_write_the_which_cap_only_into_a_config_that_set_it() -> Result<()> {
   let sandbox = Sandbox::new()?;
