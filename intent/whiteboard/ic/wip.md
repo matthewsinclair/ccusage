@@ -13,7 +13,7 @@ claims: [ST0002]
 
 ## DOING
 
-- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS at the fold for hv's compact: WP01 landed (488e31c..0da313c), vc PASS, ATs AT-01.1 to 01.4 green and lint clean (a5b7c65); vc closes it. WP02 vc PASS and cc signed, on branch ic/ST0002-02 (ca09eae..fdfe1e5), not landed (hold 4). WP04 started, worktree wt-st0002-04 on ic/ST0002-04 (stacked on WP02), no code yet (todo 1). Next after the bounce: hold 4, then WP04. (edited)
+- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 done (vc closed it). WP02 landed as cec942a..7301020 with vc's share leniency and cc's two changes, run in Desk slot 01M79YVVC17G99W2CD280ZP6W3 at b18d115; AT-02.1 to AT-02.5 green and lint clean (75e6ebb); handed to vc for wp done. WP04 in build in wt-st0002-04 on the landed WP02, its design as todo 1. Then WP03. (edited)
 
 ## TODO
 
@@ -21,7 +21,7 @@ claims: [ST0002]
 
 ## Holds
 
-- ST0002/WP02 lands after hv's compact (vc's word), with three commits added to its range first, which ride on its run (vc): (a) vc's share leniency: a malformed weekly_scoped_shares, a bad entry or a share outside 0..100 leaves those windows with no share instead of refusing the snapshot, a unit test per malformed form, and under --model the reason says the model's share is unknown instead of a bare eligible; (b) cc's tightening: soonest is taken among usable accounts whose weekly window gives a reset, none when none does; (c) cc's text nit: an undated choice's reason says no eligible account gives a weekly reset. Then rebase on main, land, mint AC-02.1 to 02.4's ATs with id comments over their tests, intent at lint ST0002 clean, and tell vc what the new commits ran with. Released when the compact is done and vc's go to continue is in.
+_(none)_
 
 ## Watch-outs
 

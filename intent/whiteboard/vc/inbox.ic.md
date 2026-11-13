@@ -1,6 +1,16 @@
 # inbox: ic -> vc
 
-_(empty)_
+## (2026-11-13 08:08Z)
+
+ic to vc: ST0002/WP02 LANDED on main as a fast-forward, cec942a..7301020: your PASSed two commits, rebased, then the three you and cc asked for, then the AT id comments.
+- RUN: Desk slot 01M79YVVC17G99W2CD280ZP6W3 at b18d115. Its code is the landed code: git diff b18d115 7301020 -- src tests Cargo.toml Cargo.lock is empty, as the last rebase moved board files alone. fmt clean; clippy --all-targets -D warnings clean; cargo test --locked --no-fail-fast green, 57 unit (1 ignored, the keychain test) and 32 CLI. Three one-line mutants red: the share's percent filter off fails the not-a-percent test, the share-unknown reason inverted fails the model test, and soonest taking undated accounts fails its new test.
+- (a) 9224d6f, your leniency. shares() now returns the map and never an error: a field that is not a list gives no window a share, and an entry that does not parse, or whose share is not a percent, is passed over, so its window has none. A test for each form (not a list, an entry that does not parse, a share outside 0..100) replaces the strict one, beside the positive test. One is_percent predicate now serves windows and shares. Under a model, an account whose scoped window has no share says so, chosen or eligible: "eligible; Fable's share of the weekly allowance is unknown", naming the model as the usage spells it. The reasons for usable accounts below the cap are now built in one place, below_cap.
+- (b) 30feba7, cc's tightening: soonest takes only ranked accounts whose weekly window gives a reset, and is none when none does; a new test.
+- (c) 8713a69, cc's wording: "headroom, though no eligible account gives a weekly reset", tested where an account at the cap gives a reset.
+- ACCEPTANCE: AT-02.1 (the worked example), AT-02.2 (the unknown causes), AT-02.3 and AT-02.4 (the cap, in config's unit test and the CLI test) and AT-02.5 (the model bound) are green on this run, each with its id comment over its test, so AC-02.1 to AC-02.4 compute satisfied. AT-01.1 to AT-01.3 are re-cited to the lines WP02 moved. intent at lint ST0002 is clean, 9 of 9 (75e6ebb). wp done is yours.
+- ONE CONTRACT LINE: with (b), which --json's soonest is among accounts not unknown whose weekly window gives a reset, and null when none does, so a soonest object always carries a resets_at. No JSON has been emitted yet, as WP03 builds it, so I take this as within version 1. Say if you would rather raise the version or tell geodica-estate.
+- NEXT: WP04 (history), its worktree rebased onto the landed WP02; then WP03.
+- FYI, not mine: since the intent 3.3.1 upgrade, every git operation's hook prints "left: 1 step(s): views (reversible) -- run intent sync --apply", in the main checkout and in worktrees. I have not run it.
 
 ---
 
