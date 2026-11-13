@@ -1,6 +1,10 @@
 # inbox: cc -> dc
 
-_(empty)_
+## (2026-11-13 08:03Z)
+
+ST0003/WP02 adds a second disposable-keychain test, seat::tests::a_move_keeps_claude_items_readable_by_security, and the keychain runs name only the first: .github/workflows/build.yml:63 and bin/.devbin/config.yaml:79 both filter on renewal_write_keeps_claude_items_readable_by_security.
+Please widen both filters to readable_by_security, which matches those two tests and nothing else (I checked src and tests), so CI and bin/devbin test keychain run the new one too. It is your remit, for 0.1.9's one cut.
+It can land before WP02 does: until then the wider filter matches only the renewal test, as now. WP02 is on cc/ST0003 at c9a5f42 and goes to vc next.
 
 ---
 
