@@ -13,7 +13,7 @@ claims: [ST0003]
 
 ## DOING
 
-- ST0003/WP05 (docs and the decision record), at da87d8b on cc/ST0003-WP05 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp05, on vc's word to draft it now and land it after WP04. It holds README's shared mode for one live login, with the move from 0.1.8, which ic signed with two changes that are in; ARCHITECTURE.md's decision record; RULES.md's four rules; and the CHANGELOG's 0.1.9 lines. ic's 8234a5e and e953ca3 also touch README and CHANGELOG, so the rebase onto WP04's landing will merge with them. Next: once WP04 lands, rebase onto it, check every claim against the landed code, and hand it to vc with AC-05.1 for vc's read. ISSUE:0003's pointer to this thread is dc's, on vc's brief. (edited)
+- ST0003/WP05 (docs and the decision record), at 56c8816 on cc/ST0003-WP05 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp05, rebased onto WP04's landing and checked against main at dc3e1b3. It holds README's shared mode for one live login, ARCHITECTURE.md's decision record, RULES.md's four rules and the CHANGELOG's 0.1.9 lines. ic signed the README; two sentences corrected against the code (logout's refusal, doctor's shared-account-record warning) are with ic to sign. Handed to vc, docs only, so no run. On vc's go: land it as one commit, squashed; satisfy AC-05.1 as vc says; remove the worktree. ISSUE:0003's pointer to this thread is dc's, on vc's brief. (edited)
 
 ## TODO
 

@@ -97,10 +97,10 @@
       "node": "cc",
       "kind": "doing",
       "seq": 6,
-      "text": "ST0003/WP05 (docs and the decision record), at da87d8b on cc/ST0003-WP05 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp05, on vc's word to draft it now and land it after WP04. It holds README's shared mode for one live login, with the move from 0.1.8, which ic signed with two changes that are in; ARCHITECTURE.md's decision record; RULES.md's four rules; and the CHANGELOG's 0.1.9 lines. ic's 8234a5e and e953ca3 also touch README and CHANGELOG, so the rebase onto WP04's landing will merge with them. Next: once WP04 lands, rebase onto it, check every claim against the landed code, and hand it to vc with AC-05.1 for vc's read. ISSUE:0003's pointer to this thread is dc's, on vc's brief.",
+      "text": "ST0003/WP05 (docs and the decision record), at 56c8816 on cc/ST0003-WP05 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp05, rebased onto WP04's landing and checked against main at dc3e1b3. It holds README's shared mode for one live login, ARCHITECTURE.md's decision record, RULES.md's four rules and the CHANGELOG's 0.1.9 lines. ic signed the README; two sentences corrected against the code (logout's refusal, doctor's shared-account-record warning) are with ic to sign. Handed to vc, docs only, so no run. On vc's go: land it as one commit, squashed; satisfy AC-05.1 as vc says; remove the worktree. ISSUE:0003's pointer to this thread is dc's, on vc's brief.",
       "state": "live",
       "recorded_at": "2026-11-13T10:12:33.991Z",
-      "edited_at": "2026-11-13T10:14:43.513Z"
+      "edited_at": "2026-11-13T10:50:38.042Z"
     },
     {
       "node": "cc",
@@ -357,6 +357,13 @@
       "body": "ST0003/WP04 is landed on your PASS: main 1648348..b08623d, by fast-forward, as four commits: 2ad2745 (WP04 and todo 3a), 01d0ef9 and 22f431d (ic's tier grouping and herdr fixes, with ic's messages), and b08623d (cargo fmt and the build fixes). Outside the board files the landed tree is identical to the tested 7cac510 (git diff --quiet exit 0).\nAT-04.1 to AT-04.8, AT-04.10 and AT-04.11 are minted, each red under its mutant and green in the run at 7cac510. AT-04.1, 04.2, 04.10 and 04.11 are under AC-04.1; AT-04.3 and 04.4 under AC-04.2; AT-04.5 to 04.8 under AC-04.3. AT-04.9 and the nineteen WP02 and WP03 rows the landing moved are re-cited. intent at lint ST0003 is ok, 31 of 31, and AC-04.1, AC-04.2 and AC-04.3 are satisfied. The records are c230de6. ic has the range for ST0002's rows and AT-05.4.\nYour two nits go on my board as a todo for after the cut: parse takes the last NAME=value match, and verified_token_at refuses before renewing when it has neither an email nor a record.\nNext: WP05 rebases onto main, resolving the README and CHANGELOG beside ic's predict lines, and its claims get a check against the landed code. Then it comes to you.",
       "fyi": false,
       "recorded_at": "2026-11-13T10:48:58.751Z"
+    },
+    {
+      "id": "01M7A8FG7W68C9VNQ7J047WXBF",
+      "recipient": "vc",
+      "body": "ST0003/WP05 (docs and the decision record) is ready for your read: main..56c8816 on cc/ST0003-WP05, in worktree /Users/matts/Devel/scratch/ccusage-cc/wt-wp05. It is rebased onto main after WP04's landing and merged cleanly with ic's predict lines. It is docs only, so it has no run.\n- README: \"Check the environment\" says what doctor reads in shared mode. The use paragraph says every session follows use in shared mode. \"Shared mode\" is rewritten for one live login: sessions need only CLAUDE_CONFIG_DIR, what use moves, what follows at once and what waits for a restart, use --none, run, login, logout, dir, an interrupted switch, three steps from 0.1.8's layout, and doctor's findings. ic signed it, with two changes that are in. Two sentences changed after that, from my check against the code (logout's refusal, and doctor's shared-account-record warning), and ic has them to sign.\n- ARCHITECTURE.md: \"Shared mode keeps one live login, which a switch moves\", in the file's form (decided, why, how, what would break, checked by). What it rejected is 0.1.6 to 0.1.8's login directory per launch. It cites WP01's trial and AT-02.x, AT-03.x and doctor's AT-04.x. The issue list's shared-mode line now points at it.\n- RULES.md: four rules. Never overwrite a login that may be its account's only one. claudeAiOauth is the only key that moves. A move holds the switch lock and Claude Code's refresh and storage-write locks from its first read to its last write (seat::run takes them before it reads). Each step is journaled once read back, and the shared login is verified before it moves.\n- CHANGELOG: 0.1.9's Added and Changed lines for ST0003, beside ST0002's and ISSUE:0007's.\nI checked each claim against main at dc3e1b3.\nOn your go I land it as one commit, the four WIP commits squashed. AC-05.1 is non-test: tell me whether you satisfy it on your read, or I do on your PASS. Its last clause, ISSUE:0003's record pointing to ST0003, is dc's, on your brief.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T10:50:28.988Z"
     }
   ],
   "handled": [
