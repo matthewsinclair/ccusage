@@ -4,8 +4,16 @@ use sha2::{Digest, Sha256};
 use std::{collections::BTreeMap, time::Duration};
 
 const ENDPOINT: &str = "https://api.anthropic.com/api/oauth/usage";
-const TTL: i64 = 300;
+/// How long a fetched snapshot stays fresh, in seconds: the usage cache's lifetime. The
+/// which rule takes it as its lifetime, so data it may use is never older than this.
+pub const TTL: i64 = 300;
 const BACKOFF: i64 = 1800;
+
+/// Whether data fetched at `fetched_at` is still fresh at `now`, under `lifetime`. A
+/// fetch time ahead of `now` is not fresh, so a clock that moved back refetches.
+pub fn fresh(fetched_at: i64, now: i64, lifetime: i64) -> bool {
+  (0..lifetime).contains(&(now - fetched_at))
+}
 
 /// What a usage window limits. The response's `limits` array names the kind, and the
 /// legacy top-level fields map onto the same kinds, so a window is selected by its kind
@@ -508,7 +516,7 @@ impl Client {
       cache.credential_id = verified_id.clone();
     }
     let now = crate::now();
-    let fresh = cache.snapshot.is_some() && (0..TTL).contains(&(now - cache.fetched_at));
+    let fresh = cache.snapshot.is_some() && fresh(cache.fetched_at, now, TTL);
     let mut error = None;
     let mut cached = true;
     if cache.retry_at > now {
