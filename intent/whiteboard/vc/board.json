@@ -147,10 +147,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 4,
-      "text": "ST0003, live account switching (hv, 2026-11-13): WP01 passed. hv's trial on a scratch config showed a running session holding a newly stored login 73 s later, with no restart and no prompt; its first request after the change got a 404 thread_not_found, which Claude Code answered by replaying the conversation at once. The record is in WP01, and AC-01.1 is satisfied. Now: hv cleans up the trial (quit both sessions, delete the item Claude Code-credentials-b029a948, remove the scratch files), and vc checks the Keychain count is back to what it was. Then, on hv's word to proceed: hv starts cc and ic, whose briefs are in their inboxes; cc takes WP02 first, and its first commit makes use one function.",
+      "text": "ST0003, live account switching (hv, 2026-11-13): WP01 passed and is done. hv's trial on a scratch config showed a running session holding a newly stored login 73 s later, with no restart and no prompt; its first request after the change got a 404 thread_not_found, which Claude Code answered by replaying the conversation at once. The record is in WP01, AC-01.1 is satisfied, and the trial is cleaned up: vc found its Keychain item gone and 13 items as before at 07:08Z. Now: wait for hv to start cc and ic, whose briefs are in their inboxes. Then: cc takes WP02, and its first commit makes use one function; vc validates each work package on its builder's one measured run.",
       "state": "live",
       "recorded_at": "2026-11-13T06:29:42.144Z",
-      "edited_at": "2026-11-13T07:04:11.358Z"
+      "edited_at": "2026-11-13T07:08:56.009Z"
     }
   ],
   "sent": [

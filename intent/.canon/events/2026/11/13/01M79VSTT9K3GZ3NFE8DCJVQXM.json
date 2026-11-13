@@ -1,0 +1,16 @@
+{
+  "id": "01M79VSTT9K3GZ3NFE8DCJVQXM",
+  "ts": "2026-11-13T07:08:56.009Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching (hv, 2026-11-13): WP01 passed and is done. hv's trial on a scratch config showed a running session holding a newly stored login 73 s later, with no restart and no prompt; its first request after the change got a 404 thread_not_found, which Claude Code answered by replaying the conversation at once. The record is in WP01, AC-01.1 is satisfied, and the trial is cleaned up: vc found its Keychain item gone and 13 items as before at 07:08Z. Now: wait for hv to start cc and ic, whose briefs are in their inboxes. Then: cc takes WP02, and its first commit makes use one function; vc validates each work package on its builder's one measured run."
+  }
+}

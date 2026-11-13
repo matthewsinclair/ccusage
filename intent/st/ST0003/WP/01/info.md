@@ -37,6 +37,7 @@ On the installed Claude Code, show that a session already running picks up a log
 - **No prompt:** A showed no notice, refusal or session-owner question, and its log has no auth error. Neither `tengu_bubbly_fountain` nor `tengu_streamed_thimble` was among the 1283 flags in the scratch config's cache, so both stood at their defaults.
 - **What stayed the old account's:** A still listed the MCP servers it loaded at start, 2 connected and 3 needing auth, and its log has no MCP line after the switch.
 - **Nothing real was touched:** 13 `Claude Code-credentials*` items before, and those 13 and the trial's one during.
+- **Cleaned up:** hv quit both sessions, deleted the trial's item and removed the scratch files. At 07:08 vc found that item gone, 13 items as before the trial, the four scratch paths removed and both sessions ended.
 - **What it adds to the design:** a session's first request after a switch costs one 404 and a replay of the whole conversation, uncached, on the new account. Claude Code does that itself, within its own retry allowance (attempt 1 of 11).
 
 ## Acceptance
