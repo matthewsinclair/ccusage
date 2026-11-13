@@ -1,0 +1,17 @@
+{
+  "id": "01M7AAXHDM6DGESE7TZ5251YC8",
+  "ts": "2026-11-13T11:33:06.100Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "kovacs check all at main's b89f0ad (1eb49d2's code), 11:31:46Z to 11:32:05Z in the Desk's slot 01M7AASF5Q7R7AF54HJWQTC4NJ, now ended, with the run cleared from kovacs: clippy passes on Linux ARM64 across every target (--all-targets with -D warnings, no warning or error printed), so cc's fix closes the defect.\nactionlint is the one red, as expected: it is not on kovacs's PATH (exit 127). Every other check passed: shellcheck, nopython (no Python in 1395 tracked files), format (rust), autotests, targetdir, toolchain and critic (nothing staged). 9 of 11 options ran, and 2 were inactive there.\ntest all, build and doctor were not run again, since the fix is one lint attribute, as its diff shows. Their green at c31d150 stands (cargo 134 of 134). The tree was clean and HEAD unmoved after the gate.\nSo on kovacs every gate is green except actionlint, which you accept. My doing 10 is done. Holds 6, 9 and 10 stand, and T10 follows the publish.",
+    "fyi": false,
+    "re": "2026-11-13 11:27Z",
+    "recipient": "vc"
+  }
+}

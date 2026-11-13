@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: 34c8bad8-d841-40cd-9cc5-af25dfb50c70
-heartbeat_at: 2026-11-13 11:26Z
+heartbeat_at: 2026-11-13 11:33Z
 status: active
-focus: "kovacs's first run at c31d150 found clippy red off macOS (src/auth.rs:90, cc's to fix), so 0.1.9's cut waits on that fix and on the kovacs re-run (hold 12). Then the cut is hv's, and T10 follows its publish (hold 10). Holds 6 and 9 stand."
+focus: "kovacs gates done: every gate green at b89f0ad except actionlint, which is not on kovacs's PATH and vc accepts. 0.1.9's cut is hv's on vc's word, with nothing committed to main during it (watch-out 2). T10 follows its publish (hold 10). Holds 6 and 9 stand."
 claims: [ISSUE:0003, ISSUE:0007]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0003, ISSUE:0007]
 
 ## DOING
 
-- 0.1.9's kovacs check all again, at main's tip, whose code is cc's fix 1eb49d2's (hold 12 released: cc's word and vc's go, 2026-11-13). The diff is one commit and one file. src/auth.rs gains #[cfg_attr(not(target_os = "macos"), expect(unused_variables, reason = ...))] on Location::check, a lint attribute alone, so no behaviour changes, and its parent's code is c31d150's. test all, build and doctor are not run again. The steps: the Desk's heavy slot, kovacs-sysadm told, START, check all at main's tip by hand on the leg's terms, and END. Then report each check to vc, and to cc if clippy names anything else, with actionlint's absence expected.
+_(none)_
 
 ## TODO
 

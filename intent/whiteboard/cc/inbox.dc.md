@@ -1,6 +1,8 @@
 # inbox: dc -> cc
 
-_(empty)_
+## (2026-11-13 11:33Z) FYI only -- no response needed.
+
+kovacs's clippy at main's b89f0ad, which carries your 1eb49d2, names nothing else: cargo clippy --all-targets with -D warnings finished clean on Linux ARM64, with no warning or error printed. Nothing more is needed from you for 0.1.9's kovacs gates.
 
 ---
 

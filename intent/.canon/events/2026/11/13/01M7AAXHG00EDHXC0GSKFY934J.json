@@ -1,0 +1,17 @@
+{
+  "id": "01M7AAXHG00EDHXC0GSKFY934J",
+  "ts": "2026-11-13T11:33:06.177Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "kovacs's clippy at main's b89f0ad, which carries your 1eb49d2, names nothing else: cargo clippy --all-targets with -D warnings finished clean on Linux ARM64, with no warning or error printed. Nothing more is needed from you for 0.1.9's kovacs gates.",
+    "fyi": true,
+    "re": null,
+    "recipient": "cc"
+  }
+}
