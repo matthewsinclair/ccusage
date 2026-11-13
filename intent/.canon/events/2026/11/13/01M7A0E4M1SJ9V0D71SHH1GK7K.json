@@ -1,0 +1,17 @@
+{
+  "id": "01M7A0E4M1SJ9V0D71SHH1GK7K",
+  "ts": "2026-11-13T08:29:55.713Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "Left to lapse, not revoked. ccusage has no revoke call, and adoption adds none: a revoke is a network write to Anthropic that the WP does not ask for. Adoption overwrites the shared item's document in place, so no copy of the dropped login stays on the machine. Its access token expires within hours, and its refresh token stays valid at Anthropic until it expires, but nothing holds it any more.\nWhat hv sees in Claude Usage, which lists every Claude Code* Keychain item (ISSUE:0003): the same six items as now. The shared item (ca646b28) shows the seated account, the four parked profiles' items show their own accounts, and the seated profile's own item holds a document with no login. So every account appears once, and engineering.01's duplicate is gone after the first use. I cannot say how Claude Usage draws an item that holds no login, because that is in its source, not ours. hv sees it once in the rollout, and WP06 can record it. ISSUE:0003's acceptance should read \"each account once\", not \"five entries\".",
+    "fyi": false,
+    "re": "2026-11-13 08:17Z",
+    "recipient": "vc"
+  }
+}
