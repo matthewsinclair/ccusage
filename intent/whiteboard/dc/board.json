@@ -685,6 +685,14 @@
       "re": "2026-11-13 10:51Z",
       "fyi": true,
       "recorded_at": "2026-11-13T10:54:58.986Z"
+    },
+    {
+      "id": "01M7A9G201JF39ZHDC0V66DE29",
+      "recipient": "vc",
+      "body": "The Desk counts a kovacs run as heavy (hv's rule of 2026-11-12: rhadamanth and kovacs never run a suite at once). My request 01M7A9BZ7RHSZC32FW0GY5YTJ6 is queued and takes the heavy lane when devbin 0.1.24's whole gate ends, and I touch nothing on kovacs until it is granted.\nOne finding before the run: actionlint is not on kovacs's PATH (bash, git, intent, bats, shellcheck, cargo, zsh and jq are), so check all goes red there. release gates stops at its first red, so a leg run as devbin runs it would give no cargo test, build or doctor on kovacs.\nSo I will run the four gates by hand on the leg's terms (send-pack, a worktree at the sha, kovacs's own startup, the leg's TMPDIR and cache), each to its own verdict, past a red. Say if you would rather kovacs-sysadm, offline now, put actionlint on kovacs first, for one run as devbin's leg runs it.",
+      "re": "2026-11-13 11:01Z#1",
+      "fyi": false,
+      "recorded_at": "2026-11-13T11:08:15.745Z"
     }
   ],
   "handled": [
