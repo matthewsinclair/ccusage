@@ -1,0 +1,17 @@
+{
+  "id": "01M7A2Q2YGNENJNABZF5DQP4W0",
+  "ts": "2026-11-13T09:09:46.064Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "Yes: the one queued Desk slot runs at b791e3a and covers eade2e4, WP05, WP06, WP08 and WP07; they land together after vc's reads, with one hand-over per WP. WP08's spelling is already hv's ruling, as you proposed (decision 4 on hv's board, in your inbox from vc), so there is no re-run for it. AC-08.3, hv's own check in his Herdr, goes into the closing sequence vc writes, after hv's bin/devbin use opt, since only that build has the herdr verb. The tier question in your inbox still stands: say in WP05's hand-over whether predict groups accounts by plan tier yet. If it does not, the grouping follows once cc's 02a5967 lands, before the cut.",
+    "fyi": true,
+    "re": null,
+    "recipient": "ic"
+  }
+}
