@@ -7,8 +7,35 @@ const ENDPOINT: &str = "https://api.anthropic.com/api/oauth/usage";
 const TTL: i64 = 300;
 const BACKOFF: i64 = 1800;
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+/// What a usage window limits. The response's `limits` array names the kind, and the
+/// legacy top-level fields map onto the same kinds, so a window is selected by its kind
+/// whichever form a response takes.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Kind {
+  /// The five-hour session window: `session`, or the legacy `five_hour`.
+  Session,
+  /// The weekly window across every model: `weekly_all`, or the legacy `seven_day`.
+  WeeklyAll,
+  /// A weekly window for one model: `weekly_scoped`, or a legacy `seven_day_<model>`,
+  /// with the model's display name when the response gives one.
+  WeeklyScoped(Option<String>),
+}
+
+impl Kind {
+  /// The label a window of this kind is shown under, derived here alone.
+  pub fn label(&self) -> String {
+    match self {
+      Self::Session => "5 hour".into(),
+      Self::WeeklyAll => "7 day".into(),
+      Self::WeeklyScoped(Some(model)) => model.clone(),
+      Self::WeeklyScoped(None) => "Weekly scoped".into(),
+    }
+  }
+}
+
+#[derive(Clone, Debug)]
 pub struct Window {
+  pub kind: Kind,
   pub utilization: f64,
   pub resets_at: Option<String>,
 }
@@ -20,11 +47,11 @@ pub struct Snapshot {
 }
 
 impl Snapshot {
-  pub fn windows(&self) -> Result<Vec<(String, Window)>> {
+  pub fn windows(&self) -> Result<Vec<Window>> {
     self.parse_windows()
   }
 
-  fn parse_windows(&self) -> Result<Vec<(String, Window)>> {
+  fn parse_windows(&self) -> Result<Vec<Window>> {
     // Newer responses expose canonical windows, including model display names,
     // in `limits`. These supersede their duplicated legacy top-level fields.
     if let Some(value) = self.fields.get("limits").filter(|value| !value.is_null()) {
@@ -33,16 +60,15 @@ impl Snapshot {
         .ok_or("usage field limits must be an array")?;
       let mut result = Vec::new();
       for (index, entry) in entries.iter().enumerate() {
-        let kind = entry.get("kind").and_then(serde_json::Value::as_str);
-        let name = match kind {
-          Some("session") => "5 hour".to_owned(),
-          Some("weekly_all") => "7 day".to_owned(),
-          Some("weekly_scoped") => entry
-            .pointer("/scope/model/display_name")
-            .and_then(serde_json::Value::as_str)
-            .filter(|name| !name.trim().is_empty())
-            .map(crate::clean)
-            .unwrap_or_else(|| "Weekly scoped".into()),
+        let kind = match entry.get("kind").and_then(serde_json::Value::as_str) {
+          Some("session") => Kind::Session,
+          Some("weekly_all") => Kind::WeeklyAll,
+          Some("weekly_scoped") => Kind::WeeklyScoped(model(
+            entry
+              .pointer("/scope/model/display_name")
+              .and_then(serde_json::Value::as_str)
+              .unwrap_or_default(),
+          )),
           // Unknown future categories and unrelated metadata aren't quota rows.
           _ => continue,
         };
@@ -50,11 +76,12 @@ impl Snapshot {
         let row: Limit = serde_json::from_value(entry.clone())
           .map_err(|_| format!("invalid usage window at {context}; expected numeric percent and optional string resets_at"))?;
         let window = Window {
+          kind,
           utilization: row.percent,
           resets_at: row.resets_at,
         };
         validate_window(&window, &context)?;
-        result.push((name, window));
+        result.push(window);
       }
       if !result.is_empty() {
         return Ok(result);
@@ -64,14 +91,14 @@ impl Snapshot {
     let mut result = Vec::new();
     for key in ["five_hour", "seven_day"] {
       if let Some(value) = self.fields.get(key).filter(|value| !value.is_null()) {
-        result.push((label(key), parse_legacy(value, key)?));
+        result.push(parse_legacy(value, key)?);
       }
     }
     for (key, value) in &self.fields {
-      // The prefix alone is insufficient: e.g. seven_day_breakdown contains
+      // The prefix alone is insufficient: eg seven_day_breakdown contains
       // attribution rows and timestamps, not a utilization window.
       if key.starts_with("seven_day_") && value.get("utilization").is_some() {
-        result.push((label(key), parse_legacy(value, key)?));
+        result.push(parse_legacy(value, key)?);
       }
     }
     Ok(result)
@@ -91,13 +118,24 @@ struct Limit {
   resets_at: Option<String>,
 }
 
+#[derive(Deserialize)]
+struct Legacy {
+  utilization: f64,
+  resets_at: Option<String>,
+}
+
 fn parse_legacy(value: &serde_json::Value, key: &str) -> Result<Window> {
-  let window: Window = serde_json::from_value(value.clone()).map_err(|_| {
+  let row: Legacy = serde_json::from_value(value.clone()).map_err(|_| {
     format!(
       "invalid usage window at {}; expected numeric utilization and optional string resets_at",
       crate::clean(key)
     )
   })?;
+  let window = Window {
+    kind: legacy_kind(key),
+    utilization: row.utilization,
+    resets_at: row.resets_at,
+  };
   validate_window(&window, key)?;
   Ok(window)
 }
@@ -114,22 +152,34 @@ fn validate_window(window: &Window, context: &str) -> Result<()> {
   Ok(())
 }
 
-fn label(key: &str) -> String {
+/// The kind a legacy top-level key names: `five_hour` is the session, `seven_day` the
+/// week across every model, and `seven_day_<model>` the week on that model, whose name
+/// is the rest of the key in title case.
+fn legacy_kind(key: &str) -> Kind {
   match key {
-    "five_hour" => "5 hour".into(),
-    "seven_day" => "7 day".into(),
-    other => crate::clean(other.trim_start_matches("seven_day_"))
-      .split('_')
-      .map(|word| {
-        let mut chars = word.chars();
-        match chars.next() {
-          Some(first) => format!("{}{}", first.to_uppercase(), chars.as_str()),
-          None => String::new(),
-        }
-      })
-      .collect::<Vec<_>>()
-      .join(" "),
+    "five_hour" => Kind::Session,
+    "seven_day" => Kind::WeeklyAll,
+    other => Kind::WeeklyScoped(model(
+      &crate::clean(other.trim_start_matches("seven_day_"))
+        .split('_')
+        .map(|word| {
+          let mut chars = word.chars();
+          match chars.next() {
+            Some(first) => format!("{}{}", first.to_uppercase(), chars.as_str()),
+            None => String::new(),
+          }
+        })
+        .collect::<Vec<_>>()
+        .join(" "),
+    )),
   }
+}
+
+/// A model's display name with any control characters taken out, or none when nothing
+/// but blanks is left.
+fn model(name: &str) -> Option<String> {
+  let name = crate::clean(name);
+  (!name.trim().is_empty()).then_some(name)
 }
 
 #[derive(Default, Deserialize, Serialize)]
@@ -584,13 +634,24 @@ mod tests {
     Ok(())
   }
 
+  /// Each window's kind, in the order the parser gives them.
+  fn kinds(snapshot: &Snapshot) -> Result<Vec<Kind>> {
+    Ok(
+      snapshot
+        .windows()?
+        .into_iter()
+        .map(|window| window.kind)
+        .collect(),
+    )
+  }
+
   #[test]
   fn validates_percentages_and_optional_windows() -> Result<()> {
     let good: Snapshot = serde_json::from_str(
       r#"{"five_hour":{"utilization":62.4,"resets_at":null},"seven_day_opus":null}"#,
     )?;
     good.validate()?;
-    assert_eq!(good.windows()?.len(), 1);
+    assert_eq!(kinds(&good)?, [Kind::Session]);
     for json in [
       r#"{"five_hour":{"utilization":101}}"#,
       r#"{"five_hour":{"utilization":12,"resets_at":"bad"}}"#,
@@ -606,22 +667,23 @@ mod tests {
     let snapshot: Snapshot =
       serde_json::from_str(include_str!("../tests/fixtures/usage-with-breakdown.json"))?;
     snapshot.validate()?;
-    let windows = snapshot.windows()?;
     assert_eq!(
-      windows
-        .iter()
-        .map(|(name, _)| name.as_str())
-        .collect::<Vec<_>>(),
-      ["5 hour", "7 day", "Fable"]
+      kinds(&snapshot)?,
+      [
+        Kind::Session,
+        Kind::WeeklyAll,
+        Kind::WeeklyScoped(Some("Fable".into()))
+      ]
     );
-    assert_eq!(windows[0].1.utilization, 23.5);
-    assert_eq!(windows[2].1.utilization, 0.0);
-    assert!(windows[2].1.resets_at.is_none());
+    let windows = snapshot.windows()?;
+    assert_eq!(windows[0].utilization, 23.5);
+    assert_eq!(windows[2].utilization, 0.0);
+    assert!(windows[2].resets_at.is_none());
     Ok(())
   }
 
   #[test]
-  fn legacy_breakdown_metadata_is_not_a_quota_window() -> Result<()> {
+  fn legacy_fields_map_onto_the_same_kinds_and_breakdown_metadata_is_not_a_window() -> Result<()> {
     let mut snapshot: Snapshot =
       serde_json::from_str(include_str!("../tests/fixtures/usage-with-breakdown.json"))?;
     snapshot.fields.remove("limits");
@@ -629,11 +691,40 @@ mod tests {
       "seven_day_fable".into(),
       serde_json::json!({"utilization": 0.5, "resets_at": null}),
     );
+    snapshot.fields.insert(
+      "seven_day_oauth_apps".into(),
+      serde_json::json!({"utilization": 1, "resets_at": null}),
+    );
     snapshot.validate()?;
-    let windows = snapshot.windows()?;
-    assert_eq!(windows.len(), 3);
-    assert_eq!(windows[2].0, "Fable");
-    assert_eq!(windows[2].1.utilization, 0.5);
+    assert_eq!(
+      kinds(&snapshot)?,
+      [
+        Kind::Session,
+        Kind::WeeklyAll,
+        Kind::WeeklyScoped(Some("Fable".into())),
+        Kind::WeeklyScoped(Some("Oauth Apps".into()))
+      ]
+    );
+    assert_eq!(snapshot.windows()?[2].utilization, 0.5);
+    Ok(())
+  }
+
+  #[test]
+  fn a_scoped_window_with_no_printable_model_name_has_none() -> Result<()> {
+    for scope in [
+      serde_json::Value::Null,
+      serde_json::json!({"model": {"display_name": " "}}),
+      serde_json::json!({"model": {"display_name": "\u{1b}"}}),
+    ] {
+      let snapshot: Snapshot = serde_json::from_value(serde_json::json!({
+        "limits": [{"kind": "weekly_scoped", "percent": 1, "scope": scope}]
+      }))?;
+      assert_eq!(kinds(&snapshot)?, [Kind::WeeklyScoped(None)]);
+    }
+    let legacy: Snapshot =
+      serde_json::from_value(serde_json::json!({"seven_day_": {"utilization": 1}}))?;
+    assert_eq!(kinds(&legacy)?, [Kind::WeeklyScoped(None)]);
+    assert_eq!(Kind::WeeklyScoped(None).label(), "Weekly scoped");
     Ok(())
   }
 
@@ -646,9 +737,8 @@ mod tests {
     }"#,
     )?;
     snapshot.validate()?;
-    let windows = snapshot.windows()?;
-    assert_eq!(windows.len(), 1);
-    assert_eq!(windows[0].1.utilization, 1.0);
+    assert_eq!(kinds(&snapshot)?, [Kind::Session]);
+    assert_eq!(snapshot.windows()?[0].utilization, 1.0);
     Ok(())
   }
 

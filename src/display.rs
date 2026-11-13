@@ -105,8 +105,8 @@ fn lines(
           Vec::new()
         }
       };
-      for (label, window) in windows {
-        let label: String = label.chars().take(12).collect();
+      for window in windows {
+        let label: String = window.kind.label().chars().take(12).collect();
         let filled = ((window.utilization / 100.0) * bar_width as f64).round() as usize;
         let filled = filled.min(bar_width);
         let color = if window.utilization >= 90.0 {
