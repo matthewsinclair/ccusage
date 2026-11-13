@@ -28,7 +28,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 - AC-02.3 The cap comes from config.toml, with one default when the key is absent; a config that does not set the key is written back without it; and no test writes the cap as a literal. -- satisfied: yes (computed)
 - AC-02.4 With a model named, an account is eligible only while its scoped window for that model is below the cap too. -- satisfied: yes (computed)
 
-### WP-03 -- The which verb: text, versioned JSON and --use (status: Not Started)
+### WP-03 -- The which verb: text, versioned JSON and --use (status: WIP)
 
 - AC-03.1 `ccusage which` prints the choice with one reason line, then the rest in rank order one line each, and exits 0; with nothing eligible it says so on stdout, names the soonest reset and exits 1. -- satisfied: no (computed)
 - AC-03.2 `ccusage which --json` emits the versioned shape cc and ic agreed, with the same choice and order as the text. -- satisfied: no (computed)
@@ -78,7 +78,7 @@ _(no tests in this group)_
 - AT-02.4 `tests/cli.rs:201` -- covers AC-02.3 -- status: green -- init and add write back a config that set no cap without a [which] table, and keep the cap of one that set it; list refuses a cap of 0; every cap in the test derives from which::DEFAULT_CAP; red under the cap-of-0 mutant in the first WP02 run at fdfe1e5, Desk slot 01M79X4M2FR0A8NCRRNG412NQG; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3
 - AT-02.5 `src/which.rs:602` -- covers AC-02.4 -- status: green -- With a model named, an account whose scoped window for it is at the cap is at cap and not chosen, the model matched regardless of case; an account with no scoped window for the model is bounded by the weekly window alone, and the headroom is the lesser of the weekly room and the scoped room in weekly terms; red before WP02: written against which::choose, it could not compile before it; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3
 
-### WP-03 -- The which verb: text, versioned JSON and --use (status: Not Started)
+### WP-03 -- The which verb: text, versioned JSON and --use (status: WIP)
 
 _(no tests in this group)_
 

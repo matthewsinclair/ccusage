@@ -2,7 +2,7 @@
 wp_id: WP-03
 title: The which verb: text, versioned JSON and --use
 scope: M
-status: Not Started
+status: WIP
 ---
 
 # WP-03: The which verb: text, versioned JSON and --use

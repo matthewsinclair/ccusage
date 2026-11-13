@@ -55,7 +55,7 @@ Give hv one command that names the account to work on now, so that no weekly all
 | ----- | ------------------------------------------------------------------------------------ | ---- | ----------- |
 | WP-01 | Typed usage windows: each window carries its kind and model                          | S    | Done        |
 | WP-02 | The which rule: earliest reset first, with the cap from config                       | M    | Done        |
-| WP-03 | The which verb: text, versioned JSON and --use                                       | M    | Not Started |
+| WP-03 | The which verb: text, versioned JSON and --use                                       | M    | WIP         |
 | WP-04 | Usage history: bounded samples under XDG_STATE_HOME                                  | M    | WIP         |
 | WP-05 | The predict verb: burn rate and projected loss                                       | M    | Not Started |
 | WP-06 | The TUI marks the account which would choose                                         | S    | Not Started |
