@@ -75,9 +75,10 @@
       "node": "cc",
       "kind": "doing",
       "seq": 4,
-      "text": "ST0003's follow-up to WP03 sits on cc/ST0003 over main's WP03 (eea2dea), in worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, as two commits:\n- b377106, vc's notes 1 to 3 on WP03: a refusal counts only for invalid_grant; parked accounts are matched by their recorded account; use --none points launchd at the active profile.\n- 02a5967, todo 3b: each usage report carries subscription_type and rate_limit_tier as the login records them, for ic's predict.\nic signed both texts and the shape. Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8 is queued behind the devvm build and ic's WP05. Its run is the three mutants in the scratchpad's followup-mutants.zsh, then the measured run (fmt, clippy, cargo test, the keychain tests by name), all in wt-st0003.\nThen hand eea2dea..02a5967 to vc. On its go: land, re-mint the changed rows AT-03.4 and AT-03.10, and ask vc which AC the plan test covers.",
+      "text": "ST0003's follow-up to WP03 sits on cc/ST0003 over main's WP03 (eea2dea), in worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, as two commits:\n- b377106, vc's notes 1 to 3 on WP03: a refusal counts only for invalid_grant; parked accounts are matched by their recorded account; use --none points launchd at the active profile.\n- 02a5967, todo 3b: each usage report carries subscription_type and rate_limit_tier as the login records them, for ic's predict.\nic signed both texts and the shape. Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8 is queued behind the devvm build and ic's WP05. Its run is the three mutants in the scratchpad's followup-mutants.zsh, then the measured run (fmt, clippy, cargo test, the keychain tests by name), all in wt-st0003.\nThen hand eea2dea..02a5967 to vc. On its go: land, re-mint the changed rows AT-03.4 and AT-03.10, and ask vc which AC the plan test covers.\nAfter hv's compact: tell devbin-vc that cc has picked up. It holds 01M7A1SFMQY40KBJ95VXWDZBT8 ungranted until then, and grants it at the next free cargo lane, with no re-ask.",
       "state": "live",
-      "recorded_at": "2026-11-13T09:01:40.988Z"
+      "recorded_at": "2026-11-13T09:01:40.988Z",
+      "edited_at": "2026-11-13T09:18:22.203Z"
     },
     {
       "node": "cc",
