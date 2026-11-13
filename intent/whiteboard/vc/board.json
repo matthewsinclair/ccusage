@@ -120,10 +120,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 3,
-      "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 to WP04 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean. The rest of the stack landed on main as d57a014..258e0a7 (9cd35e1 WP03's follow-ups; 447b20f and 258e0a7 WP05, predict; 217cf08 WP06, the next marker; 102676f, 710f2e1 and b8a12dd WP08, the TUI's refresh and the Herdr mod; 30e9b63 WP07, README and CHANGELOG), run once at 70adaf7 in slot 01M7A1JYDSQNNHNNN55ACXCX40, whose code equals main's; PASS on vc's read of each, given 2026-11-13. Left: WP06 closes once ic has re-cited the 19 ST0002 rows that cc's landing moved. WP05 and WP07 close once todo 3 lands (predict's grouping by plan tier, with README's predict paragraph losing its one-plan assumption), riding cc's ST0003/WP04 run along with ic's two herdr fixes (the cause herdr-app check gives when it cannot run, and herdrs_own narrowed so that a hidden directory is never deleted without --force). WP08 closes after AC-08.3, hv's own check in Herdr, in the closing sequence (todo 7).",
+      "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 to WP04 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean. The rest of the stack landed on main as d57a014..258e0a7 (9cd35e1 WP03's follow-ups; 447b20f and 258e0a7 WP05, predict; 217cf08 WP06, the next marker; 102676f, 710f2e1 and b8a12dd WP08, the TUI's refresh and the Herdr mod; 30e9b63 WP07, README and CHANGELOG), run once at 70adaf7 in slot 01M7A1JYDSQNNHNNN55ACXCX40, whose code equals main's; PASS on vc's read of each, given 2026-11-13. WP06 is closed by vc (ic re-cited the 19 rows cc's landing moved at 7dfbd34, lint 26 of 26). Left: WP05 and WP07 close once todo 3 lands (predict's grouping by plan tier, with README's predict paragraph losing its one-plan assumption), riding cc's ST0003/WP04 run along with ic's two herdr fixes (the cause herdr-app check gives when it cannot run, and herdrs_own narrowed so that a hidden directory is never deleted without --force). WP08 closes after AC-08.3, hv's own check in Herdr, in the closing sequence (todo 7).",
       "state": "live",
       "recorded_at": "2026-11-13T05:33:19.199Z",
-      "edited_at": "2026-11-13T09:40:05.447Z"
+      "edited_at": "2026-11-13T09:41:16.480Z"
     },
     {
       "node": "vc",

@@ -43,7 +43,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 - AC-05.1 `ccusage predict` reports each account's projected unused percent and the total projected loss from a fixture history, says how much history it rests on, and says plainly when there is too little. -- satisfied: yes (computed)
 
-### WP-06 -- The TUI marks the account which would choose (status: WIP)
+### WP-06 -- The TUI marks the account which would choose (status: Done)
 
 - AC-06.1 The TUI overview marks the account `which` chooses once every account's fresh report is in, and never on partial or stale data. -- satisfied: yes (computed)
 
@@ -99,7 +99,7 @@ _(no tests in this group)_
 - AT-05.2 `src/predict.rs:326` -- covers AC-05.1 -- status: green -- Following which::choose from now at the rate, each account's projected percent at its current reset, held at the cap, its unused share as 100 less that, and the total, each computed in the test from a fixture whose climb to the cap ends part way through a second; red under the mutants that take the last account instead of the rule's choice, that climb past the cap, and that count unused from the cap instead of 100, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)
 - AT-05.3 `tests/cli.rs:1462` -- covers AC-05.1 -- status: green -- ccusage predict says plainly when there is too little history and exits 0, then from a fixture history gives the rate, the samples and hours it rests on, each account's unused share and the total, and the accounts left out, in text and in its versioned JSON; red under the mutant whose JSON gives no samples, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)
 
-### WP-06 -- The TUI marks the account which would choose (status: WIP)
+### WP-06 -- The TUI marks the account which would choose (status: Done)
 
 - AT-06.1 `src/display.rs:1035` -- covers AC-06.1 -- status: green -- display::next is which::choose's choice once every report is in and fresh, an account that failed counting as in; a report yet to come, or usage as old as the cache's lifetime, gives no marker and the TUI's notice to refresh; with nothing eligible the overview says so; one account's usage shows no marker; red under the mutants that ignore freshness, that mark every account but the choice, and that count a failed account as not in, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)
 - AT-06.2 `tests/cli.rs:1532` -- covers AC-06.1 -- status: green -- ccusage usage --all marks which's choice next, as the TUI does, while ccusage usage NAME marks none; red under the mutant that leaves usage --all without the marker, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)
