@@ -132,6 +132,7 @@ impl Simulated {
       cached: true,
       snapshot: Some(snapshot),
       error: None,
+      plan: Default::default(),
     })
   }
 }

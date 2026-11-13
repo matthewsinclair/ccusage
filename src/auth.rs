@@ -15,6 +15,10 @@ pub struct Token {
   pub expires_at: Option<i64>,
   refresh_token: Option<String>,
   client_id: Option<String>,
+  /// The plan Claude Code recorded with the login, exactly as it wrote it. Not secret.
+  pub subscription_type: Option<String>,
+  /// The plan's rate-limit tier, exactly as Claude Code wrote it. Not secret.
+  pub rate_limit_tier: Option<String>,
 }
 #[derive(Deserialize)]
 struct Credentials {

@@ -369,6 +369,7 @@ mod tests {
       cached: true,
       snapshot: Some(snapshot),
       error: None,
+      plan: Default::default(),
     })
   }
 

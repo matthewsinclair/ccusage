@@ -314,6 +314,28 @@ pub struct Report {
   pub cached: bool,
   pub snapshot: Option<Snapshot>,
   pub error: Option<String>,
+  /// The plan the account's login records, which no usage response names.
+  #[serde(flatten)]
+  pub plan: Plan,
+}
+
+/// The plan a login records, exactly as Claude Code wrote it, so that accounts are
+/// compared by whole values and a tier's name is never parsed. Both are None when the
+/// login was not read or records none.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize)]
+pub struct Plan {
+  pub subscription_type: Option<String>,
+  pub rate_limit_tier: Option<String>,
+}
+
+impl Plan {
+  /// The plan `token`'s login records.
+  pub fn of(token: &auth::Token) -> Self {
+    Self {
+      subscription_type: token.subscription_type.clone(),
+      rate_limit_tier: token.rate_limit_tier.clone(),
+    }
+  }
 }
 
 impl Report {
@@ -324,6 +346,7 @@ impl Report {
       cached: false,
       snapshot: None,
       error: Some(crate::clean(&error.to_string())),
+      plan: Plan::default(),
     }
   }
 }
@@ -648,6 +671,7 @@ impl Client {
     }
     let expected = store.profile(name)?.email.as_deref();
     let token = auth::read(&dir)?;
+    let plan = Plan::of(&token);
     let mut verified_id = credential_id(&token, expected);
     if cache.credential_id != verified_id {
       let token = auth::fresh(&self.agent, &dir, None)?;
@@ -726,6 +750,7 @@ impl Client {
       cached,
       snapshot: cache.snapshot,
       error,
+      plan,
     })
   }
 }
@@ -775,6 +800,7 @@ pub fn demo() -> Vec<Report> {
     cached: false,
     snapshot: Some(Snapshot { fields }),
     error: None,
+    plan: Plan::default(),
   }]
 }
 

@@ -1629,3 +1629,31 @@ fn herdr_install_writes_the_mod_and_replaces_or_removes_only_its_own_unedited_co
   assert_eq!(fs::read_to_string(home.join("layouts/main.json"))?, layout);
   Ok(())
 }
+
+// Each usage report gives the plan its login records, exactly as Claude Code wrote it,
+// for ST0002/WP05's predict to compare whole; a login that records none gives null.
+#[test]
+fn usage_reports_the_plan_each_login_records() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  sandbox.cached("work", ccusage::now(), 0)?;
+  let report = |sandbox: &Sandbox| -> Result<serde_json::Value> {
+    Ok(serde_json::from_str(
+      &sandbox.ok(&["usage", "work", "--json"])?,
+    )?)
+  };
+  let unrecorded = report(&sandbox)?;
+  assert!(unrecorded[0]["subscription_type"].is_null(), "{unrecorded}");
+  assert!(unrecorded[0]["rate_limit_tier"].is_null(), "{unrecorded}");
+  storage::write_atomic(
+    &sandbox.profile("work").join(".credentials.json"),
+    br#"{"claudeAiOauth":{"accessToken":"TEST_TOKEN","expiresAt":9999999999999,"subscriptionType":"max","rateLimitTier":"default_claude_max_20x"}}"#,
+  )?;
+  let recorded = report(&sandbox)?;
+  assert_eq!(recorded[0]["subscription_type"], "max", "{recorded}");
+  assert_eq!(
+    recorded[0]["rate_limit_tier"], "default_claude_max_20x",
+    "{recorded}"
+  );
+  Ok(())
+}

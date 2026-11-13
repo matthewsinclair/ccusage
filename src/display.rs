@@ -597,6 +597,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
         cached: false,
         snapshot: None,
         error: None,
+        plan: Default::default(),
       })
       .collect()
   };
@@ -955,6 +956,7 @@ mod tests {
         cached: false,
         error: None,
         snapshot: Some(snapshot),
+        plan: Default::default(),
       };
       assert_eq!(
         row_labels(&lines(&[report], None, None, None, 80, 1, false)),
@@ -971,6 +973,7 @@ mod tests {
       fetched_at: Some(1),
       cached: false,
       error: None,
+      plan: Default::default(),
       snapshot: Some(serde_json::from_value(serde_json::json!({
         "five_hour":{"utilization":0,"resets_at":null},
         "metadata":{"enabled":false,"note":"A long explanatory message that must wrap and remain completely readable", "zero":0,"absent":null}
@@ -1014,6 +1017,7 @@ mod tests {
         {"kind": "weekly_all", "percent": percent, "resets_at": reset}
       ]}))?),
       error: None,
+      plan: Default::default(),
     })
   }
 
@@ -1051,6 +1055,7 @@ mod tests {
       cached: false,
       snapshot: None,
       error: None,
+      plan: Default::default(),
     });
     assert_eq!(next(&waiting, now, cap), Next::Refresh);
     let frame = text(
