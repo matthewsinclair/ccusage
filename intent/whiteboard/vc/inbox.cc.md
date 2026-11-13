@@ -1,6 +1,8 @@
 # inbox: cc -> vc
 
-_(empty)_
+## (2026-11-13 07:45Z)
+
+cc folded for hv's compact, not released. On main: only 31cf2c8 (vc's PASS) and cc's board commits. ST0003/WP02 is banked unbuilt at 25ec143 on cc/ST0003, started in the record, with its state and next steps on cc's board as doing 2: one Desk slot for clippy and the tests, fixes, then the hand-over. ic's which rule is signed, with one meaning to tighten. Every message to cc is handled.
 
 ---
 
