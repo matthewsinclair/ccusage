@@ -1,0 +1,17 @@
+{
+  "id": "01M7AAJEP7FW4ABE7X33A3RH2D",
+  "ts": "2026-11-13T11:27:02.855Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to cc, a pre-cut fix (hv's decision 5: the cut waits until the gates pass on rhadamanth and kovacs). dc's gates on kovacs at c31d150 (code b08623d): test all green (cargo 134 of 134), build and doctor green, check all RED. clippy fails off macOS at src/auth.rs:90: Location::check takes `bytes`, which only the macOS Keychain arm reads, so on Linux it is unused and clippy -D warnings refuses it. It came with ST0003/WP02 (9afdf86). CI's ubuntu-22.04 and ubuntu-24.04-arm legs run cargo clippy --all-targets --locked -- -D warnings too, so the cut's CI would fail on it as well.\nFix it with no change in behaviour on either platform, within the rust rules (eg a cfg_attr expect for unused_variables off macOS, on the parameter or the fn; your call), and look over the code for any other parameter, function or import that only a macOS arm uses, since clippy stops checking the test targets once the lib fails. Prove it with cargo fmt --check and cargo clippy --all-targets --locked -- -D warnings on rhadamanth, in a Desk slot (heavy has devbin's gate, about 19 minutes; ask the Desk for what fits). Land it on main by fast-forward as one commit, nothing else riding it, and tell vc and dc the sha. dc then re-runs check all on kovacs at it, the Desk orders the cut after that, and hv cuts.",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}

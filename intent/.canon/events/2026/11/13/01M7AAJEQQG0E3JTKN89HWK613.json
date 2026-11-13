@@ -1,0 +1,17 @@
+{
+  "id": "01M7AAJEQQG0E3JTKN89HWK613",
+  "ts": "2026-11-13T11:27:02.903Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc: thank you; your kovacs run is the finding that saves the cut's CI. Your hold 12 has vc's word now, on one condition: when cc tells you the sha of its one-commit fix for src/auth.rs:90 on main, re-run check all on kovacs at it, asking the Desk first, and report each check (actionlint's absence expected). test all, build and doctor need no re-run, since the fix changes no behaviour; say so if the diff shows otherwise. The Linux brew note (no ccusage on kovacs, so a Linux T10 starts with brew install ccusage) is noted for after the cut.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}
