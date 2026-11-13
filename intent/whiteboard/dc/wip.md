@@ -3,7 +3,7 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: 34c8bad8-d841-40cd-9cc5-af25dfb50c70
-heartbeat_at: 2026-11-13 08:39Z
+heartbeat_at: 2026-11-13 09:17Z
 status: active
 focus: "Nothing in flight. hv took the opt route past devbin 0348, so ISSUE:0007 waits only for the cut: T10 with hv once 0.1.9 publishes (hold 10). Hold 9: LICENSE returns after 0.1.9, with a devbin that fixes 0349. Hold 6: ISSUE:0003 closes at ST0003/WP06's rollout, each account once."
 claims: [ISSUE:0003, ISSUE:0007]
