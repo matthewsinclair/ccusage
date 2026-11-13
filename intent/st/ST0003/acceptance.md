@@ -31,7 +31,7 @@ title: Live account switching: ccusage use moves the active login into the share
 - AC-03.3 `ccusage dir` prints no directory for the active account and fails, `ccusage run` gives its child no login directory, `login` of the active profile seats the new login, and `logout` of the active profile is refused. -- satisfied: yes (computed)
 - AC-03.4 The first `use` on 0.1.8's layout adopts it, replacing the shared config's login only when its account has another login parked or it can no longer be renewed; parking everything restores that layout; and with shared mode off every existing test passes unchanged. -- satisfied: yes (computed)
 
-### WP-04 -- Doctor for the one live login (status: WIP)
+### WP-04 -- Doctor for the one live login (status: Done)
 
 - AC-04.1 `ccusage doctor` reports where each login is, an interrupted move, a shared login that is not the active profile's, and either Claude Code flag that is off its default. -- satisfied: yes (computed)
 - AC-04.2 `ccusage doctor` lists running Claude sessions whose launch environment names another login directory or another config directory. -- satisfied: yes (computed)
@@ -78,7 +78,7 @@ _(no tests in this group)_
 - AT-03.9 `src/switch.rs:237` -- covers AC-03.4 -- status: green -- Adoption replaces the shared config's own login only when Claude can no longer renew it, or when its account keeps another login in a profile, and otherwise refuses saying how to keep it; red under the mutant that always replaces, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea
 - AT-03.10 `src/usage.rs:1051` -- covers AC-03.4 -- status: green -- A login is dead only when the token endpoint refuses its refresh with invalid_grant; another 400, a 401 or a 5xx is an error, so adoption stops instead of replacing; red under the mutant that takes any failure for dead, in WP03's mutant run at 350e689, and under the mutant that takes any 400 for dead, in the follow-up's mutant run at 46295e6; green in the follow-up's measured run at 46295e6, Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8, landed as 2019b93
 
-### WP-04 -- Doctor for the one live login (status: WIP)
+### WP-04 -- Doctor for the one live login (status: Done)
 
 - AT-04.1 `src/doctor.rs:515` -- covers AC-04.1 -- status: green -- Doctor says where each profile's login is, fails a profile with no login or two, and only warns of a shared login that belongs to no profile; red under the mutant that passes a doubled login, in WP04's mutant run at 7cac510; green in WP04's measured run at 7cac510, Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, landed as 2ad2745
 - AT-04.2 `src/doctor.rs:549` -- covers AC-04.1 -- status: green -- The two flags a switch relies on are read from Claude Code's flag cache as Claude Code reads it, and stand at their defaults when it does not hold them; red under the mutant that reads the legacy cache first, in WP04's mutant run at 7cac510; green in WP04's measured run at 7cac510, Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, landed as 2ad2745

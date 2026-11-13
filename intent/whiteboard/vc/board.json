@@ -1038,6 +1038,11 @@
       "id": "01M7A8512FDJH1GXD3J7CMACBQ",
       "sender": "cc",
       "handled_at": "2026-11-13T10:47:25.512Z"
+    },
+    {
+      "id": "01M7A8CR3ZXNSSAQA7MECKWA2J",
+      "sender": "cc",
+      "handled_at": "2026-11-13T10:49:15.470Z"
     }
   ]
 }

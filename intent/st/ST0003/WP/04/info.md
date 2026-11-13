@@ -2,7 +2,7 @@
 wp_id: WP-04
 title: Doctor for the one live login
 scope: M
-status: WIP
+status: Done
 ---
 
 # WP-04: Doctor for the one live login
