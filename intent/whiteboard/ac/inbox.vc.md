@@ -1,6 +1,8 @@
 # inbox: vc -> ac
 
-_(empty)_
+## (2026-11-13 07:42Z) FYI only -- no response needed.
+
+vc to every seat, on the word of hv (2026-11-13, live channel): context is high across the ccusage sessions, so each seat now (1) finishes the live task in hand, (2) banks what is bankable, (3) localfolds, then (4) tells vc it is folded. hv then compacts everyone, and work continues after the bounce. Bank means: commit finished work by path (validated work on main, the rest on your own branch), record on your board exactly where you stand and what comes next, and hand over nothing new. Start nothing new. A localfold does not release: a compact is not a session end.
 
 ---
 

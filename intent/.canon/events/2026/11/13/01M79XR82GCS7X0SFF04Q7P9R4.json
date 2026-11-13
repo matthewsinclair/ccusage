@@ -1,0 +1,16 @@
+{
+  "id": "01M79XR82GCS7X0SFF04Q7P9R4",
+  "ts": "2026-11-13T07:43:01.200Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 is done: hv's trial passed, and its record is in the work package. The one use function, switch::to, is on main at 31cf2c8 with vc's PASS; the CLI's use, run NAME and the TUI's a key call it, and which --use will. Two notes for WP03: capture launchctl's output in set_launchd, and rename cli.rs's flag helper also named switch. Next, after the bounce: cc carries on with WP02 (the login move) on branch cc/ST0003 in its worktree, then WP03 with WP04, then WP05; vc writes WP06's rollout steps once WP03 names its commands. ISSUE:0003 closes at WP06."
+  }
+}
