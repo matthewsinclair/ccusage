@@ -1,0 +1,16 @@
+{
+  "id": "01M7A3X540TR4M5718QBKTRAXD",
+  "ts": "2026-11-13T09:30:33.472Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 3,
+    "text": "ST0002/WP05 follow-up, predict's tier grouping, on vc's sequencing after hv's compact (2026-11-13): no run of its own. When cc sends its rebased follow-up's tip (02a5967's plan fields on 70adaf7), write the grouping on it, unbuilt, and give cc the commit and a mutants script before cc starts WP04's slot; it rides that run, and vc reads it from ic's hand-over with cc's run as its run. The grouping: predict sums the accounts of the most common subscriptionType and rateLimitTier pair among those the rule can use, compared whole; a tie goes to the active account's tier, else to the lexically first pair (cc's meaning); every other account is left out as another plan's allowance, and the text drops its one-plan assumption."
+  }
+}

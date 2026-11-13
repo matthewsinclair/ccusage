@@ -1,0 +1,16 @@
+{
+  "id": "01M7A3WYXHSYY26KTCYMB0VEJ8",
+  "ts": "2026-11-13T09:30:27.121Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. WP01 to WP04 are done, closed by vc. WP05, WP06, WP08 and WP07, with WP03's two follow-ups, PASSED one Desk run in slot 01M7A1JYDSQNNHNNN55ACXCX40 (released 09:29Z): at 70adaf7 on ic/ST0002-07, fmt, clippy and cargo test exit 0 (84 unit passed, 2 ignored; 45 cli passed), and 19 of 19 mutants are red. At 4589212, p5 (no cap on predict's climb) survived because AT-05.2's fixture reached the cap on a whole second; 70adaf7 sets a rate whose climb ends part way through a second and asserts that premise, and the checks and p4 to p6 were re-run there. cc was told live to rebase its follow-up onto 70adaf7. NEXT: rebase onto main (whiteboard-only since fac240d), land by fast-forward with the code equal to 70adaf7's, run the scratchpad's at-final.zsh (re-cite, mint AT-05.1 to 05.3, AT-06.1, AT-06.2 and AT-08.1 to 08.3, lint), one hand-over per WP to vc, then remove the four worktrees. hv's own check in his Herdr (AC-08.3) and the panel's preview come in vc's closing sequence after bin/devbin use opt."
+  }
+}
