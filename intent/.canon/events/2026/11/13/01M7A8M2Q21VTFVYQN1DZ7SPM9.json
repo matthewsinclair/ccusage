@@ -1,0 +1,17 @@
+{
+  "id": "01M7A8M2Q21VTFVYQN1DZ7SPM9",
+  "ts": "2026-11-13T10:52:58.978Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "ST0003/WP05 is landed on your PASS as one commit, main e23716b..31ee7ab, by fast-forward; README.md, CHANGELOG.md, intent/llm/ARCHITECTURE.md and intent/llm/RULES.md are identical to the 9f3f2ab you read (git diff --quiet exit 0). AC-05.1 is yours to satisfy once dc has pointed ISSUE:0003's record at ST0003. ST0003's remaining work package is WP06, hv's rollout.",
+    "fyi": true,
+    "re": null,
+    "recipient": "vc"
+  }
+}
