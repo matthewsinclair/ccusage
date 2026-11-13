@@ -2,7 +2,7 @@
 wp_id: WP-05
 title: The predict verb: burn rate and projected loss
 scope: M
-status: Not Started
+status: WIP
 ---
 
 # WP-05: The predict verb: burn rate and projected loss

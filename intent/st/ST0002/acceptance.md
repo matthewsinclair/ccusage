@@ -39,7 +39,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 - AC-04.1 Each successful fetch records a sample for each window whose percent changed, in a 0600 file under XDG_STATE_HOME; a cache hit records nothing; and samples are dropped by age, one weekly window, not at a reset. -- satisfied: yes (computed)
 
-### WP-05 -- The predict verb: burn rate and projected loss (status: Not Started)
+### WP-05 -- The predict verb: burn rate and projected loss (status: WIP)
 
 - AC-05.1 `ccusage predict` reports each account's projected unused percent and the total projected loss from a fixture history, says how much history it rests on, and says plainly when there is too little. -- satisfied: no (computed)
 
@@ -93,7 +93,7 @@ _(no tests in this group)_
 - AT-04.4 `tests/cli.rs:355` -- covers AC-04.1 -- status: green -- Usage read from a fresh cache, or held back by a rate-limit cooldown, records no history under XDG_STATE_HOME; red before WP04: written against history::FILE, it could not compile before it (the property is structural, as only the success arm records); green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP
 - AT-04.5 `src/history.rs:294` -- covers AC-04.1 -- status: green -- Samples go by age alone, once older than one weekly window: a window that has since reset keeps its sample, and the next window at the same percent is a window of its own; red under the mutants that drop a sample at one week and that know a window without its reset, in the first WP04 run at 31c0482, Desk slot 01M79ZVHT2C8B2ADTBWY7YQ73W; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP
 
-### WP-05 -- The predict verb: burn rate and projected loss (status: Not Started)
+### WP-05 -- The predict verb: burn rate and projected loss (status: WIP)
 
 _(no tests in this group)_
 
