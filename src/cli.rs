@@ -20,11 +20,13 @@ Usage: ccusage [--config PATH] [--no-color] [--verbose] [COMMAND]
   logout NAME                  Sign out this profile through Claude
   list                         Show profiles and local credential status
   use NAME                     Select the account for future ccusage run launches
-                               (in shared mode, for new Claude sessions too)
+                               (in shared mode, for every Claude session, running or new)
+  use --none                   In shared mode, put the active login back in its profile
+                               and leave the shared config with none
   run [NAME] [-- CLAUDE_ARGS...]
                                Launch Claude with the selected profile
-  dir [NAME]                   In shared mode, print the active or named profile's
-                               directory, for CLAUDE_SECURESTORAGE_CONFIG_DIR
+  dir [NAME]                   In shared mode, print a profile's directory, for
+                               CLAUDE_SECURESTORAGE_CONFIG_DIR; the active one has none
   usage [NAME | --all] [--json] [--refresh] [--verbose]
                                Show plan usage (default: active account)
   usage --demo [--json] [--verbose]
@@ -57,8 +59,8 @@ fn argument(args: &mut Vec<String>, flag: &str) -> Result<Option<String>> {
   }
   Ok(None)
 }
-fn switch(args: &mut Vec<String>, flag: &str) -> bool {
-  if let Some(index) = args.iter().position(|arg| arg == flag) {
+fn flag(args: &mut Vec<String>, name: &str) -> bool {
+  if let Some(index) = args.iter().position(|arg| arg == name) {
     args.remove(index);
     true
   } else {
@@ -175,13 +177,13 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
     );
     return Ok(());
   }
-  if command == "tui" && switch(&mut args, "--demo") {
+  if command == "tui" && flag(&mut args, "--demo") {
     empty(&args)?;
     return display::tui(None, true, no_color);
   }
-  if command == "usage" && switch(&mut args, "--demo") {
-    let json = switch(&mut args, "--json");
-    verbose |= switch(&mut args, "--verbose");
+  if command == "usage" && flag(&mut args, "--demo") {
+    let json = flag(&mut args, "--json");
+    verbose |= flag(&mut args, "--verbose");
     empty(&args)?;
     let reports = crate::usage::demo();
     if json {
@@ -226,10 +228,19 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       println!("Added {name}. Next: ccusage login {name}");
     }
     "login" => {
-      auth::login(&store, one(&args)?)?;
+      let name = one(&args)?;
+      auth::login(&store, name)?;
+      // The active account's fresh login replaces the one every session shares.
+      crate::switch::reseat(&store, name)?;
     }
     "logout" => {
       let name = one(&args)?;
+      if crate::seat::home(&store, name)? != store.profile_dir(name)? {
+        return Err(format!(
+          "{name} is the active account, whose login every Claude session shares; switch first with ccusage use NAME or ccusage use --none, then log {name} out"
+        )
+        .into());
+      }
       let status = auth::command(&store.profile_dir(name)?)
         .args(["auth", "logout"])
         .status()?;
@@ -251,7 +262,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
         } else {
           ' '
         };
-        let status = match auth::read(&store.profile_dir(name)?) {
+        let status = match crate::seat::home(&store, name).and_then(|dir| auth::read(&dir)) {
           Ok(token)
             if token
               .expires_at
@@ -266,8 +277,16 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       }
     }
     "use" => {
-      let name = one(&args)?;
-      println!("{}", crate::switch::to(&store, name)?.message(name));
+      if flag(&mut args, "--none") {
+        if !args.is_empty() {
+          return Err("use takes a profile name or --none, not both; see ccusage help".into());
+        }
+        crate::switch::none(&store)?;
+        println!("{}", crate::switch::NONE);
+      } else {
+        let name = one(&args)?;
+        println!("{}", crate::switch::to(&store, name)?.message(name));
+      }
     }
     "dir" => {
       if args.len() > 1 {
@@ -279,7 +298,13 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
         );
       }
       let name = store.select(args.first().map(String::as_str))?;
-      let dir = store.profile_dir(&name)?;
+      let dir = crate::seat::home(&store, &name)?;
+      if dir != store.profile_dir(&name)? {
+        return Err(format!(
+          "{name} is the active account, and every Claude session reads its login from the shared config; leave CLAUDE_SECURESTORAGE_CONFIG_DIR unset"
+        )
+        .into());
+      }
       // The exact bytes Claude Code hashes into the login's Keychain name.
       #[cfg(unix)]
       {
@@ -301,19 +326,20 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
         args.remove(0);
       }
       let name = store.select(name.as_deref())?;
-      let dir = store.profile_dir(&name)?;
+      // The shared config's login must be NAME's, so a profile not seated there is
+      // switched to first. Claude then reads it from the shared config's own store, and
+      // no login directory reaches the child.
+      if store.shared_dir()?.is_some()
+        && crate::seat::seated(&store)?.as_deref() != Some(name.as_str())
+      {
+        crate::switch::to(&store, &name)?;
+      }
+      let dir = store
+        .shared_dir()?
+        .map_or_else(|| store.profile_dir(&name), Ok)?;
       // Require an authenticated slot: an accidental fresh login must be explicit.
       auth::read(&dir)?;
-      let mut child = match store.shared_dir()? {
-        Some(shared) => {
-          // The shared config's account record must match the login it is given.
-          if store.active()?.as_deref() != Some(name.as_str()) {
-            crate::switch::to(&store, &name)?;
-          }
-          auth::shared_command(&shared, &dir)
-        }
-        None => auth::command(&dir),
-      };
+      let mut child = auth::command(&dir);
       child.args(args);
       #[cfg(unix)]
       {
@@ -327,10 +353,10 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       }
     }
     "usage" => {
-      verbose |= switch(&mut args, "--verbose");
-      let all = switch(&mut args, "--all");
-      let json = switch(&mut args, "--json");
-      let refresh = switch(&mut args, "--refresh");
+      verbose |= flag(&mut args, "--verbose");
+      let all = flag(&mut args, "--all");
+      let json = flag(&mut args, "--json");
+      let refresh = flag(&mut args, "--refresh");
       let names = if all {
         empty(&args)?;
         store.config.profiles.keys().cloned().collect::<Vec<_>>()
@@ -351,9 +377,9 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       }
     }
     "which" => {
-      let json = switch(&mut args, "--json");
-      let activate = switch(&mut args, "--use");
-      let refresh = switch(&mut args, "--refresh");
+      let json = flag(&mut args, "--json");
+      let activate = flag(&mut args, "--use");
+      let refresh = flag(&mut args, "--refresh");
       let model = argument(&mut args, "--model")?;
       empty(&args)?;
       let names: Vec<_> = store.config.profiles.keys().cloned().collect();

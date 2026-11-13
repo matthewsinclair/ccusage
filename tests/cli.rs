@@ -34,9 +34,9 @@ case "$1 $2" in
   '--version ') /bin/echo 'Claude Code (test fixture)' ;;
   'auth login')
     /bin/mkdir -p "$CLAUDE_CONFIG_DIR"
-    /bin/cat > "$CLAUDE_CONFIG_DIR/.credentials.json" <<'JSON'
-{"claudeAiOauth":{"accessToken":"TEST_TOKEN","expiresAt":9999999999999}}
-JSON
+    # Each profile's login is its own, so a test can tell where each one went.
+    /usr/bin/printf '{"claudeAiOauth":{"accessToken":"TEST_TOKEN_%s","expiresAt":9999999999999}}\n' \
+      "$(/usr/bin/basename "$CLAUDE_CONFIG_DIR")" > "$CLAUDE_CONFIG_DIR/.credentials.json"
     ;;
   'auth status') /bin/echo '{"email":"test@example.com"}' ;;
   'auth logout') /bin/rm -f "$CLAUDE_CONFIG_DIR/.credentials.json" ;;
@@ -57,6 +57,7 @@ here=$(/usr/bin/dirname "$0")
 /bin/echo "$*" >> "$here/../launchctl.log"
 case "$1" in
   setenv) /usr/bin/printf '%s' "$3" > "$here/../launchd-$2" ;;
+  unsetenv) /bin/rm -f "$here/../launchd-$2" ;;
   getenv) /bin/cat "$here/../launchd-$2" 2>/dev/null; /bin/echo ;;
 esac
 "#;
@@ -90,12 +91,14 @@ esac
     command
   }
   /// Shared mode on, at a scratch shared config whose .claude.json has Claude Code's
-  /// shape and records another account; `work` logged in with its own record.
+  /// shape and records another account, and whose credential store holds no login yet;
+  /// `work` logged in with its own record.
   fn shared(&self) -> Result<PathBuf> {
     self.setup()?;
     let shared = self.root.join("home/.config/claude");
     fs::create_dir_all(&shared)?;
     fs::write(shared.join(".claude.json"), SHARED_SETTINGS)?;
+    storage::write_atomic(&shared.join(".credentials.json"), b"{}")?;
     let config = self.root.join("config/ccusage/config.toml");
     let text = fs::read_to_string(&config)?;
     storage::write_atomic(
@@ -214,6 +217,38 @@ fn line_names(text: &str) -> Vec<&str> {
     .filter_map(|line| line.split_once(':').map(|(name, _)| name))
     .collect()
 }
+impl Sandbox {
+  /// A usage cache for `name`, as a fetch leaves one: `token` verified as
+  /// test@example.com while the login lived in `source`, with a snapshot fetched now.
+  /// It lets a switch verify the outgoing login, and usage answer, with no network.
+  fn verified(&self, name: &str, source: &Path, token: &str) -> Result<()> {
+    use sha2::{Digest, Sha256};
+    let credential_id = format!("{:x}", Sha256::digest(format!("{token}\0test@example.com")));
+    let now = std::time::SystemTime::now()
+      .duration_since(std::time::UNIX_EPOCH)?
+      .as_secs();
+    let cache = serde_json::json!({"fetched_at": now, "retry_at": 0, "source": source,
+      "credential_id": credential_id, "verified_email": "test@example.com",
+      "snapshot": {"five_hour": {"utilization": 62, "resets_at": null}}});
+    storage::write_atomic(
+      &self.root.join(format!("cache/ccusage/{name}.json")),
+      &serde_json::to_vec(&cache)?,
+    )
+  }
+}
+
+/// The access token of the login a file store in `dir` holds, if any.
+fn login_of(dir: &Path) -> Result<Option<String>> {
+  let document: serde_json::Value =
+    serde_json::from_slice(&fs::read(dir.join(".credentials.json"))?)?;
+  Ok(
+    document
+      .pointer("/claudeAiOauth/accessToken")
+      .and_then(serde_json::Value::as_str)
+      .map(str::to_owned),
+  )
+}
+
 impl Drop for Sandbox {
   fn drop(&mut self) {
     if let Err(error) = fs::remove_dir_all(&self.root) {
@@ -819,8 +854,10 @@ fn doctor_checks_the_usage_history_is_private() -> Result<()> {
   Ok(())
 }
 
+// ST0003 AT-03.5: in shared mode, dir prints no directory for the active account and
+// fails saying why, and names a profile whose login is parked in its own directory.
 #[test]
-fn shared_mode_dir_prints_the_login_directory_only_when_shared_mode_is_on() -> Result<()> {
+fn shared_mode_dir_names_only_a_parked_profile_directory() -> Result<()> {
   let sandbox = Sandbox::new()?;
   sandbox.setup()?;
   sandbox.ok(&["login", "work"])?;
@@ -830,26 +867,40 @@ fn shared_mode_dir_prints_the_login_directory_only_when_shared_mode_is_on() -> R
   assert!(String::from_utf8(off.stderr)?.contains("shared mode is off"));
   let sandbox = Sandbox::new()?;
   sandbox.shared()?;
+  sandbox.ok(&["add", "home"])?;
+  sandbox.login_with_record("home", "u-home", "home@example.com")?;
   // No active profile: an empty value would mean ~/.claude to Claude Code.
   let none = sandbox.run(&["dir"])?;
   assert!(!none.status.success() && none.stdout.is_empty());
   sandbox.ok(&["use", "work"])?;
-  let dir = format!("{}\n", sandbox.profile("work").display());
-  assert_eq!(sandbox.ok(&["dir"])?, dir);
-  assert_eq!(sandbox.ok(&["dir", "work"])?, dir);
-  assert!(!sandbox.run(&["dir", "work", "extra"])?.status.success());
+  for args in [&["dir"][..], &["dir", "work"]] {
+    let active = sandbox.run(args)?;
+    assert!(!active.status.success() && active.stdout.is_empty());
+    assert!(String::from_utf8(active.stderr)?.contains("reads its login from the shared config"));
+  }
+  let home = format!("{}\n", sandbox.profile("home").display());
+  assert_eq!(sandbox.ok(&["dir", "home"])?, home);
+  assert!(!sandbox.run(&["dir", "home", "extra"])?.status.success());
   Ok(())
 }
 
+// ST0003 AT-03.2: in shared mode, use seats the profile's login in the shared store,
+// copies only its account record into the shared .claude.json, and clears launchd's
+// login directory.
 #[test]
-fn shared_mode_use_copies_only_the_account_record_and_points_launchd() -> Result<()> {
+fn shared_mode_use_seats_the_login_copies_the_record_and_clears_launchd() -> Result<()> {
   let sandbox = Sandbox::new()?;
   let shared = sandbox.shared()?;
   let settings = shared.join(".claude.json");
   // Claude Code saves its .claude.json at 0600, and so does a switch, whatever it found.
   fs::set_permissions(&settings, fs::Permissions::from_mode(0o644))?;
   let said = sandbox.ok(&["use", "work"])?;
-  assert!(said.contains("New Claude sessions use this account"));
+  assert!(
+    said.contains("Every Claude session uses it from its next request"),
+    "{said}"
+  );
+  assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_work"));
+  assert_eq!(login_of(&sandbox.profile("work"))?, None);
   assert_eq!(
     fs::read_to_string(&settings)?,
     "{\n  \"numStartups\": 3,\n  \"oauthAccount\": {\n    \"accountUuid\": \"u-work\",\n    \"emailAddress\": \"test@example.com\"\n  },\n  \"theme\": \"dark\"\n}\n"
@@ -862,16 +913,110 @@ fn shared_mode_use_copies_only_the_account_record_and_points_launchd() -> Result
   );
   let launchd = sandbox.launchctl()?;
   if cfg!(target_os = "macos") {
-    assert_eq!(
-      launchd,
-      format!(
-        "setenv CLAUDE_SECURESTORAGE_CONFIG_DIR {}\n",
-        sandbox.profile("work").display()
-      )
-    );
+    assert_eq!(launchd, "unsetenv CLAUDE_SECURESTORAGE_CONFIG_DIR\n");
   } else {
     assert!(launchd.is_empty());
   }
+  Ok(())
+}
+
+// ST0003 AT-03.3: a switch parks the previous account's login in its profile and seats
+// the next one's, and list and usage read each login where it lives, before and after.
+#[test]
+fn shared_mode_switches_move_each_login_and_reads_follow_it() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  sandbox.ok(&["add", "home", "--email", "test@example.com"])?;
+  sandbox.login_with_record("home", "u-home", "test@example.com")?;
+  sandbox.ok(&["use", "work"])?;
+  // A usage fetch leaves work's seated login verified as work's, so the switch can
+  // take it out of the shared store; home's usage was fetched while it was parked.
+  sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
+  sandbox.verified("home", &sandbox.profile("home"), "TEST_TOKEN_home")?;
+  let usage = |name: &str| -> Result<serde_json::Value> {
+    Ok(serde_json::from_str(
+      &sandbox.ok(&["usage", name, "--json"])?,
+    )?)
+  };
+  for name in ["work", "home"] {
+    assert_eq!(usage(name)?[0]["cached"], true, "{name} before the switch");
+  }
+  sandbox.ok(&["use", "home"])?;
+  assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_home"));
+  assert_eq!(
+    login_of(&sandbox.profile("work"))?.as_deref(),
+    Some("TEST_TOKEN_work")
+  );
+  assert_eq!(login_of(&sandbox.profile("home"))?, None);
+  assert!(fs::read_to_string(shared.join(".claude.json"))?.contains("\"u-home\""));
+  let list = sandbox.ok(&["list"])?;
+  for (marker, name) in [('*', "home"), (' ', "work")] {
+    let line = format!("{marker} {name:<20} authenticated\n");
+    assert!(list.contains(&line), "{list}");
+  }
+  // Each login now lives elsewhere, so its cache is rebound there with one fetch each.
+  sandbox.verified("work", &sandbox.profile("work"), "TEST_TOKEN_work")?;
+  sandbox.verified("home", &shared, "TEST_TOKEN_home")?;
+  for name in ["work", "home"] {
+    assert_eq!(usage(name)?[0]["cached"], true, "{name} after the switch");
+  }
+  Ok(())
+}
+
+// ST0003 AT-03.4: use --none puts the active login back in its profile and leaves the
+// shared store with none, the layout an older ccusage reads, and use seats it again;
+// --none is refused beside a name and with shared mode off.
+#[test]
+fn use_none_returns_every_login_to_its_profile() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  sandbox.ok(&["use", "work"])?;
+  sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
+  assert!(!sandbox.run(&["use", "work", "--none"])?.status.success());
+  let said = sandbox.ok(&["use", "--none"])?;
+  assert!(said.contains("No account is active"), "{said}");
+  assert_eq!(login_of(&shared)?, None);
+  assert_eq!(
+    login_of(&sandbox.profile("work"))?.as_deref(),
+    Some("TEST_TOKEN_work")
+  );
+  // As 0.1.8 left it: dir names the active profile's own directory again.
+  assert_eq!(
+    sandbox.ok(&["dir"])?,
+    format!("{}\n", sandbox.profile("work").display())
+  );
+  sandbox.ok(&["use", "work"])?;
+  assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_work"));
+  let off = Sandbox::new()?;
+  off.setup()?;
+  off.ok(&["login", "work"])?;
+  let refused = off.run(&["use", "--none"])?;
+  assert!(!refused.status.success());
+  assert!(String::from_utf8(refused.stderr)?.contains("shared mode is off"));
+  Ok(())
+}
+
+// ST0003 AT-03.6: login of the active profile seats its fresh login in place of the old
+// one, and logout of the active profile is refused until another is active.
+#[test]
+fn shared_mode_login_reseats_and_logout_waits_for_a_switch() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  sandbox.ok(&["use", "work"])?;
+  storage::write_atomic(
+    &shared.join(".credentials.json"),
+    br#"{"claudeAiOauth":{"accessToken":"OLD_work","expiresAt":9999999999999}}"#,
+  )?;
+  sandbox.ok(&["login", "work"])?;
+  assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_work"));
+  assert_eq!(login_of(&sandbox.profile("work"))?, None);
+  let refused = sandbox.run(&["logout", "work"])?;
+  assert!(!refused.status.success());
+  assert!(
+    String::from_utf8(refused.stderr)?
+      .contains("switch first with ccusage use NAME or ccusage use --none")
+  );
+  assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_work"));
   Ok(())
 }
 
@@ -892,8 +1037,10 @@ fn shared_mode_use_refuses_a_profile_without_an_account_record() -> Result<()> {
   Ok(())
 }
 
+// ST0003 AT-03.7: run gives Claude the shared config and no login directory, whatever
+// the shell exported, and switches first to a profile that is not active.
 #[test]
-fn shared_mode_run_borrows_the_profile_login_and_switches_first() -> Result<()> {
+fn shared_mode_run_reads_the_shared_login_and_switches_first() -> Result<()> {
   let sandbox = Sandbox::new()?;
   let shared = sandbox.shared()?;
   sandbox.ok(&["add", "home"])?;
@@ -910,17 +1057,13 @@ fn shared_mode_run_borrows_the_profile_login_and_switches_first() -> Result<()> 
     text.contains(&format!("dir={}\n", shared.display())),
     "{text}"
   );
-  assert!(
-    text.contains(&format!("storage={}\n", sandbox.profile("work").display())),
-    "{text}"
-  );
+  assert!(text.contains("storage=unset\n"), "{text}");
   // A profile that is not active is switched to first, so the record matches the login.
+  sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
   let output = sandbox.run(&["run", "home"])?;
   let text = String::from_utf8(output.stdout)?;
-  assert!(
-    text.contains(&format!("storage={}\n", sandbox.profile("home").display())),
-    "{text}"
-  );
+  assert!(text.contains("storage=unset\n"), "{text}");
+  assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_home"));
   assert_eq!(
     fs::read_to_string(sandbox.root.join("state/ccusage/active.json"))?,
     "\"home\""
@@ -956,13 +1099,18 @@ fn shared_mode_doctor_warns_of_each_way_sessions_can_drift() -> Result<()> {
   sandbox.ok(&["use", "work"])?;
   let clean = sandbox.ok(&["doctor"])?;
   assert!(clean.contains("OK   Shared mode: sessions use"), "{clean}");
+  assert!(
+    clean.contains("holds work's login, which every session reads"),
+    "{clean}"
+  );
   assert!(clean.contains("records work's account"), "{clean}");
   assert!(!clean.contains("WARN"), "{clean}");
   if cfg!(target_os = "macos") {
-    assert!(clean.contains("launchd gives GUI-started Claude Code the active profile's login"));
+    assert!(clean.contains("launchd gives GUI-started Claude Code the shared config's login"));
   }
   fs::write(shared.join(".claude.json"), SHARED_SETTINGS)?;
-  storage::write_atomic(&shared.join(".credentials.json"), b"{}")?;
+  // 0.1.8's layout: no profile is seated, and the shared config keeps a login.
+  fs::remove_file(sandbox.root.join("state/ccusage/seat.json"))?;
   fs::create_dir_all(sandbox.root.join("data/ccusage/profiles/engineering03"))?;
   fs::write(
     sandbox.root.join("launchd-CLAUDE_SECURESTORAGE_CONFIG_DIR"),
@@ -980,15 +1128,13 @@ fn shared_mode_doctor_warns_of_each_way_sessions_can_drift() -> Result<()> {
     "does not record work's account; run ccusage use work",
     "holds a login of its own",
     "engineering03 has no profile in the config",
-    "CLAUDE_SECURESTORAGE_CONFIG_DIR=/nowhere names no profile's directory",
+    "CLAUDE_SECURESTORAGE_CONFIG_DIR=/nowhere is set in this shell",
   ] {
     assert!(drift.contains(warning), "{warning}: {drift}");
   }
   if cfg!(target_os = "macos") {
     assert!(
-      drift.contains(
-        "launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR=/elsewhere names no profile's directory"
-      ),
+      drift.contains("launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR=/elsewhere makes GUI-started Claude Code read that directory's login"),
       "{drift}"
     );
   }

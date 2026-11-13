@@ -1,8 +1,8 @@
-//! Shared mode: Claude sessions keep one config directory, `claude_config_dir`, and
-//! borrow the active profile's login through `CLAUDE_SECURESTORAGE_CONFIG_DIR`. Claude
-//! Code shows the account its config's `.claude.json` records as `oauthAccount`, not
-//! the login's own, so a switch copies that record in from the profile's `.claude.json`,
-//! where Claude Code wrote it at `ccusage login`.
+//! Shared mode: Claude sessions keep one config directory, `claude_config_dir`, whose
+//! own credential store holds the active profile's login (`seat`). Claude Code shows
+//! the account its config's `.claude.json` records as `oauthAccount`, not the login's
+//! own, so a switch copies that record in from the profile's `.claude.json`, where
+//! Claude Code wrote it at `ccusage login`.
 
 use crate::{Result, auth_lock::Lock, config::Store, storage};
 use serde_json::Value;
@@ -79,11 +79,18 @@ pub fn profile_account(store: &Store, name: &str) -> Result<Option<Value>> {
     .map(Option::flatten)
 }
 
+/// `name`'s oauthAccount record, which a switch refuses to go without, before it moves
+/// anything.
+pub(crate) fn account_of(store: &Store, name: &str) -> Result<Value> {
+  profile_account(store, name)?.ok_or_else(|| {
+    format!("profile {name} records no oauthAccount; run ccusage login {name}").into()
+  })
+}
+
 /// Copy `name`'s oauthAccount record into the shared `.claude.json` at `shared` under
 /// Claude Code's lock, changing no other key: shared mode's step of `switch::to`.
 pub(crate) fn record(store: &Store, shared: &Path, name: &str) -> Result<()> {
-  let record = profile_account(store, name)?
-    .ok_or_else(|| format!("profile {name} records no oauthAccount; run ccusage login {name}"))?;
+  let record = account_of(store, name)?;
   let file = shared.join(SETTINGS);
   // Held for a read, a merge and a rename: every session shares this file, and
   // Claude Code writes over a lock held past its 10 s stale time.
@@ -123,18 +130,20 @@ pub fn launchctl() -> Command {
   Command::new(std::env::var_os("CCUSAGE_LAUNCHCTL").unwrap_or_else(|| "/bin/launchctl".into()))
 }
 
-/// Point launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR at `dir`, so Claude Code started
-/// from a GUI app follows the active profile as a terminal session does.
+/// Clear launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR, which ccusage 0.1.8 pointed at a
+/// profile, so Claude Code started from a GUI app reads the shared config's login as a
+/// terminal session does. launchctl's output is captured, so nothing it prints draws
+/// over the TUI's screen.
 #[cfg(target_os = "macos")]
-pub(crate) fn set_launchd(dir: &Path) -> Result<()> {
-  let status = launchctl()
-    .args(["setenv", LOGIN_DIR])
-    .arg(dir)
-    .status()
-    .map_err(|_| "could not run launchctl to point GUI sessions at the active profile")?;
-  if !status.success() {
+pub(crate) fn unset_launchd() -> Result<()> {
+  let output = launchctl()
+    .args(["unsetenv", LOGIN_DIR])
+    .stdin(std::process::Stdio::null())
+    .output()
+    .map_err(|_| "could not run launchctl to clear CLAUDE_SECURESTORAGE_CONFIG_DIR")?;
+  if !output.status.success() {
     return Err(
-      "launchctl could not set CLAUDE_SECURESTORAGE_CONFIG_DIR; the switch holds for terminal sessions, and GUI ones keep the previous account".into(),
+      "launchctl could not clear CLAUDE_SECURESTORAGE_CONFIG_DIR, so Claude started from a GUI app may still read a profile's own login; see ccusage doctor".into(),
     );
   }
   Ok(())

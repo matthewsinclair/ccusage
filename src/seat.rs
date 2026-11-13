@@ -8,9 +8,6 @@
 //! each write, reads it back and journals the step it reached, so the next run
 //! finishes a move that was interrupted. `claudeAiOauth` is the only key that moves.
 
-// The verbs call this from ST0003/WP03; until then only its tests do.
-#![cfg_attr(not(test), allow(dead_code))]
-
 use crate::{
   Result,
   auth::Location,
@@ -95,9 +92,9 @@ pub(crate) struct Move {
 /// token.
 #[derive(Debug, Deserialize, PartialEq, Eq, Serialize)]
 #[serde(deny_unknown_fields)]
-struct Journal {
-  request: Move,
-  step: Step,
+pub(crate) struct Journal {
+  pub request: Move,
+  pub step: Step,
 }
 
 /// Which profile's login the shared store holds: none on 0.1.8's layout, where each
@@ -154,17 +151,17 @@ impl std::fmt::Display for Refusal {
       ),
       Self::Unverified(name) => write!(
         formatter,
-        "the shared config's login could not be verified as {name}'s, so nothing was moved"
+        "the shared config's login could not be verified as {name}'s, so nothing was moved; try again, and see ccusage doctor if it persists"
       ),
       Self::Occupied(name) => write!(
         formatter,
-        "{name}'s own store already holds a login, which parking the shared one would overwrite; nothing was moved"
+        "{name}'s own store already holds a login, which moving the shared login back would overwrite; nothing was moved; see ccusage doctor"
       ),
       Self::OnlyLogin => formatter.write_str(
-        "the shared config holds a login no profile is seated with, and it may be its account's only one; nothing was moved",
+        "the shared config holds a login that belongs to no profile, and it may be its account's only one; nothing was moved; see ccusage doctor",
       ),
       Self::Changed => formatter.write_str(
-        "an interrupted switch cannot be finished, because a login is not where it left it; nothing more was written; see ccusage doctor",
+        "an interrupted switch cannot be finished, because a login is no longer where the switch left it; nothing more was written; see ccusage doctor",
       ),
     }
   }
@@ -253,7 +250,8 @@ pub(crate) fn plan(
     // Once a login was parked, the seat can have been written only from Parked.
     let landed = (from.is_none() || step == Step::Parked) && held == incoming;
     if !landed {
-      // The shared login is overwritten only once it is parked, or with leave.
+      // The shared login is overwritten only once it is parked, or when the move says
+      // replace.
       let free = match parked {
         Some(parked) => held == Some(parked),
         None => held.is_none() || request.replace,
@@ -339,10 +337,46 @@ fn found(dir: PathBuf, missing: String) -> Result<Place> {
   }
 }
 
-/// The move an interrupted run left unfinished, if any. A run finishes it before it
-/// does anything else.
-pub(crate) fn pending(store: &Store) -> Result<Option<Move>> {
-  Ok(read_journal(store)?.map(|journal| journal.request))
+/// The move an interrupted run left unfinished, if any, and the step it reached. A run
+/// finishes it before it does anything else.
+pub(crate) fn pending(store: &Store) -> Result<Option<Journal>> {
+  read_journal(store)
+}
+
+/// The profile whose login the shared store holds, if any.
+pub(crate) fn seated(store: &Store) -> Result<Option<String>> {
+  Ok(Seat::load(store)?.seated)
+}
+
+/// The config directory whose store holds `name`'s login: the shared config's for the
+/// profile seated there, the profile's own otherwise and whenever shared mode is off.
+/// While a move is unfinished, where its two profiles' logins are is not settled, so
+/// they are refused until `use` finishes it.
+pub(crate) fn home(store: &Store, name: &str) -> Result<PathBuf> {
+  let Some(shared) = store.shared_dir()? else {
+    return store.profile_dir(name);
+  };
+  if let Some(Journal { request, .. }) = pending(store)?
+    && [&request.from, &request.to]
+      .into_iter()
+      .any(|moving| moving.as_deref() == Some(name))
+  {
+    return Err(unfinished(&request).into());
+  }
+  if seated(store)?.as_deref() == Some(name) {
+    Ok(shared)
+  } else {
+    store.profile_dir(name)
+  }
+}
+
+/// What a verb says when an interrupted move stands in its way: the `use` that
+/// finishes it.
+fn unfinished(request: &Move) -> String {
+  format!(
+    "an interrupted switch is unfinished; run ccusage use {} to finish it",
+    request.to.as_deref().unwrap_or("--none")
+  )
 }
 
 fn read_journal(store: &Store) -> Result<Option<Journal>> {
@@ -469,19 +503,7 @@ fn run_until(
   let step = match read_journal(store)? {
     None => Step::Begun,
     Some(journal) if journal.request == *request => journal.step,
-    Some(journal) => {
-      return Err(
-        format!(
-          "an interrupted switch{} is unfinished, and is finished before any other",
-          journal
-            .request
-            .to
-            .map(|name| format!(" to {name}"))
-            .unwrap_or_default()
-        )
-        .into(),
-      );
-    }
+    Some(journal) => return Err(unfinished(&journal.request).into()),
   };
   let shared = document(&places.shared)?;
   let outgoing = from.map(|(_, place)| document(place)).transpose()?;
@@ -797,7 +819,9 @@ mod tests {
         );
       }
       assert!(fixture.journal(), "{point:?}");
-      let request = pending(&fixture.store)?.ok_or("the journal names no move")?;
+      let request = pending(&fixture.store)?
+        .ok_or("the journal names no move")?
+        .request;
       assert_eq!(request, a_to_b());
       fixture.run(&request, Some("ACCESS_A"))?;
       for name in [SHARED, A, B] {
@@ -830,8 +854,35 @@ mod tests {
       ..Move::default()
     };
     let refused = fixture.run(&other, Some("ACCESS_A"));
-    assert!(refused.is_err_and(|error| error.to_string().contains("interrupted switch to b")));
+    assert!(
+      refused.is_err_and(|error| error.to_string().contains("run ccusage use b to finish it"))
+    );
     assert_eq!(fixture.bytes()?, before);
+    Ok(())
+  }
+
+  // ST0003 AT-02.10: an interrupted move whose parked login has gone from its profile's
+  // store is refused as changed, and writes nothing more.
+  #[test]
+  fn an_interrupted_move_whose_login_moved_is_refused_as_changed() -> Result<()> {
+    let fixture = Fixture::new(seated_a()?)?;
+    let stopped = fixture.until(&a_to_b(), Some("ACCESS_A"), &mut |point| match point {
+      Point::Journaled(Step::Parked) => Err(crate::Error::from("interrupted")),
+      _ => Ok(()),
+    });
+    assert!(stopped.is_err());
+    storage::write_atomic(
+      &fixture.file(A),
+      &serde_json::to_vec(&without_login(&fixture.document(A)?))?,
+    )?;
+    let before = fixture.bytes()?;
+    let refused = fixture
+      .run(&a_to_b(), Some("ACCESS_A"))
+      .err()
+      .ok_or("expected the move to be refused as changed")?;
+    assert_eq!(refused.downcast_ref::<Refusal>(), Some(&Refusal::Changed));
+    assert_eq!(fixture.bytes()?, before);
+    assert!(fixture.journal());
     Ok(())
   }
 
@@ -907,7 +958,7 @@ mod tests {
   // ST0003 AT-02.7: the only-login refusal gives way to a move that says replace, which
   // WP03's adoption decides.
   #[test]
-  fn a_shared_login_no_profile_is_seated_with_is_replaced_only_with_leave() -> Result<()> {
+  fn a_shared_login_no_profile_is_seated_with_is_replaced_only_on_request() -> Result<()> {
     // 0.1.8's layout: every profile holds its own login, and the shared config holds
     // one of its own.
     let [shared, a, b] = seated_a()?;
@@ -943,6 +994,45 @@ mod tests {
       missing.to_string().contains("run ccusage login b"),
       "{missing}"
     );
+    Ok(())
+  }
+
+  // ST0003 AT-03.1: a login is read from the shared store while its profile is seated,
+  // from the profile's own store otherwise and with shared mode off, and neither of a
+  // move's profiles is read while the move is unfinished.
+  #[test]
+  fn a_login_is_read_where_it_lives() -> Result<()> {
+    let mut fixture = Fixture::new(seated_a()?)?;
+    Seat {
+      seated: Some(A.into()),
+    }
+    .save(&fixture.store)?;
+    let shared = fixture.root.join(SHARED);
+    assert_eq!(home(&fixture.store, A)?, shared);
+    assert_eq!(home(&fixture.store, B)?, fixture.root.join(B));
+    fixture.run(&a_to_b(), Some("ACCESS_A"))?;
+    assert_eq!(home(&fixture.store, A)?, fixture.root.join(A));
+    assert_eq!(home(&fixture.store, B)?, shared);
+    let back = Move {
+      from: Some(B.into()),
+      to: Some(A.into()),
+      replace: false,
+    };
+    let stopped = fixture.until(&back, Some("ACCESS_B"), &mut |point| match point {
+      Point::Wrote(Step::Parked) => Err(crate::Error::from("interrupted")),
+      _ => Ok(()),
+    });
+    assert!(stopped.is_err());
+    for name in [A, B] {
+      let refused = home(&fixture.store, name)
+        .err()
+        .ok_or("expected the unfinished move to refuse its profiles")?;
+      assert!(refused.to_string().contains("ccusage use a"), "{refused}");
+    }
+    fixture.run(&back, Some("ACCESS_B"))?;
+    assert_eq!(home(&fixture.store, A)?, shared);
+    fixture.store.config.claude_config_dir = None;
+    assert_eq!(home(&fixture.store, A)?, fixture.root.join(A));
     Ok(())
   }
 

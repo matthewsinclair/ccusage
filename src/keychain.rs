@@ -111,7 +111,7 @@ impl Item<'_> {
     let line = update_line(self.service, self.account, &keychain, password)?;
     let mut child = writer()
       .spawn()
-      .map_err(|_| "could not run /usr/bin/security to save renewed Claude credentials")?;
+      .map_err(|_| "could not run /usr/bin/security to save Claude credentials")?;
     let sent = child
       .stdin
       .take()
@@ -119,16 +119,14 @@ impl Item<'_> {
       .and_then(|mut stdin| {
         stdin
           .write_all(line.as_bytes())
-          .map_err(|_| "could not send renewed credentials to /usr/bin/security")
+          .map_err(|_| "could not send Claude credentials to /usr/bin/security")
       });
     let status = child
       .wait()
       .map_err(|_| "could not wait for /usr/bin/security")?;
     sent?;
     if !status.success() {
-      return Err(
-        "could not save renewed Claude credentials in Keychain; unlock it and retry".into(),
-      );
+      return Err("could not save Claude credentials in Keychain; unlock it and retry".into());
     }
     // security -i can report success for a write it made somewhere else, such as the
     // default keychain when it cannot open the one named, so the item is read back
@@ -138,7 +136,7 @@ impl Item<'_> {
       ..*self
     };
     if found.read()?.as_deref() != Some(password) {
-      return Err("Claude's Keychain item did not take the renewed credentials".into());
+      return Err("Claude's Keychain item did not take the new credentials".into());
     }
     Ok(())
   }
@@ -169,9 +167,7 @@ impl Item<'_> {
       Some(ITEM_NOT_FOUND) => {
         Err("Claude Keychain item is missing; credentials were not overwritten".into())
       }
-      _ => {
-        Err("could not open Claude's Keychain item for renewal; unlock Keychain and retry".into())
-      }
+      _ => Err("could not open Claude's Keychain item; unlock Keychain and retry".into()),
     }
   }
 

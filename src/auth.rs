@@ -187,7 +187,7 @@ pub fn read(dir: &Path) -> Result<Token> {
   Ok(read_stored(dir)?.token)
 }
 
-const TOKEN_ENDPOINT: &str = "https://platform.claude.com/v1/oauth/token";
+pub(crate) const TOKEN_ENDPOINT: &str = "https://platform.claude.com/v1/oauth/token";
 const CLIENT_ID: &str = "9d1c250a-e61b-44d9-88ed-5944d1962f5e";
 const RENEW_BEFORE: i64 = 60;
 
@@ -204,8 +204,34 @@ impl Token {
 }
 
 pub(crate) fn fresh(agent: &ureq::Agent, dir: &Path, rejected: Option<&str>) -> Result<Token> {
-  fresh_with(agent, dir, rejected, TOKEN_ENDPOINT, read_stored)
+  fresh_at(agent, dir, rejected, TOKEN_ENDPOINT)
 }
+
+/// `fresh`, renewing at `endpoint`.
+pub(crate) fn fresh_at(
+  agent: &ureq::Agent,
+  dir: &Path,
+  rejected: Option<&str>,
+  endpoint: &str,
+) -> Result<Token> {
+  fresh_with(agent, dir, rejected, endpoint, read_stored)
+}
+
+/// The token endpoint refused a login's refresh token outright (HTTP 400 or 401), so
+/// Claude can no longer renew that login. A network error, a timeout, a 429 or a 5xx is
+/// never this.
+#[derive(Debug)]
+pub(crate) struct Refused;
+
+impl std::fmt::Display for Refused {
+  fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    formatter.write_str(
+      "Claude could not renew this login; run ccusage login NAME if retrying does not help",
+    )
+  }
+}
+
+impl std::error::Error for Refused {}
 
 fn fresh_with(
   agent: &ureq::Agent,
@@ -363,29 +389,18 @@ fn renew(agent: &ureq::Agent, endpoint: &str, stored: &Stored) -> Result<Renewal
       serde_json::from_slice(&bytes)
         .map_err(|_| "invalid token renewal response (contents redacted)".into())
     }
-    400 | 401 => Err(
-      "Claude could not renew this login; run ccusage login NAME if retrying does not help".into(),
-    ),
+    400 | 401 => Err(Refused.into()),
     403 => Err("Claude denied token renewal; check account access before logging in again".into()),
     429 => Err("token renewal rate limited; try again later".into()),
     status => Err(format!("token renewal returned HTTP {status}; try again later").into()),
   }
 }
 
-/// Claude with `dir` as its config directory, where its login lives too.
+/// Claude with `dir` as its config directory, where its login lives too: a profile's
+/// own, or in shared mode the shared config, whose store holds the seated login.
 pub fn command(dir: &Path) -> Command {
   let mut command = claude();
   command.env("CLAUDE_CONFIG_DIR", dir);
-  command
-}
-
-/// Claude in shared mode: the shared config directory, with `dir`'s login. Claude
-/// Code then reads, renews and locks that login in `dir`.
-pub fn shared_command(shared: &Path, dir: &Path) -> Command {
-  let mut command = claude();
-  command
-    .env("CLAUDE_CONFIG_DIR", shared)
-    .env("CLAUDE_SECURESTORAGE_CONFIG_DIR", dir);
   command
 }
 

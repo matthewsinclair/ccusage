@@ -64,14 +64,23 @@ fn shared_checks(store: &Store, shared: &Path) {
     "OK",
     format!("Shared mode: sessions use {}", shared.display()),
   );
-  if holds_own_login(shared) {
-    line(
-      "WARN",
+  match crate::seat::seated(store) {
+    Ok(Some(name)) => line(
+      "OK",
       format!(
-        "{} holds a login of its own; retire it once every session uses a profile's",
+        "{} holds {name}'s login, which every session reads",
         shared.display()
       ),
-    );
+    ),
+    Ok(None) if holds_own_login(shared) => line(
+      "WARN",
+      format!(
+        "{} holds a login of its own, which belongs to no profile; the first ccusage use NAME replaces it once its account has another login in a profile",
+        shared.display()
+      ),
+    ),
+    Ok(None) => {}
+    Err(error) => line("WARN", format!("Shared login: {error}")),
   }
   let active = match store.active() {
     Ok(Some(name)) if store.config.profiles.contains_key(&name) => Some(name),
@@ -103,14 +112,11 @@ fn shared_checks(store: &Store, shared: &Path) {
     .keys()
     .filter_map(|name| store.profile_dir(name).ok())
     .collect();
-  let names_a_profile = |value: &std::ffi::OsStr| dirs.iter().any(|dir| dir.as_os_str() == value);
-  if let Some(value) = std::env::var_os(shared::LOGIN_DIR)
-    && !names_a_profile(&value)
-  {
+  if let Some(value) = std::env::var_os(shared::LOGIN_DIR) {
     line(
       "WARN",
       format!(
-        "{}={} names no profile's directory",
+        "{}={} is set in this shell, so Claude started from it reads that directory's login instead of the shared config's; unset it",
         shared::LOGIN_DIR,
         Path::new(&value).display()
       ),
@@ -128,35 +134,19 @@ fn shared_checks(store: &Store, shared: &Path) {
     }
   }
   #[cfg(target_os = "macos")]
-  {
-    let active_dir = active
-      .as_deref()
-      .and_then(|name| store.profile_dir(name).ok());
-    match shared::launchd_dir() {
-      Ok(value) if value.is_empty() => line(
-        "WARN",
-        format!(
-          "launchd has no {}, so Claude Code started from a GUI app uses the shared config's own login; run ccusage use NAME",
-          shared::LOGIN_DIR
-        ),
+  match shared::launchd_dir() {
+    Ok(value) if value.is_empty() => line(
+      "OK",
+      "launchd gives GUI-started Claude Code the shared config's login",
+    ),
+    Ok(value) => line(
+      "WARN",
+      format!(
+        "launchd's {}={value} makes GUI-started Claude Code read that directory's login instead of the shared config's; run ccusage use NAME to clear it",
+        shared::LOGIN_DIR
       ),
-      Ok(value) if active_dir.is_some_and(|dir| dir.as_os_str() == value.as_str()) => line(
-        "OK",
-        "launchd gives GUI-started Claude Code the active profile's login",
-      ),
-      Ok(value) if names_a_profile(std::ffi::OsStr::new(&value)) => line(
-        "WARN",
-        "launchd gives GUI-started Claude Code another profile's login than the active one; run ccusage use NAME",
-      ),
-      Ok(value) => line(
-        "WARN",
-        format!(
-          "launchd's {}={value} names no profile's directory",
-          shared::LOGIN_DIR
-        ),
-      ),
-      Err(error) => line("WARN", error.to_string()),
-    }
+    ),
+    Err(error) => line("WARN", error.to_string()),
   }
 }
 

@@ -1,9 +1,15 @@
 use crate::{Result, auth, config::Store, storage};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::{collections::BTreeMap, path::Path, time::Duration};
+use std::{
+  collections::BTreeMap,
+  path::{Path, PathBuf},
+  time::Duration,
+};
 
 const ENDPOINT: &str = "https://api.anthropic.com/api/oauth/usage";
+/// Names the account a login belongs to.
+const PROFILE_ENDPOINT: &str = "https://api.anthropic.com/api/oauth/profile";
 /// How long a fetched snapshot stays fresh, in seconds: the usage cache's lifetime. The
 /// which rule takes it as its lifetime, so data it may use is never older than this.
 pub const TTL: i64 = 300;
@@ -459,12 +465,7 @@ fn check_identity(value: &serde_json::Value, expected: &str) -> Result<()> {
 }
 
 fn verify_identity(agent: &ureq::Agent, token: &auth::Token, expected: Option<&str>) -> Result<()> {
-  verify_identity_at(
-    agent,
-    "https://api.anthropic.com/api/oauth/profile",
-    token,
-    expected,
-  )
+  verify_identity_at(agent, PROFILE_ENDPOINT, token, expected)
 }
 
 fn verify_identity_at(
@@ -476,6 +477,125 @@ fn verify_identity_at(
   let Some(expected) = expected else {
     return Ok(());
   };
+  check_identity(&profile_at(agent, endpoint, token)?, expected)
+}
+
+/// The access token of the login in `dir`, verified as `name`'s account before a move
+/// takes it out of the shared store. A usage cache that verified this exact token
+/// against `name`'s email while the login lived in `dir` is enough. Otherwise one call
+/// to the profile endpoint names the account, which must have `name`'s email or, with
+/// none configured, be the account `name`'s own `.claude.json` records.
+pub(crate) fn verified_token(store: &Store, name: &str, dir: &Path) -> Result<String> {
+  verified_token_at(&Client::default().agent, PROFILE_ENDPOINT, store, name, dir)
+}
+
+fn verified_token_at(
+  agent: &ureq::Agent,
+  endpoint: &str,
+  store: &Store,
+  name: &str,
+  dir: &Path,
+) -> Result<String> {
+  let expected = store.profile(name)?.email.clone();
+  let token = auth::read(dir)?;
+  if let Some(email) = expected.as_deref()
+    && cache_verifies(&read_cache(store, name)?, dir, &token, email)
+  {
+    return Ok(token.access_token);
+  }
+  let token = auth::fresh(agent, dir, None)?;
+  let profile = profile_at(agent, endpoint, &token)?;
+  let verified = match expected.as_deref() {
+    Some(email) => check_identity(&profile, email).is_ok(),
+    None => crate::shared::profile_account(store, name)?
+      .is_some_and(|record| crate::shared::same_account(&account_record(&profile), &record)),
+  };
+  if !verified {
+    return Err(crate::seat::Refusal::Unverified(name.to_owned()).into());
+  }
+  Ok(token.access_token)
+}
+
+/// A login's standing, for adoption: live, with the account the profile endpoint names,
+/// or dead because the token endpoint refused to renew it.
+pub(crate) enum Standing {
+  Live(serde_json::Value),
+  Dead,
+}
+
+/// The standing of the login in `dir`. A renewal it needs is written back under Claude
+/// Code's locks first, and leaves that login live. Only an outright refusal of the
+/// refresh makes it dead: a network error, a 429 or a 5xx is an error, never dead.
+pub(crate) fn standing(dir: &Path) -> Result<Standing> {
+  standing_at(
+    &Client::default().agent,
+    PROFILE_ENDPOINT,
+    auth::TOKEN_ENDPOINT,
+    dir,
+  )
+}
+
+fn standing_at(
+  agent: &ureq::Agent,
+  endpoint: &str,
+  token_endpoint: &str,
+  dir: &Path,
+) -> Result<Standing> {
+  let renewed = |rejected: Option<&str>| match auth::fresh_at(agent, dir, rejected, token_endpoint)
+  {
+    Err(error) if error.is::<auth::Refused>() => Ok(None),
+    token => token.map(Some),
+  };
+  let Some(token) = renewed(None)? else {
+    return Ok(Standing::Dead);
+  };
+  let profile = match profile_at(agent, endpoint, &token) {
+    Ok(profile) => profile,
+    // The access token was turned away, so a renewal decides whether the login lives.
+    Err(_) => match renewed(Some(&token.access_token))? {
+      Some(token) => profile_at(agent, endpoint, &token)?,
+      None => return Ok(Standing::Dead),
+    },
+  };
+  Ok(Standing::Live(account_record(&profile)))
+}
+
+/// The profile endpoint's account, as a `.claude.json` records one. Pure.
+fn account_record(profile: &serde_json::Value) -> serde_json::Value {
+  serde_json::json!({
+    "accountUuid": profile.pointer("/account/uuid"),
+    "emailAddress": profile.pointer("/account/email"),
+  })
+}
+
+/// Whether `cache` verified this exact token as `email`'s while the login lived in
+/// `dir`. Pure.
+fn cache_verifies(cache: &Cache, dir: &Path, token: &auth::Token, email: &str) -> bool {
+  cache.source == dir.to_string_lossy()
+    && cache.verified_email.as_deref() == Some(email.to_ascii_lowercase().as_str())
+    && cache.credential_id == credential_id(token, Some(email))
+}
+
+/// The usage cache of profile `name`.
+pub(crate) fn cache_path(store: &Store, name: &str) -> PathBuf {
+  store.cache.join(format!("{name}.json"))
+}
+
+fn read_cache(store: &Store, name: &str) -> Result<Cache> {
+  match storage::read_optional(&cache_path(store, name))? {
+    Some(bytes) => serde_json::from_slice(&bytes)
+      .map_err(|_| "invalid usage cache; remove it to fetch again".into()),
+    None => Ok(Cache::default()),
+  }
+}
+
+/// The profile endpoint's answer for `token`, which names its account. Never quoted in
+/// a diagnostic.
+fn profile_at(
+  agent: &ureq::Agent,
+  endpoint: &str,
+  token: &auth::Token,
+) -> Result<serde_json::Value> {
   let mut response = agent
     .get(endpoint)
     .header("Authorization", &format!("Bearer {}", token.access_token))
@@ -498,9 +618,8 @@ fn verify_identity_at(
     .limit(128 * 1024)
     .read_to_vec()
     .map_err(|_| "could not read Claude account identity")?;
-  let value = serde_json::from_slice(&bytes)
-    .map_err(|_| "invalid Claude account identity response (contents redacted)")?;
-  check_identity(&value, expected)
+  serde_json::from_slice(&bytes)
+    .map_err(|_| "invalid Claude account identity response (contents redacted)".into())
 }
 
 impl Client {
@@ -516,15 +635,11 @@ impl Client {
   }
 
   fn load(&self, store: &Store, name: &str, refresh: bool) -> Result<Report> {
-    let dir = store.profile_dir(name)?;
+    // Where the login lives now, so a switch costs each of its two accounts one fetch.
+    let dir = crate::seat::home(store, name)?;
     let source = dir.to_string_lossy().into_owned();
-    let path = store.cache.join(format!("{name}.json"));
-
-    let mut cache: Cache = match storage::read_optional(&path)? {
-      Some(bytes) => serde_json::from_slice(&bytes)
-        .map_err(|_| "invalid usage cache; remove it to fetch again")?,
-      None => Cache::default(),
-    };
+    let path = cache_path(store, name);
+    let mut cache = read_cache(store, name)?;
     if cache.source != source {
       cache = Cache {
         source,
@@ -746,6 +861,102 @@ mod tests {
       if let Err(error) = result {
         assert!(!error.to_string().contains("PRIVATE_"));
         assert!(!error.to_string().contains("TEST_SECRET"));
+      }
+    }
+    Ok(())
+  }
+
+  // ST0003 AT-03.8: a usage cache verifies an outgoing login only for the exact token it
+  // checked against the profile's email, where the login lives now; and the profile
+  // endpoint's account matches a .claude.json record by its account uuid.
+  #[test]
+  fn a_cache_verifies_only_the_token_it_checked_where_it_lives() -> Result<()> {
+    let token: auth::Token = serde_json::from_value(serde_json::json!({"accessToken": "TOKEN_A"}))?;
+    let other: auth::Token = serde_json::from_value(serde_json::json!({"accessToken": "TOKEN_B"}))?;
+    let shared = Path::new("/shared");
+    let cache = Cache {
+      source: shared.to_string_lossy().into_owned(),
+      credential_id: credential_id(&token, Some("work@example.com")),
+      verified_email: Some("work@example.com".into()),
+      ..Cache::default()
+    };
+    assert!(cache_verifies(&cache, shared, &token, "WORK@example.com"));
+    assert!(!cache_verifies(&cache, shared, &other, "work@example.com"));
+    assert!(!cache_verifies(
+      &cache,
+      Path::new("/profiles/work"),
+      &token,
+      "work@example.com"
+    ));
+    assert!(!cache_verifies(&cache, shared, &token, "home@example.com"));
+    let unchecked = Cache {
+      verified_email: None,
+      ..cache
+    };
+    assert!(!cache_verifies(
+      &unchecked,
+      shared,
+      &token,
+      "work@example.com"
+    ));
+    let record = account_record(
+      &serde_json::json!({"account": {"uuid": "u-work", "email": "work@example.com"}}),
+    );
+    let same = serde_json::json!({"accountUuid": "u-work", "emailAddress": "renamed@example.com"});
+    let other = serde_json::json!({"accountUuid": "u-home", "emailAddress": "work@example.com"});
+    assert!(crate::shared::same_account(&record, &same));
+    assert!(!crate::shared::same_account(&record, &other));
+    Ok(())
+  }
+
+  // ST0003 AT-03.10: a login is dead only when the token endpoint refuses its refresh
+  // outright; a 5xx is an error, so adoption stops instead of replacing it.
+  #[test]
+  fn a_login_is_dead_only_when_its_refresh_is_refused_outright() -> Result<()> {
+    use std::{
+      io::{Read, Write},
+      net::TcpListener,
+      time::Instant,
+    };
+    for (index, (status, dead)) in [
+      ("400 Bad Request", true),
+      ("503 Service Unavailable", false),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+      let dir =
+        std::env::temp_dir().join(format!("ccusage-standing-{}-{index}", std::process::id()));
+      storage::private_dir(&dir)?;
+      storage::write_atomic(
+        &dir.join(".credentials.json"),
+        br#"{"claudeAiOauth":{"accessToken":"OLD","refreshToken":"REFRESH","expiresAt":0}}"#,
+      )?;
+      let listener = TcpListener::bind("127.0.0.1:0")?;
+      let endpoint = format!("http://{}/token", listener.local_addr()?);
+      let server = std::thread::spawn(move || -> Result<()> {
+        let mut stream =
+          crate::loopback::accept_by(&listener, Instant::now() + Duration::from_secs(10))?;
+        let mut request = [0; 4096];
+        let _ = stream.read(&mut request)?;
+        write!(
+          stream,
+          "HTTP/1.1 {status}\r\nConnection: close\r\nContent-Length: 0\r\n\r\n"
+        )?;
+        Ok(())
+      });
+      let standing = standing_at(
+        &Client::default().agent,
+        "http://127.0.0.1:9/profile",
+        &endpoint,
+        &dir,
+      );
+      server.join().map_err(|_| "token fixture panicked")??;
+      std::fs::remove_dir_all(&dir)?;
+      if dead {
+        assert!(matches!(standing, Ok(Standing::Dead)), "{status}");
+      } else {
+        assert!(standing.is_err(), "{status}");
       }
     }
     Ok(())
