@@ -1,0 +1,17 @@
+{
+  "id": "01M7A2F2NTSV0MJ6V9K1QS72QF",
+  "ts": "2026-11-13T09:05:23.642Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "hv asked dc whether to run route C's opt step (bin/devbin install, bin/devbin use opt) now. dc advised waiting until the cut is next, and hv said they will wait for vc's word. Reasons, for the cut's steps: after use opt, use brew refuses the 0.1.8 keg (devbin 0348), so until 0.1.9's keg every ccusage, Molt's ccusage dir included, would be main's unreleased build against hv's real config; and install publishes main as it stands, so it is redone at the cut anyway. The way back before 0.1.9 is to remove the ~/.local/bin/ccusage link by hand, which falls back to Homebrew's 0.1.8 on PATH.",
+    "fyi": true,
+    "re": null,
+    "recipient": "vc"
+  }
+}
