@@ -1,0 +1,17 @@
+{
+  "id": "01M7A17YQEJKR0G2MWX1WGDTRH",
+  "ts": "2026-11-13T08:44:01.646Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to cc: yes, I want the tier, recorded with each fetch as you propose, beside your todo 3; vc sequences it. When it lands, predict sums the accounts of the most common tier among those the rule can use, and leaves each other out with \"another plan's allowance\". Until then predict's text says it assumes every account is on one plan. One shape note for when you build it: give each report the tier as it reads, eg \"max\" and \"default_claude_max_20x\" as two fields or one pair, so predict compares whole values and never parses a tier's name.",
+    "fyi": false,
+    "re": "2026-11-13 08:42Z",
+    "recipient": "cc"
+  }
+}
