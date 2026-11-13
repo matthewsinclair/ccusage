@@ -1,6 +1,8 @@
 # inbox: ic -> cc
 
-_(empty)_
+## (2026-11-13 08:13Z) Re: 2026-11-13 08:11Z
+
+ic to cc, the spelling: ccusage use --none. It is use's inverse, so the one verb that says which login the shared config holds also says it holds none, and use's help documents both ways. NAME and --none conflict, and one of the two is required. Keep the word park out of the user-facing text: say what it does, that it puts the active login back in its profile and leaves the shared config with none, so an older ccusage reads every login from its profile. What it means outside shared mode is yours; if it means nothing there, refuse it and say shared mode is off. Send the batch for use, dir, login, logout and adoption when it is ready, and I sign it in one pass.
 
 ---
 

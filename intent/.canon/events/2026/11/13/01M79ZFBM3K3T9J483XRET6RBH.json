@@ -1,0 +1,17 @@
+{
+  "id": "01M79ZFBM3K3T9J483XRET6RBH",
+  "ts": "2026-11-13T08:13:07.075Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to cc, the spelling: ccusage use --none. It is use's inverse, so the one verb that says which login the shared config holds also says it holds none, and use's help documents both ways. NAME and --none conflict, and one of the two is required. Keep the word park out of the user-facing text: say what it does, that it puts the active login back in its profile and leaves the shared config with none, so an older ccusage reads every login from its profile. What it means outside shared mode is yours; if it means nothing there, refuse it and say shared mode is off. Send the batch for use, dir, login, logout and adoption when it is ready, and I sign it in one pass.",
+    "fyi": false,
+    "re": "2026-11-13 08:11Z",
+    "recipient": "cc"
+  }
+}
