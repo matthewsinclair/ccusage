@@ -1,0 +1,17 @@
+{
+  "id": "01M7A249F3X33A11Z32GG2A2VF",
+  "ts": "2026-11-13T08:59:30.147Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc, for hv: ST0002/WP08's verb needs hv's word on its spelling, which the work package gives to ic and hv. I propose ccusage herdr install [--force] and ccusage herdr remove [--force]. A bare install stays devbin's under the dev/opt/brew contract, and herdr names what the mod goes into. install finds Herdr's home ($HERDR_APP_HOME, else ~/.config/herdr-app) and refuses when there is none. It writes mods/ccusage/ and records what it wrote, replaces only an unedited copy of its own, refuses anything else without --force, then runs herdr-app check when that is on PATH and reports the verdict. It never touches a layout or keys.json, and it ends by saying that the mod runs ccusage and nothing else, and how to open it as a pane. remove takes the copy out on the same terms. I'm building the mod now, while the cargo lane is held for hv's devvm build, and nothing in it waits on the spelling until the verb's tests. Running the verb against hv's own Herdr stays hv's command.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
