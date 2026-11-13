@@ -1,0 +1,17 @@
+{
+  "id": "01M7A8512FDJH1GXD3J7CMACBP",
+  "ts": "2026-11-13T10:44:45.775Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "ST0003/WP04 (doctor) with todo 3a is ready for your read: 348a1a1..7cac510 on cc/ST0003-WP04, in worktree /Users/matts/Devel/scratch/ccusage-cc/wt-wp04. ic's ST0002 tier grouping (8234a5e) and herdr fixes (e953ca3) ride it, cherry-picked from ic's 763c7d3 and 7483a07 with no conflicts. ic signed every text in it, with two changes, which are in 520d5bb.\nOne run, slot 01M7A68EK9GKKRVBEVE6G2B8MA, 10:41Z to 10:44Z. It was asked at e953ca3. In the slot, cargo fmt went in as one commit, and three build fixes as another, ending at 7cac510:\n- sessions::drift's helper is a function, because a closure cannot return a borrow of its argument.\n- ic's plan key in predict.rs gets a type alias, for clippy's type_complexity.\n- The existing test auth_errors_and_redirects_do_not_disclose_response_body now expects Ok(Fetch::Forbidden) for a 403, because todo 3a makes a 403 an answer that load reads with the login's plan. Its 302 and 500 cases are unchanged.\nThen 22 of 22 mutants went red, each under its one test. Mine:\n- M01 a doubled login passes (AT-04.1)\n- M02 the legacy flag cache read first (AT-04.2)\n- M03 a login directory taken as following (AT-04.3)\n- M04 no session reported (AT-04.4)\n- M05 a 403 read as unauthorized (AT-04.5)\n- M06 no windows left unnoted (AT-04.6)\n- M07 which ignores the note (AT-04.7)\n- M08a a note-only report not in, and M08b the overview hiding the note (AT-04.8)\n- M10a another account's login passes, and M10b the email matched case-sensitively (AT-04.10)\n- M11 the journal ignored (AT-04.11)\nic's: t1 to t8 over predict's plan, then hb and hc over herdr. Then fmt, clippy -D warnings, cargo test (93 unit, 48 cli, 2 ignored) and the two keychain tests by name each exited 0. The result is on the slot's release.\nWhat to read:\n- doctor.rs: Holds, where_logins_are, switch_flags, line_room and shared_checks.\n- usage.rs: Expected, which use's verified_token and doctor's whose now share; whose_at; Report.note, paid and Fetch::Forbidden.\n- sessions.rs; keychain.rs's room and capacity, with Item::exists gone along with its last caller.\n- which.rs: the note at the top of assess. display.rs: lines and next.\n- The tests above.\nTwo behaviour changes to know of. First, verified_token reads a profile's account record before its token when no email is configured, so a record it cannot read fails before any renewal. Second, an email now matches in any case for doctor as it does for use.\nOn your go, I land it as four commits. First, mine squashed: WP04 and todo 3a. Second and third, ic's two, with ic's messages. Fourth, the fmt and build fixes. The landed tree is checked identical to 7cac510 in src, tests and the Cargo files. Then I mint AT-04.1 to AT-04.8, AT-04.10 and AT-04.11, each red under its mutant and green in this run: AT-04.1, 04.2, 04.10 and 04.11 under AC-04.1; AT-04.3 and 04.4 under AC-04.2; AT-04.5 to 04.8 under AC-04.3. I lint ST0003 and send ic the range, for ST0002's rows and AT-05.4. WP05 then rebases onto the landing for your read.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

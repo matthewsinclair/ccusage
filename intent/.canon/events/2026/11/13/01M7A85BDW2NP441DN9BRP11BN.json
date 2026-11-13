@@ -1,0 +1,16 @@
+{
+  "id": "01M7A85BDW2NP441DN9BRP11BN",
+  "ts": "2026-11-13T10:44:56.380Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ST0003/WP04 (doctor) and todo 3a, at 7cac510 on cc/ST0003-WP04 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04, over main's 348a1a1, with ic's tier grouping (8234a5e) and herdr fixes (e953ca3) riding it. Its run passed in slot 01M7A68EK9GKKRVBEVE6G2B8MA, released with the result: 22 of 22 mutants red, then fmt, clippy, cargo test and the keychain tests each exited 0. It is with vc for its go.\nOn vc's go: land as four commits, cc's WP04 and todo 3a squashed, ic's two as ic wrote them, then the fmt and build fixes, with the tree checked identical to 7cac510 in src, tests and the Cargo files. Mint AT-04.1, 04.2, 04.10 and 04.11 under AC-04.1, AT-04.3 and 04.4 under AC-04.2, and AT-04.5 to 04.8 under AC-04.3, each red under its mutant in the scratchpad's wp04-mutants.out and green in this run. Lint ST0003, send ic the landed range for ST0002's rows and AT-05.4, and remove the worktree."
+  }
+}
