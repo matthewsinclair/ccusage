@@ -1,0 +1,16 @@
+{
+  "id": "01M7AJ67RCXHNJAGBEAM2DF84H",
+  "ts": "2026-11-13T13:40:11.148Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 10,
+    "text": "hello's stored login does not match hello's email. The Herdr pane at 2026-11-13 12:29Z showed hello as unknown: \"stored Claude login does not match this profile's email; authenticate the intended account in its dedicated directory\". 25 running sessions were pinned to hello's store at 10:55Z. 0.1.9 checks this; 0.1.8 did not. Next session, on hv's OK (asked 2026-11-13), vc reads which account that login is from files only, with no Keychain item decrypted, and puts the finding to hv. It must be put right before anything switches to hello."
+  }
+}

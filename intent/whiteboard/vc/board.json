@@ -177,26 +177,28 @@
       "node": "vc",
       "kind": "todo",
       "seq": 8,
-      "text": "cc's two nits from vc's WP04 verdict (2026-11-13), for after the cut (cc's todo 4), in one Desk slot on vc's word after vc's compact: (1) sessions::parse takes the first NAME=value among the arguments and the environment together; ps -E prints the environment after the arguments, so taking the last match prefers the environment over an argument that looks like one (no running session repeated either variable at vc's check). (2) usage::verified_token_at, with neither an email nor an account record to check a login against, renews before refusing Unverified; it could refuse before the renewal.",
+      "text": "cc's two nits from vc's WP04 verdict (2026-11-13), for after the cut (cc's todo 4), in one Desk slot on vc's word next session: (1) sessions::parse takes the first NAME=value among the arguments and the environment together; ps -E prints the environment after the arguments, so taking the last match prefers the environment over an argument that looks like one (no running session repeated either variable at vc's check). (2) usage::verified_token_at, with neither an email nor an account record to check a login against, renews before refusing Unverified; it could refuse before the renewal.",
       "state": "live",
       "recorded_at": "2026-11-13T10:47:40.926Z",
-      "edited_at": "2026-11-13T12:17:46.229Z"
+      "edited_at": "2026-11-13T13:40:10.817Z"
     },
     {
       "node": "vc",
       "kind": "todo",
       "seq": 9,
-      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; was hold 3). Its condition is met: 0.1.9's formula, cf77911 in the tap, was rendered by devbin 0.1.23, which writes the manifest list one element a line (devbin 0322). Next, after vc's compact: in a clone of the tap, take out the lines in its test.yml that turn style and audit off, push on hv's OK, and see the tap's CI green.",
+      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; was hold 3). Its condition is met: 0.1.9's formula, cf77911 in the tap, was rendered by devbin 0.1.23, which writes the manifest list one element a line (devbin 0322). Next session: in a clone of the tap, take out the lines in its test.yml that turn style and audit off, push on hv's OK, and see the tap's CI green.",
       "state": "live",
-      "recorded_at": "2026-11-13T12:17:46.968Z"
+      "recorded_at": "2026-11-13T12:17:46.968Z",
+      "edited_at": "2026-11-13T13:40:10.981Z"
     },
     {
       "node": "vc",
       "kind": "todo",
       "seq": 10,
-      "text": "hello's stored login does not match hello's email. The Herdr pane at 2026-11-13 12:29Z showed hello as unknown: \"stored Claude login does not match this profile's email; authenticate the intended account in its dedicated directory\". 25 running sessions were pinned to hello's store at 10:55Z. 0.1.9 checks this; 0.1.8 did not. After vc's compact, on hv's OK (asked 2026-11-13), vc reads which account that login is from files only, with no Keychain item decrypted, and puts the finding to hv. It must be put right before anything switches to hello.",
+      "text": "hello's stored login does not match hello's email. The Herdr pane at 2026-11-13 12:29Z showed hello as unknown: \"stored Claude login does not match this profile's email; authenticate the intended account in its dedicated directory\". 25 running sessions were pinned to hello's store at 10:55Z. 0.1.9 checks this; 0.1.8 did not. Next session, on hv's OK (asked 2026-11-13), vc reads which account that login is from files only, with no Keychain item decrypted, and puts the finding to hv. It must be put right before anything switches to hello.",
       "state": "live",
-      "recorded_at": "2026-11-13T12:33:47.211Z"
+      "recorded_at": "2026-11-13T12:33:47.211Z",
+      "edited_at": "2026-11-13T13:40:11.148Z"
     }
   ],
   "sent": [

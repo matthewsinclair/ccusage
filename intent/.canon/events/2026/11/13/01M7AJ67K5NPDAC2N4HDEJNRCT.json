@@ -1,0 +1,16 @@
+{
+  "id": "01M7AJ67K5NPDAC2N4HDEJNRCT",
+  "ts": "2026-11-13T13:40:10.981Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 9,
+    "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; was hold 3). Its condition is met: 0.1.9's formula, cf77911 in the tap, was rendered by devbin 0.1.23, which writes the manifest list one element a line (devbin 0322). Next session: in a clone of the tap, take out the lines in its test.yml that turn style and audit off, push on hv's OK, and see the tap's CI green."
+  }
+}
