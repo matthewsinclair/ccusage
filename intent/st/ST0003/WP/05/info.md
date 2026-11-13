@@ -2,7 +2,7 @@
 wp_id: WP-05
 title: Docs and the decision record for the one live login
 scope: S
-status: Not Started
+status: Done
 ---
 
 # WP-05: Docs and the decision record for the one live login

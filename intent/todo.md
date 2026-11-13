@@ -22,7 +22,7 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
   - [x] 02: The login move: claudeAiOauth between stores, locked, journaled, never lossy
   - [x] 03: Shared mode on one live login: use, run, dir, login, logout and adoption
   - [x] 04: Doctor for the one live login
-  - [ ] 05: Docs and the decision record for the one live login
+  - [x] 05: Docs and the decision record for the one live login
   - [ ] 06: Rollout on rhadamanth, closing ISSUE:0003
 
 ## TODO

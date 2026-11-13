@@ -50,7 +50,7 @@
       "seq": 5,
       "title": "Docs and the decision record for the one live login",
       "scope": "S",
-      "status": "not-started",
+      "status": "done",
       "objective": "README, ARCHITECTURE.md, RULES.md and the CHANGELOG describe the one live login as built, with the decision, what it rejected and what would break if it were undone.",
       "body": "- **Builder:** cc, and ic signs the README's text. **Depends on:** WP03 and WP04.\n- **README:** the shared mode section rewritten for one live login. The launcher line goes, since a session needs only `CLAUDE_CONFIG_DIR`. It says what follows a switch at once, what waits for a restart, and how to move from 0.1.8's layout.\n- **ARCHITECTURE.md:** the decision in the file's own form. What it rejected: the per-launch directory of 0.1.6 to 0.1.8, which a running session cannot follow and a stale shell breaks. What would break if it were undone. Checked by: the tests WP02 names, and WP01's trial.\n- **RULES.md:** never overwrite a login that is its account's only one; a move holds Claude Code's locks for every store it touches; `claudeAiOauth` is the only key ccusage moves.\n- **CHANGELOG:** in the release's own entry.\n- **ISSUE:0003:** its record points here for its remaining steps (dc, on vc's brief).\n- **Done when:** every claim matches the code on vc's read, and AC-05.1 is satisfied.\n",
       "preamble": ""
@@ -168,7 +168,8 @@
       "text": "README, ARCHITECTURE.md, RULES.md and the CHANGELOG describe the one live login as built, and ISSUE:0003's record points to this thread.",
       "kind": "non-test",
       "state": {
-        "is": "unsatisfied"
+        "is": "satisfied",
+        "evidence": "vc's read of README, intent/llm/ARCHITECTURE.md, intent/llm/RULES.md and CHANGELOG as landed at 31ee7ab (identical to the 9f3f2ab vc passed), against the code landed through b08623d; ISSUE:0003's record names ST0003 in its section From 0.1.9: one live login (ST0003), written by dc, 2026-11-13"
       }
     },
     {

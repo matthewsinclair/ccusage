@@ -37,9 +37,9 @@ title: Live account switching: ccusage use moves the active login into the share
 - AC-04.2 `ccusage doctor` lists running Claude sessions whose launch environment names another login directory or another config directory. -- satisfied: yes (computed)
 - AC-04.3 A usage report says what its account type gives: the plan its login records, as written, and a note in place of figures where the type gives no usage access or no windows. -- satisfied: yes (computed)
 
-### WP-05 -- Docs and the decision record for the one live login (status: Not Started)
+### WP-05 -- Docs and the decision record for the one live login (status: Done)
 
-- AC-05.1 (non-test) README, ARCHITECTURE.md, RULES.md and the CHANGELOG describe the one live login as built, and ISSUE:0003's record points to this thread. -- satisfied: no
+- AC-05.1 (non-test) README, ARCHITECTURE.md, RULES.md and the CHANGELOG describe the one live login as built, and ISSUE:0003's record points to this thread. -- evidence: vc's read of README, intent/llm/ARCHITECTURE.md, intent/llm/RULES.md and CHANGELOG as landed at 31ee7ab (identical to the 9f3f2ab vc passed), against the code landed through b08623d; ISSUE:0003's record names ST0003 in its section From 0.1.9: one live login (ST0003), written by dc, 2026-11-13 -- satisfied: yes
 
 ### WP-06 -- Rollout on rhadamanth, closing ISSUE:0003 (status: Not Started)
 
@@ -92,7 +92,7 @@ _(no tests in this group)_
 - AT-04.10 `src/usage.rs:1147` -- covers AC-04.1 -- status: green -- Doctor tells a shared login that is another account's from one call to the profile endpoint, matching an email in any case, and leaves unchecked a login it could check only by renewing it, or with nothing to check it against; red under the mutant that passes another account's login, and the mutant that matches the email case-sensitively, in WP04's mutant run at 7cac510; green in WP04's measured run at 7cac510, Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, landed as 2ad2745
 - AT-04.11 `tests/cli.rs:1208` -- covers AC-04.1 -- status: green -- Doctor fails on a switch left unfinished, and names the use that finishes it; red under the mutant whose doctor ignores the journal, in WP04's mutant run at 7cac510; green in WP04's measured run at 7cac510, Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, landed as 2ad2745
 
-### WP-05 -- Docs and the decision record for the one live login (status: Not Started)
+### WP-05 -- Docs and the decision record for the one live login (status: Done)
 
 _(no tests in this group)_
 
