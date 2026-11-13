@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: 34c8bad8-d841-40cd-9cc5-af25dfb50c70
-heartbeat_at: 2026-11-13 06:45Z
+heartbeat_at: 2026-11-13 06:50Z
 status: active
-focus: "Folded for hv's compact and travel; nothing in flight. Hold 6 (ISSUE:0003): step 3 failed vc's check because sessions inherit shells older than Molt's export, so step 4 must not run until hv picks fresh shells or a launcher through ccusage run. Hold 8 (ISSUE:0007): waits for devbin's release of #0326"
+focus: "ISSUE:0007's wiring on vc's brief (doing 8): the install: block, T4's --version line and the formula on @@INSTALL@@, then a Desk cargo slot and the hand-over to vc. Hold 6 (ISSUE:0003) stands as it is."
 claims: [ISSUE:0003, ISSUE:0007]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0003, ISSUE:0007]
 
 ## DOING
 
-_(none)_
+- ISSUE:0007's wiring on vc's brief (hv's go of 2026-11-13; devbin 0.1.23, vendored at 3c1055a, carries devbin#0326). (1) an install: block in bin/.devbin/config.yaml, with the opt prefix, the ccusage link to target/release/ccusage, LICENSE as its one file and the build's inputs, and formula.bin out; (2) ccusage --version prints T4's line through the contract's reader, with no new verb; (3) the formula on @@INSTALL@@ on macOS and Linux, each archive rooted at the install root with bin/ccusage, and the signer and its tests to match. Test what changed in a Desk cargo slot, publish to a scratch prefix only, then hand over to vc with the commit range and the one run.
 
 ## TODO
 
@@ -22,7 +22,6 @@ _(none)_
 ## Holds
 
 - ISSUE:0003 closes at the rollout's live check, its Acceptance 1 and 5. Steps 1 and 2 are in, but step 3 failed vc's check (12:57Z by vc's date -u): 19 of 29 claude processes, dc's own included, launched from shells older than Molt's export or the last ccusage use, with no CLAUDE_SECURESTORAGE_CONFIG_DIR, so they renew ca646b28. The bounce restarted sessions, not shells. Step 4 must not run. Released when hv's fix (fresh shells, or a launcher that reads ccusage dir at each launch, eg through ccusage run) is in, vc's live checks (its todo 4) pass, and hv has retired ca646b28. (edited)
-- ISSUE:0007, rescoped on hv's correction (via devbin-vc and vc, 2026-11-06): the dev/opt/brew switch is bin/devbin use in the checkout, a devbin feature, and ccusage use NAME stays the account verb. What stays for Ccusage is the adoption under devbin#0326: bin/devbin install and use in the checkout, the binary's version line from the core's stamp, and the one formula form. Released when devbin releases #0326, which devbin-cc builds, and vc briefs the wiring. (edited)
 
 ## Watch-outs
 

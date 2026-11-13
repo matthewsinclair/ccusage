@@ -5,9 +5,9 @@
     "name": "DevX Claude",
     "role": "devx",
     "session_id": "34c8bad8-d841-40cd-9cc5-af25dfb50c70",
-    "heartbeat_at": "2026-11-13T06:45:40.116Z",
+    "heartbeat_at": "2026-11-13T06:50:27.844Z",
     "status": "active",
-    "focus": "Folded for hv's compact and travel; nothing in flight. Hold 6 (ISSUE:0003): step 3 failed vc's check because sessions inherit shells older than Molt's export, so step 4 must not run until hv picks fresh shells or a launcher through ccusage run. Hold 8 (ISSUE:0007): waits for devbin's release of #0326",
+    "focus": "ISSUE:0007's wiring on vc's brief (doing 8): the install: block, T4's --version line and the formula on @@INSTALL@@, then a Desk cargo slot and the hand-over to vc. Hold 6 (ISSUE:0003) stands as it is.",
     "claims": [
       "ISSUE:0003",
       "ISSUE:0007"
@@ -289,7 +289,8 @@
       "kind": "hold",
       "seq": 8,
       "text": "ISSUE:0007, rescoped on hv's correction (via devbin-vc and vc, 2026-11-06): the dev/opt/brew switch is bin/devbin use in the checkout, a devbin feature, and ccusage use NAME stays the account verb. What stays for Ccusage is the adoption under devbin#0326: bin/devbin install and use in the checkout, the binary's version line from the core's stamp, and the one formula form. Released when devbin releases #0326, which devbin-cc builds, and vc briefs the wiring.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-13T06:50:20.332Z",
       "recorded_at": "2026-11-06T09:12:39.632Z",
       "edited_at": "2026-11-06T09:45:32.194Z"
     },
@@ -302,6 +303,14 @@
       "archived_at": "2026-11-06T09:48:47.602Z",
       "recorded_at": "2026-11-06T09:45:32.095Z",
       "edited_at": "2026-11-06T09:47:50.818Z"
+    },
+    {
+      "node": "dc",
+      "kind": "doing",
+      "seq": 8,
+      "text": "ISSUE:0007's wiring on vc's brief (hv's go of 2026-11-13; devbin 0.1.23, vendored at 3c1055a, carries devbin#0326). (1) an install: block in bin/.devbin/config.yaml, with the opt prefix, the ccusage link to target/release/ccusage, LICENSE as its one file and the build's inputs, and formula.bin out; (2) ccusage --version prints T4's line through the contract's reader, with no new verb; (3) the formula on @@INSTALL@@ on macOS and Linux, each archive rooted at the install root with bin/ccusage, and the signer and its tests to match. Test what changed in a Desk cargo slot, publish to a scratch prefix only, then hand over to vc with the commit range and the one run.",
+      "state": "live",
+      "recorded_at": "2026-11-13T06:50:20.357Z"
     }
   ],
   "sent": [
@@ -723,6 +732,11 @@
       "id": "01M6JVV0KEJ6ZRJ569Y0H2R7BW",
       "sender": "vc",
       "handled_at": "2026-11-04T08:54:12.821Z"
+    },
+    {
+      "id": "01M79TEWPS8A2WN7G6FKTTKA9C",
+      "sender": "vc",
+      "handled_at": "2026-11-13T06:50:27.821Z"
     }
   ]
 }

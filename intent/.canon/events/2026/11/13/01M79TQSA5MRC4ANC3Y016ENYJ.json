@@ -1,0 +1,15 @@
+{
+  "id": "01M79TQSA5MRC4ANC3Y016ENYJ",
+  "ts": "2026-11-13T06:50:20.357Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ISSUE:0007's wiring on vc's brief (hv's go of 2026-11-13; devbin 0.1.23, vendored at 3c1055a, carries devbin#0326). (1) an install: block in bin/.devbin/config.yaml, with the opt prefix, the ccusage link to target/release/ccusage, LICENSE as its one file and the build's inputs, and formula.bin out; (2) ccusage --version prints T4's line through the contract's reader, with no new verb; (3) the formula on @@INSTALL@@ on macOS and Linux, each archive rooted at the install root with bin/ccusage, and the signer and its tests to match. Test what changed in a Desk cargo slot, publish to a scratch prefix only, then hand over to vc with the commit range and the one run."
+  }
+}
