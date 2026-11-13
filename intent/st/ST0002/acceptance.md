@@ -19,7 +19,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 ### WP-01 -- Typed usage windows: each window carries its kind and model (status: WIP)
 
-- AC-01.1 Every parsed usage window carries its kind, and its model when scoped, read from the `limits` array and the legacy fields alike, and the output of `usage` and of the TUI is unchanged. -- satisfied: no (computed)
+- AC-01.1 Every parsed usage window carries its kind, and its model when scoped, read from the `limits` array and the legacy fields alike, and the output of `usage` and of the TUI is unchanged. -- satisfied: yes (computed)
 
 ### WP-02 -- The which rule: earliest reset first, with the cap from config (status: WIP)
 
@@ -65,7 +65,10 @@ _(no tests in this group)_
 
 ### WP-01 -- Typed usage windows: each window carries its kind and model (status: WIP)
 
-_(no tests in this group)_
+- AT-01.1 `src/usage.rs:730` -- covers AC-01.1 -- status: green -- The kinds and model read from the limits fixture, with the scoped window's share; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
+- AT-01.2 `src/usage.rs:817` -- covers AC-01.1 -- status: green -- A legacy-only snapshot maps onto the same kinds; breakdown metadata is not a window; red under the legacy-kind mutant (seven_day read as the session) in WP01's run; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
+- AT-01.3 `src/usage.rs:869` -- covers AC-01.1 -- status: green -- An unknown limits kind stays ignored, and limits supersede legacy duplicates; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
+- AT-01.4 `src/display.rs:754` -- covers AC-01.1 -- status: green -- The overview's labels are unchanged: the pin passed on the parser before WP01 and after it; red in WP01's first run at d3a24e5 (its own expectation was wrong) and under the label mutant; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
 
 ### WP-02 -- The which rule: earliest reset first, with the cap from config (status: WIP)
 
