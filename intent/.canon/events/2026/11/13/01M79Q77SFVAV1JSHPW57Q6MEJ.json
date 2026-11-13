@@ -1,0 +1,16 @@
+{
+  "id": "01M79Q77SFVAV1JSHPW57Q6MEJ",
+  "ts": "2026-11-13T05:48:52.399Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which verb (hv, 2026-11-13): drafted from geodica-estate's brief and in front of hv for review: objective, context, seven sized WPs each with a proposed builder, and 14 ACs keyed AC-<wp>.<n>. No seat writes code until hv has reviewed. Gated on two things. First, vc's check-in with devbin-vc, which holds the Desk while devbin, intent and devvm are P0/P1 (sent at 05:48Z; hv arbitrates once it answers). Second, hv's answers on who builds, the burn rate predict projects with, whether the five accounts share one plan, and ST0002 joining 0.1.9's one cut. Then: brief the builders, WP01 first."
+  }
+}

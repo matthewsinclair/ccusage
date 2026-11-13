@@ -119,10 +119,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 3,
-      "text": "ST0002, the which verb (hv, 2026-11-13): drafted from geodica-estate's brief and in front of hv for review: objective, context, seven sized WPs each with a proposed builder, and 14 ACs keyed AC-<wp>.<n>. No seat writes code until hv has reviewed. Waiting on hv for: who builds (cc and ic started, or dc), the burn rate predict projects with, whether the five accounts share one plan, and ST0002 joining 0.1.9's one cut. Then: brief the builders, WP01 first.",
+      "text": "ST0002, the which verb (hv, 2026-11-13): drafted from geodica-estate's brief and in front of hv for review: objective, context, seven sized WPs each with a proposed builder, and 14 ACs keyed AC-<wp>.<n>. No seat writes code until hv has reviewed. Gated on two things. First, vc's check-in with devbin-vc, which holds the Desk while devbin, intent and devvm are P0/P1 (sent at 05:48Z; hv arbitrates once it answers). Second, hv's answers on who builds, the burn rate predict projects with, whether the five accounts share one plan, and ST0002 joining 0.1.9's one cut. Then: brief the builders, WP01 first.",
       "state": "live",
       "recorded_at": "2026-11-13T05:33:19.199Z",
-      "edited_at": "2026-11-13T05:42:52.514Z"
+      "edited_at": "2026-11-13T05:48:52.399Z"
     }
   ],
   "sent": [
