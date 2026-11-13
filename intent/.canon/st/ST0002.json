@@ -225,7 +225,7 @@
     {
       "id": "AT-01.1",
       "kind": "test",
-      "file": "src/usage.rs:782",
+      "file": "src/usage.rs:993",
       "covers": [
         "AC-01.1"
       ],
@@ -235,7 +235,7 @@
     {
       "id": "AT-01.2",
       "kind": "test",
-      "file": "src/usage.rs:890",
+      "file": "src/usage.rs:1101",
       "covers": [
         "AC-01.1"
       ],
@@ -245,7 +245,7 @@
     {
       "id": "AT-01.3",
       "kind": "test",
-      "file": "src/usage.rs:943",
+      "file": "src/usage.rs:1154",
       "covers": [
         "AC-01.1"
       ],
@@ -295,7 +295,7 @@
     {
       "id": "AT-02.4",
       "kind": "test",
-      "file": "tests/cli.rs:263",
+      "file": "tests/cli.rs:298",
       "covers": [
         "AC-02.3"
       ],
@@ -315,7 +315,7 @@
     {
       "id": "AT-03.1",
       "kind": "test",
-      "file": "tests/cli.rs:1045",
+      "file": "tests/cli.rs:1191",
       "covers": [
         "AC-03.1"
       ],
@@ -325,7 +325,7 @@
     {
       "id": "AT-03.2",
       "kind": "test",
-      "file": "tests/cli.rs:1077",
+      "file": "tests/cli.rs:1223",
       "covers": [
         "AC-03.2"
       ],
@@ -335,7 +335,7 @@
     {
       "id": "AT-03.3",
       "kind": "test",
-      "file": "tests/cli.rs:1180",
+      "file": "tests/cli.rs:1326",
       "covers": [
         "AC-03.3"
       ],
@@ -345,7 +345,7 @@
     {
       "id": "AT-03.4",
       "kind": "test",
-      "file": "tests/cli.rs:1215",
+      "file": "tests/cli.rs:1361",
       "covers": [
         "AC-03.4"
       ],
@@ -355,7 +355,7 @@
     {
       "id": "AT-04.1",
       "kind": "test",
-      "file": "src/usage.rs:1117",
+      "file": "src/usage.rs:1328",
       "covers": [
         "AC-04.1"
       ],
@@ -385,7 +385,7 @@
     {
       "id": "AT-04.4",
       "kind": "test",
-      "file": "tests/cli.rs:355",
+      "file": "tests/cli.rs:390",
       "covers": [
         "AC-04.1"
       ],
