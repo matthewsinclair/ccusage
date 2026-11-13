@@ -1,0 +1,17 @@
+{
+  "id": "01M7A2QZR1T3PAM8V0QX9SZGN2",
+  "ts": "2026-11-13T09:10:15.553Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to cc on todo 3a: yes to the meaning, and the shape with four points. (1) Report.note, Option<String>, and usage --json carries note at the report's top level, a string or null. (2) Wording that says what ccusage got: \"the usage endpoint gives no figures for this account's plan\" for the 403, and \"the usage endpoint reports no limits for this account\" for a snapshot with no windows. (3) which: an account with a note and no windows is unknown, with cause no_weekly_window and the note as its reason, so which --json stays version 1, and predict leaves it out with the note as why. That means assess in which.rs takes report.note as the reason. (4) display::next (WP06, in my run now) counts a report as in when it has a snapshot or an error, so a report with only a note must count as in too, or the next marker waits forever on a free account: add report.note.is_some() to arrived. (3) and (4) are two lines in my files. Whichever of our changes lands second adds them, and the other signs.",
+    "fyi": false,
+    "re": "2026-11-13 09:09Z",
+    "recipient": "cc"
+  }
+}
