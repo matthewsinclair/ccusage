@@ -18,13 +18,17 @@ claims: [ST0003]
   - 02a5967, todo 3b: each usage report carries subscription_type and rate_limit_tier as the login records them, for ic's predict.
   ic signed both texts and the shape. Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8 is queued behind the devvm build and ic's WP05. Its run is the three mutants in the scratchpad's followup-mutants.zsh, then the measured run (fmt, clippy, cargo test, the keychain tests by name), all in wt-st0003.
   Then hand eea2dea..02a5967 to vc. On its go: land, re-mint the changed rows AT-03.4 and AT-03.10, and ask vc which AC the plan test covers.
-- ST0003/WP04, doctor, started in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 on branch cc/ST0003-WP04 from 02a5967. Todo 3a (usage's 403 and no-windows messages) goes in its run. Design facts:
+- ST0003/WP04, doctor, started in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 on branch cc/ST0003-WP04 from 02a5967. Todo 3a (usage's 403 and no-windows messages) goes in its run. Design facts: (edited)
   - Flags: Claude Code 2.1.323 reads them from .claude.json's cachedGrowthBookFeatures, else cachedFeatureFlags, an object of flag name to value. tengu_streamed_thimble defaults on and tengu_bubbly_fountain off, read from its binary, not from hv's config.
   - Sessions: ps -E on macOS, or /proc/PID/environ on Linux, looking only at CLAUDE_CONFIG_DIR and CLAUDE_SECURESTORAGE_CONFIG_DIR. Tests use a stand-in, as CCUSAGE_LAUNCHCTL does. Working directories come from lsof on macOS. Where neither works, the check is skipped.
   - Logins: each store is read through auth::load, as usage reads it. Doctor fails on an account with no login or two, and on a journal left behind.
   - The shared login is verified with usage::verified_token where reachable, else doctor says it was not checked.
   - The shared document's length is checked against the security -i limit.
   - The old shared-mode warnings go.
+  Banked unbuilt on cc/ST0003-WP04 at 55dd109:
+  - Piece 1: doctor::where_logins_are, pure, with Holds read by auth::load; the journal check; doctor::switch_flags, pure. AT-04.1 and AT-04.2 unit tests.
+  - Piece 2: usage::whose, which never renews and returns Whose::Profile, Another or Unchecked, so doctor never reports a check it did not make; shared_checks now takes failed; the CLI doctor test seeds a verified cache.
+  Still to write: the sessions check (ps -E on macOS behind a CCUSAGE_PS stand-in, lsof for working directories, /proc on Linux, only the two variables), the line-limit length, and todo 3a. Then build it all in one Desk slot with the follow-up's run, or after it.
 
 ## TODO
 
