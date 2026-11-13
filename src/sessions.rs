@@ -154,8 +154,13 @@ fn started_linux(pid: u32) -> Option<String> {
 /// or a config directory, other than the shared config. None when it follows a switch.
 /// Pure.
 pub(crate) fn drift(session: &Session, shared: &Path) -> Option<String> {
-  let other = |value: &Option<String>| value.as_deref().filter(|value| Path::new(value) != shared);
-  match (other(&session.login_dir), other(&session.config_dir)) {
+  fn other<'a>(value: &'a Option<String>, shared: &Path) -> Option<&'a str> {
+    value.as_deref().filter(|value| Path::new(value) != shared)
+  }
+  match (
+    other(&session.login_dir, shared),
+    other(&session.config_dir, shared),
+  ) {
     (Some(dir), _) => Some(format!("{LOGIN_DIR}={dir}")),
     (None, Some(dir)) => Some(format!("{CONFIG_DIR}={dir}")),
     (None, None) => None,

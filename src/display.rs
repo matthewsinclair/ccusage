@@ -102,9 +102,9 @@ pub enum Next {
 /// or stale data. An account that failed is in, and so is one whose type gives no usage
 /// figures; the rule passes over both.
 pub fn next(reports: &[Report], now: i64, cap: f64) -> Next {
-  let arrived = reports.iter().all(|report| {
-    report.snapshot.is_some() || report.error.is_some() || report.note.is_some()
-  });
+  let arrived = reports
+    .iter()
+    .all(|report| report.snapshot.is_some() || report.error.is_some() || report.note.is_some());
   let fresh = reports
     .iter()
     .filter(|report| report.snapshot.is_some())

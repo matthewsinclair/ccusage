@@ -145,8 +145,11 @@ impl Simulated {
   }
 }
 
+/// A plan as predict compares it: its subscription type and its rate-limit tier.
+type Key<'a> = (Option<&'a str>, Option<&'a str>);
+
 /// A plan as predict compares it: its two values, whole, and never parsed.
-fn key(plan: &Plan) -> (Option<&str>, Option<&str>) {
+fn key(plan: &Plan) -> Key<'_> {
   (
     plan.subscription_type.as_deref(),
     plan.rate_limit_tier.as_deref(),
@@ -171,7 +174,7 @@ fn plan_counted<'a>(
   plans: impl Iterator<Item = &'a Plan>,
   active: Option<&'a Plan>,
 ) -> Option<&'a Plan> {
-  let mut counts: BTreeMap<(Option<&str>, Option<&str>), (usize, &Plan)> = BTreeMap::new();
+  let mut counts: BTreeMap<Key<'a>, (usize, &Plan)> = BTreeMap::new();
   for plan in plans {
     counts.entry(key(plan)).or_insert((0, plan)).0 += 1;
   }

@@ -671,11 +671,13 @@ fn whose_at(
         .to_owned(),
     ));
   }
-  Ok(if expected.named_by(&profile_at(agent, endpoint, &token)?) {
-    Whose::Profile
-  } else {
-    Whose::Another
-  })
+  Ok(
+    if expected.named_by(&profile_at(agent, endpoint, &token)?) {
+      Whose::Profile
+    } else {
+      Whose::Another
+    },
+  )
 }
 
 /// The profile endpoint's account, as a `.claude.json` records one. Pure.
@@ -1179,7 +1181,10 @@ mod tests {
       let document = serde_json::json!({"claudeAiOauth": {
         "accessToken": "SHARED", "refreshToken": "REFRESH", "expiresAt": expires_at
       }});
-      storage::write_atomic(&dir.join(".credentials.json"), document.to_string().as_bytes())
+      storage::write_atomic(
+        &dir.join(".credentials.json"),
+        document.to_string().as_bytes(),
+      )
     };
     let client = Client::default();
     // Nothing answers here, so a check that reached the endpoint would end in an error.
@@ -1514,7 +1519,12 @@ mod tests {
 
   #[test]
   fn auth_errors_and_redirects_do_not_disclose_response_body() -> Result<()> {
-    for status in ["403 Forbidden", "302 Found", "500 Server Error"] {
+    // A 403 is an answer, which load reads with the login's plan, and keeps no body.
+    assert!(matches!(
+      response("403 Forbidden", "", "TEST_SECRET"),
+      Ok(Fetch::Forbidden)
+    ));
+    for status in ["302 Found", "500 Server Error"] {
       let result = response(
         status,
         "Location: https://example.invalid/\r\n",
