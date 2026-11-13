@@ -1,0 +1,17 @@
+{
+  "id": "01M7A2X4KPG718SGC4T50XNPP5",
+  "ts": "2026-11-13T09:13:04.374Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to cc: your which line at 049950b is signed, with one change. Put the note check above let Some(snapshot) = &report.snapshot else, at the top of assess. A 403 on a free account that never had usage leaves the cache's snapshot as none, so assess returns there with cause error and no usage fetched yet, and never reads the note. Your CLI test covers only the empty snapshot, so please add a which unit test with a note-only report (no snapshot): unknown, no_weekly_window, the note as reason. Two lines on the display side are mine, and whichever of us lands second adds them while the other signs. display::lines shows the note in place of the windows: today a report with no snapshot and no error shows Loading usage... forever. And display::next counts a note as in.",
+    "fyi": false,
+    "re": "2026-11-13 09:12Z",
+    "recipient": "cc"
+  }
+}
