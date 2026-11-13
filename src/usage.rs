@@ -38,6 +38,10 @@ pub struct Window {
   pub kind: Kind,
   pub utilization: f64,
   pub resets_at: Option<String>,
+  /// A weekly_scoped window's allowance as a percent of the weekly one, from the
+  /// response's `weekly_scoped_shares`; none for the other kinds, for the legacy
+  /// fields, and when the response gives no share for the window.
+  pub share: Option<f64>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -58,6 +62,7 @@ impl Snapshot {
       let entries = value
         .as_array()
         .ok_or("usage field limits must be an array")?;
+      let shares = self.shares()?;
       let mut result = Vec::new();
       for (index, entry) in entries.iter().enumerate() {
         let kind = match entry.get("kind").and_then(serde_json::Value::as_str) {
@@ -75,10 +80,15 @@ impl Snapshot {
         let context = format!("limits[{index}]");
         let row: Limit = serde_json::from_value(entry.clone())
           .map_err(|_| format!("invalid usage window at {context}; expected numeric percent and optional string resets_at"))?;
+        let share = match kind {
+          Kind::WeeklyScoped(_) => shares.get(&index).copied(),
+          Kind::Session | Kind::WeeklyAll => None,
+        };
         let window = Window {
           kind,
           utilization: row.percent,
           resets_at: row.resets_at,
+          share,
         };
         validate_window(&window, &context)?;
         result.push(window);
@@ -104,6 +114,36 @@ impl Snapshot {
     Ok(result)
   }
 
+  /// Each weekly_scoped window's allowance as a percent of the weekly one, by the index
+  /// of its row in `limits`.
+  fn shares(&self) -> Result<BTreeMap<usize, f64>> {
+    let mut shares = BTreeMap::new();
+    let Some(value) = self
+      .fields
+      .get("weekly_scoped_shares")
+      .filter(|value| !value.is_null())
+    else {
+      return Ok(shares);
+    };
+    let entries = value
+      .as_array()
+      .ok_or("usage field weekly_scoped_shares must be an array")?;
+    for (index, entry) in entries.iter().enumerate() {
+      let context = format!("weekly_scoped_shares[{index}]");
+      let row: Share = serde_json::from_value(entry.clone()).map_err(|_| {
+        format!(
+          "invalid usage share at {context}; expected numeric limit_index and allowance_percent_of_weekly"
+        )
+      })?;
+      let share = row.allowance_percent_of_weekly;
+      if !share.is_finite() || !(0.0..=100.0).contains(&share) {
+        return Err(format!("usage share at {context} is outside 0..100").into());
+      }
+      shares.insert(row.limit_index, share);
+    }
+    Ok(shares)
+  }
+
   fn validate(&self) -> Result<()> {
     if self.parse_windows()?.is_empty() {
       return Err("no subscription usage windows returned for this account".into());
@@ -116,6 +156,12 @@ impl Snapshot {
 struct Limit {
   percent: f64,
   resets_at: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct Share {
+  limit_index: usize,
+  allowance_percent_of_weekly: f64,
 }
 
 #[derive(Deserialize)]
@@ -135,6 +181,7 @@ fn parse_legacy(value: &serde_json::Value, key: &str) -> Result<Window> {
     kind: legacy_kind(key),
     utilization: row.utilization,
     resets_at: row.resets_at,
+    share: None,
   };
   validate_window(&window, key)?;
   Ok(window)
@@ -679,6 +726,60 @@ mod tests {
     assert_eq!(windows[0].utilization, 23.5);
     assert_eq!(windows[2].utilization, 0.0);
     assert!(windows[2].resets_at.is_none());
+    assert_eq!(
+      windows
+        .iter()
+        .map(|window| window.share)
+        .collect::<Vec<_>>(),
+      [None, None, Some(50.0)]
+    );
+    Ok(())
+  }
+
+  #[test]
+  fn a_share_attaches_to_its_scoped_row_alone_and_a_bad_one_names_its_place() -> Result<()> {
+    let snapshot: Snapshot = serde_json::from_value(serde_json::json!({
+      "limits": [
+        {"kind": "weekly_all", "percent": 1},
+        {"kind": "weekly_scoped", "percent": 2, "scope": {"model": {"display_name": "Fable"}}}
+      ],
+      "weekly_scoped_shares": [
+        {"limit_index": 0, "allowance_percent_of_weekly": 40},
+        {"limit_index": 1, "allowance_percent_of_weekly": 50}
+      ]
+    }))?;
+    assert_eq!(
+      snapshot
+        .windows()?
+        .iter()
+        .map(|window| window.share)
+        .collect::<Vec<_>>(),
+      [None, Some(50.0)]
+    );
+    for (shares, location) in [
+      (
+        serde_json::json!([{"limit_index": 1, "allowance_percent_of_weekly": "PRIVATE_VALUE"}]),
+        "weekly_scoped_shares[0]",
+      ),
+      (
+        serde_json::json!([{"limit_index": 1, "allowance_percent_of_weekly": 101}]),
+        "weekly_scoped_shares[0]",
+      ),
+      (
+        serde_json::json!({"PRIVATE_VALUE": 1}),
+        "weekly_scoped_shares",
+      ),
+    ] {
+      let mut bad = snapshot.clone();
+      bad.fields.insert("weekly_scoped_shares".into(), shares);
+      let error = bad
+        .validate()
+        .err()
+        .ok_or("expected an invalid share")?
+        .to_string();
+      assert!(error.contains(location));
+      assert!(!error.contains("PRIVATE_VALUE"));
+    }
     Ok(())
   }
 
@@ -704,6 +805,12 @@ mod tests {
         Kind::WeeklyScoped(Some("Fable".into())),
         Kind::WeeklyScoped(Some("Oauth Apps".into()))
       ]
+    );
+    assert!(
+      snapshot
+        .windows()?
+        .iter()
+        .all(|window| window.share.is_none())
     );
     assert_eq!(snapshot.windows()?[2].utilization, 0.5);
     Ok(())
