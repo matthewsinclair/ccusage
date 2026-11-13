@@ -31,6 +31,7 @@ claims: [ST0003]
 ## TODO
 
 - ST0003/WP04 (doctor) beside WP03, then WP05 (docs and the decision record). Each goes to vc with its commit range and one measured run. (edited)
+- hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. In cc's remit, usage.rs: a login without usage access ends in an error (HTTP 403, lacks usage access), and an account whose snapshot holds no windows shows nothing useful; each should say what that account type gives instead. Not started; vc sequences it after WP03 and WP04. (edited)
 
 ## Holds
 

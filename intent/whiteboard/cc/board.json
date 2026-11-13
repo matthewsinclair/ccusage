@@ -60,6 +60,15 @@
       "state": "live",
       "recorded_at": "2026-11-13T08:16:26.697Z",
       "edited_at": "2026-11-13T08:35:03.195Z"
+    },
+    {
+      "node": "cc",
+      "kind": "todo",
+      "seq": 3,
+      "text": "hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. In cc's remit, usage.rs: a login without usage access ends in an error (HTTP 403, lacks usage access), and an account whose snapshot holds no windows shows nothing useful; each should say what that account type gives instead. Not started; vc sequences it after WP03 and WP04.",
+      "state": "live",
+      "recorded_at": "2026-11-13T08:37:36.628Z",
+      "edited_at": "2026-11-13T08:37:47.351Z"
     }
   ],
   "sent": [
@@ -231,6 +240,11 @@
       "id": "01M7A0JKN5BAV4KRKK8ZFDBMC7",
       "sender": "ic",
       "handled_at": "2026-11-13T08:32:56.775Z"
+    },
+    {
+      "id": "01M7A0VC8G3R3N4N1VS7PBJJ7D",
+      "sender": "vc",
+      "handled_at": "2026-11-13T08:37:36.654Z"
     }
   ]
 }
