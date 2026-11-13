@@ -1630,8 +1630,9 @@ fn herdr_install_writes_the_mod_and_replaces_or_removes_only_its_own_unedited_co
   Ok(())
 }
 
-// Each usage report gives the plan its login records, exactly as Claude Code wrote it,
-// for ST0002/WP05's predict to compare whole; a login that records none gives null.
+// ST0003 AT-04.9: each usage report gives the plan its login records, exactly as Claude
+// Code wrote it, for ST0002/WP05's predict to compare whole; a login that records none
+// gives null.
 #[test]
 fn usage_reports_the_plan_each_login_records() -> Result<()> {
   let sandbox = Sandbox::new()?;
