@@ -317,6 +317,21 @@ pub struct Report {
   /// The plan the account's login records, which no usage response names.
   #[serde(flatten)]
   pub plan: Plan,
+  /// What an account type with no usage figures, or none to report, gives instead.
+  /// It is not an error: the account works, with nothing for usage to show.
+  pub note: Option<String>,
+}
+
+/// The note for an account whose plan the usage endpoint gives no figures for: an
+/// HTTP 403 on a login whose plan is not a paid one.
+const NO_FIGURES: &str = "the usage endpoint gives no figures for this account's plan";
+/// The note for an account whose usage holds no windows.
+const NO_LIMITS: &str = "the usage endpoint reports no limits for this account";
+
+/// Whether a login's plan is a paid one, whose usage the endpoint should give: a 403
+/// for it is an access problem, not the account type. Pure.
+fn paid(plan: &Plan) -> bool {
+  matches!(plan.subscription_type.as_deref(), Some("max" | "pro"))
 }
 
 /// The plan a login records, exactly as Claude Code wrote it, so that accounts are
@@ -347,6 +362,7 @@ impl Report {
       snapshot: None,
       error: Some(crate::clean(&error.to_string())),
       plan: Plan::default(),
+      note: None,
     }
   }
 }
@@ -372,6 +388,7 @@ enum Fetch {
   Success(Snapshot),
   Limited(i64),
   Unauthorized,
+  Forbidden,
 }
 
 pub(crate) fn redact(value: &serde_json::Value, token: Option<&str>) -> serde_json::Value {
@@ -437,7 +454,7 @@ fn fetch(agent: &ureq::Agent, endpoint: &str, token: &str, now: i64) -> Result<F
       Ok(Fetch::Success(snapshot))
     }
     401 => Ok(Fetch::Unauthorized),
-    403 => Err("Claude login lacks usage access (HTTP 403); check account permissions".into()),
+    403 => Ok(Fetch::Forbidden),
     429 => {
       let retry = response
         .headers()
@@ -519,24 +536,55 @@ fn verified_token_at(
   name: &str,
   dir: &Path,
 ) -> Result<String> {
-  let expected = store.profile(name)?.email.clone();
+  let expected = Expected::of(store, name)?;
   let token = auth::read(dir)?;
-  if let Some(email) = expected.as_deref()
-    && cache_verifies(&read_cache(store, name)?, dir, &token, email)
+  if let Some(expected) = &expected
+    && expected.cached(store, name, dir, &token)?
   {
     return Ok(token.access_token);
   }
   let token = auth::fresh(agent, dir, None)?;
   let profile = profile_at(agent, endpoint, &token)?;
-  let verified = match expected.as_deref() {
-    Some(email) => check_identity(&profile, email).is_ok(),
-    None => crate::shared::profile_account(store, name)?
-      .is_some_and(|record| crate::shared::same_account(&account_record(&profile), &record)),
-  };
-  if !verified {
+  if !expected.is_some_and(|expected| expected.named_by(&profile)) {
     return Err(crate::seat::Refusal::Unverified(name.to_owned()).into());
   }
   Ok(token.access_token)
+}
+
+/// What says a login is a profile's: the email its config gives, else, with none
+/// configured, the account its own `.claude.json` records. use's check before a move
+/// and doctor's check of the shared login both read it.
+enum Expected {
+  Email(String),
+  Record(serde_json::Value),
+}
+
+impl Expected {
+  /// What `name`'s login is checked against, or None when its profile gives neither.
+  fn of(store: &Store, name: &str) -> Result<Option<Self>> {
+    match store.profile(name)?.email.clone() {
+      Some(email) => Ok(Some(Self::Email(email))),
+      None => Ok(crate::shared::profile_account(store, name)?.map(Self::Record)),
+    }
+  }
+
+  /// Whether the usage cache verified this exact `token` as this account's while the
+  /// login lived in `dir`. A cache verifies an email, never a record.
+  fn cached(&self, store: &Store, name: &str, dir: &Path, token: &auth::Token) -> Result<bool> {
+    match self {
+      Self::Email(email) => Ok(cache_verifies(&read_cache(store, name)?, dir, token, email)),
+      Self::Record(_) => Ok(false),
+    }
+  }
+
+  /// Whether the profile endpoint's answer names this account: its email, in any case,
+  /// or the account the record names. Pure.
+  fn named_by(&self, profile: &serde_json::Value) -> bool {
+    match self {
+      Self::Email(email) => check_identity(profile, email).is_ok(),
+      Self::Record(record) => crate::shared::same_account(&account_record(profile), record),
+    }
+  }
 }
 
 /// A login's standing, for adoption: live, with the account the profile endpoint names,
@@ -581,6 +629,53 @@ fn standing_at(
     },
   };
   Ok(Standing::Live(account_record(&profile)))
+}
+
+/// Doctor's answer to whose a login is.
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) enum Whose {
+  /// The profile's own.
+  Profile,
+  /// Another account's.
+  Another,
+  /// The check could not be made, and why: never taken as passed.
+  Unchecked(String),
+}
+
+/// Doctor's check that the login in `dir` is `name`'s, made against what `use` checks
+/// it against but never renewing, so doctor changes no login.
+pub(crate) fn whose(store: &Store, name: &str, dir: &Path) -> Whose {
+  whose_at(&Client::default().agent, PROFILE_ENDPOINT, store, name, dir)
+    .unwrap_or_else(|error| Whose::Unchecked(crate::clean(&error.to_string())))
+}
+
+fn whose_at(
+  agent: &ureq::Agent,
+  endpoint: &str,
+  store: &Store,
+  name: &str,
+  dir: &Path,
+) -> Result<Whose> {
+  let Some(expected) = Expected::of(store, name)? else {
+    return Ok(Whose::Unchecked(format!(
+      "{name} has no email and no account record to check it against"
+    )));
+  };
+  let token = auth::read(dir)?;
+  if expected.cached(store, name, dir, &token)? {
+    return Ok(Whose::Profile);
+  }
+  if token.expiring() {
+    return Ok(Whose::Unchecked(
+      "its token is expired or about to expire, and doctor renews no login; a doctor run after its next renewal checks it"
+        .to_owned(),
+    ));
+  }
+  Ok(if expected.named_by(&profile_at(agent, endpoint, &token)?) {
+    Whose::Profile
+  } else {
+    Whose::Another
+  })
 }
 
 /// The profile endpoint's account, as a `.claude.json` records one. Pure.
@@ -690,6 +785,7 @@ impl Client {
     let now = crate::now();
     let fresh = cache.snapshot.is_some() && fresh(cache.fetched_at, now, TTL);
     let mut error = None;
+    let mut note = None;
     let mut cached = true;
     if cache.retry_at > now {
       error = Some(format!(
@@ -739,10 +835,23 @@ impl Client {
         Ok(Fetch::Unauthorized) => {
           error = Some("Claude rejected the renewed login; run ccusage login NAME".into());
         }
+        Ok(Fetch::Forbidden) if paid(&plan) => {
+          error =
+            Some("Claude login lacks usage access (HTTP 403); check account permissions".into());
+        }
+        Ok(Fetch::Forbidden) => note = Some(NO_FIGURES.to_owned()),
         Err(failure) => {
           error = Some(failure.to_string());
         }
       }
+    }
+    // An account whose usage holds no windows has no limits to show.
+    let no_windows = cache
+      .snapshot
+      .as_ref()
+      .is_some_and(|snapshot| snapshot.windows().is_ok_and(|windows| windows.is_empty()));
+    if note.is_none() && no_windows {
+      note = Some(NO_LIMITS.to_owned());
     }
     Ok(Report {
       name: name.into(),
@@ -751,6 +860,7 @@ impl Client {
       snapshot: cache.snapshot,
       error,
       plan,
+      note,
     })
   }
 }
@@ -801,6 +911,7 @@ pub fn demo() -> Vec<Report> {
     snapshot: Some(Snapshot { fields }),
     error: None,
     plan: Plan::default(),
+    note: None,
   }]
 }
 
@@ -988,6 +1099,120 @@ mod tests {
       } else {
         assert!(standing.is_err(), "{status} {body}");
       }
+    }
+    Ok(())
+  }
+
+  // ST0003 AT-04.5: the usage endpoint's 403 is an answer, not a failure: an account
+  // type with no figures, unless the login's plan is a paid one, whose 403 is an access
+  // problem.
+  #[test]
+  fn a_403_is_an_account_type_with_no_figures_unless_its_plan_is_paid() -> Result<()> {
+    use std::{
+      io::{Read, Write},
+      net::TcpListener,
+      time::Instant,
+    };
+    let listener = TcpListener::bind("127.0.0.1:0")?;
+    let endpoint = format!("http://{}/usage", listener.local_addr()?);
+    let server = std::thread::spawn(move || -> Result<()> {
+      let mut stream =
+        crate::loopback::accept_by(&listener, Instant::now() + Duration::from_secs(10))?;
+      let mut request = [0; 4096];
+      let _ = stream.read(&mut request)?;
+      write!(
+        stream,
+        "HTTP/1.1 403 Forbidden\r\nConnection: close\r\nContent-Length: 0\r\n\r\n"
+      )?;
+      Ok(())
+    });
+    let fetched = fetch(&Client::default().agent, &endpoint, "TOKEN", crate::now());
+    server.join().map_err(|_| "usage fixture panicked")??;
+    assert!(matches!(fetched, Ok(Fetch::Forbidden)));
+    let plan = |kind: Option<&str>| Plan {
+      subscription_type: kind.map(str::to_owned),
+      rate_limit_tier: None,
+    };
+    for kind in ["max", "pro"] {
+      assert!(paid(&plan(Some(kind))), "{kind}");
+    }
+    for kind in [None, Some("free"), Some("team")] {
+      assert!(!paid(&plan(kind)), "{kind:?}");
+    }
+    Ok(())
+  }
+
+  // ST0003 AT-04.10: doctor tells a shared login that is another account's from one call
+  // to the profile endpoint, matching an email in any case as use does, and leaves
+  // unchecked a login it could check only by renewing it, or whose profile gives nothing
+  // to check it against.
+  #[test]
+  fn doctor_tells_another_accounts_login_without_renewing_it() -> Result<()> {
+    use crate::config::{Config, Profile};
+    use std::{
+      io::{Read, Write},
+      net::TcpListener,
+      time::Instant,
+    };
+    let scratch = crate::scratch::Scratch::new()?;
+    let dir = scratch.path().join("shared");
+    storage::private_dir(&dir)?;
+    let mut config = Config::default();
+    for (name, email) in [("work", Some("work@example.com")), ("bare", None)] {
+      config.profiles.insert(
+        name.into(),
+        Profile {
+          email: email.map(str::to_owned),
+          config_dir: None,
+        },
+      );
+    }
+    let store = Store {
+      path: scratch.path().join("config.toml"),
+      root: scratch.path().to_path_buf(),
+      data: scratch.path().join("data"),
+      state: scratch.path().join("state"),
+      cache: scratch.path().join("cache"),
+      config,
+    };
+    let login = |expires_at: i64| {
+      let document = serde_json::json!({"claudeAiOauth": {
+        "accessToken": "SHARED", "refreshToken": "REFRESH", "expiresAt": expires_at
+      }});
+      storage::write_atomic(&dir.join(".credentials.json"), document.to_string().as_bytes())
+    };
+    let client = Client::default();
+    // Nothing answers here, so a check that reached the endpoint would end in an error.
+    let nowhere = "http://127.0.0.1:9/profile";
+    login(0)?;
+    for name in ["work", "bare"] {
+      let whose = whose_at(&client.agent, nowhere, &store, name, &dir)?;
+      assert!(matches!(whose, Whose::Unchecked(_)), "{name}: {whose:?}");
+    }
+    // A login an hour from expiry, in Claude Code's milliseconds.
+    login((crate::now() + 3600) * 1000)?;
+    for (email, verdict) in [
+      ("WORK@example.com", Whose::Profile),
+      ("home@example.com", Whose::Another),
+    ] {
+      let listener = TcpListener::bind("127.0.0.1:0")?;
+      let endpoint = format!("http://{}/profile", listener.local_addr()?);
+      let body = serde_json::json!({"account": {"uuid": "u-1", "email": email}}).to_string();
+      let server = std::thread::spawn(move || -> Result<()> {
+        let mut stream =
+          crate::loopback::accept_by(&listener, Instant::now() + Duration::from_secs(10))?;
+        let mut request = [0; 4096];
+        let _ = stream.read(&mut request)?;
+        write!(
+          stream,
+          "HTTP/1.1 200 OK\r\nConnection: close\r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n{body}",
+          body.len()
+        )?;
+        Ok(())
+      });
+      let whose = whose_at(&client.agent, &endpoint, &store, "work", &dir);
+      server.join().map_err(|_| "profile fixture panicked")??;
+      assert_eq!(whose?, verdict, "{email}");
     }
     Ok(())
   }

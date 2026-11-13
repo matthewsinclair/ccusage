@@ -141,20 +141,6 @@ impl Item<'_> {
     Ok(())
   }
 
-  /// Whether the item exists, from its attributes alone: its secret is never read.
-  pub fn exists(&self) -> Result<bool> {
-    let status = self
-      .find(false)
-      .stdout(Stdio::null())
-      .status()
-      .map_err(|_| "could not run /usr/bin/security to look for Claude's Keychain item")?;
-    match status.code() {
-      Some(0) => Ok(true),
-      Some(ITEM_NOT_FOUND) => Ok(false),
-      _ => Err("could not search the Keychain for Claude's item".into()),
-    }
-  }
-
   /// The keychain file holding the item, found from its attributes alone.
   fn locate(&self) -> Result<PathBuf> {
     let output = self
@@ -215,13 +201,34 @@ fn update_line(service: &str, account: &str, keychain: &Path, password: &[u8]) -
     return Err("Claude's Keychain item cannot be named safely to /usr/bin/security".into());
   }
   let hex: String = password.iter().map(|byte| format!("{byte:02x}")).collect();
-  let line = format!(
-    "add-generic-password -U -a \"{account}\" -s \"{service}\" -X \"{hex}\" \"{keychain}\"\n"
-  );
+  let line = command_line(service, account, keychain, &hex);
   if line.len() > STDIN_LIMIT {
     return Err("Claude's credentials are too large to update through security -i, and ccusage never passes them as a process argument".into());
   }
   Ok(line)
+}
+
+/// The one `security -i` line that writes `hex` as the item's password. Pure.
+fn command_line(service: &str, account: &str, keychain: &str, hex: &str) -> String {
+  format!("add-generic-password -U -a \"{account}\" -s \"{service}\" -X \"{hex}\" \"{keychain}\"\n")
+}
+
+/// The longest document one `security -i` line can write to an item, in bytes. Pure.
+fn room(service: &str, account: &str, keychain: &str) -> usize {
+  // Each byte of the document travels as two hex digits.
+  STDIN_LIMIT.saturating_sub(command_line(service, account, keychain, "").len()) / 2
+}
+
+impl Item<'_> {
+  /// The longest document one `security -i` line can write to this item, in bytes: a
+  /// length, read from the item's attributes alone.
+  pub fn capacity(&self) -> Result<usize> {
+    let keychain = self.locate()?;
+    let keychain = keychain
+      .to_str()
+      .ok_or("the keychain holding Claude's item has a path that is not UTF-8")?;
+    Ok(room(self.service, self.account, keychain))
+  }
 }
 
 /// `find-generic-password -w` prints the password and a newline, as hex when any byte
@@ -607,6 +614,24 @@ mod tests {
       .ok_or("expected the oversized line to be refused")?;
     assert!(!error.to_string().contains("7878"));
     Ok(())
+  }
+
+  // The room doctor reports on one security -i line is what an update takes: a document
+  // that long fits, and one byte more is refused.
+  #[test]
+  fn the_room_doctor_reports_is_what_an_update_takes() {
+    let keychain = "/Users/fixture/Library/Keychains/login.keychain-db";
+    let room = room("service", "account", keychain);
+    let line = |length: usize| {
+      update_line(
+        "service",
+        "account",
+        Path::new(keychain),
+        &vec![b'x'; length],
+      )
+    };
+    assert!(line(room).is_ok());
+    assert!(line(room + 1).is_err());
   }
 
   #[test]

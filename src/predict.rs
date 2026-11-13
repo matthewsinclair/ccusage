@@ -133,6 +133,7 @@ impl Simulated {
       snapshot: Some(snapshot),
       error: None,
       plan: Default::default(),
+      note: None,
     })
   }
 }

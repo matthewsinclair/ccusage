@@ -153,6 +153,13 @@ fn assess(report: &Report, now: i64, cap: f64, model: Option<&str>, lifetime: i6
     fetched_at: report.fetched_at,
     error: report.error.clone(),
   };
+  // An account type with no usage figures: unknown, and its note says why, whether or
+  // not it ever had usage.
+  if let Some(note) = &report.note {
+    account.state = State::Unknown(Cause::NoWeeklyWindow);
+    account.reason = note.clone();
+    return account;
+  }
   let Some(snapshot) = &report.snapshot else {
     account.reason = report
       .error
@@ -370,6 +377,7 @@ mod tests {
       snapshot: Some(snapshot),
       error: None,
       plan: Default::default(),
+      note: None,
     })
   }
 
@@ -726,5 +734,27 @@ mod tests {
         .all(|account| !account.reason.contains(unknown))
     );
     Ok(())
+  }
+
+  // ST0003 AT-04.7: an account type with no usage figures is unknown, with its note as
+  // the reason, though it never had usage to read.
+  #[test]
+  fn a_note_only_report_is_unknown_with_its_note_as_the_reason() {
+    let note = "the usage endpoint gives no figures for this account's plan";
+    let report = Report {
+      name: "free".into(),
+      fetched_at: None,
+      cached: false,
+      snapshot: None,
+      error: None,
+      plan: Default::default(),
+      note: Some(note.into()),
+    };
+    let account = assess(&report, crate::now(), 90.0, None, usage::TTL);
+    assert!(matches!(
+      account.state,
+      State::Unknown(Cause::NoWeeklyWindow)
+    ));
+    assert_eq!(account.reason, note);
   }
 }

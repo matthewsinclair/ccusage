@@ -38,6 +38,13 @@ pub(crate) fn login(document: &Document) -> Option<&Value> {
   document.get(LOGIN).filter(|value| !value.is_null())
 }
 
+/// Whether a stored credential document holds a login. Pure.
+pub(crate) fn holds_login(bytes: &[u8]) -> Result<bool> {
+  let document: Document = serde_json::from_slice(bytes)
+    .map_err(|_| "a Claude credential document is not a JSON object (contents redacted)")?;
+  Ok(login(&document).is_some())
+}
+
 /// `document` holding `login`, with every other key and their order as they were. Pure.
 fn with_login(document: &Document, login: &Value) -> Document {
   let mut document = document.clone();
@@ -372,7 +379,7 @@ pub(crate) fn home(store: &Store, name: &str) -> Result<PathBuf> {
 
 /// What a verb says when an interrupted move stands in its way: the `use` that
 /// finishes it.
-fn unfinished(request: &Move) -> String {
+pub(crate) fn unfinished(request: &Move) -> String {
   format!(
     "an interrupted switch is unfinished; run ccusage use {} to finish it",
     request.to.as_deref().unwrap_or("--none")

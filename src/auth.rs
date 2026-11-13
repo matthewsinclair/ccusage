@@ -196,7 +196,7 @@ const CLIENT_ID: &str = "9d1c250a-e61b-44d9-88ed-5944d1962f5e";
 const RENEW_BEFORE: i64 = 60;
 
 impl Token {
-  fn expiring(&self) -> bool {
+  pub(crate) fn expiring(&self) -> bool {
     self
       .expires_at
       .is_some_and(|expiry| expiry / 1000 <= crate::now() + RENEW_BEFORE)

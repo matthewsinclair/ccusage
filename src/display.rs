@@ -97,13 +97,14 @@ pub enum Next {
 }
 
 /// The next marker for `reports` at `now`, under `cap`. The which rule is asked only
-/// once every account's report is in, with its usage or with an error, and none of that
-/// usage is older than the cache's lifetime, so the marker never stands on partial or
-/// stale data. An account that failed is in, and the rule passes over it.
+/// once every account's report is in, with its usage, an error or a note, and none of
+/// that usage is older than the cache's lifetime, so the marker never stands on partial
+/// or stale data. An account that failed is in, and so is one whose type gives no usage
+/// figures; the rule passes over both.
 pub fn next(reports: &[Report], now: i64, cap: f64) -> Next {
-  let arrived = reports
-    .iter()
-    .all(|report| report.snapshot.is_some() || report.error.is_some());
+  let arrived = reports.iter().all(|report| {
+    report.snapshot.is_some() || report.error.is_some() || report.note.is_some()
+  });
   let fresh = reports
     .iter()
     .filter(|report| report.snapshot.is_some())
@@ -274,7 +275,13 @@ fn lines(
     if let Some(error) = &report.error {
       lines.push(colored(format!("  {}", crate::clean(error)), Color::Yellow));
     }
-    if report.snapshot.is_none() && report.error.is_none() {
+    // An account type with no usage figures says so, in place of the windows.
+    if let Some(note) = &report.note {
+      lines.push(colored(
+        format!("  {}", crate::clean(note)),
+        Color::DarkGrey,
+      ));
+    } else if report.snapshot.is_none() && report.error.is_none() {
       lines.push(colored("  Loading usage…", Color::DarkGrey));
     }
     if verbose {
@@ -598,6 +605,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
         snapshot: None,
         error: None,
         plan: Default::default(),
+        note: None,
       })
       .collect()
   };
@@ -957,6 +965,7 @@ mod tests {
         error: None,
         snapshot: Some(snapshot),
         plan: Default::default(),
+        note: None,
       };
       assert_eq!(
         row_labels(&lines(&[report], None, None, None, 80, 1, false)),
@@ -974,6 +983,7 @@ mod tests {
       cached: false,
       error: None,
       plan: Default::default(),
+      note: None,
       snapshot: Some(serde_json::from_value(serde_json::json!({
         "five_hour":{"utilization":0,"resets_at":null},
         "metadata":{"enabled":false,"note":"A long explanatory message that must wrap and remain completely readable", "zero":0,"absent":null}
@@ -1018,6 +1028,7 @@ mod tests {
       ]}))?),
       error: None,
       plan: Default::default(),
+      note: None,
     })
   }
 
@@ -1056,6 +1067,7 @@ mod tests {
       snapshot: None,
       error: None,
       plan: Default::default(),
+      note: None,
     });
     assert_eq!(next(&waiting, now, cap), Next::Refresh);
     let frame = text(
@@ -1088,6 +1100,36 @@ mod tests {
     assert!(frame.contains("Nothing is eligible to be next"));
     // One account's usage, which passes no marker, shows none.
     assert!(marked(lines(&reports[1..2], None, None, None, 80, now, false))?.is_empty());
+    Ok(())
+  }
+
+  // ST0003 AT-04.8: an account type with no usage figures is in, so the next marker does
+  // not wait on it, and the overview shows its note where the windows would be.
+  #[test]
+  fn a_note_only_report_is_in_and_the_overview_shows_its_note() -> Result<()> {
+    let now = crate::now();
+    let cap = crate::which::DEFAULT_CAP;
+    let note = "the usage endpoint gives no figures for this account's plan";
+    let reports = [
+      weekly_report("soon", now, now, cap / 2.0, 2)?,
+      Report {
+        name: "free".into(),
+        fetched_at: None,
+        cached: false,
+        snapshot: None,
+        error: None,
+        plan: Default::default(),
+        note: Some(note.into()),
+      },
+    ];
+    let next_now = next(&reports, now, cap);
+    assert_eq!(next_now, Next::Account("soon".into()));
+    let frame = text(
+      lines(&reports, None, Some(0), Some(&next_now), 80, now, false),
+      80,
+    )?;
+    assert!(frame.contains(note), "{frame}");
+    assert!(!frame.contains("Loading usage"), "{frame}");
     Ok(())
   }
 

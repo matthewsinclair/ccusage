@@ -14,6 +14,7 @@ pub mod predict;
 #[cfg(test)]
 mod scratch;
 mod seat;
+mod sessions;
 pub mod shared;
 pub mod storage;
 pub mod switch;

@@ -66,6 +66,17 @@ esac
       root.join("bin/launchctl"),
       fs::Permissions::from_mode(0o700),
     )?;
+    // ps and lsof stand-ins: no test lists the machine's real sessions or reads their
+    // environments. ps prints the listing a test writes to ps.out, and none without it.
+    let ps = "#!/bin/sh\n/bin/cat \"$(/usr/bin/dirname \"$0\")/../ps.out\" 2>/dev/null\nexit 0\n";
+    let lsof = "#!/bin/sh\n/bin/echo \"n/work/dir\"\n";
+    for (name, script) in [("ps", ps), ("lsof", lsof)] {
+      fs::write(root.join("bin").join(name), script)?;
+      fs::set_permissions(
+        root.join("bin").join(name),
+        fs::Permissions::from_mode(0o700),
+      )?;
+    }
     Ok(Self { root })
   }
   fn command(&self) -> Command {
@@ -82,6 +93,8 @@ esac
       .env("XDG_CACHE_HOME", self.root.join("cache"))
       .env("PATH", self.root.join("bin"))
       .env("CCUSAGE_LAUNCHCTL", self.root.join("bin/launchctl"))
+      .env("CCUSAGE_PS", self.root.join("bin/ps"))
+      .env("CCUSAGE_LSOF", self.root.join("bin/lsof"))
       .env_remove("CCUSAGE_CONFIG")
       // A launcher exports these into the shell the tests run from, as Molt does for
       // shared mode, and doctor reports the second; a test sets them itself.
@@ -1123,24 +1136,47 @@ fn shared_mode_doctor_warns_of_each_way_sessions_can_drift() -> Result<()> {
   let sandbox = Sandbox::new()?;
   let shared = sandbox.shared()?;
   sandbox.ok(&["use", "work"])?;
+  // A usage fetch verified the seated login, so doctor checks it with no network.
+  sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
   let clean = sandbox.ok(&["doctor"])?;
+  assert!(
+    clean.contains("OK   The shared login is verified as work's"),
+    "{clean}"
+  );
   assert!(clean.contains("OK   Shared mode: sessions use"), "{clean}");
   assert!(
-    clean.contains("holds work's login, which every session reads"),
+    clean.contains("work's login is in the shared config, which every session reads"),
     "{clean}"
   );
   assert!(clean.contains("records work's account"), "{clean}");
-  assert!(!clean.contains("WARN"), "{clean}");
+  assert!(
+    !clean.contains("WARN") && !clean.contains("FAIL"),
+    "{clean}"
+  );
   if cfg!(target_os = "macos") {
     assert!(clean.contains("launchd gives GUI-started Claude Code the shared config's login"));
   }
   fs::write(shared.join(".claude.json"), SHARED_SETTINGS)?;
-  // 0.1.8's layout: no profile is seated, and the shared config keeps a login.
+  // 0.1.8's layout: no profile is seated, the shared config keeps a login of its own,
+  // and work keeps its own.
   fs::remove_file(sandbox.root.join("state/ccusage/seat.json"))?;
+  storage::write_atomic(
+    &sandbox.profile("work").join(".credentials.json"),
+    br#"{"claudeAiOauth":{"accessToken":"TEST_TOKEN_work","expiresAt":9999999999999}}"#,
+  )?;
   fs::create_dir_all(sandbox.root.join("data/ccusage/profiles/engineering03"))?;
   fs::write(
     sandbox.root.join("launchd-CLAUDE_SECURESTORAGE_CONFIG_DIR"),
     "/elsewhere",
+  )?;
+  // ST0003 AT-04.4: a running session launched into another config directory is named
+  // with its pid, start time and directory; one in the shared config is not.
+  fs::write(
+    sandbox.root.join("ps.out"),
+    format!(
+      " 101 Fri Nov 13 08:00:00 2026 claude CLAUDE_CONFIG_DIR={}\n 103 Fri Nov 13 08:00:02 2026 claude CLAUDE_CONFIG_DIR=/elsewhere\n",
+      shared.display()
+    ),
   )?;
   let output = sandbox
     .command()
@@ -1155,15 +1191,40 @@ fn shared_mode_doctor_warns_of_each_way_sessions_can_drift() -> Result<()> {
     "holds a login of its own",
     "engineering03 has no profile in the config",
     "CLAUDE_SECURESTORAGE_CONFIG_DIR=/nowhere is set in this shell",
+    "Claude session 103 (started Fri Nov 13 08:00:02 2026, in /work/dir) runs with CLAUDE_CONFIG_DIR=/elsewhere",
   ] {
     assert!(drift.contains(warning), "{warning}: {drift}");
   }
+  assert!(!drift.contains("Claude session 101"), "{drift}");
   if cfg!(target_os = "macos") {
     assert!(
       drift.contains("launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR=/elsewhere makes GUI-started Claude Code read that directory's login"),
       "{drift}"
     );
   }
+  Ok(())
+}
+
+// ST0003 AT-04.11: doctor fails on a switch left unfinished, and names the use that
+// finishes it.
+#[test]
+fn shared_mode_doctor_fails_on_an_unfinished_switch() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  sandbox.ok(&["use", "work"])?;
+  // A usage fetch verified the seated login, so doctor checks it with no network.
+  sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
+  storage::write_atomic(
+    &sandbox.root.join("state/ccusage/move.json"),
+    br#"{"request":{"from":null,"to":"work"},"step":"parked"}"#,
+  )?;
+  let output = sandbox.command().arg("doctor").output()?;
+  assert!(!output.status.success());
+  let said = String::from_utf8(output.stdout)?;
+  assert!(
+    said.contains("FAIL an interrupted switch is unfinished; run ccusage use work to finish it"),
+    "{said}"
+  );
   Ok(())
 }
 
@@ -1656,5 +1717,25 @@ fn usage_reports_the_plan_each_login_records() -> Result<()> {
     recorded[0]["rate_limit_tier"], "default_claude_max_20x",
     "{recorded}"
   );
+  Ok(())
+}
+
+// ST0003 AT-04.6: an account whose usage holds no windows reports that as a note, not
+// an error, and usage succeeds.
+#[test]
+fn usage_notes_an_account_with_no_limits_and_succeeds() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.setup()?;
+  sandbox.cached("work", ccusage::now(), 0)?;
+  let path = sandbox.root.join("cache/ccusage/work.json");
+  let mut cache: serde_json::Value = serde_json::from_slice(&fs::read(&path)?)?;
+  cache["snapshot"] = serde_json::json!({});
+  storage::write_atomic(&path, &serde_json::to_vec(&cache)?)?;
+  let report: serde_json::Value = serde_json::from_str(&sandbox.ok(&["usage", "work", "--json"])?)?;
+  assert_eq!(
+    report[0]["note"], "the usage endpoint reports no limits for this account",
+    "{report}"
+  );
+  assert!(report[0]["error"].is_null(), "{report}");
   Ok(())
 }
