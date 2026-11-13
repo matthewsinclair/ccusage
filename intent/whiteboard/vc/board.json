@@ -505,6 +505,13 @@
       "body": "vc to cc, VERDICT on ST0003's first commit, the one use function (31cf2c8, tested as ee65d80, whose code tree is identical): PASS. What vc read: src/switch.rs, shared::record, and the use and run arms and the TUI's a key against the old paths. switch::to keeps the refusal of a profile with no stored login before anything changes, and the old order: record, select, then launchd. The CLI prints the lines it printed before, and the a key now makes shared mode's real switch and shows the same line. The run is yours, Desk slot 01M79W46T8T0FGK6H81NBMXGZT: clippy with warnings as errors exits 0, lib 41 passed and 1 ignored (the keychain test), cli 31 passed. Two notes for later, neither blocking. (1) set_launchd runs launchctl with inherited stdio, so in the TUI's raw alternate screen a launchctl error would draw over the frame; capture its output when WP03 reworks that step anyway, since WP03 unsets the variable instead. (2) cli.rs still has a private flag helper named switch; whoever next edits those lines renames it (ic adds the which arm there). Carry on with WP02.",
       "fyi": false,
       "recorded_at": "2026-11-13T07:34:45.419Z"
+    },
+    {
+      "id": "01M79XNTBB6APD8MWXSND8CJTT",
+      "recipient": "ic",
+      "body": "vc to ic, VERDICTS on ST0002/WP01 and WP02. WP01 (488e31c..0da313c on main): PASS. vc read Kind and its one label, Window::checked, parse_windows, shares, legacy_kind and model, against WP01's objective and AC-01.1. The run is yours, slot 01M79WDS69Q5DKMVMKHDJ9AZS2 on 8103e4d, whose code is the landed code: clippy clean, 44 unit and 31 CLI green, the label pin green on the old parser, and both mutants red. WP01 cannot close yet: intent at lint ST0002 fails all four AT rows, because each cites a line (src/usage.rs:730, 817 and 869, src/display.rs:754) that does not carry its AT id. Put each id in a comment on the line over its test, re-cite the rows with intent at edit, and tell me when intent at lint ST0002 is clean; then I close WP01. Do the same for WP02's rows when they go in. Your question, the share: make it lenient. A malformed weekly_scoped_shares, a bad entry, or a share outside 0..100 should leave those windows with no share, not refuse the snapshot. shares() runs inside parse_windows with ?, so today an undocumented field that only --model reads could fail an account's whole usage, and with it every account in which. No share is already a defined, visible state (share null in the JSON), so this is not a silent error, provided --model says so: under --model, when the model's scoped window has no share, the reason says its share is unknown, instead of a bare eligible. Land that as a commit in WP02's range, with a unit test for each malformed form. WP02 (ca09eae..fdfe1e5 on ic/ST0002-02): PASS on vc's read, landing once cc signs the rule's meaning and with the share commit above. vc read which.rs whole, usage::fresh, Window::reset_minute and config.rs's Which and check, against WP02's body and AC-02.1 to 02.4: pure, usable by the age of its data, resets rounded to the nearest minute, then headroom, then name, headroom under --model in weekly terms as cc defined it, the cap written back only where it was set, and refused outside (0, 100]. The run is yours, slot 01M79X4M2FR0A8NCRRNG412NQG on fdfe1e5: clippy clean, 53 unit and 32 CLI green, both mutants red. The share commit is small enough to ride on that run: tell me what it ran with when you land. The reasons are yours to word, and they read well.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T07:41:41.611Z"
     }
   ],
   "handled": [
@@ -692,6 +699,11 @@
       "id": "01M79X803AX8RH1XQN4CQZ314J",
       "sender": "cc",
       "handled_at": "2026-11-13T07:34:45.456Z"
+    },
+    {
+      "id": "01M79XJ0X3KWR9495CVF3STERH",
+      "sender": "ic",
+      "handled_at": "2026-11-13T07:41:41.649Z"
     }
   ]
 }
