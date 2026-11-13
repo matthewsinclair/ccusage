@@ -1,10 +1,11 @@
 //! The predict verb's two faces of one `Projection`: the text hv reads, and the JSON the
 //! Herdr panel reads, versioned as which's is. Both are pure.
 
-use super::{Projected, Projection, hours};
+use super::{Projected, Projection, described, hours};
 use crate::{
   Result,
   display::{self, stamp_unix, tenth, whole},
+  usage::Plan,
 };
 use serde::Serialize;
 
@@ -13,8 +14,8 @@ use serde::Serialize;
 pub const VERSION: u32 = 1;
 
 /// The text: what the rate rests on, then each account's percent now, at its reset and
-/// unused there, then the total; or, with too little history, a line saying so. The
-/// accounts left out follow, each with why.
+/// unused there, then the total and the plan it is counted on; or, with too little
+/// history, a line saying so. The accounts left out follow, each with why.
 pub fn text(projection: &Projection, now: i64) -> String {
   let rate = &projection.rate;
   let history = format!(
@@ -38,8 +39,13 @@ pub fn text(projection: &Projection, now: i64) -> String {
           whole(account.unused)
         )
       }));
+      let plan = projection
+        .plan
+        .as_ref()
+        .map(|plan| format!(" on {}", described(plan)))
+        .unwrap_or_default();
       lines.push(format!(
-        "Projected unused at the current resets: {}% of one weekly allowance, assuming every account is on one plan.",
+        "Projected unused at the current resets: {}% of one weekly allowance{plan}.",
         whole(unused)
       ));
     }
@@ -56,14 +62,16 @@ pub fn text(projection: &Projection, now: i64) -> String {
   lines.join("\n")
 }
 
-/// The JSON, version 1: the rate and what it rests on, each account's projection, the
-/// total unused, and the accounts left out. With too little history the rate's
-/// percent_per_hour and the total are null, and no account is projected.
+/// The JSON, version 1: the plan counted, the rate and what it rests on, each account's
+/// projection, the total unused, and the accounts left out. With too little history the
+/// rate's percent_per_hour and the total are null, and no account is projected; the plan
+/// is null only when there is no account at all.
 pub fn json(projection: &Projection, now: i64, cap: f64) -> Result<String> {
   let document = Document {
     version: VERSION,
     now: stamp_unix(now)?,
     cap,
+    plan: projection.plan.as_ref(),
     rate: Rate {
       percent_per_hour: projection.rate.per_hour.map(tenth),
       samples: projection.rate.samples,
@@ -99,6 +107,7 @@ struct Document<'a> {
   version: u32,
   now: String,
   cap: f64,
+  plan: Option<&'a Plan>,
   rate: Rate,
   accounts: Vec<Entry<'a>>,
   unused: Option<f64>,

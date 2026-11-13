@@ -1526,6 +1526,20 @@ fn predict_projects_each_accounts_unused_share_from_the_history_and_says_when_it
 -> Result<()> {
   let sandbox = Sandbox::new()?;
   sandbox.which_accounts()?;
+  // work and personal are on one plan and spare on another, as their logins record it.
+  let (max, pro) = (
+    ("max", "default_claude_max_20x"),
+    ("pro", "default_claude_ai"),
+  );
+  for (name, (subscription_type, rate_limit_tier)) in
+    [("work", max), ("personal", max), ("spare", pro)]
+  {
+    let path = sandbox.profile(name).join(".credentials.json");
+    let mut login: serde_json::Value = serde_json::from_slice(&fs::read(&path)?)?;
+    login["claudeAiOauth"]["subscriptionType"] = subscription_type.into();
+    login["claudeAiOauth"]["rateLimitTier"] = rate_limit_tier.into();
+    storage::write_atomic(&path, login.to_string().as_bytes())?;
+  }
   // With no history yet there is too little, which is said plainly and is no failure.
   let text = sandbox.ok(&["predict"])?;
   assert!(text.starts_with("Too little history to project: "));
@@ -1551,7 +1565,15 @@ fn predict_projects_each_accounts_unused_share_from_the_history_and_says_when_it
     history.len(),
     ccusage::display::duration(DAY)
   )));
-  assert!(text.contains("assuming every account is on one plan"));
+  // The total is counted on the plan most accounts record, and spare's is left out.
+  assert!(text.contains(&format!(
+    "% of one weekly allowance on plan {}, tier {}.\n",
+    max.0, max.1
+  )));
+  assert!(text.contains(&format!(
+    "\nspare: left out, another plan's allowance (plan {}, tier {})\n",
+    pro.0, pro.1
+  )));
   assert!(text.contains("\nbroken: left out, "));
   let json: serde_json::Value = serde_json::from_str(&sandbox.ok(&["predict", "--json"])?)?;
   assert_eq!(json["version"], ccusage::predict::view::VERSION);
@@ -1566,7 +1588,11 @@ fn predict_projects_each_accounts_unused_share_from_the_history_and_says_when_it
     .iter()
     .map(|account| account["name"].clone())
     .collect();
-  assert_eq!(names, ["work", "personal", "spare"]);
+  assert_eq!(names, ["work", "personal"]);
+  assert_eq!(
+    json["plan"],
+    serde_json::json!({"subscription_type": max.0, "rate_limit_tier": max.1})
+  );
   let mut unused = 0.0;
   for account in accounts {
     let (projected, left) = (
@@ -1586,7 +1612,13 @@ fn predict_projects_each_accounts_unused_share_from_the_history_and_says_when_it
   }
   let total = json["unused"].as_f64().ok_or("a total")?;
   assert!((total - unused).abs() <= 0.1 * accounts.len() as f64);
-  assert_eq!(json["left_out"][0]["name"], "broken");
+  let left_out: Vec<_> = json["left_out"]
+    .as_array()
+    .ok_or("a left_out array")?
+    .iter()
+    .map(|account| account["name"].clone())
+    .collect();
+  assert_eq!(left_out, ["spare", "broken"]);
   Ok(())
 }
 

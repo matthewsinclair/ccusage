@@ -1,15 +1,17 @@
 //! Predict: from the usage history, hv's burn rate in percent of one weekly allowance
 //! an hour; and from that rate, following the which rule from now, the percent of each
-//! account's weekly allowance projected to go unused at its current reset. It is pure:
-//! the history, the reports, the time now and the cap are its arguments. It is
-//! arithmetic on the samples and nothing else, so no model inference is made.
+//! account's weekly allowance projected to go unused at its current reset. A percent of
+//! one plan's allowance is not a percent of another's, so it counts one plan's accounts.
+//! It is pure: the history, the reports, the time now, the cap and the active account
+//! are its arguments. It is arithmetic on the samples and nothing else, so no model
+//! inference is made.
 
 pub mod view;
 
 use crate::{
   Result,
   history::Sample,
-  usage::{self, Kind, Report, Snapshot, WEEK},
+  usage::{self, Kind, Plan, Report, Snapshot, WEEK},
   which,
 };
 use std::collections::BTreeMap;
@@ -89,18 +91,23 @@ pub struct Projected {
 /// What predict reports.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Projection {
+  /// The plan whose accounts are counted, as their logins record it; none only when
+  /// there is no account at all.
+  pub plan: Option<Plan>,
   pub rate: Rate,
-  /// Each account the rule can use now, in the order it ranks them now, projected; none
-  /// with too little history.
+  /// Each account on that plan that the rule can use now, in the order it ranks them
+  /// now, projected; none with too little history.
   pub accounts: Vec<Projected>,
-  /// The accounts left out of the arithmetic, each with why: those the rule cannot use
-  /// now, and so any whose usage gives no weekly window, as a free plan's does.
+  /// The accounts left out of the arithmetic, each with why: those on another plan, and
+  /// those the rule cannot use now, so any whose usage gives no weekly window, as a free
+  /// plan's does.
   pub left_out: Vec<(String, String)>,
 }
 
 impl Projection {
   /// The unused percents summed, in percent of one weekly allowance, which means the
-  /// same on every account since they are on one plan; none with too little history.
+  /// same on every account counted since they are on one plan; none with too little
+  /// history.
   pub fn unused(&self) -> Option<f64> {
     self
       .rate
@@ -138,22 +145,113 @@ impl Simulated {
   }
 }
 
+/// A plan as predict compares it: its two values, whole, and never parsed.
+fn key(plan: &Plan) -> (Option<&str>, Option<&str>) {
+  (
+    plan.subscription_type.as_deref(),
+    plan.rate_limit_tier.as_deref(),
+  )
+}
+
+/// A plan in words: its two values as the login records them, each unrecorded when the
+/// login records none.
+pub fn described(plan: &Plan) -> String {
+  format!(
+    "plan {}, tier {}",
+    plan.subscription_type.as_deref().unwrap_or("unrecorded"),
+    plan.rate_limit_tier.as_deref().unwrap_or("unrecorded")
+  )
+}
+
+/// The plan whose accounts predict counts, from `plans`, those of the accounts the rule
+/// can use: the one most of them record, compared whole. A tie goes to `active`, the
+/// active account's plan, when it is one of those tied, else to the lexically first, a
+/// value no login records sorting first.
+fn plan_counted<'a>(
+  plans: impl Iterator<Item = &'a Plan>,
+  active: Option<&'a Plan>,
+) -> Option<&'a Plan> {
+  let mut counts: BTreeMap<(Option<&str>, Option<&str>), (usize, &Plan)> = BTreeMap::new();
+  for plan in plans {
+    counts.entry(key(plan)).or_insert((0, plan)).0 += 1;
+  }
+  let most = counts.values().map(|(count, _)| *count).max()?;
+  match active {
+    Some(active)
+      if counts
+        .get(&key(active))
+        .is_some_and(|(count, _)| *count == most) =>
+    {
+      Some(active)
+    }
+    // The map is in lexical order, so the first plan tied is the lexically first.
+    _ => counts
+      .values()
+      .find(|(count, _)| *count == most)
+      .map(|(_, plan)| *plan),
+  }
+}
+
+/// The plan `name`'s login records, as its report gives it.
+fn plan_of<'a>(reports: &'a [Report], name: &str) -> Option<&'a Plan> {
+  reports
+    .iter()
+    .find(|report| report.name == name)
+    .map(|report| &report.plan)
+}
+
+/// When `account`'s weekly window resets, when the rule read one.
+fn weekly_reset(account: &which::Account) -> Option<OffsetDateTime> {
+  account.weekly.as_ref().and_then(|weekly| weekly.resets_at)
+}
+
 /// Projects each account's weekly percent at its current reset, following the which
-/// rule from `now` at the history's burn rate. Event by event up to the last of the
-/// current resets: at each step `which::choose` itself picks the account, which climbs at
-/// the rate until it reaches `cap` or a reset comes, and a window that resets starts
-/// again at 0 with its reset a week on.
-pub fn project(samples: &[Sample], reports: &[Report], now: i64, cap: f64) -> Result<Projection> {
-  let rate = rate(samples);
+/// rule from `now` at the history's burn rate, for the accounts of one plan: the one most
+/// of the accounts the rule can use record, else most of all the accounts, a tie going to
+/// `active`'s (`plan_counted`), so that every percent is of the same allowance. The rate
+/// counts that plan's accounts' samples alone, and a usable account on another plan is
+/// left out. Event by event up to the last of the current resets: at each step
+/// `which::choose` itself picks the account, which climbs at the rate until it reaches
+/// `cap` or a reset comes, and a window that resets starts again at 0 with its reset a
+/// week on.
+pub fn project(
+  samples: &[Sample],
+  reports: &[Report],
+  now: i64,
+  cap: f64,
+  active: Option<&str>,
+) -> Result<Projection> {
   let choice = which::choose(reports, now, cap, None, usage::TTL);
+  let active_plan = active.and_then(|name| plan_of(reports, name));
+  let plan = plan_counted(
+    choice
+      .accounts
+      .iter()
+      .filter(|account| account.rank.is_some() && weekly_reset(account).is_some())
+      .filter_map(|account| plan_of(reports, &account.name)),
+    active_plan,
+  )
+  // With no account the rule can use, the plan is chosen the same way from every account,
+  // so the rate is still one plan's percent.
+  .or_else(|| plan_counted(reports.iter().map(|report| &report.plan), active_plan))
+  .cloned();
+  // With no plan, as when there is no account at all, no sample counts.
+  let on_plan = |name: &str| {
+    plan
+      .as_ref()
+      .is_some_and(|counted| plan_of(reports, name) == Some(counted))
+  };
+  let counted: Vec<Sample> = samples
+    .iter()
+    .filter(|sample| on_plan(sample.account.as_str()))
+    .cloned()
+    .collect();
+  let rate = rate(&counted);
   let mut left_out = Vec::new();
   let mut accounts = Vec::new();
   for account in &choice.accounts {
-    match (
-      account.rank,
-      account.weekly.as_ref().and_then(|weekly| weekly.resets_at),
-    ) {
-      (Some(_), Some(reset)) => accounts.push(Simulated {
+    match (account.rank, weekly_reset(account)) {
+      (Some(_), Some(reset)) if on_plan(account.name.as_str()) => accounts.push(Simulated {
         name: account.name.clone(),
         percent_now: account
           .weekly
@@ -167,6 +265,13 @@ pub fn project(samples: &[Sample], reports: &[Report], now: i64, cap: f64) -> Re
         resets_at: reset.unix_timestamp(),
         at_reset: None,
       }),
+      (Some(_), Some(_)) => {
+        let other = plan_of(reports, &account.name).cloned().unwrap_or_default();
+        left_out.push((
+          account.name.clone(),
+          format!("another plan's allowance ({})", described(&other)),
+        ));
+      }
       (Some(_), None) => {
         left_out.push((account.name.clone(), "no weekly reset to project to".into()))
       }
@@ -175,6 +280,7 @@ pub fn project(samples: &[Sample], reports: &[Report], now: i64, cap: f64) -> Re
   }
   let Some(per_hour) = rate.per_hour else {
     return Ok(Projection {
+      plan,
       rate,
       accounts: Vec::new(),
       left_out,
@@ -219,6 +325,7 @@ pub fn project(samples: &[Sample], reports: &[Report], now: i64, cap: f64) -> Re
     }
   }
   Ok(Projection {
+    plan,
     rate,
     accounts: accounts
       .into_iter()
@@ -347,7 +454,7 @@ mod tests {
       report("soon", now, soon, soon_reset)?,
       report("later", now, later, later_reset)?,
     ];
-    let projection = project(&history, &reports, now, cap)?;
+    let projection = project(&history, &reports, now, cap, None)?;
     assert_eq!(projection.rate.per_hour, Some(per_hour));
     let soon_at_reset = (soon + per_hour * hours(soon_reset - now)).min(cap);
     let later_at_reset = (later + per_hour * hours(later_reset - soon_reset)).min(cap);
@@ -378,7 +485,7 @@ mod tests {
       report("usable", now, 10.0, now + WEEK)?,
       Report::failed("broken", "usage endpoint returned HTTP 500"),
     ];
-    let projection = project(&[], &reports, now, which::DEFAULT_CAP)?;
+    let projection = project(&[], &reports, now, which::DEFAULT_CAP, None)?;
     assert_eq!(projection.rate.per_hour, None);
     assert!(projection.accounts.is_empty());
     assert_eq!(projection.unused(), None);
@@ -389,6 +496,86 @@ mod tests {
         "usage endpoint returned HTTP 500".to_owned()
       )]
     );
+    Ok(())
+  }
+
+  /// A plan as a login records it.
+  fn plan(subscription_type: &str, rate_limit_tier: &str) -> Plan {
+    Plan {
+      subscription_type: Some(subscription_type.into()),
+      rate_limit_tier: Some(rate_limit_tier.into()),
+    }
+  }
+
+  // ST0002 AT-05.4: predict counts one plan, the one most of the usable accounts record.
+  #[test]
+  fn the_projection_counts_the_plan_most_usable_accounts_record_and_leaves_out_the_rest()
+  -> Result<()> {
+    let now = at("2026-11-13T05:00:00Z")?;
+    let cap = which::DEFAULT_CAP;
+    let (max, pro) = (
+      plan("max", "default_claude_max_20x"),
+      plan("pro", "default_claude_ai"),
+    );
+    // A fresh report on `plan` whose weekly window is unused and resets `after` now.
+    let on = |name: &str, after: i64, plan: &Plan| -> Result<Report> {
+      let mut planned = report(name, now, 0.0, now + after)?;
+      planned.plan = plan.clone();
+      Ok(planned)
+    };
+    let reports = [
+      on("a", 10 * HOUR, &max)?,
+      on("b", 20 * HOUR, &max)?,
+      on("c", 30 * HOUR, &pro)?,
+    ];
+    // A day's rise on a max account, and a larger one on the pro account, which is a
+    // percent of another allowance and so no part of the rate.
+    let (max_risen, pro_risen) = (24.0, 48.0);
+    let history = [
+      sample("a", 0.0, now + WEEK, now - MIN_SPAN)?,
+      sample("a", max_risen, now + WEEK, now)?,
+      sample("c", 0.0, now + WEEK, now - MIN_SPAN)?,
+      sample("c", pro_risen, now + WEEK, now)?,
+    ];
+    let projection = project(&history, &reports, now, cap, None)?;
+    assert_eq!(projection.plan.as_ref(), Some(&max));
+    assert_eq!(projection.rate.per_hour, Some(max_risen / hours(MIN_SPAN)));
+    let names: Vec<_> = projection
+      .accounts
+      .iter()
+      .map(|account| account.name.as_str())
+      .collect();
+    assert_eq!(names, ["a", "b"]);
+    assert_eq!(
+      projection.left_out,
+      [(
+        "c".to_owned(),
+        format!("another plan's allowance ({})", described(&pro))
+      )]
+    );
+    // One account on each plan: the tie goes to the active account's plan, else to the
+    // lexically first.
+    let tied = [reports[0].clone(), reports[2].clone()];
+    assert_eq!(
+      project(&history, &tied, now, cap, Some("c"))?.plan.as_ref(),
+      Some(&pro)
+    );
+    assert_eq!(
+      project(&history, &tied, now, cap, None)?.plan.as_ref(),
+      Some(&max)
+    );
+    // With no account the rule can use, the plan is chosen the same way from them all, and
+    // the rate is still that plan's alone.
+    let failed = |name: &str, plan: &Plan| -> Report {
+      let mut planned = Report::failed(name, "usage endpoint returned HTTP 500");
+      planned.plan = plan.clone();
+      planned
+    };
+    let unusable = [failed("a", &max), failed("c", &pro), failed("d", &pro)];
+    let projection = project(&history, &unusable, now, cap, None)?;
+    assert_eq!(projection.plan.as_ref(), Some(&pro));
+    assert_eq!(projection.rate.per_hour, Some(pro_risen / hours(MIN_SPAN)));
+    assert!(projection.accounts.is_empty());
     Ok(())
   }
 }

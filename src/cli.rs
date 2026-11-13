@@ -473,7 +473,9 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       let reports = reports(&store, &names, false)?;
       let samples = crate::history::samples(&store.state)?;
       let (now, cap) = (crate::now(), store.config.cap());
-      let projection = crate::predict::project(&samples, &reports, now, cap)?;
+      // The active account's plan settles a tie between plans.
+      let active = store.active()?;
+      let projection = crate::predict::project(&samples, &reports, now, cap, active.as_deref())?;
       // Too little history is said in the report, and is no failure.
       if json {
         println!("{}", crate::predict::view::json(&projection, now, cap)?);
