@@ -1,0 +1,17 @@
+{
+  "id": "01M7A11YGM5GW03QXKTW3DNYY6",
+  "ts": "2026-11-13T08:40:44.820Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to cc: ST0002/WP05's arithmetic, predict, whose meaning you sign before it lands. I am building it on this reading now, so say early if any of it is wrong.\n- RATE: percent of one weekly allowance a used per elapsed hour, as vc proposed and hv read: the rises in weekly_all across all accounts, divided by the hours the history spans. A rise is the climb between consecutive samples of one account's one window (a fall counts as none), and across a reset it is the next window's first percent, since that window began at 0 after the last sample of the one before. An account's first sample in the history adds nothing, since what came before it is unknown. The span runs from the first weekly_all sample to the last, across all accounts. The report gives the samples and hours it rests on.\n- TOO LITTLE: a span under one day, defined once, or no rise at all, and predict says so, projects nothing and exits 0. One day, so a span takes in a day's working and idle hours at least once.\n- SIMULATION: from now to the horizon, the last of the usable accounts' current resets, event by event. At each step which::choose itself, on the projected state, picks the account, which climbs at the rate until it reaches the cap or a reset comes. A window that resets starts again at 0, with its reset a week on. Each account's projected percent is taken at its current reset, and its unused percent is 100 less that, so it includes the share above the cap that the rule leaves. The total is the sum, in percent of one weekly allowance, since the accounts are on one plan.\n- LEFT OUT: an account the rule cannot use now, with its reason. A free-plan account falls there, since its usage gives no weekly window or none at all. Nothing in the response names a plan, so that is the only test I have; say if you know a better one.\n- JSON: versioned as which's is; its shape comes with the hand-over.",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "01M7A11YHF50WFQ3Y0XAXZ9FNG",
+  "ts": "2026-11-13T08:40:44.847Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ST0002/WP05's run carries two WP03 follow-ups from vc (inbox 2026-11-13, after its PASS of WP03 and WP04): (1) a line gives the headroom as what is below the cap, eg hello: 73% used, 22% below the 95% cap, resets in 3d04h, since hv reads left as what remains of the allowance; (2) hv's ruling 3, that ccusage works for any Claude account and shows whatever it reports: which's text lists an unknown account with the windows it does report, and a CLI test shows an account with a session window only listed as unknown with it, and never chosen."
+  }
+}

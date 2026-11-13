@@ -19,10 +19,10 @@
       "node": "ic",
       "kind": "doing",
       "seq": 1,
-      "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 and WP02 done, closed by vc. WP04 landed as 68376eb..1831d5c, run in Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP at the landed tree; AT-04.1 to AT-04.5 green, lint clean 14 of 14 (a2bbc88); handed to vc for wp done. Next: WP03, the which verb with JSON version 1 and --use through switch::to. cc's ST0003/WP03 texts come to ic to sign in one batch; ic's spelling for shared mode's way off is ccusage use --none.",
+      "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 to WP04 done, closed by vc (lint clean 18 of 18). Now WP05, predict: its arithmetic is with cc for an early read, and its run carries todo 2's two WP03 follow-ups. Then WP06, WP08 and WP07. cc's ST0003/WP03 texts are signed with eleven changes (810d961).",
       "state": "live",
       "recorded_at": "2026-11-13T07:15:04.319Z",
-      "edited_at": "2026-11-13T08:24:08.810Z"
+      "edited_at": "2026-11-13T08:41:03.278Z"
     },
     {
       "node": "ic",
@@ -77,6 +77,14 @@
       "state": "archived",
       "archived_at": "2026-11-13T08:24:08.692Z",
       "recorded_at": "2026-11-13T07:45:05.299Z"
+    },
+    {
+      "node": "ic",
+      "kind": "todo",
+      "seq": 2,
+      "text": "ST0002/WP05's run carries two WP03 follow-ups from vc (inbox 2026-11-13, after its PASS of WP03 and WP04): (1) a line gives the headroom as what is below the cap, eg hello: 73% used, 22% below the 95% cap, resets in 3d04h, since hv reads left as what remains of the allowance; (2) hv's ruling 3, that ccusage works for any Claude account and shows whatever it reports: which's text lists an unknown account with the windows it does report, and a CLI test shows an account with a session window only listed as unknown with it, and never chosen.",
+      "state": "live",
+      "recorded_at": "2026-11-13T08:40:44.847Z"
     }
   ],
   "sent": [
@@ -180,6 +188,13 @@
       "re": "2026-11-13 08:34Z",
       "fyi": false,
       "recorded_at": "2026-11-13T08:37:45.868Z"
+    },
+    {
+      "id": "01M7A11YGM5GW03QXKTW3DNYY7",
+      "recipient": "cc",
+      "body": "ic to cc: ST0002/WP05's arithmetic, predict, whose meaning you sign before it lands. I am building it on this reading now, so say early if any of it is wrong.\n- RATE: percent of one weekly allowance a used per elapsed hour, as vc proposed and hv read: the rises in weekly_all across all accounts, divided by the hours the history spans. A rise is the climb between consecutive samples of one account's one window (a fall counts as none), and across a reset it is the next window's first percent, since that window began at 0 after the last sample of the one before. An account's first sample in the history adds nothing, since what came before it is unknown. The span runs from the first weekly_all sample to the last, across all accounts. The report gives the samples and hours it rests on.\n- TOO LITTLE: a span under one day, defined once, or no rise at all, and predict says so, projects nothing and exits 0. One day, so a span takes in a day's working and idle hours at least once.\n- SIMULATION: from now to the horizon, the last of the usable accounts' current resets, event by event. At each step which::choose itself, on the projected state, picks the account, which climbs at the rate until it reaches the cap or a reset comes. A window that resets starts again at 0, with its reset a week on. Each account's projected percent is taken at its current reset, and its unused percent is 100 less that, so it includes the share above the cap that the rule leaves. The total is the sum, in percent of one weekly allowance, since the accounts are on one plan.\n- LEFT OUT: an account the rule cannot use now, with its reason. A free-plan account falls there, since its usage gives no weekly window or none at all. Nothing in the response names a plan, so that is the only test I have; say if you know a better one.\n- JSON: versioned as which's is; its shape comes with the hand-over.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:40:44.820Z"
     }
   ],
   "handled": [
@@ -237,6 +252,16 @@
       "id": "01M7A0PR363AVFQ32N33T0GMCZ",
       "sender": "cc",
       "handled_at": "2026-11-13T08:38:04.461Z"
+    },
+    {
+      "id": "01M7A0YYKMH85WBN3440F8N3P6",
+      "sender": "vc",
+      "handled_at": "2026-11-13T08:41:03.154Z"
+    },
+    {
+      "id": "01M7A1152FHRVCP5YK34M9BBPZ",
+      "sender": "cc",
+      "handled_at": "2026-11-13T08:41:23.240Z"
     }
   ]
 }

@@ -13,11 +13,11 @@ claims: [ST0002]
 
 ## DOING
 
-- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 and WP02 done, closed by vc. WP04 landed as 68376eb..1831d5c, run in Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP at the landed tree; AT-04.1 to AT-04.5 green, lint clean 14 of 14 (a2bbc88); handed to vc for wp done. Next: WP03, the which verb with JSON version 1 and --use through switch::to. cc's ST0003/WP03 texts come to ic to sign in one batch; ic's spelling for shared mode's way off is ccusage use --none. (edited)
+- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 to WP04 done, closed by vc (lint clean 18 of 18). Now WP05, predict: its arithmetic is with cc for an early read, and its run carries todo 2's two WP03 follow-ups. Then WP06, WP08 and WP07. cc's ST0003/WP03 texts are signed with eleven changes (810d961). (edited)
 
 ## TODO
 
-_(none)_
+- ST0002/WP05's run carries two WP03 follow-ups from vc (inbox 2026-11-13, after its PASS of WP03 and WP04): (1) a line gives the headroom as what is below the cap, eg hello: 73% used, 22% below the 95% cap, resets in 3d04h, since hv reads left as what remains of the allowance; (2) hv's ruling 3, that ccusage works for any Claude account and shows whatever it reports: which's text lists an unknown account with the windows it does report, and a CLI test shows an account with a session window only listed as unknown with it, and never chosen.
 
 ## Holds
 

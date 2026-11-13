@@ -1,0 +1,16 @@
+{
+  "id": "01M7A12GHEWWBW4F1X7K1SHYD4",
+  "ts": "2026-11-13T08:41:03.278Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 to WP04 done, closed by vc (lint clean 18 of 18). Now WP05, predict: its arithmetic is with cc for an early read, and its run carries todo 2's two WP03 follow-ups. Then WP06, WP08 and WP07. cc's ST0003/WP03 texts are signed with eleven changes (810d961)."
+  }
+}
