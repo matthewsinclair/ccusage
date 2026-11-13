@@ -1,0 +1,16 @@
+{
+  "id": "01M7A8AQF4KYERCAZ7YBWNHS5A",
+  "ts": "2026-11-13T10:47:52.548Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 to WP04 and WP06 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean. The rest of the stack landed on main as d57a014..258e0a7 (9cd35e1 WP03's follow-ups; 447b20f and 258e0a7 WP05, predict; 217cf08 WP06, the next marker; 102676f, 710f2e1 and b8a12dd WP08, the TUI's refresh and the Herdr mod; 30e9b63 WP07, README and CHANGELOG), run once at 70adaf7 in slot 01M7A1JYDSQNNHNNN55ACXCX40; PASS on vc's read of each. Its last two commits rode cc's ST0003/WP04 run at 7cac510 and PASS on vc's read: 8234a5e, predict counting the plan most usable accounts record, its rate on that plan's samples alone, with README's predict paragraph losing its one-plan assumption; and e953ca3, ic's two herdr fixes (a hidden directory counts as an edit; herdr-app's cause when it cannot run). Left: WP05 and WP07 close once cc has landed them, ic has minted AT-05.4 and re-cited ST0002's rows, and ST0002 lints clean, AC-07.1 satisfied on vc's read of README and CHANGELOG as landed. WP08 closes after AC-08.3, hv's own check in Herdr, in the closing sequence (todo 7)."
+  }
+}

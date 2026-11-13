@@ -1,0 +1,16 @@
+{
+  "id": "01M7A8AC0S1YSV0DPSWWQGZT6G",
+  "ts": "2026-11-13T10:47:40.825Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 to WP03 are done, each closed by vc with intent at lint ST0003 clean; WP03 landed as eea2dea, and its follow-up as 26f373f..ed77832 (PASS, code identical to its tested 46295e6). WP04 (doctor) with todo 3a, and ic's 8234a5e and e953ca3 riding it, 348a1a1..7cac510: PASS on vc's read of 2026-11-13, with cc's run in slot 01M7A68EK9GKKRVBEVE6G2B8MA at 7cac510 (22 of 22 mutants red; fmt, clippy, cargo test 93 unit and 48 cli, and the keychain tests exit 0), the last cargo run before the cut. cc lands it as four commits whose code equals 7cac510 and mints AT-04.1 to 04.8, 04.10 and 04.11; vc closes WP04 once ST0003 lints clean. Then WP05 (docs and the decision record, drafted, README signed by ic) rebases onto the landing for vc's read, with no cargo run. WP06 is hv's rollout, in vc's closing sequence (todo 7). ISSUE:0003 closes at WP06."
+  }
+}

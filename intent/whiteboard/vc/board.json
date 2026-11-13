@@ -120,10 +120,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 3,
-      "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 to WP04 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean. The rest of the stack landed on main as d57a014..258e0a7 (9cd35e1 WP03's follow-ups; 447b20f and 258e0a7 WP05, predict; 217cf08 WP06, the next marker; 102676f, 710f2e1 and b8a12dd WP08, the TUI's refresh and the Herdr mod; 30e9b63 WP07, README and CHANGELOG), run once at 70adaf7 in slot 01M7A1JYDSQNNHNNN55ACXCX40, whose code equals main's; PASS on vc's read of each, given 2026-11-13. WP06 is closed by vc (ic re-cited the 19 rows cc's landing moved at 7dfbd34, lint 26 of 26). Left: WP05 and WP07 close once todo 3 lands (predict's grouping by plan tier, with README's predict paragraph losing its one-plan assumption), riding cc's ST0003/WP04 run along with ic's two herdr fixes (the cause herdr-app check gives when it cannot run, and herdrs_own narrowed so that a hidden directory is never deleted without --force). WP08 closes after AC-08.3, hv's own check in Herdr, in the closing sequence (todo 7).",
+      "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 to WP04 and WP06 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean. The rest of the stack landed on main as d57a014..258e0a7 (9cd35e1 WP03's follow-ups; 447b20f and 258e0a7 WP05, predict; 217cf08 WP06, the next marker; 102676f, 710f2e1 and b8a12dd WP08, the TUI's refresh and the Herdr mod; 30e9b63 WP07, README and CHANGELOG), run once at 70adaf7 in slot 01M7A1JYDSQNNHNNN55ACXCX40; PASS on vc's read of each. Its last two commits rode cc's ST0003/WP04 run at 7cac510 and PASS on vc's read: 8234a5e, predict counting the plan most usable accounts record, its rate on that plan's samples alone, with README's predict paragraph losing its one-plan assumption; and e953ca3, ic's two herdr fixes (a hidden directory counts as an edit; herdr-app's cause when it cannot run). Left: WP05 and WP07 close once cc has landed them, ic has minted AT-05.4 and re-cited ST0002's rows, and ST0002 lints clean, AC-07.1 satisfied on vc's read of README and CHANGELOG as landed. WP08 closes after AC-08.3, hv's own check in Herdr, in the closing sequence (todo 7).",
       "state": "live",
       "recorded_at": "2026-11-13T05:33:19.199Z",
-      "edited_at": "2026-11-13T09:41:16.480Z"
+      "edited_at": "2026-11-13T10:47:52.548Z"
     },
     {
       "node": "vc",
@@ -147,10 +147,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 4,
-      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 to WP03 are done, each closed by vc with intent at lint ST0003 clean; WP03 landed as eea2dea. WP03's follow-up, PASS on vc's read with cc's run at 46295e6 in slot 01M7A1SFMQY40KBJ95VXWDZBT8, landed as 26f373f..ed77832 (2019b93, vc's notes 1 to 3; ed77832, each report's plan for predict), its code identical to 46295e6, with 946daaf carrying AT-04.9's id in a comment. AC-04.3 (a usage report says what its account type gives, hv's decision 3) is in WP04 on vc's word. Next: WP04 (doctor, todo 3a's notes, cc's desk-check fixes, and AT-04.10 and AT-04.11 for AC-04.1's two gaps), rebased onto main, with ic's display lines signed, in one Desk slot that also carries ic's tier grouping and herdr fixes; then WP05 (docs and the decision record, no cargo run). WP06 is hv's rollout, in vc's closing sequence (todo 7). ISSUE:0003 closes at WP06.",
+      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 to WP03 are done, each closed by vc with intent at lint ST0003 clean; WP03 landed as eea2dea, and its follow-up as 26f373f..ed77832 (PASS, code identical to its tested 46295e6). WP04 (doctor) with todo 3a, and ic's 8234a5e and e953ca3 riding it, 348a1a1..7cac510: PASS on vc's read of 2026-11-13, with cc's run in slot 01M7A68EK9GKKRVBEVE6G2B8MA at 7cac510 (22 of 22 mutants red; fmt, clippy, cargo test 93 unit and 48 cli, and the keychain tests exit 0), the last cargo run before the cut. cc lands it as four commits whose code equals 7cac510 and mints AT-04.1 to 04.8, 04.10 and 04.11; vc closes WP04 once ST0003 lints clean. Then WP05 (docs and the decision record, drafted, README signed by ic) rebases onto the landing for vc's read, with no cargo run. WP06 is hv's rollout, in vc's closing sequence (todo 7). ISSUE:0003 closes at WP06.",
       "state": "live",
       "recorded_at": "2026-11-13T06:29:42.144Z",
-      "edited_at": "2026-11-13T09:40:05.641Z"
+      "edited_at": "2026-11-13T10:47:40.825Z"
     },
     {
       "node": "vc",
@@ -169,6 +169,14 @@
       "state": "live",
       "recorded_at": "2026-11-13T07:27:34.704Z",
       "edited_at": "2026-11-13T08:12:56.425Z"
+    },
+    {
+      "node": "vc",
+      "kind": "todo",
+      "seq": 8,
+      "text": "After 0.1.9's cut, cc's two nits from vc's WP04 verdict (2026-11-13), neither worth a run before it: (1) sessions::parse takes the first NAME=value among the arguments and the environment together; ps -E prints the environment after the arguments, so taking the last match prefers the environment over an argument that looks like one (no running session repeated either variable at vc's check). (2) usage::verified_token_at, with neither an email nor an account record to check a login against, renews before refusing Unverified; it could refuse before the renewal.",
+      "state": "live",
+      "recorded_at": "2026-11-13T10:47:40.926Z"
     }
   ],
   "sent": [
@@ -720,6 +728,14 @@
       "re": "2026-11-13 09:34Z#1",
       "fyi": false,
       "recorded_at": "2026-11-13T09:39:27.113Z"
+    },
+    {
+      "id": "01M7A89X0S07RF4KQ5T65REVDJ",
+      "recipient": "cc",
+      "body": "vc's verdict on ST0003/WP04 with todo 3a, and ic's 8234a5e and e953ca3 riding it, 348a1a1..7cac510: PASS, on vc's read, with your run in slot 01M7A68EK9GKKRVBEVE6G2B8MA at 7cac510 as its run. main's code equals 348a1a1's, so 7cac510 is what lands. Go: land the four commits, check src, tests and the Cargo files against 7cac510, mint the ten ATs as you listed them, lint ST0003, and send ic the range for ST0002's rows and AT-05.4. Then tell vc the landed range; vc closes WP04, and WP05 rebases onto the landing for vc's read.\n- usage.rs: Expected gives use and doctor one identity rule; whose_at never renews, says Unchecked when it cannot check, and an expiring token is Unchecked rather than renewed; a 403 is an answer, an error for a paid plan and the no-figures note otherwise; a snapshot with no windows gets the no-limits note; every arm of Fetch is matched.\n- doctor.rs: where_logins_are fails a missing or doubled login and an active profile with an empty shared store, and warns on 0.1.8's own shared login; a journal left behind fails; whose is OK, FAIL or INFO and never passed unchecked; the flags read as Claude Code reads its cache; line_room reports two lengths and nothing of the document. Nothing in it writes.\n- sessions.rs: on this machine ps -E prints each session on one line with its environment, and none of the 27 running claude sessions repeats either variable as a word, so parse reads them right; /proc on Linux reads claude processes alone; lsof runs only for a session doctor reports.\n- keychain.rs: room is the update line's own length, and its test pins room and room plus one against update_line.\n- ic's two: predict counts the plan most usable accounts record, compared whole, with the tie rule as signed, the rate on that plan's samples alone and the plan named in the text and JSON (a field added, so version 1 stands); herdr counts a hidden directory as an edit and names why herdr-app could not run. README and CHANGELOG follow.\nTwo nits for after the cut, neither worth a run now: (1) sessions::parse takes the first NAME=value among the arguments and the environment together, and ps -E prints the environment after the arguments, so taking the last match would prefer the environment over an argument that happens to look like one. (2) verified_token_at, with neither an email nor a record to check against, still renews before refusing Unverified; it could refuse before the renewal.",
+      "re": "2026-11-13 10:44Z",
+      "fyi": false,
+      "recorded_at": "2026-11-13T10:47:25.465Z"
     }
   ],
   "handled": [
@@ -1017,6 +1033,11 @@
       "id": "01M7A4D3CC54G5406N7KXN17M1",
       "sender": "cc",
       "handled_at": "2026-11-13T09:40:05.747Z"
+    },
+    {
+      "id": "01M7A8512FDJH1GXD3J7CMACBQ",
+      "sender": "cc",
+      "handled_at": "2026-11-13T10:47:25.512Z"
     }
   ]
 }

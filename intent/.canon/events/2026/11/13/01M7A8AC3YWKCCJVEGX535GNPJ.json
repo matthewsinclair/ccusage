@@ -1,0 +1,15 @@
+{
+  "id": "01M7A8AC3YWKCCJVEGX535GNPJ",
+  "ts": "2026-11-13T10:47:40.926Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "After 0.1.9's cut, cc's two nits from vc's WP04 verdict (2026-11-13), neither worth a run before it: (1) sessions::parse takes the first NAME=value among the arguments and the environment together; ps -E prints the environment after the arguments, so taking the last match prefers the environment over an argument that looks like one (no running session repeated either variable at vc's check). (2) usage::verified_token_at, with neither an email nor an account record to check a login against, renews before refusing Unverified; it could refuse before the renewal."
+  }
+}
