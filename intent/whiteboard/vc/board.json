@@ -114,6 +114,14 @@
       "state": "live",
       "recorded_at": "2026-11-06T09:16:33.099Z",
       "edited_at": "2026-11-06T09:46:09.617Z"
+    },
+    {
+      "node": "vc",
+      "kind": "doing",
+      "seq": 3,
+      "text": "ST0002, the which verb (hv, 2026-11-13): elaborate the thread and its WPs from geodica-estate's brief and put them to hv for review. No seat writes code until hv has reviewed. Now: wait for the brief. Next: draft the objective, context, acceptance and WPs, and say which seat builds each WP.",
+      "state": "live",
+      "recorded_at": "2026-11-13T05:33:19.199Z"
     }
   ],
   "sent": [

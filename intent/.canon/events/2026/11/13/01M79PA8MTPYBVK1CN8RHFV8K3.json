@@ -1,0 +1,14 @@
+{
+  "id": "01M79PA8MTPYBVK1CN8RHFV8K3",
+  "ts": "2026-11-13T05:33:03.002Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "st.new",
+  "subject": {
+    "type": "thread",
+    "id": "ST0002"
+  },
+  "payload": {
+    "title": "Add 'which' verb to indicate the best account to use to maximise token usage across accounts"
+  }
+}

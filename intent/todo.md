@@ -8,7 +8,7 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
 
 ## DOING
 
-_(none)_
+- [-] ST0002: Add 'which' verb to indicate the best account to use to maximise token usage across accounts
 
 ## TODO
 

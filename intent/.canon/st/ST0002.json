@@ -1,0 +1,12 @@
+{
+  "schema": "intent/thread@3.0",
+  "id": "ST0002",
+  "title": "Add 'which' verb to indicate the best account to use to maximise token usage across accounts",
+  "slug": "add-which-verb-to-indicate-the-best-account-to-u",
+  "status": "wip",
+  "created": "2026-11-13",
+  "objective": "",
+  "context": "",
+  "body": "",
+  "preamble": ""
+}

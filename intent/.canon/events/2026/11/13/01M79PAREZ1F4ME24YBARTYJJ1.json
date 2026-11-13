@@ -1,0 +1,15 @@
+{
+  "id": "01M79PAREZ1F4ME24YBARTYJJ1",
+  "ts": "2026-11-13T05:33:19.199Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ST0002, the which verb (hv, 2026-11-13): elaborate the thread and its WPs from geodica-estate's brief and put them to hv for review. No seat writes code until hv has reviewed. Now: wait for the brief. Next: draft the objective, context, acceptance and WPs, and say which seat builds each WP."
+  }
+}
