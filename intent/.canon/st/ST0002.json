@@ -59,7 +59,7 @@
       "seq": 6,
       "title": "The TUI marks the account which would choose",
       "scope": "S",
-      "status": "not-started",
+      "status": "wip",
       "objective": "The TUI overview marks the account WP02's rule would choose with a `next` marker beside the existing `active` one, and moves it as reports arrive.",
       "body": "- **Builder:** ic. **Depends on:** WP02.\n- **One rule:** the marker comes from WP02's function, never a second copy of the rule. The overview's renderer, `display::lines`, also draws `usage --all`'s text, so ic decides whether that shows the marker too.\n- **Only on whole, fresh data:** the marker shows once every account's report is in and none is older than the cache's lifetime. Until then, and once the data has aged past it, the overview says a refresh (`r`) is needed for the marker. WP08 makes the TUI re-fetch at that lifetime, so the marker then stays on screen.\n- **Tests:** in `display.rs`'s tests, over fixture reports.\n- **Done when:** the marker shows on the chosen account, and AC-06.1 is green.\n",
       "preamble": ""

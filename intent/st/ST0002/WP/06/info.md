@@ -2,7 +2,7 @@
 wp_id: WP-06
 title: The TUI marks the account which would choose
 scope: S
-status: Not Started
+status: WIP
 ---
 
 # WP-06: The TUI marks the account which would choose

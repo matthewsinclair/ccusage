@@ -14,7 +14,7 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
   - [x] 03: The which verb: text, versioned JSON and --use
   - [x] 04: Usage history: bounded samples under XDG_STATE_HOME
   - [-] 05: The predict verb: burn rate and projected loss
-  - [ ] 06: The TUI marks the account which would choose
+  - [-] 06: The TUI marks the account which would choose
   - [ ] 07: Docs: README and CHANGELOG for which and predict
   - [ ] 08: Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy
 - [-] ST0003: Live account switching: ccusage use moves the active login into the shared config, and running sessions follow

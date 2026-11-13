@@ -43,7 +43,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 - AC-05.1 `ccusage predict` reports each account's projected unused percent and the total projected loss from a fixture history, says how much history it rests on, and says plainly when there is too little. -- satisfied: no (computed)
 
-### WP-06 -- The TUI marks the account which would choose (status: Not Started)
+### WP-06 -- The TUI marks the account which would choose (status: WIP)
 
 - AC-06.1 The TUI overview marks the account `which` chooses once every account's fresh report is in, and never on partial or stale data. -- satisfied: no (computed)
 
@@ -97,7 +97,7 @@ _(no tests in this group)_
 
 _(no tests in this group)_
 
-### WP-06 -- The TUI marks the account which would choose (status: Not Started)
+### WP-06 -- The TUI marks the account which would choose (status: WIP)
 
 _(no tests in this group)_
 
