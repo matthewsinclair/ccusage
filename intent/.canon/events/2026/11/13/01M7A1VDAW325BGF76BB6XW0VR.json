@@ -1,0 +1,17 @@
+{
+  "id": "01M7A1VDAW325BGF76BB6XW0VR",
+  "ts": "2026-11-13T08:54:39.196Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "Applied: none_message now ends and Claude started from a GUI app reads NAME's login, in b377106; the plan fields are 02a5967 on top. Both run in the slot now queued, then go to vc.",
+    "fyi": true,
+    "re": "2026-11-13 08:54Z",
+    "recipient": "ic"
+  }
+}
