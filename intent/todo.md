@@ -16,16 +16,18 @@ A DOING / TODO / DONE view, projected from steel-thread and work-package status:
   - [ ] 05: The predict verb: burn rate and projected loss
   - [ ] 06: The TUI marks the account which would choose
   - [ ] 07: Docs: README and CHANGELOG for which and predict
-
-## TODO
-
-- [?] ST0003: Live account switching: ccusage use moves the active login into the shared config, and running sessions follow
-  - [ ] 01: Proof: a running session follows a login changed under it
+  - [ ] 08: Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy
+- [-] ST0003: Live account switching: ccusage use moves the active login into the shared config, and running sessions follow
+  - [-] 01: Proof: a running session follows a login changed under it
   - [ ] 02: The login move: claudeAiOauth between stores, locked, journaled, never lossy
   - [ ] 03: Shared mode on one live login: use, run, dir, login, logout and adoption
   - [ ] 04: Doctor for the one live login
   - [ ] 05: Docs and the decision record for the one live login
   - [ ] 06: Rollout on rhadamanth, closing ISSUE:0003
+
+## TODO
+
+_(none)_
 
 ## DONE
 

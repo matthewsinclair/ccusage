@@ -11,7 +11,7 @@ status: Not Started
 
 Every successful fetch records a sample (account, kind, model, percent, reset, time sampled) for each window whose percent has changed, in a private file under `$XDG_STATE_HOME/ccusage/`. Samples older than one weekly window are dropped, so the file stays small. This is the history `predict` works from.
 
-- **Builder:** cc (proposed). **Depends on:** WP01.
+- **Builder:** ic. **Depends on:** WP01.
 - **One hook** at the one success point, the `Fetch::Success` arm of `Client::load`. The CLI, the TUI and `which` all record through it, and a cache hit records nothing.
 - **What is kept:** a window's first sample, then one each time its percent differs from the last one kept. A window is the same window while its reset, rounded to the nearest minute, is unchanged. Samples older than one weekly window, a length defined once, are dropped. Samples are not dropped at a reset: what hv burned on a window that has since reset is part of the burn rate.
 - **File:** proposed `history.jsonl`, mode 0600 like every Ccusage file, read through `storage::read_optional` and rewritten whole through `storage::write_atomic`, under one lock, since the CLI, the TUI and another session's call can fetch at once.

@@ -4,7 +4,7 @@ An index of every steel thread in the project. A steel thread is a self-containe
 
 | ID     | Title                                                                                                          | Status    | Created    | Completed  |
 | ------ | -------------------------------------------------------------------------------------------------------------- | --------- | ---------- | ---------- |
-| ST0003 | Live account switching: ccusage use moves the active login into the shared config, and running sessions follow | Triage    | 2026-11-13 |            |
+| ST0003 | Live account switching: ccusage use moves the active login into the shared config, and running sessions follow | WIP       | 2026-11-13 |            |
 | ST0002 | Add 'which' verb to indicate the best account to use to maximise token usage across accounts                   | WIP       | 2026-11-13 |            |
 | ST0001 | Bring Ccusage up to Intent spec                                                                                | Completed | 2026-11-03 | 2026-11-03 |
 

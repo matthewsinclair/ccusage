@@ -49,7 +49,13 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 ### WP-07 -- Docs: README and CHANGELOG for which and predict (status: Not Started)
 
-- AC-07.1 (non-test) README and the CHANGELOG describe `which`, `predict`, the cap key, the history file and the JSON contract as built. -- satisfied: no
+- AC-07.1 (non-test) README and the CHANGELOG describe `which`, `predict`, the cap key, the history file, the JSON contract, the Herdr mod and the refresh policy as built. -- satisfied: no
+
+### WP-08 -- Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy (status: Not Started)
+
+- AC-08.1 The Herdr verb writes the mod into a Herdr home, replaces only a copy it wrote that nobody has edited, refuses anything else without `--force`, reports `herdr-app check`'s verdict, and never touches a layout or `keys.json`. -- satisfied: no (computed)
+- AC-08.2 The TUI re-fetches an account once its data has passed the usage cache's lifetime and no sooner, and a rate-limited account is not asked again before its retry time. -- satisfied: no (computed)
+- AC-08.3 (non-test) In hv's Herdr the mod, opened as a pane, shows each account's weekly bar, reset, state and the `next` marker from ccusage's own JSON, refreshes by itself, and passes `herdr-app check`. -- satisfied: no
 
 ## Acceptance Tests
 
@@ -82,6 +88,10 @@ _(no tests in this group)_
 _(no tests in this group)_
 
 ### WP-07 -- Docs: README and CHANGELOG for which and predict (status: Not Started)
+
+_(no tests in this group)_
+
+### WP-08 -- Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy (status: Not Started)
 
 _(no tests in this group)_
 

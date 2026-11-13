@@ -11,7 +11,7 @@ status: Not Started
 
 `ccusage which [--json] [--model NAME] [--use] [--refresh]` reads every profile's report as `usage --all` does, applies WP02's rule, and prints the choice with one reason line, then the ranked rest one line each. `--json` gives the same as a versioned structure, and `--use` also makes the choice the active account through the one `use` code path.
 
-- **Builder:** ic, with cc on the JSON contract (proposed). **Depends on:** WP02.
+- **Builder:** ic, and cc signs what the JSON means. **Depends on:** WP02.
 - **Text:** the first line is the choice and one reason, eg `hello: 27% left, resets in 3d04h, soonest reset with headroom`, with the time in `display::duration`'s form. Then one line per other account in rank order: eligible, then at cap, then unknown with its reason. Scoped windows show on their account's line and rank only under `--model`. A session window, if the endpoint ever returns one, is noted on its line and never ranks. With nothing eligible, the verb says so and names the soonest reset.
 - **JSON:** one object carrying a `version`, the time now, the cap, the model if one was given, the choice or null, whether `--use` made it active, and every account with its state (chosen, eligible, at cap or unknown), headroom, reset, rank and reason. cc and ic agree the shape in this work package before its code, and README documents it as the contract geodica-estate reads.
 - **Exit codes and streams:** 0 when an account is chosen, even with some accounts unknown; 1 when nothing is eligible or no account could be read. The report, text or JSON, goes to stdout in both cases, and the one-line reason for a 1 goes to stderr as every ccusage error does. Argument and config errors are as today, with nothing on stdout.

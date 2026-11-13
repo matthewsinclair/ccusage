@@ -19,6 +19,14 @@
       "text": "hv's rulings of 2026-11-13, given to vc in the live channel (vc's window), in hv's wording, recorded by vc as mediator. On ST0002: \"Don't start coding yet, I want to elaborate the ST and WPs and then review them before we begin.\" On the estate: \"devbin-vc has The Desk and devbin+intent and devvm are P0/P1 this morning. So you need to check in with it before we do anything, and then depending on what's happening, I'll arbitrate.\" On switching accounts under running sessions: \"Don't _do_ this now, I'm just posing the question for review.\" and \"Hold for 'go' while I work with devbin/intent\". Then hv asked vc to review that question, elaborate the work packages and any new threads for all of it, and review the open threads. vc's reading: no seat writes code on ST0002 or ST0003 until hv has reviewed them and said go.",
       "state": "live",
       "recorded_at": "2026-11-13T06:29:42.340Z"
+    },
+    {
+      "node": "hv",
+      "kind": "decision",
+      "seq": 2,
+      "text": "hv's rulings of 2026-11-13 after reviewing ST0002 and ST0003, given to vc in the live channel (vc's window), in hv's wording, recorded by vc as mediator. (1) On ST0003: \"Run the trial before we do anything else. I want WP01 to be populated with the facts first of all. And if those facts land badly, then that influences what we do next.\" (2) On who builds: \"I will start IC and CC here to do this if we proceed.\" (3) On whether the accounts share one plan: \"Yes, they all are. Note that I want to reset 04 back to free as I don't need 5 Pro Max accounts. 4 is more than enough, especially with this in place.\" (4) On ISSUE:0007 going to dc now: \"Yes\". (5) On the release: \"Yes, one cut, everything in. I HATE multiple bitty releases.\" (6) A new work package: \"I want to make a Herdr MOD for ccusage (that ships with ccusage along with a verb to install the mod into a local Herdr instance) that shows the ccusage tui panel in a Herdr pane. This also implies some kind of refresh rate for that panel, which we need to think about the best way to do so it doesn't overwhelm Claude's API. And if there's a way to show any other stuff from the --verbose view in that Herdr MOD panel, that'd be aweseom. One more WP for the ST. Go!\" vc's acts on them the same day: WP01's steps given to hv; dc briefed on ISSUE:0007; ST0002/WP08 written; ic builds ST0002 and cc builds ST0003, by vc's sequencing, once hv starts them.",
+      "state": "live",
+      "recorded_at": "2026-11-13T06:49:09.037Z"
     }
   ],
   "sent": [],

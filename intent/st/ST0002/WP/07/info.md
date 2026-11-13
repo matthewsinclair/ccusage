@@ -9,10 +9,11 @@ status: Not Started
 
 ## Objective
 
-README and the CHANGELOG describe `which` and `predict` as built: the rule in one paragraph, the cap key and its downgrade caveat, the JSON contract and the exit codes, and the history file in the XDG table.
+README and the CHANGELOG describe `which`, `predict` and the Herdr mod as built: the rule in one paragraph, the cap key and its downgrade caveat, the JSON contract and the exit codes, the history file in the XDG table, and how the mod is installed, opened and refreshed.
 
-- **Builder:** ac (proposed); ic writes it if hv does not start ac. **Depends on:** WP03, WP04, WP05 and WP06.
-- **Help stays with the code:** `ccusage help` is WP03's and WP05's, since it lives in `src/cli.rs`.
+- **Builder:** ic. **Depends on:** WP03, WP04, WP05, WP06 and WP08.
+- **Help stays with the code:** `ccusage help` is WP03's, WP05's and WP08's, since it lives in `src/cli.rs`.
+- **The refresh policy** is stated once, for the TUI and the Herdr panel together: what ccusage asks the endpoint, how often at most, and what a 429 does.
 - **CHANGELOG:** the entry goes in the release's own entry.
 - **Done when:** every claim in the docs matches the code, on vc's read, and AC-07.1 is satisfied.
 

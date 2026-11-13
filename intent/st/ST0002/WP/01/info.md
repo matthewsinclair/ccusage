@@ -11,7 +11,7 @@ status: Not Started
 
 Each parsed usage window carries its kind (`session`, `weekly_all`, or `weekly_scoped` with its model's name) beside its display label, read from the `limits` array and from the legacy fields alike. `which` and `predict` then select windows by kind, and the display keeps its labels.
 
-- **Builder:** cc (proposed). **Depends on:** nothing.
+- **Builder:** ic. **Depends on:** nothing.
 - **One parser:** the kind is kept where `Snapshot::parse_windows` reads it today, and the label is derived from the kind. Nothing else reads `limits` (Highlander).
 - **Legacy mapping:** `seven_day` is `weekly_all`, `seven_day_<model>` is `weekly_scoped` for that model, and `five_hour` is `session`. `seven_day_breakdown` and the other keys that are not windows stay ignored, as now.
 - **No visible change:** the output of `usage`, in text and JSON, and of the TUI does not change.

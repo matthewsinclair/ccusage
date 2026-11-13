@@ -11,7 +11,7 @@ status: Not Started
 
 One pure function takes the accounts' reports, the time now, the cap and an optional model name, and returns the chosen account, the ranked rest and a reason for each. It is the only implementation of the rule: the `which` verb, the TUI marker and `predict`'s simulation all call it.
 
-- **Builder:** cc (proposed). **Depends on:** WP01.
+- **Builder:** ic, and cc signs the rule's meaning. **Depends on:** WP01.
 - **Where it lives:** its own module, pure: no clock, no file, no network. The time now, the cap and the cache's lifetime are arguments, and the lifetime is `usage`'s own constant, not a second number.
 - **Usable:** an account whose report holds a snapshot fetched within the cache's lifetime, with a `weekly_all` window whose reset is still ahead. Anything else is unknown: listed with its reason (the report's error, stale data, a reset that has passed, or no weekly window) and never chosen. A reset that has passed means the cached percent belongs to the previous window. A fresh snapshot is usable even when its report carries an error, as it does when only the cache save failed.
 - **Eligible:** a usable account whose `weekly_all` is below the cap. With a model, that model's `weekly_scoped` window must be below the cap too. An account with no scoped window for the model is bounded by `weekly_all` alone.

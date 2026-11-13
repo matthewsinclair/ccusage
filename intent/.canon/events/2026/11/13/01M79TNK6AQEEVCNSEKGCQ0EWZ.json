@@ -1,0 +1,14 @@
+{
+  "id": "01M79TNK6AQEEVCNSEKGCQ0EWZ",
+  "ts": "2026-11-13T06:49:08.554Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0003/AC-06.1"
+  },
+  "payload": {
+    "text": "After the rollout on rhadamanth no Claude session carries `CLAUDE_SECURESTORAGE_CONFIG_DIR`, each account has exactly one login, and Claude Usage lists each account once with nothing prompting."
+  }
+}

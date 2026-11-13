@@ -1,0 +1,16 @@
+{
+  "id": "01M79TNKKBFTYPWZF6CXJGSGZQ",
+  "ts": "2026-11-13T06:49:08.971Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 5,
+    "text": "ISSUE:0007's wiring: hv said go on 2026-11-13, and vc briefed dc at 06:45Z, in dc's inbox and on the live channel. devbin 0.1.23, vendored since 3c1055a, carries every unit of devbin#0326 (devbin-vc), so 0007 no longer waits on devbin. Now: wait for dc's hand-over. Then: read the wiring against ISSUE:0007's Acceptance on dc's one measured run, tell hv the full suite is due, and run T10's proof with hv, whose commands publish to the real opt prefix and switch the ccusage link. When 0007 closes, tell devbin-vc, which closes devbin#0326 once pplr#0001 and cldr#0001 have closed too."
+  }
+}

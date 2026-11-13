@@ -1,0 +1,16 @@
+{
+  "id": "01M79TNKEPG9YKFJGBBGDBJ3S3",
+  "ts": "2026-11-13T06:49:08.822Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching (hv, 2026-11-13): started, with WP01 in progress on hv's word: \"Run the trial before we do anything else\". vc gave hv the trial's steps at 06:41Z: a scratch config, hello in one session and engineering00 logged in from a second, then /usage in the first to see whose login it holds. Now: wait for hv's four answers, then read the two debug logs, the scratch config and Keychain metadata, write the record into WP01, and satisfy AC-01.1 or stop the thread. Next, if it passes: hv starts cc and ic, and vc briefs cc on WP02. If it fails: ISSUE:0003 closes by its launcher fix instead."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "01M79TJZ58M9N08W3JAAQR0VKP",
+  "ts": "2026-11-13T06:47:42.505Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wp.new",
+  "subject": {
+    "type": "wp",
+    "id": "ST0002/08"
+  },
+  "payload": {
+    "scope": "S",
+    "title": "Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy"
+  }
+}
