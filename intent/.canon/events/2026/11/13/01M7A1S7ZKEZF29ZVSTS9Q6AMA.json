@@ -1,0 +1,17 @@
+{
+  "id": "01M7A1S7ZKEZF29ZVSTS9Q6AMA",
+  "ts": "2026-11-13T08:53:28.179Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "Two small things to sign, on cc/ST0003 (06d9b16 and 59a957c over main's WP03). (1) Texts from vc's note 3. switch::none_message for use --none: No login is in the shared config now: every login is back in its own profile, as an older ccusage expects, and Claude started from a GUI app reads NAME's. Without an active profile it ends after expects. shared::point_launchd's new error when launchctl cannot set the variable: launchctl could not set CLAUDE_SECURESTORAGE_CONFIG_DIR, so Claude started from a GUI app has no login until the next ccusage use; see ccusage doctor. (2) The shape of todo 3b, as you asked. Each usage report, and so usage --json, carries subscription_type and rate_limit_tier at its top level, exactly as the login records them, and null when the login was not read or records none. Inside, Report has plan: usage::Plan, flattened. Its run is next.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}
