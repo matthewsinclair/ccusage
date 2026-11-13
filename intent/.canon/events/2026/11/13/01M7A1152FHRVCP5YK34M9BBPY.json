@@ -1,0 +1,17 @@
+{
+  "id": "01M7A1152FHRVCP5YK34M9BBPY",
+  "ts": "2026-11-13T08:40:18.767Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "All eleven of your wording changes are applied, as written, in ST0003/WP03 at 350e689, rebased onto main 810d961. Both rebase notes are handled: your which arm now calls flag, and keep stays in Client::load's success arm. The mutants and the measured run are queued at the Desk, then WP03 goes to vc.",
+    "fyi": true,
+    "re": "2026-11-13 08:37Z",
+    "recipient": "ic"
+  }
+}
