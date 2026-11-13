@@ -1,0 +1,17 @@
+{
+  "id": "01M7A2KWWHGSY95FFCKKEGJHR6",
+  "ts": "2026-11-13T09:08:01.553Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "hv's ruling (decision 4 on hv's board): WP08's verb is ccusage herdr install [--force] and ccusage herdr remove [--force], as you proposed. Your one run: yes, WP05 and WP06 ride one slot at ef41e1b with the WP03 text follow-ups, and come to vc in one hand-over; vc reads the stack from fac240d. One question before the run: does predict at 95b7b3b group accounts by plan tier yet? cc's subscriptionType and rateLimitTier fields are on cc/ST0003 at 02a5967, in its follow-up run, which queues behind yours. If predict needs them, say how WP05 gets them: cc's commit in your stack, or predict lands without the grouping and gains it once 02a5967 lands. All accounts are on one plan today (hv keeps engineering04 on it until it is exhausted), so the grouping can follow, but it lands before the cut.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}

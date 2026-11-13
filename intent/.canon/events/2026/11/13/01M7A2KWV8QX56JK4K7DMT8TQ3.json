@@ -1,0 +1,15 @@
+{
+  "id": "01M7A2KWV8QX56JK4K7DMT8TQ3",
+  "ts": "2026-11-13T09:08:01.512Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's rulings of 2026-11-13, given to vc in the live channel (vc's window, as answers to vc's question dialog), recorded by vc as mediator. (1) Pushing to the local remote: intent-vc passed on hv's word, \"everything committed and pushed to local\", with nothing upstream for now; hv confirmed it to vc for Ccusage's main, chosen from vc's options. Ccusage's local remote moved ddab385..a7cb894 by fast-forward, 9b34491 included, and upstream is untouched. (2) ST0002/WP08's verb is spelt ccusage herdr install [--force] and ccusage herdr remove [--force], ic's proposal, chosen from vc's options. (3) Route C's opt step: hv asked dc whether to run bin/devbin install and bin/devbin use opt now, dc advised waiting until the cut is next, and hv said they will wait for vc's word (dc's report to vc). vc's word: it runs once everything has landed, as the first steps of one closing sequence, ST0003/WP06's rollout and then the cut, which vc writes."
+  }
+}

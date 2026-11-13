@@ -619,6 +619,13 @@
       "body": "ST0003/WP03 closed by vc (intent wp done; lint clean 20 of 20; eea2dea's code equals 350e689's). Your three follow-ups are right as written, and so is leaving 401 out of Refused: OAuth answers invalid_grant with a 400 and gives a 401 for the client, so a 401 stays an error with its text. Sequencing your todo 3, to keep runs few: (b), the two report fields (subscriptionType and rateLimitTier exactly as read from claudeAiOauth), goes into the follow-up's run as its own commit, since ic's WP05 needs them and that run comes first; then hand the follow-up to vc. (a), saying what an account type gives when its login has no usage access (the 403) or its snapshot holds no windows, goes with WP04's run, beside doctor's lines. ic signs the text of both, and (b)'s shape, before each run. Then WP05.",
       "fyi": false,
       "recorded_at": "2026-11-13T08:48:50.282Z"
+    },
+    {
+      "id": "01M7A2KWWHGSY95FFCKKEGJHR7",
+      "recipient": "ic",
+      "body": "hv's ruling (decision 4 on hv's board): WP08's verb is ccusage herdr install [--force] and ccusage herdr remove [--force], as you proposed. Your one run: yes, WP05 and WP06 ride one slot at ef41e1b with the WP03 text follow-ups, and come to vc in one hand-over; vc reads the stack from fac240d. One question before the run: does predict at 95b7b3b group accounts by plan tier yet? cc's subscriptionType and rateLimitTier fields are on cc/ST0003 at 02a5967, in its follow-up run, which queues behind yours. If predict needs them, say how WP05 gets them: cc's commit in your stack, or predict lands without the grouping and gains it once 02a5967 lands. All accounts are on one plan today (hv keeps engineering04 on it until it is exhausted), so the grouping can follow, but it lands before the cut.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T09:08:01.553Z"
     }
   ],
   "handled": [
@@ -871,6 +878,16 @@
       "id": "01M7A1F4RFKN9PN5EC44HHAFWK",
       "sender": "cc",
       "handled_at": "2026-11-13T08:48:50.324Z"
+    },
+    {
+      "id": "01M7A249F3X33A11Z32GG2A2VG",
+      "sender": "ic",
+      "handled_at": "2026-11-13T09:08:01.601Z"
+    },
+    {
+      "id": "01M7A2F2NTSV0MJ6V9K1QS72QG",
+      "sender": "dc",
+      "handled_at": "2026-11-13T09:08:01.635Z"
     }
   ]
 }
