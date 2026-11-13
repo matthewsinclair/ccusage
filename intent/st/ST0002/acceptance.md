@@ -37,7 +37,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 ### WP-04 -- Usage history: bounded samples under XDG_STATE_HOME (status: WIP)
 
-- AC-04.1 Each successful fetch records a sample for each window whose percent changed, in a 0600 file under XDG_STATE_HOME; a cache hit records nothing; and samples are dropped by age, one weekly window, not at a reset. -- satisfied: no (computed)
+- AC-04.1 Each successful fetch records a sample for each window whose percent changed, in a 0600 file under XDG_STATE_HOME; a cache hit records nothing; and samples are dropped by age, one weekly window, not at a reset. -- satisfied: yes (computed)
 
 ### WP-05 -- The predict verb: burn rate and projected loss (status: Not Started)
 
@@ -65,9 +65,9 @@ _(no tests in this group)_
 
 ### WP-01 -- Typed usage windows: each window carries its kind and model (status: Done)
 
-- AT-01.1 `src/usage.rs:741` -- covers AC-01.1 -- status: green -- The kinds and model read from the limits fixture, with the scoped window's share; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
-- AT-01.2 `src/usage.rs:849` -- covers AC-01.1 -- status: green -- A legacy-only snapshot maps onto the same kinds; breakdown metadata is not a window; red under the legacy-kind mutant (seven_day read as the session) in WP01's run; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
-- AT-01.3 `src/usage.rs:902` -- covers AC-01.1 -- status: green -- An unknown limits kind stays ignored, and limits supersede legacy duplicates; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
+- AT-01.1 `src/usage.rs:782` -- covers AC-01.1 -- status: green -- The kinds and model read from the limits fixture, with the scoped window's share; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
+- AT-01.2 `src/usage.rs:890` -- covers AC-01.1 -- status: green -- A legacy-only snapshot maps onto the same kinds; breakdown metadata is not a window; red under the legacy-kind mutant (seven_day read as the session) in WP01's run; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
+- AT-01.3 `src/usage.rs:943` -- covers AC-01.1 -- status: green -- An unknown limits kind stays ignored, and limits supersede legacy duplicates; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
 - AT-01.4 `src/display.rs:753` -- covers AC-01.1 -- status: green -- The overview's labels are unchanged: the pin passed on the parser before WP01 and after it; red in WP01's first run at d3a24e5 (its own expectation was wrong) and under the label mutant; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
 
 ### WP-02 -- The which rule: earliest reset first, with the cap from config (status: Done)
@@ -84,7 +84,11 @@ _(no tests in this group)_
 
 ### WP-04 -- Usage history: bounded samples under XDG_STATE_HOME (status: WIP)
 
-_(no tests in this group)_
+- AT-04.1 `src/usage.rs:1117` -- covers AC-04.1 -- status: green -- A fetch that succeeds saves its cache and records a sample of each of its windows in the history under the state directory; a history that cannot be written joins the report error, and the cache is saved all the same; red under the mutant whose successful fetch records nothing, in the first WP04 run at 31c0482, Desk slot 01M79ZVHT2C8B2ADTBWY7YQ73W; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP
+- AT-04.2 `src/history.rs:255` -- covers AC-04.1 -- status: green -- A window keeps its first sample, then one each time its percent changes; an unchanged percent adds nothing, and each account keeps its own windows; red under the mutant that samples an unchanged percent, in the first WP04 run at 31c0482, Desk slot 01M79ZVHT2C8B2ADTBWY7YQ73W; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP
+- AT-04.3 `src/history.rs:336` -- covers AC-04.1 -- status: green -- The history is a 0600 file in the state directory, which the private-file check doctor runs passes; red before WP04: written against history::record, it could not compile before it; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP
+- AT-04.4 `tests/cli.rs:293` -- covers AC-04.1 -- status: green -- Usage read from a fresh cache, or held back by a rate-limit cooldown, records no history under XDG_STATE_HOME; red before WP04: written against history::FILE, it could not compile before it (the property is structural, as only the success arm records); green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP
+- AT-04.5 `src/history.rs:294` -- covers AC-04.1 -- status: green -- Samples go by age alone, once older than one weekly window: a window that has since reset keeps its sample, and the next window at the same percent is a window of its own; red under the mutants that drop a sample at one week and that know a window without its reset, in the first WP04 run at 31c0482, Desk slot 01M79ZVHT2C8B2ADTBWY7YQ73W; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP
 
 ### WP-05 -- The predict verb: burn rate and projected loss (status: Not Started)
 
