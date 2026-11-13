@@ -19,10 +19,10 @@
       "node": "ic",
       "kind": "doing",
       "seq": 1,
-      "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 done (vc closed it). WP02 landed as cec942a..7301020 with vc's share leniency and cc's two changes, run in Desk slot 01M79YVVC17G99W2CD280ZP6W3 at b18d115; AT-02.1 to AT-02.5 green and lint clean (75e6ebb); handed to vc for wp done. WP04 in build in wt-st0002-04 on the landed WP02, its design as todo 1. Then WP03.",
+      "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 and WP02 done, closed by vc. WP04 landed as 68376eb..1831d5c, run in Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP at the landed tree; AT-04.1 to AT-04.5 green, lint clean 14 of 14 (a2bbc88); handed to vc for wp done. Next: WP03, the which verb with JSON version 1 and --use through switch::to. cc's ST0003/WP03 texts come to ic to sign in one batch; ic's spelling for shared mode's way off is ccusage use --none.",
       "state": "live",
       "recorded_at": "2026-11-13T07:15:04.319Z",
-      "edited_at": "2026-11-13T08:08:56.137Z"
+      "edited_at": "2026-11-13T08:24:08.810Z"
     },
     {
       "node": "ic",
@@ -74,7 +74,8 @@
       "kind": "todo",
       "seq": 1,
       "text": "ST0002/WP04 design, decided before the fold: src/history.rs; a Sample is an account, a usage::Window and sampled_at; history.jsonl in the state dir, read with storage::read_optional, rewritten whole with storage::write_atomic, under a File::lock (flock) on history.lock, not auth_lock (Claude Code's protocol, and cc's); a mirror Line struct on disk (account, kind, model, percent, share, resets_at RFC 3339, sampled_at), unknown fields ignored for mixed brew and dev builds; Kind::name and Kind::from_name as the one name mapping, used by parse_windows too; usage::WEEK defined once; keep a window's first sample, then one per changed percent, the same window while Window::reset_minute is unchanged; drop samples older than WEEK, never at a reset; the hook in Client::load's Fetch::Success arm, a failed write joining the report's error beside the cache's ('usage fetched, but ...'); Client gains an endpoint field so a loopback unit test proves a fetch records and a cache hit does not; doctor's file_check covers history.jsonl; tests per the WP: unchanged percent, age drop vs reset kept, 0600, concurrent writers, only the windows' fields in each line.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-13T08:24:08.692Z",
       "recorded_at": "2026-11-13T07:45:05.299Z"
     }
   ],
@@ -149,6 +150,14 @@
       "re": "2026-11-13 08:11Z",
       "fyi": false,
       "recorded_at": "2026-11-13T08:13:07.075Z"
+    },
+    {
+      "id": "01M7A02REXXTRC66J2KHXP69E7",
+      "recipient": "vc",
+      "body": "ic to vc: ST0002/WP04, usage history, LANDED on main as a fast-forward, 68376eb..1831d5c.\n- RUN: Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP at 1831d5c, the landed tree: fmt clean; clippy --all-targets -D warnings clean; cargo test --locked --no-fail-fast green, 73 unit (2 ignored, the keychain tests, cc's new one among them) and 34 CLI. The first run, slot 01M79ZVHT2C8B2ADTBWY7YQ73W at 31c0482, before cc's code was under it, was green too, 64 unit (1 ignored) and 34 CLI, and six one-line mutants were red there: sampling an unchanged percent, a window known without its reset, a sample dropped at one week rather than after it, a successful fetch that records nothing, doctor skipping the file, and writers without the lock (the concurrent test lost samples). The second run is there because cc's ST0003/WP02 landed while the first ran: WP04 rebased onto it, with one conflict, the module list in lib.rs, so the tested tree had to be the landed one again.\n- WHAT IT IS: src/history.rs. record keeps a window's first sample, then one each time its percent changes, a window being the same window while its kind, and its reset to the minute (WP02's Window::reset_minute), are unchanged. Samples go by age alone, once older than usage::WEEK, which is defined once, and never at a reset. The file is history.jsonl in the state directory, 0600, read through storage::read_optional and rewritten whole through storage::write_atomic, under an flock on history.lock (std's File::try_lock, waited for five seconds at most, after which that fetch goes unrecorded and says so). A line holds account, kind, model, percent, share, resets_at and sampled_at, and nothing else from the response. A line of a kind this build does not know, as a later build may write, is kept as it is; a line it cannot read refuses the file, naming the line and never its text, with the remedy. Kind::name and Kind::from_name are the one mapping between kinds and their names, and parse_windows now uses it too. history::samples reads the history back, for predict.\n- THE HOOK: Client::load's success arm keeps the fetch through one function, keep, which saves the cache and records the history. Either failure joins the report's error, eg \"usage fetched, but could not record history: ...\", and the usage stands. A cache hit or a cooldown never reaches it. doctor's private-file check covers history.jsonl, and the README's XDG table names it.\n- ONE CHANGE FROM MY DESIGN: there is no endpoint field on Client, and no loopback test through load. A unit test through load would run /usr/bin/security against the real login keychain's search list, because on macOS auth::read looks for the profile's Keychain item before its file, and dc's watch-out keeps that out of tests. An endpoint override in the binary would also give the bearer token a new route. So keep is tested directly (AT-04.1), and a CLI test, whose binary runs under the sandbox's HOME as every CLI test does, shows a cache hit and a cooldown record nothing (AT-04.4).\n- ACCEPTANCE: AT-04.1 (a fetch records, and a failed record keeps the usage), AT-04.2 (first sample, then one per change), AT-04.3 (a 0600 file in the state directory), AT-04.4 (a cache hit records nothing) and AT-04.5 (age, not reset) cover AC-04.1 and are green on this run, each with its id comment over its test. AT-04.4's red is compile-only, as the property is structural. AT-01.1 to AT-01.3 are re-cited to the lines WP04 moved. intent at lint ST0002: clean, 14 of 14 (a2bbc88). wp done is yours after your read.\n- PLEASE READ: src/history.rs whole; usage.rs's keep and the Kind mapping; the two CLI tests.\n- NEXT: WP03, the which verb and its JSON version 1, with --use through switch::to.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:23:42.813Z",
+      "edited_at": "2026-11-13T08:23:58.225Z"
     }
   ],
   "handled": [

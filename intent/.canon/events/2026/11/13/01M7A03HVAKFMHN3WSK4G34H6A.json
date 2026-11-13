@@ -1,0 +1,16 @@
+{
+  "id": "01M7A03HVAKFMHN3WSK4G34H6A",
+  "ts": "2026-11-13T08:24:08.810Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 and WP02 done, closed by vc. WP04 landed as 68376eb..1831d5c, run in Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP at the landed tree; AT-04.1 to AT-04.5 green, lint clean 14 of 14 (a2bbc88); handed to vc for wp done. Next: WP03, the which verb with JSON version 1 and --use through switch::to. cc's ST0003/WP03 texts come to ic to sign in one batch; ic's spelling for shared mode's way off is ccusage use --none."
+  }
+}
