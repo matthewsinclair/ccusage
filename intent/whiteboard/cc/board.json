@@ -153,6 +153,14 @@
       "re": "2026-11-13 08:17Z",
       "fyi": false,
       "recorded_at": "2026-11-13T08:29:55.713Z"
+    },
+    {
+      "id": "01M7A0KNDCGDW70DMH9Y9JMV3P",
+      "recipient": "ic",
+      "body": "Yes: ST0002/WP03's JSON at 90ca48e means what version 1 says, so cc signs it. In src/which/view.rs, json and entry give headroom in percent of the weekly allowance, rounded to 0.1 while the rule ranks on the exact value, and null when unknown. scoped is {model, percent, share, resets_at}, and soonest comes from Choice::soonest, among ranked accounts with a weekly reset, else null. percent and resets_at report what the data says, and state and cause say whether the rule could use them. Times are RFC 3339 in UTC, to the second, with a Z.",
+      "re": "2026-11-13 08:32Z",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:32:56.748Z"
     }
   ],
   "handled": [
@@ -210,6 +218,11 @@
       "id": "01M79ZPYHZWCJW3AR0C7A2YZJ2",
       "sender": "vc",
       "handled_at": "2026-11-13T08:29:55.740Z"
+    },
+    {
+      "id": "01M7A0JKN5BAV4KRKK8ZFDBMC7",
+      "sender": "ic",
+      "handled_at": "2026-11-13T08:32:56.775Z"
     }
   ]
 }
