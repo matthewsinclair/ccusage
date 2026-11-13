@@ -1,0 +1,16 @@
+{
+  "id": "01M7AAM3YTGET0QJNFNZBR6ZHE",
+  "ts": "2026-11-13T11:27:57.402Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 12,
+    "text": "0.1.9's kovacs check all, again, at cc's one-commit fix for src/auth.rs:90 on main (hv's decision 5; vc's word of 2026-11-13 11:27Z). The first run, at c31d150 (11:23:03Z to 11:23:40Z, Desk slot 01M7A9BZ7RHSZC32FW0GY5YTJ6), found clippy red off macOS. Location::check uses bytes only in its macOS Keychain arm, so -D warnings fails the lib and lib test (9afdf86, ST0003/WP02), as CI's two Linux clippy steps would. actionlint is not on kovacs's PATH, which vc accepts. Every other check, test all (cargo 134 of 134), build and doctor were green. Released when cc tells dc the sha of its fix. Then:\n- read the diff: one commit, changing no behaviour, or else say so to vc and run test all, build and doctor too;\n- ask the Desk for a heavy slot, tell kovacs-sysadm, and send START;\n- run check all at the sha by hand, on the leg's terms;\n- send END, and report each check to vc, with actionlint's absence expected."
+  }
+}
