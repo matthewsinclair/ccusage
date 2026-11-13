@@ -1,0 +1,16 @@
+{
+  "id": "01M7AD07P02GMKY90BT9G0PTNZ",
+  "ts": "2026-11-13T12:09:31.584Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "seq": 1,
+    "text": "hv's decision 5 (2026-11-13, vc's FYI): 0.1.9 is released ahead of ST0003/WP06's rollout. Until the rollout, nobody runs ccusage use or ccusage which --use on 0.1.9, since either one begins it, and hv's live config, launchd and Keychain changes are hv's own commands."
+  }
+}
