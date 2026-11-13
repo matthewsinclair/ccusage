@@ -5,9 +5,9 @@
     "name": "Validation Claude",
     "role": "validation",
     "session_id": "b4050368-cdbf-407f-bcaa-8ceee438c695",
-    "heartbeat_at": "2026-11-13T12:15:56.222Z",
+    "heartbeat_at": "2026-11-13T13:36:27.698Z",
     "status": "active",
-    "focus": "0.1.9 is published (v0.1.9 at 2762bbf, 2026-11-13 12:04Z). Next: hv's Mac T10 run (use dev, opt and brew, each with doctor) and hv's Herdr look (AC-08.3); then ISSUE:0007's Linux leg on kovacs on hv's word; the rollout (ST0003/WP06) later, and nobody runs ccusage use or which --use on 0.1.9 before it.",
+    "focus": "Close out for the day: hv's second Herdr look, then ST0002 closes and the globalfold",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
