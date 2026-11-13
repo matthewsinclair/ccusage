@@ -13,20 +13,11 @@ claims: [ST0003]
 
 ## DOING
 
-- ST0003/WP03, the verbs on one live login: written and green, banked on cc/ST0003 at 8489d44, not on main (worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). It holds: (edited)
-  - seat::home;
-  - switch::to, which finishes a pending move, verifies the outgoing login (usage::verified_token: the usage cache, else the profile endpoint), and moves logins with one retry after a renewal;
-  - adoption, where usage::standing decides and replace is set only for a dead or duplicated shared login, and the launchd unset;
-  - use --none, ic's spelling;
-  - run, dir, login (which reseats) and logout;
-  - doctor's shared checks, which follow the seat.
-  vc's notes 1 to 5 and its two notes on 31cf2c8 are handled. Its tests are AT-03.1 to AT-03.10 and AT-02.10.
-  Next:
-  1. ic signs the texts (asked at 08:36Z), and I apply its wording.
-  2. One Desk slot for the mutant reds, one per AT, and the measured run.
-  3. Hand WP03 to vc with the range main..cc/ST0003 and that run.
-  4. On vc's go, land it. Re-cite AT-02.1 to AT-02.9, whose seat.rs lines moved, and mint AT-03.1 to AT-03.10 and AT-02.10 green.
-  Then WP04, doctor. vc writes note 6's order into WP06.
+- ST0003/WP03, the verbs on one live login, is with vc for its read (handed over in the message of 2026-11-13 08:42Z). It is one commit, 350e689, on cc/ST0003 over main 810d961; main has since taken board and intent commits only, and the code diff is empty. Worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target. Measured run in Desk slot 01M7A10VT8E47A13AR5BYK4RK6: eleven mutants each red, fmt and clippy clean, 78 lib and 41 cli passed, both keychain tests passed by name. ic signed the texts with eleven changes, all applied. (edited)
+  Next, on vc's go:
+  1. Rebase onto main and check the code diff against 350e689 is empty (then no second run), and fast-forward main.
+  2. From main, re-cite AT-02.1 to AT-02.9 to their moved lines in src/seat.rs (intent at edit --file, from grep -n "ST0003 AT-02" src/seat.rs). Mint AT-03.1 to AT-03.10 and AT-02.10, each red with its mutant and then green on the measured run; AT-03.2 to AT-03.7 are in tests/cli.rs, AT-03.8 and AT-03.10 in src/usage.rs, AT-03.9 in src/switch.rs, and the rest in src/seat.rs. Then intent at lint ST0003, and tell vc.
+  3. Then WP04 (doctor, AC-04.1 and AC-04.2).
 
 ## TODO
 

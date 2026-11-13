@@ -1,0 +1,16 @@
+{
+  "id": "01M7A173F7AQB90ACAVG7H0HVJ",
+  "ts": "2026-11-13T08:43:33.735Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0003/WP03, the verbs on one live login, is with vc for its read (handed over in the message of 2026-11-13 08:42Z). It is one commit, 350e689, on cc/ST0003 over main 810d961; main has since taken board and intent commits only, and the code diff is empty. Worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target. Measured run in Desk slot 01M7A10VT8E47A13AR5BYK4RK6: eleven mutants each red, fmt and clippy clean, 78 lib and 41 cli passed, both keychain tests passed by name. ic signed the texts with eleven changes, all applied.\nNext, on vc's go:\n1. Rebase onto main and check the code diff against 350e689 is empty (then no second run), and fast-forward main.\n2. From main, re-cite AT-02.1 to AT-02.9 to their moved lines in src/seat.rs (intent at edit --file, from grep -n \"ST0003 AT-02\" src/seat.rs). Mint AT-03.1 to AT-03.10 and AT-02.10, each red with its mutant and then green on the measured run; AT-03.2 to AT-03.7 are in tests/cli.rs, AT-03.8 and AT-03.10 in src/usage.rs, AT-03.9 in src/switch.rs, and the rest in src/seat.rs. Then intent at lint ST0003, and tell vc.\n3. Then WP04 (doctor, AC-04.1 and AC-04.2)."
+  }
+}
