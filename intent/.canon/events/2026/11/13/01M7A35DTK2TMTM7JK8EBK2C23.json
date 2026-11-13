@@ -1,0 +1,16 @@
+{
+  "id": "01M7A35DTK2TMTM7JK8EBK2C23",
+  "ts": "2026-11-13T09:17:35.955Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ST0003/WP04 (doctor) and todo 3a, written and banked unbuilt on cc/ST0003-WP04 at eb6395a, in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). The branch sits on the follow-up (02a5967) and has never been compiled.\nWhat it holds:\n- doctor::where_logins_are (pure): each login found once, failing none or two; the shared login that belongs to no profile warns; a journal left behind fails. Stores are read through auth::load.\n- usage::whose, which never renews and returns Whose::Profile, Another or Unchecked, so doctor never reports a check it did not make. The CLI doctor test seeds a verified cache.\n- doctor::switch_flags (pure), from cachedGrowthBookFeatures, else cachedFeatureFlags. tengu_bubbly_fountain defaults off and tengu_streamed_thimble on, as Claude Code 2.1.323's binary has it.\n- src/sessions.rs: ps -E behind CCUSAGE_PS and lsof behind CCUSAGE_LSOF (the Sandbox sets both stand-ins), /proc on Linux, keeping only the two variables. sessions::drift.\n- doctor::line_room with keychain::Item::capacity, the security -i line built in one place.\n- Todo 3a, with ic's shape and texts: Report.note; a 403 is the no-figures note unless the plan is max or pro; no windows is the no-limits note; which reads the note at the top of assess; the overview shows the note.\nIts tests are AT-04.1 to AT-04.7.\nNext, after the follow-up's run:\n1. Rebase onto main, with ic's WP05, and add ic's display::next line, so a note counts as in.\n2. One Desk slot: build, fix, mutants, the measured run.\n3. ic signs the doctor texts; then hand WP04 to vc."
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "id": "01M7A34ZHZ2PZ1B03M9317WT31",
+  "ts": "2026-11-13T09:17:21.343Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.archive",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "message",
+    "messages": [
+      {
+        "id": "01M79XQAAM7DZMRZW2N3WYR6MJ",
+        "to": "ic"
+      },
+      {
+        "id": "01M79XXG8GC9ZXWRFZS6QGERAZ",
+        "to": "vc"
+      },
+      {
+        "id": "01M79YYJ3D4WCX97KZQ8DR65TK",
+        "to": "dc"
+      },
+      {
+        "id": "01M79Z50E8G3PDF21Q2PMGYCWC",
+        "to": "vc"
+      },
+      {
+        "id": "01M79ZBK1P1MMN7X7N2ERQ1Q92",
+        "to": "ic"
+      },
+      {
+        "id": "01M79ZD27181KD1G2BVYRRHFT6",
+        "to": "dc"
+      },
+      {
+        "id": "01M79ZD27XVRTJ0QCVE3BRW75P",
+        "to": "vc"
+      },
+      {
+        "id": "01M79ZNEHBPD33PZVMDZSDYQZC",
+        "to": "vc"
+      },
+      {
+        "id": "01M7A0E4M1SJ9V0D71SHH1GK7M",
+        "to": "vc"
+      },
+      {
+        "id": "01M7A0KNDCGDW70DMH9Y9JMV3P",
+        "to": "ic"
+      },
+      {
+        "id": "01M7A0PR363AVFQ32N33T0GMCZ",
+        "to": "ic"
+      },
+      {
+        "id": "01M7A1152FHRVCP5YK34M9BBPZ",
+        "to": "ic"
+      },
+      {
+        "id": "01M7A14GFFF06EJ5Z3MT3Q09AG",
+        "to": "vc"
+      },
+      {
+        "id": "01M7A1606MT6GSWHD01QTJ2KVY",
+        "to": "ic"
+      },
+      {
+        "id": "01M7A18KGCFJP3F0E3JNC1KPPZ",
+        "to": "ic"
+      },
+      {
+        "id": "01M7A1F4RFKN9PN5EC44HHAFWK",
+        "to": "vc"
+      },
+      {
+        "id": "01M7A1S7ZKEZF29ZVSTS9Q6AMB",
+        "to": "ic"
+      },
+      {
+        "id": "01M7A1VDAW325BGF76BB6XW0VS",
+        "to": "ic"
+      },
+      {
+        "id": "01M7A2PJPX8CYF0GV6H1HB3CCA",
+        "to": "ic"
+      },
+      {
+        "id": "01M7A2VHN881KDZ2ZDPYY8QZ0X",
+        "to": "ic"
+      }
+    ]
+  }
+}

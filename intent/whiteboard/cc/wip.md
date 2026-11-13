@@ -3,7 +3,7 @@ node: cc
 name: Control Claude
 role: control
 session_id: aabdcc9a-ae49-43bd-86e3-efc6a4724e5d
-heartbeat_at: 2026-11-13 07:54Z
+heartbeat_at: 2026-11-13 09:17Z
 status: active
 focus: ""
 claims: [ST0003]
@@ -18,17 +18,19 @@ claims: [ST0003]
   - 02a5967, todo 3b: each usage report carries subscription_type and rate_limit_tier as the login records them, for ic's predict.
   ic signed both texts and the shape. Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8 is queued behind the devvm build and ic's WP05. Its run is the three mutants in the scratchpad's followup-mutants.zsh, then the measured run (fmt, clippy, cargo test, the keychain tests by name), all in wt-st0003.
   Then hand eea2dea..02a5967 to vc. On its go: land, re-mint the changed rows AT-03.4 and AT-03.10, and ask vc which AC the plan test covers.
-- ST0003/WP04, doctor, started in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 on branch cc/ST0003-WP04 from 02a5967. Todo 3a (usage's 403 and no-windows messages) goes in its run. Design facts: (edited)
-  - Flags: Claude Code 2.1.323 reads them from .claude.json's cachedGrowthBookFeatures, else cachedFeatureFlags, an object of flag name to value. tengu_streamed_thimble defaults on and tengu_bubbly_fountain off, read from its binary, not from hv's config.
-  - Sessions: ps -E on macOS, or /proc/PID/environ on Linux, looking only at CLAUDE_CONFIG_DIR and CLAUDE_SECURESTORAGE_CONFIG_DIR. Tests use a stand-in, as CCUSAGE_LAUNCHCTL does. Working directories come from lsof on macOS. Where neither works, the check is skipped.
-  - Logins: each store is read through auth::load, as usage reads it. Doctor fails on an account with no login or two, and on a journal left behind.
-  - The shared login is verified with usage::verified_token where reachable, else doctor says it was not checked.
-  - The shared document's length is checked against the security -i limit.
-  - The old shared-mode warnings go.
-  Banked unbuilt on cc/ST0003-WP04 at 55dd109:
-  - Piece 1: doctor::where_logins_are, pure, with Holds read by auth::load; the journal check; doctor::switch_flags, pure. AT-04.1 and AT-04.2 unit tests.
-  - Piece 2: usage::whose, which never renews and returns Whose::Profile, Another or Unchecked, so doctor never reports a check it did not make; shared_checks now takes failed; the CLI doctor test seeds a verified cache.
-  Pieces 3 and 4 banked too, at c65f501: sessions (src/sessions.rs; ps -E behind CCUSAGE_PS, lsof behind CCUSAGE_LSOF, /proc on Linux; the Sandbox sets both stand-ins) and the line limit (keychain::Item::capacity, with the security -i line built once). Still to write: todo 3a, whose meaning and shape went to ic in the message of 2026-11-13 09:09Z; then build WP04 in one Desk slot after the follow-up's run.
+- ST0003/WP04 (doctor) and todo 3a, written and banked unbuilt on cc/ST0003-WP04 at eb6395a, in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). The branch sits on the follow-up (02a5967) and has never been compiled. (edited)
+  What it holds:
+  - doctor::where_logins_are (pure): each login found once, failing none or two; the shared login that belongs to no profile warns; a journal left behind fails. Stores are read through auth::load.
+  - usage::whose, which never renews and returns Whose::Profile, Another or Unchecked, so doctor never reports a check it did not make. The CLI doctor test seeds a verified cache.
+  - doctor::switch_flags (pure), from cachedGrowthBookFeatures, else cachedFeatureFlags. tengu_bubbly_fountain defaults off and tengu_streamed_thimble on, as Claude Code 2.1.323's binary has it.
+  - src/sessions.rs: ps -E behind CCUSAGE_PS and lsof behind CCUSAGE_LSOF (the Sandbox sets both stand-ins), /proc on Linux, keeping only the two variables. sessions::drift.
+  - doctor::line_room with keychain::Item::capacity, the security -i line built in one place.
+  - Todo 3a, with ic's shape and texts: Report.note; a 403 is the no-figures note unless the plan is max or pro; no windows is the no-limits note; which reads the note at the top of assess; the overview shows the note.
+  Its tests are AT-04.1 to AT-04.7.
+  Next, after the follow-up's run:
+  1. Rebase onto main, with ic's WP05, and add ic's display::next line, so a note counts as in.
+  2. One Desk slot: build, fix, mutants, the measured run.
+  3. ic signs the doctor texts; then hand WP04 to vc.
 
 ## TODO
 
