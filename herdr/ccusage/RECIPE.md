@@ -6,9 +6,9 @@ A panel of your Claude accounts' weekly plan use: each account's bar and reset, 
 
 ## What you see
 
-- A heading, `ccusage`, with the time ccusage answered (`as of 14:05`), in 11px dim text on the right.
+- The time ccusage answered (`as of 14:05`), in 11px dim text on the right. Herdr's pane header carries the name, so the panel does not repeat it.
 - When nothing is eligible, one line in the blocked color: `Nothing eligible; the soonest weekly reset is NAME's, in 2d04h`.
-- One card per account, in `which`'s order: the chosen account first, then the eligible ones and those at the cap by rank, then the unknown ones by name. Each card is the account's name in semibold with its tags beside it (`active` in muted, `next` in the accent color), its weekly percent on the right, a 5px bar filled to that percent (accent; the blocked color at the cap; dim when unknown), and one 11px line: `resets in 3d04h · Fable 10% · 28% unused at reset · soonest reset with headroom`. An unknown account's line ends with `unknown:` and ccusage's reason, and a report's own error shows under it in the blocked color.
+- One card per account, in `which`'s order: the chosen account first, then the eligible ones and those at the cap by rank, then the unknown ones by name. Each card is the account's name in semibold with its tags beside it (`active` in muted, `next` in the accent color), its weekly percent on the right, a 5px bar filled to that percent (accent; the blocked color at the cap; dim when unknown), and one 11px line: `resets in 3d04h · Fable 10% · 28% unused at reset · soonest reset with headroom`. An unknown account's line ends with `unknown:` and ccusage's reason, and a report's own error shows under it in the blocked color. When the reason is that error, the line ends with `unknown` alone, so it is said once.
 - Under the cards, predict's line: `Burn rate 0.6% of a weekly allowance an hour, from 48 samples over 1d07h. Projected unused at the current resets: 97% of one weekly allowance.`, or `Too little history to project yet: ...`.
 - It fills its block and scrolls, from a narrow column to a full pane; long lines truncate.
 
@@ -32,10 +32,11 @@ A panel of your Claude accounts' weekly plan use: each account's bar and reset, 
 - `which` exits 1 when nothing is eligible, with its JSON on stdout all the same; read stdout whatever the exit code.
 - `nextCommand` carries a name and no arguments, so the dialog keeps the account it may switch to and acts on `use` only when it has one; every other open copy ignores it.
 - Herdr keeps a hidden copy's timers running, so the period bounds those too.
+- `h_flex` centers its children on the cross axis, so a child with no content takes no height unless given one: the bar's fill and the rest of its track take the track's 5px through `h_full()`. `herdr-app check` renders the mod once but shows nothing of its layout, so look at the pane.
 - Install it with `ccusage herdr install`, which replaces only its own unedited copy and runs `herdr-app check`; an edited copy takes `--force`.
 
 ## Done when
 
 - `herdr-app check` passes on the installed folder.
-- Opened as a pane, it shows each account's bar, reset, tags and reason as `ccusage which` gives them, and predict's line.
+- Opened as a pane, it shows each account's bar filled to its percent, and its reset, tags and reason as `ccusage which` gives them, and predict's line.
 - A card's dialog shows the same text as `ccusage usage NAME --verbose`, and a confirmed `Use NAME` makes it active, as `ccusage which` then says.

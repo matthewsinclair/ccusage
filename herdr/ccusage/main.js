@@ -36,7 +36,11 @@ const hours = (count) => countdown(new Date(Date.now() + count * 60 * MINUTE).to
 /** A percent to the whole number, as ccusage shows one. */
 const whole = (percent) => `${Math.round(percent)}%`;
 
-/** A bar `percent` full, in `color`. */
+/**
+ * A bar `percent` full, in `color`. Its fill and the rest of its track have no content,
+ * and an h_flex centers its children on the cross axis, so each takes the track's height
+ * only through h_full(); without it each is 0px tall and the bar draws no fill.
+ */
 function bar(id, percent, color, t) {
   const used = Math.min(100, Math.max(0, percent));
   return h_flex()
@@ -45,8 +49,8 @@ function bar(id, percent, color, t) {
     .rounded(3)
     .overflow_hidden()
     .bg(t.raised)
-    .child(div().flex_grow(used).bg(color))
-    .child(div().flex_grow(100 - used));
+    .child(div().h_full().flex_grow(used).bg(color))
+    .child(div().h_full().flex_grow(100 - used));
 }
 
 function button(id, label, t, onClick) {
@@ -166,9 +170,9 @@ export default class Ccusage extends View {
     const pad = (n) => String(n).padStart(2, "0");
     return root
       .child(
+        // Herdr's pane header names the mod, so the panel gives only when ccusage answered.
         h_flex()
-          .items_center()
-          .child(div().flex_1().font_semibold().child("ccusage"))
+          .child(div().flex_1())
           .child(
             div()
               .text_size(11)
@@ -204,7 +208,10 @@ export default class Ccusage extends View {
     }
     if (account.session) parts.push(`session ${whole(account.session.percent)}`);
     if (projected) parts.push(`${whole(projected.unused)} unused at reset`);
-    parts.push(account.state === "unknown" ? `unknown: ${account.reason}` : account.reason);
+    // A reason that is the report's own error is said once, by the error line under this one.
+    const reason = account.reason === account.error ? "" : account.reason;
+    if (account.state === "unknown") parts.push(reason ? `unknown: ${reason}` : "unknown");
+    else if (reason) parts.push(reason);
     return v_flex()
       .id(`account-${account.name}`)
       .gap(3)

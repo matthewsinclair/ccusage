@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.10] - unreleased
+
+### Fixed
+
+- The Herdr panel draws each weekly bar filled to its percent; in 0.1.9 every bar showed an empty track. The panel also leaves its name to Herdr's pane header, and an unknown account whose reason is its report's own error says it once, on the error's line (ST0002).
+
 ## [0.1.9] - 2026-11-13
 
 ### Added
