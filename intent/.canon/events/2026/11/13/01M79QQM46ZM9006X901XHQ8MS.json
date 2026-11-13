@@ -1,0 +1,15 @@
+{
+  "id": "01M79QQM46ZM9006X901XHQ8MS",
+  "ts": "2026-11-13T05:57:49.318Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "Question from hv (2026-11-13), for review only, nothing to build yet: can ccusage use switch running Claude Code sessions, not just new ones? Answer from vc, in the live channel: shared mode, once the launcher fix for ISSUE:0003 is in, already removes logout and login for new sessions, and claude --continue makes a restart cheap. Running sessions could follow one fixed login slot that ccusage use moves logins into and out of under the Claude Code locks, switching at the next refresh of each session. Open: when Claude Code re-reads its login. Next, at the call of hv: drop it, or open a thread (read the Claude Code re-read behaviour, prototype in a disposable keychain, then a live trial by hv)."
+  }
+}

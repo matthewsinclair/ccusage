@@ -132,6 +132,14 @@
       "text": "ISSUE:0007's wiring, released from hold 4 on 2026-11-13: devbin-vc says devbin 0.1.23, which Ccusage vendors since 3c1055a, carries every unit of devbin#0326 (0326-11 in 0.1.21; 0331-1 and 0332-1 in 0.1.22), so 0007 no longer waits on devbin. Next, at hv's word: brief dc on the wiring (bin/devbin install and bin/devbin use in the checkout, the version line from the core's stamp, the one formula form; ccusage use stays the account verb), read it against ISSUE:0007's Acceptance, tell hv the full suite is due, and run T10's proof with hv. When 0007 closes, tell devbin-vc, which closes devbin#0326 once pplr#0001 and cldr#0001 have closed too.",
       "state": "live",
       "recorded_at": "2026-11-13T05:51:01.697Z"
+    },
+    {
+      "node": "vc",
+      "kind": "todo",
+      "seq": 6,
+      "text": "Question from hv (2026-11-13), for review only, nothing to build yet: can ccusage use switch running Claude Code sessions, not just new ones? Answer from vc, in the live channel: shared mode, once the launcher fix for ISSUE:0003 is in, already removes logout and login for new sessions, and claude --continue makes a restart cheap. Running sessions could follow one fixed login slot that ccusage use moves logins into and out of under the Claude Code locks, switching at the next refresh of each session. Open: when Claude Code re-reads its login. Next, at the call of hv: drop it, or open a thread (read the Claude Code re-read behaviour, prototype in a disposable keychain, then a live trial by hv).",
+      "state": "live",
+      "recorded_at": "2026-11-13T05:57:49.318Z"
     }
   ],
   "sent": [
