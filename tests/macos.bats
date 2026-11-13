@@ -153,13 +153,11 @@ FAKE
   chmod +x "$FAKE_BIN"/*
 }
 
-# stage <dir> <binary contents>: the four files an archive holds
+# stage <dir> <binary contents>: what an archive holds, rooted at the install root
 stage() {
-  mkdir -p "$1"
+  mkdir -p "$1/bin"
   printf LICENSE > "$1/LICENSE"
-  printf README.md > "$1/README.md"
-  printf ccusage-logo.svg > "$1/ccusage-logo.svg"
-  printf '%s' "$2" > "$1/ccusage"
+  printf '%s' "$2" > "$1/bin/ccusage"
 }
 
 # CI's draft: each archive as `tar -czf ... -C staging .` writes it, the binary holding
@@ -260,8 +258,10 @@ copy_tree() {
     unpacked=$BATS_TEST_TMPDIR/out-$target
     mkdir "$unpacked"
     bsdtar -xzf "$FAKE_RELEASE/ccusage-$TAG-$target.tar.gz" -C "$unpacked"
-    [ "$(cat "$unpacked/ccusage")" = "$(printf '%s\n%s' "$target" "$MARKER")" ]
-    [ "$(stat -f %Lp "$unpacked/ccusage")" = 755 ]
+    [ "$(cat "$unpacked/bin/ccusage")" = "$(printf '%s\n%s' "$target" "$MARKER")" ]
+    [ "$(stat -f %Lp "$unpacked/bin/ccusage")" = 755 ]
+    # Rooted at the install root, as devbin's formula lays the archive out in the keg
+    [ "$(bsdtar -tzf "$FAKE_RELEASE/ccusage-$TAG-$target.tar.gz" | LC_ALL=C sort | xargs)" = "LICENSE bin/ccusage" ]
     [ "$(bsdtar -tvzf "$FAKE_RELEASE/ccusage-$TAG-$target.tar.gz" | awk '{ print $3 $4 }' | sort -u)" = 00 ]
   done
   grep -qxF "codesign --force --sign Developer ID Application: Geodica Pty Ltd (76BQL8L47U) --identifier com.geodica.ccusage --options runtime --timestamp $(grep '^codesign --force' "$FAKE_LOG" | head -1 | awk '{ print $NF }')" "$FAKE_LOG"
@@ -504,16 +504,23 @@ copy_tree() {
   finalize; refused "Unexpected or missing release archives"
 }
 
-@test "archives with a name other than the four files are refused" {
+@test "archives with a name other than the members are refused" {
   local from=$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin rename
-  for rename in ../LICENSE sub/LICENSE license ./sub/LICENSE; do
+  for rename in ../LICENSE sub/LICENSE license ./sub/LICENSE bin/LICENSE; do
     : > "$FAKE_LOG"
-    arm -C "$from" -s ",^LICENSE\$,$rename," LICENSE README.md ccusage ccusage-logo.svg
+    arm -C "$from" -s ",^LICENSE\$,$rename," LICENSE bin/ccusage
+    finalize
+    refused "Unexpected release archive member" || { echo "for $rename"; return 1; }
+  done
+  # The binary anywhere but bin/, the layout before the install root's included
+  for rename in ccusage libexec/bin/ccusage bin/bin/ccusage; do
+    : > "$FAKE_LOG"
+    arm -C "$from" -s ",^bin/ccusage\$,$rename," LICENSE bin/ccusage
     finalize
     refused "Unexpected release archive member" || { echo "for $rename"; return 1; }
   done
   : > "$FAKE_LOG"
-  arm -P -C "$from" -s ',^LICENSE$,/LICENSE,' LICENSE README.md ccusage ccusage-logo.svg
+  arm -P -C "$from" -s ',^LICENSE$,/LICENSE,' LICENSE bin/ccusage
   finalize
   refused "Unexpected release archive member"
 }
@@ -521,25 +528,32 @@ copy_tree() {
 @test "archives with a member too many, too few or twice are refused" {
   local from=$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin
   printf extra > "$BATS_TEST_TMPDIR/extra"
-  arm -C "$from" LICENSE README.md ccusage ccusage-logo.svg -C "$BATS_TEST_TMPDIR" extra
+  arm -C "$from" LICENSE bin/ccusage -C "$BATS_TEST_TMPDIR" extra
   finalize; refused "Unexpected release archive member"
-  : > "$FAKE_LOG"; arm -C "$from" LICENSE ccusage ccusage-logo.svg
+  : > "$FAKE_LOG"; arm -C "$from" bin/ccusage
   finalize; refused "Unexpected release archive member"
-  : > "$FAKE_LOG"; arm -C "$from" LICENSE LICENSE README.md ccusage ccusage-logo.svg
+  : > "$FAKE_LOG"; arm -C "$from" LICENSE LICENSE bin/ccusage
+  finalize; refused "Unexpected release archive member"
+}
+
+@test "archives with a directory but bin/ are refused, even an empty one" {
+  local from=$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin
+  mkdir "$from/share"
+  arm -C "$from" LICENSE bin/ccusage share
   finalize; refused "Unexpected release archive member"
 }
 
 @test "archives whose binary is a link or a directory are refused" {
   local odd=$BATS_TEST_TMPDIR/odd
   stage "$odd" aarch64-apple-darwin
-  rm "$odd/ccusage" && ln -s LICENSE "$odd/ccusage"
-  arm -C "$odd" LICENSE README.md ccusage ccusage-logo.svg
+  rm "$odd/bin/ccusage" && ln -s ../LICENSE "$odd/bin/ccusage"
+  arm -C "$odd" LICENSE bin/ccusage
   finalize; refused "Unexpected release archive member"
-  : > "$FAKE_LOG"; rm "$odd/ccusage" && ln "$odd/LICENSE" "$odd/ccusage"
-  arm -C "$odd" LICENSE README.md ccusage ccusage-logo.svg
+  : > "$FAKE_LOG"; rm "$odd/bin/ccusage" && ln "$odd/LICENSE" "$odd/bin/ccusage"
+  arm -C "$odd" LICENSE bin/ccusage
   finalize; refused "Unexpected release archive member"
-  : > "$FAKE_LOG"; rm "$odd/ccusage" && mkdir "$odd/ccusage"
-  arm -C "$odd" LICENSE README.md ccusage ccusage-logo.svg
+  : > "$FAKE_LOG"; rm "$odd/bin/ccusage" && mkdir "$odd/bin/ccusage"
+  arm -C "$odd" LICENSE bin/ccusage
   finalize; refused "Unexpected release archive member"
 }
 
@@ -547,14 +561,15 @@ copy_tree() {
   # macOS bsdtar folds a ._name entry into the next one as Mac metadata unless its
   # mac-ext option is off, so a listing that left it on would never show it
   local from=$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin
-  printf 'not metadata' > "$from/._ccusage"
-  COPYFILE_DISABLE=1 arm -C "$from" LICENSE README.md ._ccusage ccusage ccusage-logo.svg
+  printf 'not metadata' > "$from/bin/._ccusage"
+  COPYFILE_DISABLE=1 arm -C "$from" LICENSE bin/._ccusage bin/ccusage
   finalize
   refused "Unexpected release archive member"
 }
 
 @test "bare names unpack as well as CI's ./ root" {
-  arm -C "$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin" LICENSE README.md ccusage ccusage-logo.svg
+  # Named members carry no entry for bin/, where CI's tar of . carries one
+  arm -C "$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin" LICENSE bin/ccusage
   finalize
   [ "$status" -eq 0 ] || { echo "$output"; return 1; }
 }
@@ -562,7 +577,7 @@ copy_tree() {
 @test "members over the size limit are refused" {
   # The Apple silicon binary is that archive's largest member
   local largest
-  largest=$(stat -f %z "$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin/ccusage")
+  largest=$(stat -f %z "$BATS_TEST_TMPDIR/stage-aarch64-apple-darwin/bin/ccusage")
   CCUSAGE_MACOS_MEMBER_LIMIT=$((largest - 1)) finalize
   refused "Unexpected release archive member"
 }

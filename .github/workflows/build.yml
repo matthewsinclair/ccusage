@@ -69,8 +69,12 @@ jobs:
           # which bin/devbin macos finalize refuses; GNU tar ignores this.
           COPYFILE_DISABLE: "1"
         run: |
-          mkdir -p staging dist
-          cp "target/$TARGET/release/ccusage" LICENSE README.md design/icons/ccusage-logo.svg staging/
+          # Rooted at the install root, as devbin's formula lays the archive out in the
+          # keg: bin/ccusage and LICENSE, the tree bin/.devbin/config.yaml's install:
+          # block declares, and the members bin/devbin macos finalize unpacks
+          mkdir -p staging/bin dist
+          cp "target/$TARGET/release/ccusage" staging/bin/
+          cp LICENSE staging/
           tar -czf "dist/ccusage-v${VERSION}-${TARGET}.tar.gz" -C staging .
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

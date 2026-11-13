@@ -13,15 +13,16 @@
 #                                     draft. A release already public is verified and
 #                                     left alone.
 #
-# An archive is unpacked only when it holds exactly LICENSE, README.md, ccusage and
-# ccusage-logo.svg, each once and each a regular file, named bare or under a ./ root
-# directory. Its binary must be its target's architecture, and each signature must
-# carry the hardened runtime, a secure timestamp and a designated requirement with
-# no cdhash. Each signed binary is then notarized, and the run stops unless Apple
-# answers Accepted. The facts it signs and checks with, and the login keychain's
-# prefix for the notary credentials, live once, in packaging/macos/signing; the
-# release's repository is bin/.devbin/config.yaml's release.repo, and its targets are
-# the build workflow's matrix, in .github/workflows/build.yml.
+# An archive is unpacked only when it holds exactly LICENSE and bin/ccusage, each
+# once and each a regular file, named bare or under a ./ root directory, with bin/
+# the one directory it may list. Its binary must be its target's architecture, and
+# each signature must carry the hardened runtime, a secure timestamp and a designated
+# requirement with no cdhash. Each signed binary is then notarized, and the run stops
+# unless Apple answers Accepted. The facts it signs and checks with, and the login
+# keychain's prefix for the notary credentials, live once, in
+# packaging/macos/signing; the release's repository is bin/.devbin/config.yaml's
+# release.repo, and its targets are the build workflow's matrix, in
+# .github/workflows/build.yml.
 #
 # IT RUNS ON THE MAINTAINER'S MAC ONLY. It refuses on CI ($CI set) and off macOS,
 # and, before it downloads anything for a draft, when the Developer ID identity is
@@ -35,7 +36,12 @@ setopt err_exit no_unset pipe_fail
 # $root and working from it, die, say and usage
 source ${0:A:h}/common/handler.zsh
 signing=packaging/macos/signing
-files=(LICENSE README.md ccusage ccusage-logo.svg)
+# What each archive holds, rooted at the install root as devbin's formula lays it out
+# in the keg (ISSUE:0007): the binary under bin/, and LICENSE beside it
+exe=bin/ccusage
+files=(LICENSE $exe)
+# The one directory a member lies in, which CI's tar lists as an entry of its own
+dirs=(${exe:h})
 # The release's targets live once, in the build matrix, where CI builds one archive
 # for each; read_targets fills these from it
 workflow=.github/workflows/build.yml
@@ -153,9 +159,10 @@ check_sums() {
   done
 }
 
-# unpack <archive> <dir>: <dir> new and empty. Its listing must be exactly the four
-# files, each once, with a ./ root allowed; what comes out must be those four regular
-# files, one link each and at most $limit bytes. The binary comes out executable.
+# unpack <archive> <dir>: <dir> new and empty. Its listing must be exactly the members,
+# each once, with a ./ root and an entry for a member's directory allowed; what comes
+# out must be those regular files in that directory, one link each and at most $limit
+# bytes. The binary comes out executable.
 # Both reads turn bsdtar's mac-ext off: with it on, as macOS has it by default, a
 # ._name AppleDouble entry is folded into the next entry as metadata and never listed.
 unpack() {
@@ -165,6 +172,11 @@ unpack() {
   for entry in $listed; do
     entry=${entry#./}
     [[ -z $entry || $entry == . ]] && continue
+    # A directory's own entry, as tar -C staging . writes one: a member's alone
+    if [[ $entry == */ ]]; then
+      (( ${dirs[(Ie)${entry%/}]} )) || die "Unexpected release archive member in ${archive:t}"
+      continue
+    fi
     members+=($entry)
   done
   members=(${(o)members}) wanted=(${(o)files})
@@ -175,14 +187,17 @@ unpack() {
   # No file it writes may outgrow max, in the kilobytes zsh's limit counts in
   ( limit filesize $(( max / 1024 ))k; bsdtar --options '!mac-ext' -xzf $archive -C $dir --no-same-owner \
     --no-same-permissions --no-xattrs --no-mac-metadata ) >/dev/null 2>&1 || die "${archive:t} cannot be unpacked"
-  found=($dir/**/*(DN))
+  found=($dir/**/*(DN^/))
   (( $#found == $#files )) || die "Unexpected release archive member in ${archive:t}"
+  found=($dir/**/*(DN/))
+  found=(${(o)found#$dir/})
+  [[ "${(j: :)found}" == "${(j: :)${(o)dirs}}" ]] || die "Unexpected release archive member in ${archive:t}"
   for entry in $files; do
     [[ -f $dir/$entry && ! -h $dir/$entry ]] || die "Unexpected release archive member in ${archive:t}"
     [[ $(stat -f %l $dir/$entry) == 1 ]] || die "Unexpected release archive member in ${archive:t}"
     (( $(stat -f %z $dir/$entry) <= limit )) || die "Unexpected release archive member in ${archive:t}"
   done
-  chmod 755 $dir/ccusage
+  chmod 755 $dir/$exe
 }
 
 # A CodeDirectory line whose flags name the runtime, as in
@@ -266,7 +281,7 @@ sign_release() {
     step "signing $name"
     unpacked=$(mktemp -d $work/unpacked.XXXXXX)
     unpack $in/$name $unpacked
-    sign $unpacked/ccusage $lipo_arch[${t%%-*}]
+    sign $unpacked/$exe $lipo_arch[${t%%-*}]
     requirement_of[$name]=$REPLY
     COPYFILE_DISABLE=1 bsdtar -czf $out/$name --uid 0 --gid 0 --uname '' --gname '' --no-xattrs \
       --no-mac-metadata -C $unpacked $files >/dev/null 2>&1 || die "cannot pack $name"
@@ -312,7 +327,7 @@ check_signed() {
     fi
     unpacked=$(mktemp -d $work/verified.XXXXXX)
     unpack $dir/$name $unpacked
-    verify $unpacked/ccusage
+    verify $unpacked/$exe
     [[ $REPLY == "$(jq -r --arg n $name '.archives[$n].requirement' $manifest)" ]] ||
       die "Release designated requirement mismatch"
   done
