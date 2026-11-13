@@ -9,16 +9,16 @@ status: Not Started
 
 ## Objective
 
-`ccusage predict [--json]` estimates hv's burn rate from the samples in the current windows, simulates following `which` from now, and reports for each account the percent projected to be unused at its reset, and the total allowance projected to be lost. It says plainly when there are too few samples.
+`ccusage predict [--json]` estimates hv's burn rate from the usage history, simulates following `which` from now, and reports for each account the percent projected to be unused at its reset, and the total allowance projected to be lost. It says plainly when there is too little history.
 
-- **Builders:** cc for the arithmetic, a pure function of the samples, the reports, the time now and the cap; ic for the verb and its output (proposed). **Depends on:** WP02 and WP04.
-- **Burn rate (for hv to decide):** proposed, the percent of a weekly allowance consumed per elapsed hour, summed across accounts over the current windows' samples, since hv uses one account at a time. That rate includes idle hours, so it projects over days, and it holds up when samples are sparse. The brief's rate per hour of active use is reported beside it.
+- **Builders:** cc for the arithmetic, a pure function of the history, the reports, the time now and the cap; ic for the verb and its output (proposed). **Depends on:** WP02 and WP04.
+- **Burn rate (for hv to confirm):** the percent of a weekly allowance consumed per elapsed hour: the rises in `weekly_all` across all accounts over the history WP04 keeps, divided by the hours that history spans. hv uses one account at a time, so the sum is hv's own rate. It includes idle hours, so it projects over days, and it holds when samples are sparse. The report says how many samples and how many hours it rests on.
 - **Simulation:** step forward from now. At each step WP02's rule picks the account, which consumes at the burn rate until it reaches the cap or its reset. A window that resets starts again at 0, with its next reset a week on. The horizon is the last of the accounts' current resets. It is arithmetic on the samples and nothing else, so "No model inference is made" stays true.
 - **Assumption (for hv to confirm):** the accounts' weekly allowances are equal, so a percent means the same on each.
-- **Too few samples:** below a minimum defined once, `predict` says so, projects nothing, and exits 0.
-- **Output:** for each account, its percent now, its projected percent at its reset, and its projected percent unused; then the total projected loss. `--json` is versioned as `which`'s is, and `ccusage help` lists the verb.
-- **Tests:** fixture sample sets whose expected rates and losses the test computes from the fixture, never written as literals.
-- **Done when:** `predict` reports from the samples, and AC-05.1 is green.
+- **Too little history:** below a minimum span defined once, or with no rise observed, `predict` says so, projects nothing, and exits 0.
+- **Output:** for each account, its percent now, its projected percent at its reset and its projected percent unused, which includes the share above the cap that the rule leaves; then the total projected loss. `--json` is versioned as `which`'s is, and `ccusage help` lists the verb.
+- **Tests:** fixture histories whose expected rates and losses the test computes from the fixture, never written as literals.
+- **Done when:** `predict` reports from the history, and AC-05.1 is green.
 
 ## Acceptance
 

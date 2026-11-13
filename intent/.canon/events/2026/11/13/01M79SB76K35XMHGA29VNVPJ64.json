@@ -1,0 +1,14 @@
+{
+  "id": "01M79SB76K35XMHGA29VNVPJ64",
+  "ts": "2026-11-13T06:26:00.020Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0002/AC-03.1"
+  },
+  "payload": {
+    "text": "`ccusage which` prints the choice with one reason line, then the rest in rank order one line each, and exits 0; with nothing eligible it says so on stdout, names the soonest reset and exits 1."
+  }
+}

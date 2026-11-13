@@ -1,0 +1,14 @@
+{
+  "id": "01M79SB79JTV7KPVZQY9TEGG06",
+  "ts": "2026-11-13T06:26:00.114Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0002/AC-06.1"
+  },
+  "payload": {
+    "text": "The TUI overview marks the account `which` chooses once every account's fresh report is in, and never on partial or stale data."
+  }
+}

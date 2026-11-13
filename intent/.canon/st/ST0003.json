@@ -1,0 +1,182 @@
+{
+  "schema": "intent/thread@3.0",
+  "id": "ST0003",
+  "title": "Live account switching: ccusage use moves the active login into the shared config, and running sessions follow",
+  "slug": "live-account-switching-ccusage-use-moves-the-act",
+  "status": "triage",
+  "created": "2026-11-13",
+  "objective": "`ccusage use NAME` switches every Claude Code session on the machine, running or new, to NAME's account at that session's next request, with no logout, no login and no restart. In shared mode the shared Claude config's own login becomes the one login every session reads, and `ccusage use` moves the chosen account's login into it and the previous account's back to its profile. Sessions then need nothing from their launcher but `CLAUDE_CONFIG_DIR`, which removes the stale-shell fault that blocks ISSUE:0003.",
+  "context": "**Why.** hv, 2026-11-13, to vc in the live channel: changing accounts means logging out and in, \"a real palaver\", and could `ccusage use` be \"propagated or injected into all running Claude Code sessions\"? Shared mode as built (ISSUE:0003, shipped in 0.1.6) cannot do it. It points each session at the active profile's login through `CLAUDE_SECURESTORAGE_CONFIG_DIR`, which a process reads from its own environment, fixed at launch. So a switch reaches only sessions started afterwards, and only those started from a shell that exported the new value. hv reviews this thread before anything is built.\n\n**What Claude Code does.** Read by vc from the installed 2.1.323 binary on 2026-11-13; its minified names are in brackets. WP01 proves by trial what this reading says.\n\n- It builds the Keychain service name at each use from the process's own `CLAUDE_SECURESTORAGE_CONFIG_DIR`, else from its config directory [`BV`]. Nothing outside the process can change which item it reads.\n- Before a request it settles the stored login [`U4`, `Ru`]. Its change check [`AO`, `ku`] drops the token it holds in memory and reads the item again, through a cache that lives 30 s [`Yzt=30000`]. So a session uses whatever login the item holds, at most 30 s after it changed.\n- A refresh takes `.oauth_refresh.lock`, reads the item again strictly, and refreshes only the token it has just read. When the stored access token is not the one it came in with, it adopts the stored one and does not call the token endpoint (`tengu_oauth_token_refresh_race_resolved`). So a session never refreshes a login that was moved out from under it.\n- It still has the `.storage-write` lock that ccusage's renewals take, with its own handling for a lock that is compromised.\n- A session that is showing its login notice adopts a login another process stores (`_adoptSiblingLogin`, flag `tengu_streamed_thimble`, on unless the flag says otherwise).\n- A session records the account that started it. Behind the flag `tengu_bubbly_fountain`, off unless the flag says otherwise, it refuses requests (`session_owner`) and asks whether to exit, log in again or copy the conversation when the stored account differs (`askAboutSessionOwner`). Neither flag was in the flag cache in `~/.config/claude/.claude.json`, written 05:43Z, so both stood at their defaults. While the second stays off, a changed login is followed without a prompt. Anthropic can turn it on.\n- It has a retry that strips thinking signatures (`tengu_thinking_signature_strip_retry`), so a conversation should survive a change of account as it does when resumed under another account today.\n- To read it again: `rg -a -o '.{0,500}<literal>.{0,500}' ~/.local/share/claude/versions/<version>`.\n\n**What Claude Usage does.** hv's fork at 29a4db2, whose own build is the copy running on rhadamanth: it lists every `Claude Code*` Keychain item, reads each access token, never renews one, and hides an item whose document has no `claudeAiOauth` key (`ClaudeCredentialParser`).\n\n**What Molt does.** Its `env.sh` and its launchd plist export `CLAUDE_SECURESTORAGE_CONFIG_DIR` only when `ccusage dir` prints an existing directory, and unset it otherwise. So once `ccusage dir` stops naming one, every new shell and launchd drop the variable with no change to Molt.\n\n**The design: one live login.** In shared mode each account has exactly one login. The active account's is in the shared config's own store: its Keychain item, or its `.credentials.json` where Claude Code keeps a file. Every other account's is parked in its profile's store. `ccusage use NEW` holds Claude Code's refresh and write locks for each store it touches and moves the `claudeAiOauth` value only, leaving every other key of each document where it is. The shared login goes back to the outgoing profile, NEW's parked login goes into the shared store, and NEW's profile is then left without one. Each write is read back before the next, so every login exists in at least one place at every moment, and a journal in the state directory lets the next run finish a move that was interrupted. Last, `use` writes NEW's account record into the shared `.claude.json`, as it does today.\n\n**What it replaces.** The per-launch directory. `ccusage dir` stops naming one for the active account, `use` unsets launchd's variable where it set it, and a session needs only `CLAUDE_CONFIG_DIR` set to the shared config, as `ccusage run` and Molt both give it. ISSUE:0003's step 4 is reversed: the shared config's login is kept and becomes the live one. That issue closes at this thread's rollout, with five accounts in Claude Usage because four profiles and the shared config hold a login and the fifth profile's item holds none.\n\n**Live state on rhadamanth at 2026-11-13 06:14Z, from metadata only.** 25 `claude` processes, all with `CLAUDE_CONFIG_DIR=~/.config/claude`: 23 launched with hello's profile directory and 2 with engineering01's. Of those two, geodica-estate started at 05:03Z, before the 05:22Z switch to hello, and a Devbin session started at 05:38Z from a shell whose export is older than that switch. None runs on the shared config's own login, `ca646b28`, last written 2026-11-11 12:38Z. The five profile items were all written today.\n\n**Risks, each with its check.**\n\n- Claude Code changes how it reads a login again, or turns the session-owner prompt on. A switch then reaches a session late, or stops it at a prompt. `ccusage doctor` reports the flags from Claude Code's cache, and WP01's trial is run again when Claude Code moves.\n- A login is lost, or parked under the wrong profile. The move never overwrites a login that is its account's only one, verifies the outgoing login against its profile's email as a usage fetch does, and is tested at every interruption point on file stores and on a disposable keychain.\n- The shared document is too long for one `security -i` line, 4032 bytes as hex, eg once it holds MCP logins. ccusage refuses such a write today and does so here, before anything moves. The rollout measures the document's length first. Whether ccusage may fall back to argv, as Claude Code does, would be hv's ruling.\n- A session launched from a shell that still exports a profile's directory does not follow a switch, and loses its login when that profile becomes active. `ccusage doctor` lists such sessions from their launch environment, and the rollout restarts every session once from a fresh shell.\n- What a session loaded for its account at start, eg claude.ai connectors, Remote Control and managed settings, stays the old account's until that session restarts. Inference, and so the weekly allowance, moves at once.\n- The first request after a switch misses the prompt cache, as a restart does.\n\n**Not in scope.** Two accounts live at once in shared mode: a parked profile can still be pinned for one session with `CLAUDE_SECURESTORAGE_CONFIG_DIR=$(ccusage dir NAME)`, at that session's own risk. Switching on a timer. Creating or deleting a Keychain item. Any change with shared mode off.\n\n**Order.** WP01 gates the rest: nothing is built until hv's trial shows a running session following a changed login. Then WP02, then WP03 with WP04 beside it, then WP05. WP06 is hv's rollout, which runs the unreleased build from the opt tree that ISSUE:0007 provides.\n\n**Seats.** cc builds WP02 to WP04, with ic on the verbs' text, and ic writes WP05. vc writes WP01's and WP06's steps and checks them, and hv runs them. `which --use` (ST0002) calls the `use` function this thread owns.\n\n**Release.** One cut carries this thread, ST0002 and ISSUE:0007, pending hv's word.",
+  "body": "",
+  "preamble": "",
+  "wps": [
+    {
+      "seq": 1,
+      "title": "Proof: a running session follows a login changed under it",
+      "scope": "XS",
+      "status": "not-started",
+      "objective": "On the installed Claude Code, show that a session already running picks up a login that another process stores in the same place, with no restart, and record how long it takes and whether anything prompts. Nothing else in this thread is built until it passes.",
+      "body": "- **Who:** vc writes the steps and records the result here. hv runs them: two browser logins on a scratch config, about ten minutes, with no ccusage code involved.\n- **Set up, in two terminals:** `export CLAUDE_CONFIG_DIR=/tmp/ccusage-trial; unset CLAUDE_SECURESTORAGE_CONFIG_DIR`. Nothing real is touched: the scratch config has its own Keychain item.\n- **Terminal A:** `claude`, `/login` as one account, send a prompt, and leave it open.\n- **Terminal B:** `claude`, `/login` as a second account, send a prompt.\n- **Back in A, after a minute:** send a prompt, then `/status`.\n- **Pass:** A answers with no restart, and `/status` names the second account.\n- **Record:** the seconds until A followed, any prompt A showed, Claude Code's version, and the values of `tengu_bubbly_fountain` and `tengu_streamed_thimble` in the scratch `.claude.json`'s flag cache.\n- **Clean up (hv):** `/logout` in one trial session, close both, and remove `/tmp/ccusage-trial`. vc then checks from Keychain metadata that the trial's item holds no login or is gone, and says so if hv needs to delete it.\n- **Shortcut:** if hv already sees, on the current Claude Code, that sessions sharing one config follow a `/login` made in one of them, hv says so and that is the record.\n- **If it fails:** this thread stops, and ISSUE:0003 closes by its launcher fix instead.\n- **Done when:** AC-01.1 is satisfied by the record.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 2,
+      "title": "The login move: claudeAiOauth between stores, locked, journaled, never lossy",
+      "scope": "L",
+      "status": "not-started",
+      "objective": "One function moves an account's login between two of Claude Code's stores without ever leaving an account with no login or with two live ones. It moves the `claudeAiOauth` value only, under Claude Code's own locks, reads each write back, journals its progress, and finishes an interrupted move on the next run.",
+      "body": "- **Builder:** cc (proposed). **Depends on:** WP01 passing.\n- **Pure plan, impure execution (PFIC):** a pure function turns the three documents and the request into the ordered writes or a refusal. The executor only takes locks, writes, reads back and journals.\n- **Stores:** the existing `Stored` reader and writer, for Keychain items and for `.credentials.json` files alike. No second reader of either (Highlander). A Keychain item is never created or deleted, and a store that does not exist is a refusal that says how to make it.\n- **Order:** park the outgoing login in its profile, seat the incoming one in the shared store, then remove it from its profile. Each write is read back before the next. The only values overwritten are a profile's empty place and a shared login that has just been parked. A move may have no incoming login, which parks the active one and leaves the shared store without one, or no outgoing one, which seats a login in a shared store that holds none.\n- **Locks:** ccusage's own switch lock first, then Claude Code's refresh locks and write lock for the shared store, then for each profile's store in name order. They are held for the whole move, so a session's refresh waits and then adopts what it finds.\n- **Refusals, each before any write:** the incoming profile holds no login; the shared store holds a login that is its account's only one and is not the outgoing profile's; the outgoing login does not verify against its profile's email; a resulting document would not fit one `security -i` line.\n- **Journal:** a 0600 file in the state directory naming the two profiles and the step reached, and never a token. A run that finds one finishes that move before it does anything else.\n- **Tests:** an interruption after each step, on file stores; a held Claude Code lock makes the move wait; each refusal leaves all three documents byte for byte as they were; and on macOS CI, on a disposable keychain as `renewal_write_keeps_claude_items_readable_by_security` uses, a move creates no item and keeps `apple-tool:` on each one it writes.\n- **Done when:** AC-02.1 to AC-02.4 are green.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 3,
+      "title": "Shared mode on one live login: use, run, dir, login, logout and adoption",
+      "scope": "L",
+      "status": "not-started",
+      "objective": "Every verb follows the one live login. `use` and `run` move logins through WP02, usage fetches and `list` read each account's login from where it lives, `login` and `logout` keep the layout whole, `dir` stops naming a directory for the active account, and the first `use` after the upgrade adopts today's layout.",
+      "body": "- **Builder:** cc, with ic on the verbs' text (proposed). **Depends on:** WP02.\n- **One `use` function:** the CLI's `use`, `run NAME`, the TUI's `a` key and `which --use` all call it. It moves the login (WP02), writes the account record, selects the profile, and on macOS unsets launchd's `CLAUDE_SECURESTORAGE_CONFIG_DIR`. Today the `a` key writes `active.json` alone and skips shared mode's switch, and that copy goes. Whichever of this work package and ST0002/WP03 lands first makes the function, and the other calls it.\n- **One place says where a login lives:** the shared store when its profile is active, the profile's own otherwise. Usage fetches, renewals, `list` and `doctor` all ask it. The usage cache stays bound to the directory and the credential it was read from, so a switch costs each of the two accounts one fetch.\n- **`ccusage run`:** launches Claude with `CLAUDE_CONFIG_DIR` at the shared config and with `CLAUDE_SECURESTORAGE_CONFIG_DIR` removed from the child's environment, so a stale shell cannot hand it a profile's directory. `run NAME` switches first when NAME is not active, as it does today.\n- **`ccusage dir`:** with no name, or with the active profile's, it prints nothing and fails with a line saying sessions read the shared config's login. Molt, and any launcher built on the README's line, then drop the variable. `dir NAME` for a parked profile prints its directory as now.\n- **`login` and `logout`:** `login NAME` for the active profile seats the fresh login and drops the one it replaces. `logout NAME` refuses the active profile and says to switch first.\n- **Adoption:** on today's layout, where every profile still holds its own login, the first `use NAME` seats NAME's parked login over the shared config's own one and says whose it replaced. It does so only when that login's account has another login parked in a profile, or when that login can no longer be renewed. Otherwise it refuses and says how to park that account first.\n- **Parking everything:** one way, whose spelling is ic's, to put the active login back in its profile and leave the shared store without one. It is how shared mode is turned off and how hv goes back to an older ccusage, which reads logins from the profiles.\n- **Shared mode off:** nothing changes, and every existing test passes unchanged.\n- **What `use` says:** that running sessions follow at their next request, and what stays the old account's until a session restarts.\n- **Tests:** in the `Sandbox`, on file stores, for each verb and for adoption.\n- **Done when:** AC-03.1 to AC-03.4 are green.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 4,
+      "title": "Doctor for the one live login",
+      "scope": "M",
+      "status": "not-started",
+      "objective": "`ccusage doctor` says where each account's login is, and flags everything that would make a switch go wrong before hv relies on one.",
+      "body": "- **Builder:** cc (proposed). **Depends on:** WP02, beside WP03.\n- **Where the logins are:** for the shared store and each profile's, whether it holds a login. It fails when an account has none or two, and when a move's journal is still there.\n- **Whose the shared login is:** verified as the active profile's when the endpoint can be reached. When it cannot, doctor says the check was not made, never that it passed.\n- **Sessions that will not follow:** running `claude` processes whose launch environment names a login directory other than the shared config's, or a `CLAUDE_CONFIG_DIR` other than the shared config, each with its pid, start time and working directory. It reads the process itself (`ps -E` on macOS, `/proc/<pid>/environ` on Linux) and looks only for those two variables. Where neither works it says the check was skipped.\n- **Claude Code's flags:** from the shared config's flag cache, a line when the session-owner prompt (`tengu_bubbly_fountain`) is on or the sibling-login watch (`tengu_streamed_thimble`) is off, saying what a switch will then do.\n- **The line limit:** the shared document's length against the `security -i` limit, as a length and nothing else.\n- **What goes:** today's shared-mode warnings that no longer hold, that the shared config \"still holds a login of its own\" and that `CLAUDE_SECURESTORAGE_CONFIG_DIR` names another profile.\n- **Tests:** in the `Sandbox`, with the process listing supplied by a stand-in as `launchctl` is today.\n- **Done when:** AC-04.1 and AC-04.2 are green.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 5,
+      "title": "Docs and the decision record for the one live login",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "README, ARCHITECTURE.md, RULES.md and the CHANGELOG describe the one live login as built, with the decision, what it rejected and what would break if it were undone.",
+      "body": "- **Builder:** ic (proposed). **Depends on:** WP03 and WP04.\n- **README:** the shared mode section rewritten for one live login. The launcher line goes, since a session needs only `CLAUDE_CONFIG_DIR`. It says what follows a switch at once, what waits for a restart, and how to move from 0.1.8's layout.\n- **ARCHITECTURE.md:** the decision in the file's own form. What it rejected: the per-launch directory of 0.1.6 to 0.1.8, which a running session cannot follow and a stale shell breaks. What would break if it were undone. Checked by: the tests WP02 names, and WP01's trial.\n- **RULES.md:** never overwrite a login that is its account's only one; a move holds Claude Code's locks for every store it touches; `claudeAiOauth` is the only key ccusage moves.\n- **CHANGELOG:** in the release's own entry.\n- **ISSUE:0003:** its record points here for its remaining steps (dc, on vc's brief).\n- **Done when:** every claim matches the code on vc's read, and AC-05.1 is satisfied.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 6,
+      "title": "Rollout on rhadamanth, closing ISSUE:0003",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "hv moves rhadamanth to the one live login from the unreleased build, restarts the sessions once, and then switches accounts under running sessions. vc checks each step from metadata. Its end closes ISSUE:0003.",
+      "body": "- **Who:** hv runs every step; each changes hv's live config, launchd or login keychain. vc writes the exact commands, and checks from metadata only. **Depends on:** WP03, WP04, and ISSUE:0007 for the opt tree.\n\n1. hv prints the shared login document's length, a number and nothing else, and vc confirms it fits one `security -i` line.\n2. hv publishes the build to the opt tree and switches to it (`bin/devbin install`, `bin/devbin use opt`). `ccusage --version` names the tree.\n3. hv runs `ccusage doctor`. It shows today's layout and lists the sessions that carry a profile's directory.\n4. hv runs `ccusage use` for the account `which` names. That adopts the layout: the account's login is seated in the shared config, the stale login there is replaced, and launchd's variable is unset.\n5. hv opens a fresh shell, where Molt now drops the variable, and restarts every session once from fresh shells.\n6. vc checks: no `claude` process carries `CLAUDE_SECURESTORAGE_CONFIG_DIR`, five stores hold a login, and no Keychain item is new. hv sees Claude Usage list five accounts with nothing prompting.\n7. The live switch: with sessions running, hv runs `ccusage use` for another account, then sends a prompt in a session that was already open. It answers, and `/status` names the new account. hv does the same with `ccusage which --use`. vc records the delay, what happened to that session's Remote Control link and claude.ai connectors, and the two items' modification times.\n8. dc closes ISSUE:0003, its Acceptance read against the new layout.\n\n- **Back out:** on the opt build hv first parks everything (WP03), which puts the active login back in its profile. Then `bin/devbin use brew` returns to 0.1.8, which reads logins from the profiles, and its `ccusage use` and a fresh shell restore the old layout.\n- **Done when:** AC-06.1 and AC-06.2 are satisfied by the record.\n",
+      "preamble": ""
+    }
+  ],
+  "criteria": [
+    {
+      "id": "AC-01.1",
+      "text": "hv's trial on the installed Claude Code shows a running session following a login that another process changed, with no restart, and the record names the version, the delay and any prompt.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-02.1",
+      "text": "A move leaves each account with exactly one login, moves only `claudeAiOauth`, and leaves every other key of each document unchanged.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.2",
+      "text": "A move interrupted after any step is finished by the next run, and at no point is an account without a login.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.3",
+      "text": "Each refusal (no parked login, an only login in the way, an outgoing login that does not verify, a document over the `security -i` limit) happens before any write.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.4",
+      "text": "A move waits for a held Claude Code lock, and on a disposable keychain it creates no item and keeps `apple-tool:` on each item it writes.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.1",
+      "text": "In shared mode `ccusage use NAME` puts NAME's login in the shared store and its account record in the shared `.claude.json`, parks the previous account's login in its profile, and unsets launchd's variable.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.2",
+      "text": "Usage fetches, renewals and `list` read each account's login from where it lives, before and after a switch.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.3",
+      "text": "`ccusage dir` prints no directory for the active account and fails, `ccusage run` gives its child no login directory, `login` of the active profile seats the new login, and `logout` of the active profile is refused.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.4",
+      "text": "The first `use` on 0.1.8's layout adopts it, replacing the shared config's login only when its account has another login parked or it can no longer be renewed; parking everything restores that layout; and with shared mode off every existing test passes unchanged.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-04.1",
+      "text": "`ccusage doctor` reports where each login is, an interrupted move, a shared login that is not the active profile's, and either Claude Code flag that is off its default.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-04.2",
+      "text": "`ccusage doctor` lists running Claude sessions whose launch environment names another login directory or another config directory.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-05.1",
+      "text": "README, ARCHITECTURE.md, RULES.md and the CHANGELOG describe the one live login as built, and ISSUE:0003's record points to this thread.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-06.1",
+      "text": "After the rollout on rhadamanth no Claude session carries `CLAUDE_SECURESTORAGE_CONFIG_DIR`, five stores hold a login, and Claude Usage lists five accounts with nothing prompting.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-06.2",
+      "text": "With sessions running, `ccusage use` and `ccusage which --use` each reach a session that was already open at its next request, with no restart.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    }
+  ]
+}

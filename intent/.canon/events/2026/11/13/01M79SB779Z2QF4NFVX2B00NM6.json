@@ -1,0 +1,14 @@
+{
+  "id": "01M79SB779Z2QF4NFVX2B00NM6",
+  "ts": "2026-11-13T06:26:00.041Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0002/AC-03.3"
+  },
+  "payload": {
+    "text": "`ccusage use`, the TUI's `a` key and `ccusage which --use` make an account active through one function, and `which --use` changes nothing when nothing is eligible."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "id": "01M79SB78VC72D1NFK52YK5SB7",
+  "ts": "2026-11-13T06:26:00.091Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0002/AC-05.1"
+  },
+  "payload": {
+    "text": "`ccusage predict` reports each account's projected unused percent and the total projected loss from a fixture history, says how much history it rests on, and says plainly when there is too little."
+  }
+}

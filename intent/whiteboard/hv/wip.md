@@ -33,7 +33,7 @@ _(none)_
 
 ## Decisions
 
-_(none)_
+- hv's rulings of 2026-11-13, given to vc in the live channel (vc's window), in hv's wording, recorded by vc as mediator. On ST0002: "Don't start coding yet, I want to elaborate the ST and WPs and then review them before we begin." On the estate: "devbin-vc has The Desk and devbin+intent and devvm are P0/P1 this morning. So you need to check in with it before we do anything, and then depending on what's happening, I'll arbitrate." On switching accounts under running sessions: "Don't _do_ this now, I'm just posing the question for review." and "Hold for 'go' while I work with devbin/intent". Then hv asked vc to review that question, elaborate the work packages and any new threads for all of it, and review the open threads. vc's reading: no seat writes code on ST0002 or ST0003 until hv has reviewed them and said go.
 
 ---
 

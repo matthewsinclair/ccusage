@@ -1,0 +1,16 @@
+{
+  "id": "01M79SJ01N8SHNGKVAHHP6KHM5",
+  "ts": "2026-11-13T06:29:42.069Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which and predict verbs (hv, 2026-11-13): elaborated from geodica-estate's brief, then reviewed and corrected by vc on hv's ask: seven sized WPs and 14 ACs keyed AC-<wp>.<n>. No seat writes code until hv has reviewed it and said go. Waiting on hv for: who builds (by remit, or ic this thread while cc builds ST0003); the three departures from the brief in the thread's Context (history bounded by age, burn per elapsed hour, equal allowances); and one cut. The Desk (devbin-vc): no freeze on Ccusage's tree; rhadamanth has been free for cargo since Intent's cut left its legs at 06:24Z, and measured runs are normal slot asks. Then: brief the builders, WP01 first."
+  }
+}

@@ -9,15 +9,16 @@ status: Not Started
 
 ## Objective
 
-Every successful fetch appends one sample per window (account, kind, model, percent, reset, time sampled) to a private file under `$XDG_STATE_HOME/ccusage/`, and the file stays bounded because the samples of windows that have reset are dropped. This is the history `predict` works from.
+Every successful fetch records a sample (account, kind, model, percent, reset, time sampled) for each window whose percent has changed, in a private file under `$XDG_STATE_HOME/ccusage/`. Samples older than one weekly window are dropped, so the file stays small. This is the history `predict` works from.
 
 - **Builder:** cc (proposed). **Depends on:** WP01.
 - **One hook** at the one success point, the `Fetch::Success` arm of `Client::load`. The CLI, the TUI and `which` all record through it, and a cache hit records nothing.
-- **File:** proposed `history.jsonl`, mode 0600 like every Ccusage file. It is written under a lock, since the CLI and the TUI can fetch at once, and pruned of reset windows' samples by an atomic rewrite through `storage::write_atomic`.
-- **Failure:** a failed history write shows in the report's error, as a failed cache save does today, and never discards the fetched usage (No Silent Errors).
+- **What is kept:** a window's first sample, then one each time its percent differs from the last one kept. A window is the same window while its reset, rounded to the nearest minute, is unchanged. Samples older than one weekly window, a length defined once, are dropped. Samples are not dropped at a reset: what hv burned on a window that has since reset is part of the burn rate.
+- **File:** proposed `history.jsonl`, mode 0600 like every Ccusage file, read through `storage::read_optional` and rewritten whole through `storage::write_atomic`, under one lock, since the CLI, the TUI and another session's call can fetch at once.
+- **Failure:** a failed history write shows in the report's error, as a failed cache save does today, and never discards the fetched usage (No Silent Errors). The rule in WP02 still uses that account, because its data is fresh.
 - **Contents:** only the windows' numbers. No token, no email, and nothing else from the response.
 - **Discoverable:** README's XDG table names the file, and doctor's private-file check covers it.
-- **Tests:** a fetch appends, a cache hit does not, a reset window's samples are pruned, the file is 0600, and two writers at once lose nothing.
+- **Tests:** a fetch records, a cache hit does not, an unchanged percent adds nothing, a sample past the age limit is dropped while one from a window that has reset is kept, the file is 0600, and two writers at once lose nothing.
 - **Done when:** samples accumulate and stay bounded, and AC-04.1 is green.
 
 ## Acceptance

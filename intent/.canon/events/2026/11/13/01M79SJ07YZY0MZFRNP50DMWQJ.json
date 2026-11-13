@@ -1,0 +1,16 @@
+{
+  "id": "01M79SJ07YZY0MZFRNP50DMWQJ",
+  "ts": "2026-11-13T06:29:42.270Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 4,
+    "text": "ISSUE:0003's live check, to close it in 0.1.9's cut (hv, 2026-11-06). Read from the live processes and Keychain metadata at 2026-11-13 06:14Z: all 25 claude processes carry a profile's directory (23 hello's, the active profile; 2 engineering01's, one launched before the 05:22Z switch to hello and one from a shell older than it); none runs on the main config's own login; and ca646b28 was last written 2026-11-11 12:38Z. So nothing renews ca646b28, and what is left of step 3 is the launcher gap for a shell older than the last ccusage use. Waiting on hv's choice. Either ST0003, whose rollout replaces steps 3 and 4 and keeps the shared config's login as the live one. Or the launcher fix (fresh shells, or launching through ccusage run), then step 4 (hv retires ca646b28) and three checks: (a) ca646b28 stays unwritten and every claude process carries the active profile's directory; (b) with hv's OK, a scratch-config session with the exported directory reports the active profile's email from claude auth status and no new Keychain item appears; (c) hv sees Claude Usage list exactly five accounts with nothing prompting, and vc counts the items. dc closes ISSUE:0003 either way (dc's hold 6)."
+  }
+}

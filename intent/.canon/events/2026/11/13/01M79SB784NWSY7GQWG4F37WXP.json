@@ -1,0 +1,14 @@
+{
+  "id": "01M79SB784NWSY7GQWG4F37WXP",
+  "ts": "2026-11-13T06:26:00.068Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0002/AC-04.1"
+  },
+  "payload": {
+    "text": "Each successful fetch records a sample for each window whose percent changed, in a 0600 file under XDG_STATE_HOME; a cache hit records nothing; and samples are dropped by age, one weekly window, not at a reset."
+  }
+}

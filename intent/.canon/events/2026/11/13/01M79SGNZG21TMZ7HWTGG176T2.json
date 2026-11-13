@@ -1,0 +1,15 @@
+{
+  "id": "01M79SGNZG21TMZ7HWTGG176T2",
+  "ts": "2026-11-13T06:28:58.992Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wp.new",
+  "subject": {
+    "type": "wp",
+    "id": "ST0003/04"
+  },
+  "payload": {
+    "scope": "S",
+    "title": "Doctor for the one live login"
+  }
+}

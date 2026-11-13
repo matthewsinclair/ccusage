@@ -14,7 +14,7 @@ Give hv one command that names the account to work on now, so that no weekly all
 
 ## Context
 
-**Source.** geodica-estate's brief of 2026-11-13, written on hv's ask and sent to vc. Its questions are hv's to answer. hv reviews this thread and its work packages before anyone writes code (hv to vc, 2026-11-13, in the live channel).
+**Source.** geodica-estate's brief of 2026-11-13, written on hv's ask and sent to vc. Its questions are hv's to answer. hv reviews this thread and its work packages before anyone writes code (hv to vc, 2026-11-13, in the live channel). vc reviewed and corrected this elaboration the same day, on hv's ask.
 
 **The problem.** hv runs five accounts: engineering00, engineering01, engineering02, engineering04 and hello. Each has a weekly window (`weekly_all`) with its own `resets_at`, and a model-scoped window (`weekly_scoped`; Fable today, with an allowance of 50% of the weekly one). Allowance still unused at a reset is lost. Today hv reads `ccusage --all` and decides by eye.
 
@@ -25,19 +25,27 @@ Give hv one command that names the account to work on now, so that no weekly all
 **What the code gives the work packages.**
 
 - `usage::Snapshot::windows()` returns (label, Window) pairs. The `limits` kinds become display labels ("7 day", or the model's display name), so the kind `which` ranks on is gone before anything can select by it. The legacy fields (`seven_day`, `seven_day_<model>`, `five_hour`) are mapped the same way.
-- `usage::Client::report` gives each account a `Report`: the last good snapshot, when it was fetched, whether it came from the cache, and an error when the refresh failed or was rate limited. A report can carry an old snapshot and an error at once. The cache lives 300 s, and a 429 backs off for 1800 s.
-- The TUI's worker calls the same `Client::report`, so whatever hooks the fetch path covers the TUI too.
-- `config::Config` has `deny_unknown_fields`, so every older binary refuses a config carrying a new key. Once hv sets the cap key, a brew-installed ccusage older than the release refuses the config until it is upgraded.
-- `use NAME` lives inline in `cli::run`, and in shared mode it rewrites the shared config's account record through `shared::switch`. Changing hv's real active account is hv's own command (dc's watch-out 1).
-- Today the endpoint returns `weekly_all` and a Fable `weekly_scoped` window for all five accounts, and no session window. Reset times carry sub-second jitter: engineering01 resets at 21:00:00.388Z and engineering02 at 21:00:00Z, so ranking on raw timestamps would let the jitter decide and never reach the headroom tie-break.
+- `usage::Client::report` gives each account a `Report`: the last good snapshot, when it was fetched, whether it came from the cache, and an error when the refresh failed or was rate limited. A report can carry an old snapshot and an error at once, and a fresh snapshot with an error when only the cache save failed. So the age of a report's data, not whether it carries an error, says whether the rule may use it. The cache lives 300 s, and a 429 backs off for 1800 s.
+- The TUI fetches at open and on `r`, never by itself, through the same `Client::report`. So a hook in the fetch path covers it, and what it shows can be older than the cache's lifetime.
+- `config::Config` has `deny_unknown_fields`, so every older binary refuses a config carrying a new key, and `ccusage add` rewrites the whole config. A key written back unasked would lock a brew-installed ccusage out of a config hv never changed, and a launcher's `ccusage dir` would then fail without a word.
+- `use NAME` lives inline in `cli::run`, and the TUI's `a` key is a second copy of it that writes `active.json` alone and skips shared mode's switch. One function replaces both. Changing hv's real active account is hv's own command (dc's watch-out 1).
+- Today the endpoint returns `weekly_all` and a Fable `weekly_scoped` window for all five accounts, and no session window. Reset times jitter by under a second either side of the hour: hello's is 09:59:59.53Z and engineering01's 21:00:00.39Z. Ranking on raw timestamps would let the jitter decide, and cutting them to the minute would put one reset in two different minutes, so the rule compares resets rounded to the nearest minute.
+
+**Three departures from the brief, each for hv to confirm.**
+
+- History is bounded by age, one weekly window, not by reset. Dropping a window's samples at its reset erases what hv burned on it while the other accounts' older samples still stretch the span, so the burn rate would read low after every reset.
+- The burn rate `predict` projects with is percent per elapsed hour over that history, idle hours included. The brief's rate per hour of actual use needs a guess at hv's working hours before it can project days ahead, and sparse samples cannot tell working hours from idle ones.
+- `predict` assumes the five accounts' weekly allowances are equal, so that a percent on one is a percent on another.
 
 **Not in scope.** The 5-hour session window: the parser already reads one if the endpoint returns it, and `which` notes it but never ranks on it. Usage credits and extra usage. Switching accounts on a timer.
 
 **Consumers.** hv at the shell. The TUI, with a "next" marker on the chosen account. Later, a status line. geodica-estate will call `ccusage which --json` at its folds, so that JSON shape is a contract: cc is authoritative on what it means and ic on its shape, and a change to it needs both.
 
-**Seats.** Each work package names its proposed builder by remit: cc for the windows, the rule, the history and predict's arithmetic; ic for the verbs, the JSON shape and the TUI; ac for the docs. dc stays on 0.1.9's blockers and runs the cut. hv decides which seats are started.
+**With ST0003.** `which --use` calls the one `use` function. Once ST0003 lands, that switches every running session, so reaching an account's limit costs one command and a cap nearer 100 wastes less. The default stays 95 until hv says otherwise.
 
-**Release.** ST0002 joins 0.1.9's one cut with ISSUE:0007 and ISSUE:0003, pending hv's word.
+**Seats.** Two ways, for hv to choose. By remit, as each work package names: cc builds the windows, the rule, the history and predict's arithmetic, and ic the verbs, the JSON shape and the TUI. Or by thread, which is faster with ST0003 beside it: ic builds this thread and cc signs the rule and what the JSON means, while cc builds ST0003. Either way dc wires ISSUE:0007 and runs the cut.
+
+**Release.** One cut carries this thread, ST0003 (whose rollout closes ISSUE:0003) and ISSUE:0007, pending hv's word.
 
 **Order.** WP01 first. Then WP02 and WP04 side by side. WP03 and WP06 follow WP02; WP05 follows WP02 and WP04; WP07 comes last. vc validates each work package against its acceptance criteria on its builder's one measured run.
 

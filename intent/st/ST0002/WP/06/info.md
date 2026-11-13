@@ -13,7 +13,7 @@ The TUI overview marks the account WP02's rule would choose with a `next` marker
 
 - **Builder:** ic (proposed). **Depends on:** WP02.
 - **One rule:** the marker comes from WP02's function, never a second copy of the rule. The overview's renderer, `display::lines`, also draws `usage --all`'s text, so ic decides whether that shows the marker too.
-- **Never on doubt:** an unknown or stale report never carries the marker.
+- **Only on whole, fresh data:** the marker shows once every account's report is in and none is older than the cache's lifetime. Until then, and once the data has aged past it, the overview says a refresh (`r`) is needed for the marker. The TUI fetches at open and on `r` only. Whether it should also re-fetch by itself is hv's call and no part of this work package.
 - **Tests:** in `display.rs`'s tests, over fixture reports.
 - **Done when:** the marker shows on the chosen account, and AC-06.1 is green.
 

@@ -1,0 +1,15 @@
+{
+  "id": "01M79SGP0W6K18MQ5VHQ80DR16",
+  "ts": "2026-11-13T06:28:59.037Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wp.new",
+  "subject": {
+    "type": "wp",
+    "id": "ST0003/06"
+  },
+  "payload": {
+    "scope": "S",
+    "title": "Rollout on rhadamanth, closing ISSUE:0003"
+  }
+}

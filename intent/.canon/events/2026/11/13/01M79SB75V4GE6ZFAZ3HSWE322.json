@@ -1,0 +1,14 @@
+{
+  "id": "01M79SB75V4GE6ZFAZ3HSWE322",
+  "ts": "2026-11-13T06:25:59.995Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.edit",
+  "subject": {
+    "type": "ac",
+    "id": "ST0002/AC-02.3"
+  },
+  "payload": {
+    "text": "The cap comes from config.toml, with one default when the key is absent; a config that does not set the key is written back without it; and no test writes the cap as a literal."
+  }
+}
