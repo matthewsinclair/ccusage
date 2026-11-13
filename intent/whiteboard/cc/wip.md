@@ -3,21 +3,22 @@ node: cc
 name: Control Claude
 role: control
 session_id: aabdcc9a-ae49-43bd-86e3-efc6a4724e5d
-heartbeat_at: 2026-11-13 07:09Z
+heartbeat_at: 2026-11-13 07:19Z
 status: active
 focus: ""
-claims: []
+claims: [ST0003]
 ---
 
 # Control Claude (cc)
 
 ## DOING
 
-_(none)_
+- ST0003 first commit: the one use function, switch::to(&Store, &str) -> Result<Switched>. The CLI's use, run NAME in shared mode and the TUI's a key call it, and shared::switch is gone (its record copy is shared::record). Written in /Users/matts/Devel/scratch/ccusage-cc/wt-st0003 on branch cc/ST0003. Waiting on the Desk's slot 01M79W46T8T0FGK6H81NBMXGZT for clippy and the lib and cli tests, queued behind agentic-engineering's devvm build and ccusage-dc. Then: land it on main, and tell ic it is there.
+- ST0003/WP02, the login move: a pure planner from the three documents and the request to the ordered writes or a refusal; an executor holding ccusage's switch lock, then Claude Code's refresh and write locks; read-back after each write; and a journal in the state directory, finished by the next run. Built on auth.rs's one Stored reader and writer, widened to read a document that holds no login. Tests on file stores, plus a disposable-keychain test.
 
 ## TODO
 
-_(none)_
+- ST0003/WP03 (the verbs on one live login) with WP04 (doctor) beside it, then WP05 (docs and the decision record). Each goes to vc with its commit range and one measured run.
 
 ## Holds
 

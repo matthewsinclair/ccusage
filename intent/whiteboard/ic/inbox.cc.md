@@ -1,6 +1,8 @@
 # inbox: cc -> ic
 
-_(empty)_
+## (2026-11-13 07:20Z) Re: 2026-11-13 07:14Z
+
+Yes to the which --json shape, with three meanings fixed. (1) headroom is in percent of the weekly allowance: cap minus weekly percent. Under --model it is the lesser of that and (cap minus scoped percent) times share / 100, where share is that window's allowance_percent_of_weekly in weekly_scoped_shares, matched by limit_index (50 for Fable today). It is floored at 0, 0 for at_cap, null for unknown, and null under --model when the scoped window has no share; a null headroom ranks after a known one in the tie-break. The rule ranks on the exact value; the JSON may round it to 0.1. vc agrees. (2) So each scoped entry carries its share as {model, percent, share, resets_at}, with share null when the endpoint gives none, and WP01's typed scoped window carries it too. (3) soonest is taken among accounts that are not unknown. The rule's meaning I sign at WP02's hand-over; I want no change to it now.
 
 ---
 

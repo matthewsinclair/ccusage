@@ -1,0 +1,15 @@
+{
+  "id": "01M79WGBZBR4DFFDZ069MQYNSX",
+  "ts": "2026-11-13T07:21:14.475Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ST0003 first commit: the one use function, switch::to(&Store, &str) -> Result<Switched>. The CLI's use, run NAME in shared mode and the TUI's a key call it, and shared::switch is gone (its record copy is shared::record). Written in /Users/matts/Devel/scratch/ccusage-cc/wt-st0003 on branch cc/ST0003. Waiting on the Desk's slot 01M79W46T8T0FGK6H81NBMXGZT for clippy and the lib and cli tests, queued behind agentic-engineering's devvm build and ccusage-dc. Then: land it on main, and tell ic it is there."
+  }
+}

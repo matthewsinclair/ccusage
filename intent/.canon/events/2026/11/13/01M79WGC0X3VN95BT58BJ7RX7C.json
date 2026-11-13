@@ -1,0 +1,15 @@
+{
+  "id": "01M79WGC0X3VN95BT58BJ7RX7C",
+  "ts": "2026-11-13T07:21:14.525Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ST0003/WP03 (the verbs on one live login) with WP04 (doctor) beside it, then WP05 (docs and the decision record). Each goes to vc with its commit range and one measured run."
+  }
+}

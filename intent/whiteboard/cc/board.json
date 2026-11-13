@@ -5,14 +5,41 @@
     "name": "Control Claude",
     "role": "control",
     "session_id": "aabdcc9a-ae49-43bd-86e3-efc6a4724e5d",
-    "heartbeat_at": "2026-11-13T07:09:44.417Z",
+    "heartbeat_at": "2026-11-13T07:19:36.314Z",
     "status": "active",
     "focus": "",
-    "claims": [],
+    "claims": [
+      "ST0003"
+    ],
     "recorded_at": "2026-11-11T17:55:10.738Z",
     "migrated_at": "2026-11-11T17:55:10.738Z"
   },
-  "items": [],
+  "items": [
+    {
+      "node": "cc",
+      "kind": "doing",
+      "seq": 1,
+      "text": "ST0003 first commit: the one use function, switch::to(&Store, &str) -> Result<Switched>. The CLI's use, run NAME in shared mode and the TUI's a key call it, and shared::switch is gone (its record copy is shared::record). Written in /Users/matts/Devel/scratch/ccusage-cc/wt-st0003 on branch cc/ST0003. Waiting on the Desk's slot 01M79W46T8T0FGK6H81NBMXGZT for clippy and the lib and cli tests, queued behind agentic-engineering's devvm build and ccusage-dc. Then: land it on main, and tell ic it is there.",
+      "state": "live",
+      "recorded_at": "2026-11-13T07:21:14.475Z"
+    },
+    {
+      "node": "cc",
+      "kind": "doing",
+      "seq": 2,
+      "text": "ST0003/WP02, the login move: a pure planner from the three documents and the request to the ordered writes or a refusal; an executor holding ccusage's switch lock, then Claude Code's refresh and write locks; read-back after each write; and a journal in the state directory, finished by the next run. Built on auth.rs's one Stored reader and writer, widened to read a document that holds no login. Tests on file stores, plus a disposable-keychain test.",
+      "state": "live",
+      "recorded_at": "2026-11-13T07:21:14.500Z"
+    },
+    {
+      "node": "cc",
+      "kind": "todo",
+      "seq": 1,
+      "text": "ST0003/WP03 (the verbs on one live login) with WP04 (doctor) beside it, then WP05 (docs and the decision record). Each goes to vc with its commit range and one measured run.",
+      "state": "live",
+      "recorded_at": "2026-11-13T07:21:14.525Z"
+    }
+  ],
   "sent": [
     {
       "id": "01M79W1RR37CB2DD8QVRHJQTHM",
@@ -20,7 +47,31 @@
       "body": "cc's plan for ST0003, on vc's go: a worktree at /Users/matts/Devel/scratch/ccusage-cc/wt-st0003 on branch cc/ST0003, with small commits rebased onto main. (1) First commit, landed early: one use function, ccusage::switch::to(&Store, &str), which returns what it did. The CLI's use, run NAME in shared mode and the TUI's a key call it. The a key then makes shared mode's switch too; nothing else changes. ic gets the signature when it lands. (2) WP02: a pure planner (three documents and the request in, the ordered writes or a refusal out) and an executor (locks, writes, read-back, journal), built on auth.rs's one Stored reader and writer, widened to read a document that holds no login. Tested on file stores and the disposable keychain. (3) Then WP03 with WP04 beside it, then WP05. One Desk cargo slot per hand-over; the lane is full now, so I write meanwhile. One design point for your read: the outgoing login is verified as a usage fetch verifies one. When the usage cache holds a verified credential that matches, that is the check; otherwise it is one call to the profile endpoint. So the tests use the cache and need no network.",
       "fyi": false,
       "recorded_at": "2026-11-13T07:13:16.035Z"
+    },
+    {
+      "id": "01M79WFT67A546H83TC9GC9VJV",
+      "recipient": "ic",
+      "body": "Yes to the which --json shape, with three meanings fixed. (1) headroom is in percent of the weekly allowance: cap minus weekly percent. Under --model it is the lesser of that and (cap minus scoped percent) times share / 100, where share is that window's allowance_percent_of_weekly in weekly_scoped_shares, matched by limit_index (50 for Fable today). It is floored at 0, 0 for at_cap, null for unknown, and null under --model when the scoped window has no share; a null headroom ranks after a known one in the tie-break. The rule ranks on the exact value; the JSON may round it to 0.1. vc agrees. (2) So each scoped entry carries its share as {model, percent, share, resets_at}, with share null when the endpoint gives none, and WP01's typed scoped window carries it too. (3) soonest is taken among accounts that are not unknown. The rule's meaning I sign at WP02's hand-over; I want no change to it now.",
+      "re": "2026-11-13 07:14Z",
+      "fyi": false,
+      "recorded_at": "2026-11-13T07:20:56.263Z"
     }
   ],
-  "handled": []
+  "handled": [
+    {
+      "id": "01M79VH4P7WWC2XTB8YTXXYB5K",
+      "sender": "vc",
+      "handled_at": "2026-11-13T07:21:19.487Z"
+    },
+    {
+      "id": "01M79W47950PFAKRMDN8NDXVGG",
+      "sender": "ic",
+      "handled_at": "2026-11-13T07:21:19.515Z"
+    },
+    {
+      "id": "01M79W8RTS8HB85DCKVR9B7E5F",
+      "sender": "vc",
+      "handled_at": "2026-11-13T07:21:19.487Z"
+    }
+  ]
 }
