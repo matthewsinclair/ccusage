@@ -5,8 +5,187 @@
   "slug": "add-which-verb-to-indicate-the-best-account-to-u",
   "status": "wip",
   "created": "2026-11-13",
-  "objective": "",
-  "context": "",
+  "objective": "Give hv one command that names the account to work on now, so that no weekly allowance goes unused at its reset, and a companion that projects how much allowance will be lost if hv follows it. `ccusage which` applies earliest reset first, \"use it or lose it\", to every account's weekly window. `ccusage predict` does arithmetic on the usage samples ccusage records from its own fetches. Both read what `usage --all` reads, through the same five-minute cache, and \"No model inference is made\" stays true.",
+  "context": "**Source.** geodica-estate's brief of 2026-11-13, written on hv's ask and sent to vc. Its questions are hv's to answer. hv reviews this thread and its work packages before anyone writes code (hv to vc, 2026-11-13, in the live channel).\n\n**The problem.** hv runs five accounts: engineering00, engineering01, engineering02, engineering04 and hello. Each has a weekly window (`weekly_all`) with its own `resets_at`, and a model-scoped window (`weekly_scoped`; Fable today, with an allowance of 50% of the weekly one). Allowance still unused at a reset is lost. Today hv reads `ccusage --all` and decides by eye.\n\n**The rule.** Work on the account with headroom whose reset is soonest. Accounts with distant resets are the reserve: move to one only when everything resetting sooner is at or near its cap.\n\n**Worked example.** From the caches fetched between 05:23Z and 05:27Z on 2026-11-13 (the brief rounded these times): hello at 73% resets 2026-11-16 09:59Z; engineering04 at 22% resets 2026-11-16 12:00Z; engineering01 and engineering02 at 0% reset 2026-11-19 21:00Z; engineering00 at 0% resets 2026-11-20 04:00Z. The answer is hello until it nears its cap, then engineering04, leaving 00, 01 and 02 until after Monday's resets. WP02 makes this a fixture test.\n\n**What the code gives the work packages.**\n\n- `usage::Snapshot::windows()` returns (label, Window) pairs. The `limits` kinds become display labels (\"7 day\", or the model's display name), so the kind `which` ranks on is gone before anything can select by it. The legacy fields (`seven_day`, `seven_day_<model>`, `five_hour`) are mapped the same way.\n- `usage::Client::report` gives each account a `Report`: the last good snapshot, when it was fetched, whether it came from the cache, and an error when the refresh failed or was rate limited. A report can carry an old snapshot and an error at once. The cache lives 300 s, and a 429 backs off for 1800 s.\n- The TUI's worker calls the same `Client::report`, so whatever hooks the fetch path covers the TUI too.\n- `config::Config` has `deny_unknown_fields`, so every older binary refuses a config carrying a new key. Once hv sets the cap key, a brew-installed ccusage older than the release refuses the config until it is upgraded.\n- `use NAME` lives inline in `cli::run`, and in shared mode it rewrites the shared config's account record through `shared::switch`. Changing hv's real active account is hv's own command (dc's watch-out 1).\n- Today the endpoint returns `weekly_all` and a Fable `weekly_scoped` window for all five accounts, and no session window. Reset times carry sub-second jitter: engineering01 resets at 21:00:00.388Z and engineering02 at 21:00:00Z, so ranking on raw timestamps would let the jitter decide and never reach the headroom tie-break.\n\n**Not in scope.** The 5-hour session window: the parser already reads one if the endpoint returns it, and `which` notes it but never ranks on it. Usage credits and extra usage. Switching accounts on a timer.\n\n**Consumers.** hv at the shell. The TUI, with a \"next\" marker on the chosen account. Later, a status line. geodica-estate will call `ccusage which --json` at its folds, so that JSON shape is a contract: cc is authoritative on what it means and ic on its shape, and a change to it needs both.\n\n**Seats.** Each work package names its proposed builder by remit: cc for the windows, the rule, the history and predict's arithmetic; ic for the verbs, the JSON shape and the TUI; ac for the docs. dc stays on 0.1.9's blockers and runs the cut. hv decides which seats are started.\n\n**Release.** ST0002 joins 0.1.9's one cut with ISSUE:0007 and ISSUE:0003, pending hv's word.\n\n**Order.** WP01 first. Then WP02 and WP04 side by side. WP03 and WP06 follow WP02; WP05 follows WP02 and WP04; WP07 comes last. vc validates each work package against its acceptance criteria on its builder's one measured run.",
   "body": "",
-  "preamble": ""
+  "preamble": "",
+  "wps": [
+    {
+      "seq": 1,
+      "title": "Typed usage windows: each window carries its kind and model",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "Each parsed usage window carries its kind (`session`, `weekly_all`, or `weekly_scoped` with its model's name) beside its display label, read from the `limits` array and from the legacy fields alike. `which` and `predict` then select windows by kind, and the display keeps its labels.",
+      "body": "- **Builder:** cc (proposed). **Depends on:** nothing.\n- **One parser:** the kind is kept where `Snapshot::parse_windows` reads it today, and the label is derived from the kind. Nothing else reads `limits` (Highlander).\n- **Legacy mapping:** `seven_day` is `weekly_all`, `seven_day_<model>` is `weekly_scoped` for that model, and `five_hour` is `session`. `seven_day_breakdown` and the other keys that are not windows stay ignored, as now.\n- **No visible change:** the output of `usage`, in text and JSON, and of the TUI does not change.\n- **Tests:** the kinds read from `tests/fixtures/usage-with-breakdown.json`, a legacy-only snapshot, and an unknown kind that stays ignored. The existing display tests pass unchanged.\n- **Done when:** every window carries its kind and model, the existing output is unchanged, and AC-01.1's test is green.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 2,
+      "title": "The which rule: earliest reset first, with the cap from config",
+      "scope": "M",
+      "status": "not-started",
+      "objective": "One pure function takes the accounts' reports, the time now, the cap and an optional model name, and returns the chosen account, the ranked rest and a reason for each. It is the only implementation of the rule: the `which` verb, the TUI marker and `predict`'s simulation all call it.",
+      "body": "- **Builder:** cc (proposed). **Depends on:** WP01.\n- **Usable:** a report with no error (a failed refresh, a rate limit or a withheld identity), fetched within the cache's TTL, whose `weekly_all` reset is still ahead. A reset that has passed means the cached percent belongs to the previous window. A report that is not usable is unknown: it is listed with its reason and never chosen.\n- **Eligible:** a usable account whose `weekly_all` is below the cap. With a model, that model's `weekly_scoped` window must be below the cap too. An account with no scoped window for the model is bounded by `weekly_all` alone.\n- **Rank:** `weekly_all` reset ascending, compared to the minute so the endpoint's sub-second jitter cannot decide; then most headroom; then name, so the order is stable. A `weekly_all` with no reset ranks after every dated one, and its reason says so.\n- **Nothing eligible:** the result says so and names the soonest reset among the known accounts.\n- **Cap:** a new optional key in `config.toml` (proposed: a `[which]` table with `cap = 95`). Its default is defined once, and a value outside (0, 100] is refused. Tests take the cap from the config they write or from that default, never from a literal. Because `Config` denies unknown fields, every older binary refuses a config carrying the key, and README says so.\n- **Tests:** the worked example as a fixture test with now at 2026-11-13T05:27Z and the caches' own reset times, jitter included. It must choose hello and rank engineering04, then engineering01 and engineering02, then engineering00. Also each cause of unknown, the headroom tie-break, a missing reset, nothing eligible, and the model filter.\n- **Done when:** the rule is one pure function, and AC-02.1 to AC-02.4 are green.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 3,
+      "title": "The which verb: text, versioned JSON and --use",
+      "scope": "M",
+      "status": "not-started",
+      "objective": "`ccusage which [--json] [--model NAME] [--use] [--refresh]` reads every profile's report as `usage --all` does, applies WP02's rule, and prints the choice with one reason line, then the ranked rest one line each. `--json` gives the same as a versioned structure, and `--use` also makes the choice the active account through the one `use` code path.",
+      "body": "- **Builder:** ic, with cc on the JSON contract (proposed). **Depends on:** WP02.\n- **Text:** the first line is the choice and one reason, eg `hello: 27% left, resets in 3d04h, soonest reset with headroom`, with the time in `display::duration`'s form. Then one line per other account in rank order: eligible, then at cap, then unknown with its reason. Scoped windows show on their account's line and rank only under `--model`. A session window, if the endpoint ever returns one, is noted on its line and never ranks. With nothing eligible, the verb says so and names the soonest reset.\n- **JSON:** one object carrying a `version`, the time now, the cap, the model if one was given, the choice or null, and every account with its state (chosen, eligible, at cap or unknown), headroom, reset, rank and reason. cc and ic agree the shape in this work package before its code, and README documents it as the contract geodica-estate reads.\n- **Exit codes (proposed):** 0 when an account is chosen, even with some accounts unknown; 1 when nothing is eligible or no account could be read; argument and config errors as today.\n- **`--model NAME`:** matched against the scoped windows' model names without regard to case. A name that matches no account's scoped window is refused, naming the models seen, so a misspelt model never passes as one with no scoped limit.\n- **`--use`:** the `use` arm of `cli::run` becomes one function that `use` and `which --use` both call. With nothing eligible, `--use` changes nothing. Tests run in the `Sandbox`, with its fake `claude` and `launchctl`. `which --use` on hv's real profiles is hv's own command.\n- **Thin coordinator:** `cli::run` parses, calls the rule and renders. `ccusage help` lists the verb.\n- **Tests:** in `tests/cli.rs`, over cached reports in the `Sandbox`, with resets relative to now.\n- **Done when:** the verb, its JSON and `--use` are in, cc and ic have signed the JSON shape, and AC-03.1 to AC-03.4 are green.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 4,
+      "title": "Usage history: bounded samples under XDG_STATE_HOME",
+      "scope": "M",
+      "status": "not-started",
+      "objective": "Every successful fetch appends one sample per window (account, kind, model, percent, reset, time sampled) to a private file under `$XDG_STATE_HOME/ccusage/`, and the file stays bounded because the samples of windows that have reset are dropped. This is the history `predict` works from.",
+      "body": "- **Builder:** cc (proposed). **Depends on:** WP01.\n- **One hook** at the one success point, the `Fetch::Success` arm of `Client::load`. The CLI, the TUI and `which` all record through it, and a cache hit records nothing.\n- **File:** proposed `history.jsonl`, mode 0600 like every Ccusage file. It is written under a lock, since the CLI and the TUI can fetch at once, and pruned of reset windows' samples by an atomic rewrite through `storage::write_atomic`.\n- **Failure:** a failed history write shows in the report's error, as a failed cache save does today, and never discards the fetched usage (No Silent Errors).\n- **Contents:** only the windows' numbers. No token, no email, and nothing else from the response.\n- **Discoverable:** README's XDG table names the file, and doctor's private-file check covers it.\n- **Tests:** a fetch appends, a cache hit does not, a reset window's samples are pruned, the file is 0600, and two writers at once lose nothing.\n- **Done when:** samples accumulate and stay bounded, and AC-04.1 is green.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 5,
+      "title": "The predict verb: burn rate and projected loss",
+      "scope": "M",
+      "status": "not-started",
+      "objective": "`ccusage predict [--json]` estimates hv's burn rate from the samples in the current windows, simulates following `which` from now, and reports for each account the percent projected to be unused at its reset, and the total allowance projected to be lost. It says plainly when there are too few samples.",
+      "body": "- **Builders:** cc for the arithmetic, a pure function of the samples, the reports, the time now and the cap; ic for the verb and its output (proposed). **Depends on:** WP02 and WP04.\n- **Burn rate (for hv to decide):** proposed, the percent of a weekly allowance consumed per elapsed hour, summed across accounts over the current windows' samples, since hv uses one account at a time. That rate includes idle hours, so it projects over days, and it holds up when samples are sparse. The brief's rate per hour of active use is reported beside it.\n- **Simulation:** step forward from now. At each step WP02's rule picks the account, which consumes at the burn rate until it reaches the cap or its reset. A window that resets starts again at 0, with its next reset a week on. The horizon is the last of the accounts' current resets. It is arithmetic on the samples and nothing else, so \"No model inference is made\" stays true.\n- **Assumption (for hv to confirm):** the accounts' weekly allowances are equal, so a percent means the same on each.\n- **Too few samples:** below a minimum defined once, `predict` says so, projects nothing, and exits 0.\n- **Output:** for each account, its percent now, its projected percent at its reset, and its projected percent unused; then the total projected loss. `--json` is versioned as `which`'s is, and `ccusage help` lists the verb.\n- **Tests:** fixture sample sets whose expected rates and losses the test computes from the fixture, never written as literals.\n- **Done when:** `predict` reports from the samples, and AC-05.1 is green.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 6,
+      "title": "The TUI marks the account which would choose",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "The TUI overview marks the account WP02's rule would choose with a `next` marker beside the existing `active` one, and moves it as reports arrive.",
+      "body": "- **Builder:** ic (proposed). **Depends on:** WP02.\n- **One rule:** the marker comes from WP02's function, never a second copy of the rule. The overview's renderer, `display::lines`, also draws `usage --all`'s text, so ic decides whether that shows the marker too.\n- **Never on doubt:** an unknown or stale report never carries the marker.\n- **Tests:** in `display.rs`'s tests, over fixture reports.\n- **Done when:** the marker shows on the chosen account, and AC-06.1 is green.\n",
+      "preamble": ""
+    },
+    {
+      "seq": 7,
+      "title": "Docs: README and CHANGELOG for which and predict",
+      "scope": "S",
+      "status": "not-started",
+      "objective": "README and the CHANGELOG describe `which` and `predict` as built: the rule in one paragraph, the cap key and its downgrade caveat, the JSON contract and the exit codes, and the history file in the XDG table.",
+      "body": "- **Builder:** ac (proposed); ic writes it if hv does not start ac. **Depends on:** WP03, WP04, WP05 and WP06.\n- **Help stays with the code:** `ccusage help` is WP03's and WP05's, since it lives in `src/cli.rs`.\n- **CHANGELOG:** the entry goes in the release's own entry.\n- **Done when:** every claim in the docs matches the code, on vc's read, and AC-07.1 is satisfied.\n",
+      "preamble": ""
+    }
+  ],
+  "criteria": [
+    {
+      "id": "AC-00.1",
+      "text": "On hv's five accounts, hv's own `ccusage which` names the account the rule picks from `ccusage --all`, and `ccusage predict` runs without error.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    },
+    {
+      "id": "AC-01.1",
+      "text": "Every parsed usage window carries its kind, and its model when scoped, read from the `limits` array and the legacy fields alike, and the output of `usage` and of the TUI is unchanged.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.1",
+      "text": "On the worked example's windows at 2026-11-13T05:27Z, with the caches' own reset times, the rule chooses hello and ranks engineering04, then engineering01 and engineering02, then engineering00.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.2",
+      "text": "An account with a failed refresh, a rate limit, a stale cache or a reset that has passed is unknown, listed with its reason, and never chosen.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.3",
+      "text": "The cap comes from config.toml, with one default when the key is absent, and no test writes the cap as a literal.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-02.4",
+      "text": "With a model named, an account is eligible only while its scoped window for that model is below the cap too.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.1",
+      "text": "`ccusage which` prints the choice with one reason line, then the rest in rank order one line each; with nothing eligible it says so, names the soonest reset and exits 1.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.2",
+      "text": "`ccusage which --json` emits the versioned shape cc and ic agreed, with the same choice and order as the text.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.3",
+      "text": "`ccusage which --use` makes the choice the active account through the same function as `ccusage use`, and changes nothing when nothing is eligible.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-03.4",
+      "text": "`ccusage which --model NAME` with a name no account's scoped window carries is refused, naming the models seen.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-04.1",
+      "text": "Each successful fetch appends its windows' samples to a 0600 file under XDG_STATE_HOME, a cache hit appends nothing, and the samples of windows that have reset are dropped.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-05.1",
+      "text": "`ccusage predict` reports each account's projected unused percent and the total projected loss from fixture samples, and says plainly when the samples are too few.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-06.1",
+      "text": "The TUI overview marks the account `which` chooses, and never an unknown one.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
+    },
+    {
+      "id": "AC-07.1",
+      "text": "README and the CHANGELOG describe `which`, `predict`, the cap key, the history file and the JSON contract as built.",
+      "kind": "non-test",
+      "state": {
+        "is": "unsatisfied"
+      }
+    }
+  ]
 }

@@ -14,7 +14,7 @@ claims: []
 ## DOING
 
 - Validate each unit dc hands over against its issue's Acceptance list. Under hv's one layer of proof, the verdict is vc's read of the diff, with the author's measured run as the one run; a scratch-clone run only when the committed tree differs from the one the run tested. Now: read dc's revert of 29943b5 (hv's correction: use is bin/devbin's). Next: ISSUE:0007's wiring (hold 4) and ISSUE:0003's live check (todo 4), both for 0.1.9's one cut at hv's word of 2026-11-06. (edited)
-- ST0002, the which verb (hv, 2026-11-13): elaborate the thread and its WPs from geodica-estate's brief and put them to hv for review. No seat writes code until hv has reviewed. Now: wait for the brief. Next: draft the objective, context, acceptance and WPs, and say which seat builds each WP.
+- ST0002, the which verb (hv, 2026-11-13): drafted from geodica-estate's brief and in front of hv for review: objective, context, seven sized WPs each with a proposed builder, and 14 ACs keyed AC-<wp>.<n>. No seat writes code until hv has reviewed. Waiting on hv for: who builds (cc and ic started, or dc), the burn rate predict projects with, whether the five accounts share one plan, and ST0002 joining 0.1.9's one cut. Then: brief the builders, WP01 first. (edited)
 
 ## TODO
 

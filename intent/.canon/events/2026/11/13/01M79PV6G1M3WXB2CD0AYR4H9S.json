@@ -1,0 +1,15 @@
+{
+  "id": "01M79PV6G1M3WXB2CD0AYR4H9S",
+  "ts": "2026-11-13T05:42:17.857Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wp.new",
+  "subject": {
+    "type": "wp",
+    "id": "ST0002/04"
+  },
+  "payload": {
+    "scope": "S",
+    "title": "Usage history: bounded samples under XDG_STATE_HOME"
+  }
+}
