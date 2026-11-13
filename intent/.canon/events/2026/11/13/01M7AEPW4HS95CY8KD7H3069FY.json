@@ -1,0 +1,15 @@
+{
+  "id": "01M7AEPW4HS95CY8KD7H3069FY",
+  "ts": "2026-11-13T12:39:22.001Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's rulings of 2026-11-13, given to vc in the live channel (vc's window, as answers to vc's question dialog), recorded by vc as mediator. hv asked to close out Ccusage for the day, \"but not before closing any and all relevant and closeable issues, WPs and STs\". (1) ISSUE:0007: \"Mac now, Linux now too\", chosen from vc's options: hv re-runs T10 on the Mac in one place, and dc runs the Linux leg on kovacs now, in a heavy Desk slot, with no sudo and announced to kovacs-sysadm; 0007 closes today if both pass. (2) ST0002: \"Now, before the wrap\", chosen from vc's options: ic's fix for the Herdr mod's bars, with its two nits, is built and checked in a Desk slot now, and hv looks again after installing from that build; on a pass, vc closes WP08 and then ST0002."
+  }
+}
