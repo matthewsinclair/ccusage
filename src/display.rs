@@ -768,7 +768,8 @@ mod tests {
     for (snapshot, expected) in [
       (limits, vec!["5 hour", "7 day", "Fable"]),
       (legacy, vec!["5 hour", "7 day", "Fable", "Oauth Apps"]),
-      (unnamed, vec!["Weekly scoped"]),
+      // The overview cuts a label to 12 characters, so Weekly scoped shows so.
+      (unnamed, vec!["Weekly scope"]),
     ] {
       let report = Report {
         name: "work".into(),
