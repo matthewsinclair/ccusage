@@ -5,9 +5,9 @@
     "name": "DevX Claude",
     "role": "devx",
     "session_id": "34c8bad8-d841-40cd-9cc5-af25dfb50c70",
-    "heartbeat_at": "2026-11-13T09:23:32.808Z",
+    "heartbeat_at": "2026-11-13T11:05:38.941Z",
     "status": "active",
-    "focus": "Nothing in flight. hv took the opt route past devbin 0348, so ISSUE:0007 waits only for the cut: T10 with hv once 0.1.9 publishes (hold 10). Hold 9: LICENSE returns after 0.1.9, with a devbin that fixes 0349. Hold 6: ISSUE:0003 closes at ST0003/WP06's rollout, each account once.",
+    "focus": "Running 0.1.9's pre-cut gates on kovacs for vc (doing 9, hv's decision 5); then the cut is hv's, and T10 follows its publish (hold 10). Holds 6 and 9 stand.",
     "claims": [
       "ISSUE:0003",
       "ISSUE:0007"
@@ -340,6 +340,22 @@
       "state": "archived",
       "archived_at": "2026-11-13T08:13:21.933Z",
       "recorded_at": "2026-11-13T08:08:08.040Z"
+    },
+    {
+      "node": "dc",
+      "kind": "doing",
+      "seq": 9,
+      "text": "0.1.9's pre-cut gates on kovacs, on hv's decision 5 through vc's brief of 2026-11-13 11:01Z. Run as devbin's leg runs, by hand because release.legs names no host and vc said to leave the release config alone: main's tip sent by git send-pack (never git push) into ~/work/ccusage-leg.git on kovacs, with v0.1.8 beside it, then bin/devbin release gates in a worktree there under kovacs's own startup, driven through devbin's own leg functions (lib/release.legs), with its records kept in dc's scratch rather than this checkout. The Desk is asked first whether a kovacs run counts as heavy on rhadamanth. Then report to vc: the sha, each gate's verdict, the cargo and bats counts, and what Linux ARM64 does differently. Known before the run: actionlint is not on kovacs's PATH, so check all cannot pass there.",
+      "state": "live",
+      "recorded_at": "2026-11-13T11:05:34.325Z"
+    },
+    {
+      "node": "dc",
+      "kind": "watchout",
+      "seq": 2,
+      "text": "0.1.9's cut (hv's decision 5, through vc, 2026-11-13): from vc's word that the cut starts until its word that the release is published, commit nothing to main, whiteboard verbs included; until ST0003/WP06's rollout, nobody runs ccusage use or ccusage which --use on 0.1.9, since either begins the rollout.",
+      "state": "live",
+      "recorded_at": "2026-11-13T11:05:34.449Z"
     }
   ],
   "sent": [
@@ -891,6 +907,16 @@
       "id": "01M7A8J0EG6YNJVPAXSND488AM",
       "sender": "vc",
       "handled_at": "2026-11-13T10:55:08.872Z"
+    },
+    {
+      "id": "01M7A94ARWAQJXG7GS0M3EDCB3",
+      "sender": "vc",
+      "handled_at": "2026-11-13T11:05:38.821Z"
+    },
+    {
+      "id": "01M7A94AWEVG3SYZM1HEP4J34R",
+      "sender": "vc",
+      "handled_at": "2026-11-13T11:05:38.821Z"
     }
   ]
 }

@@ -1,0 +1,15 @@
+{
+  "id": "01M7A9B4BN36X6WVWWVT0GBSGN",
+  "ts": "2026-11-13T11:05:34.325Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "0.1.9's pre-cut gates on kovacs, on hv's decision 5 through vc's brief of 2026-11-13 11:01Z. Run as devbin's leg runs, by hand because release.legs names no host and vc said to leave the release config alone: main's tip sent by git send-pack (never git push) into ~/work/ccusage-leg.git on kovacs, with v0.1.8 beside it, then bin/devbin release gates in a worktree there under kovacs's own startup, driven through devbin's own leg functions (lib/release.legs), with its records kept in dc's scratch rather than this checkout. The Desk is asked first whether a kovacs run counts as heavy on rhadamanth. Then report to vc: the sha, each gate's verdict, the cargo and bats counts, and what Linux ARM64 does differently. Known before the run: actionlint is not on kovacs's PATH, so check all cannot pass there."
+  }
+}

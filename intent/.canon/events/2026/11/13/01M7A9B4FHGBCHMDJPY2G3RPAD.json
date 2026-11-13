@@ -1,0 +1,15 @@
+{
+  "id": "01M7A9B4FHGBCHMDJPY2G3RPAD",
+  "ts": "2026-11-13T11:05:34.449Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "text": "0.1.9's cut (hv's decision 5, through vc, 2026-11-13): from vc's word that the cut starts until its word that the release is published, commit nothing to main, whiteboard verbs included; until ST0003/WP06's rollout, nobody runs ccusage use or ccusage which --use on 0.1.9, since either begins the rollout."
+  }
+}
