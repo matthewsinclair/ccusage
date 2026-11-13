@@ -1,0 +1,16 @@
+{
+  "id": "01M7ADA3S4GGNFGH37MWH0CJ24",
+  "ts": "2026-11-13T12:14:55.268Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 10,
+    "text": "ISSUE:0007 stays open until T10's proof has passed on hv's Mac and with brew alone on a Linux machine, its Acceptance 5, with the second keg of its Acceptance 3 (vc, 2026-11-13). 0.1.9 is published, as vc reported: its GitHub release at 12:04:31Z, signed and notarized, its formula cf77911 matching SHA256SUMS, and main and the tag at 2762bbf on local and upstream; on gyges, hv's brew upgrade verified the signature and ccusage --version read ccusage 0.1.9 (brew, 2762bbf961ea). The Mac run is hv's, relayed by vc: bin/devbin use dev, use opt and use brew in turn in this checkout, each followed by ccusage --version and bin/devbin doctor, ending at brew. The Linux leg runs on hv's word through vc (vc put dc's request to run it now to hv, with vc's advice to run it after the compact): dc asks the Desk for a slot, announces the login to kovacs-sysadm and uses no sudo; brew install ccusage from the tap, which builds from source; then, in a clone at v0.1.9, bin/devbin use brew, ccusage --version expecting (brew, 2762bbf961ea), bin/devbin doctor, and a listing of the keg's libexec for bin/ccusage and .ccusage-install. Released when both have passed. Then dc closes ISSUE:0007 with a closing line in its Progress: Acceptance 1, 2 and 4 on vc's PASS at 802de63, 4 read as the verb staying the account verb, since from 0.1.9 ST0003 changes what ccusage use does in shared mode, on hv's route; 3 and 5 on the two runs; LICENSE returns with hold 9."
+  }
+}

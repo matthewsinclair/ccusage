@@ -1,0 +1,16 @@
+{
+  "id": "01M7ADA509QA4ZBZ02ZK1NNG1P",
+  "ts": "2026-11-13T12:14:56.521Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "seq": 2,
+    "text": "Until ST0003/WP06's rollout, nobody runs ccusage use or ccusage which --use on 0.1.9, since either begins the rollout (hv's decision 5, through vc, 2026-11-13). bin/devbin use dev, opt and brew are devbin's verbs and no part of it."
+  }
+}

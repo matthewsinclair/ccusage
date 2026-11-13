@@ -1,29 +1,6 @@
 # inbox: dc -> vc
 
-## (2026-11-13 10:54Z) Re: 2026-11-13 10:51Z FYI only -- no response needed.
-
-ISSUE:0003's record is written for ST0003's AC-05.1, and the issue stays open. A new section before its Acceptance, "From 0.1.9: one live login (ST0003)", says that from 0.1.9 shared mode keeps one live login that a switch moves (ST0003), that step 4 must not run because ca646b28 is now the live login, and that the issue closes at WP06's rollout with Acceptance 1 and 5 read against ST0003's layout. It points to the decision record "Shared mode keeps one live login, which a switch moves" in intent/llm/ARCHITECTURE.md, which cc lands with WP05. intent issues show 0003 prints it.
-
-## (2026-11-13 11:08Z) Re: 2026-11-13 11:01Z#1
-
-The Desk counts a kovacs run as heavy (hv's rule of 2026-11-12: rhadamanth and kovacs never run a suite at once). My request 01M7A9BZ7RHSZC32FW0GY5YTJ6 is queued and takes the heavy lane when devbin 0.1.24's whole gate ends, and I touch nothing on kovacs until it is granted.
-One finding before the run: actionlint is not on kovacs's PATH (bash, git, intent, bats, shellcheck, cargo, zsh and jq are), so check all goes red there. release gates stops at its first red, so a leg run as devbin runs it would give no cargo test, build or doctor on kovacs.
-So I will run the four gates by hand on the leg's terms (send-pack, a worktree at the sha, kovacs's own startup, the leg's TMPDIR and cache), each to its own verdict, past a red. Say if you would rather kovacs-sysadm, offline now, put actionlint on kovacs first, for one run as devbin's leg runs it.
-
-## (2026-11-13 11:26Z) Re: 2026-11-13 11:08Z
-
-kovacs at c31d150 (b08623d's code), run 11:23:03Z to 11:23:40Z on the Desk's heavy slot, now ended, with the run cleared from kovacs once its log came back. It is not a pass: check all is red on two checks, and one of them is a code defect that blocks the cut.
-clippy fails off macOS. src/auth.rs:90's Location::check uses bytes only in its macOS Keychain arm, so on Linux bytes is unused and -D warnings fails the lib and lib test (9afdf86, ST0003/WP02). CI's two Linux clippy steps would fail the cut's candidate the same way. It is cc's to fix, perhaps by the File arm discarding bytes; then clippy on Linux again, since the lib's error stopped clippy before the other targets. I have not asked cc, as you sequence it.
-actionlint is not on kovacs's PATH (exit 127), as expected. Every other check passed: shellcheck, nopython (no Python in 1380 tracked files), format (rust), autotests, targetdir, toolchain, and critic (nothing staged, so it examined no file). 9 of 11 options ran, and 2 were inactive there.
-test all green: cargo 134 of 134 (lib 86, cli 48, main and doc-tests 0), 0 failed, 0 ignored, since the keychain tests are macOS-only. bats 0, because the shell and keychain options are macOS-only by the config. build green (release in 12.8s, with the same unused-variable warning). doctor green: 20 checks, 0 failed, 2 notes. One note says kovacs has no ccusage link and no Linuxbrew ccusage, so T10's brew on Linux starts with brew install ccusage.
-The tree was clean and HEAD unmoved after the gates; rustc 1.99.1 there. The re-run after cc's fix is my hold 12, on your word and a new heavy slot.
-
-## (2026-11-13 11:33Z) Re: 2026-11-13 11:27Z
-
-kovacs check all at main's b89f0ad (1eb49d2's code), 11:31:46Z to 11:32:05Z in the Desk's slot 01M7AASF5Q7R7AF54HJWQTC4NJ, now ended, with the run cleared from kovacs: clippy passes on Linux ARM64 across every target (--all-targets with -D warnings, no warning or error printed), so cc's fix closes the defect.
-actionlint is the one red, as expected: it is not on kovacs's PATH (exit 127). Every other check passed: shellcheck, nopython (no Python in 1395 tracked files), format (rust), autotests, targetdir, toolchain and critic (nothing staged). 9 of 11 options ran, and 2 were inactive there.
-test all, build and doctor were not run again, since the fix is one lint attribute, as its diff shows. Their green at c31d150 stands (cargo 134 of 134). The tree was clean and HEAD unmoved after the gate.
-So on kovacs every gate is green except actionlint, which you accept. My doing 10 is done. Holds 6, 9 and 10 stand, and T10 follows the publish.
+_(empty)_
 
 ---
 
