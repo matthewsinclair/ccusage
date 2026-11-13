@@ -263,16 +263,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
     }
     "use" => {
       let name = one(&args)?;
-      auth::read(&store.profile_dir(name)?)?;
-      if store.shared_dir()?.is_some() {
-        crate::shared::switch(&store, name)?;
-        println!(
-          "Active: {name}. New Claude sessions use this account; running ones switch when restarted."
-        );
-      } else {
-        store.activate(name)?;
-        println!("Active: {name}. Future ccusage run launches use this account.");
-      }
+      println!("{}", crate::switch::to(&store, name)?.message(name));
     }
     "dir" => {
       if args.len() > 1 {
@@ -313,7 +304,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
         Some(shared) => {
           // The shared config's account record must match the login it is given.
           if store.active()?.as_deref() != Some(name.as_str()) {
-            crate::shared::switch(&store, &name)?;
+            crate::switch::to(&store, &name)?;
           }
           auth::shared_command(&shared, &dir)
         }

@@ -1,5 +1,5 @@
 use crate::{
-  Result, auth,
+  Result,
   config::Store,
   usage::{Client, Report},
 };
@@ -634,14 +634,10 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
             KeyCode::Char('a') if !demo => {
               if let Some(store) = store {
                 let name = &reports[selected].name;
-                let result = store
-                  .profile_dir(name)
-                  .and_then(|dir| auth::read(&dir))
-                  .and_then(|_| store.activate(name));
-                match result {
-                  Ok(()) => {
+                match crate::switch::to(store, name) {
+                  Ok(switched) => {
                     active = Some(name.clone());
-                    notice = format!("{name} selected for future launches");
+                    notice = switched.message(name);
                   }
                   Err(error) => {
                     notice = crate::clean(&error.to_string());

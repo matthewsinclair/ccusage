@@ -10,6 +10,7 @@ mod keychain;
 mod loopback;
 pub mod shared;
 pub mod storage;
+pub mod switch;
 pub mod usage;
 
 pub type Error = Box<dyn std::error::Error + Send + Sync>;

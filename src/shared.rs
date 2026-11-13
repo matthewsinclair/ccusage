@@ -79,35 +79,24 @@ pub fn profile_account(store: &Store, name: &str) -> Result<Option<Value>> {
     .map(Option::flatten)
 }
 
-/// Make `name` the active profile in shared mode: copy its oauthAccount record into the
-/// shared `.claude.json` under Claude Code's lock, changing no other key, then select
-/// it, and on macOS point launchd at its login too. Running sessions keep their login
-/// until they are restarted.
-pub fn switch(store: &Store, name: &str) -> Result<()> {
-  let shared = store
-    .shared_dir()?
-    .ok_or("shared mode is off; set claude_config_dir")?;
+/// Copy `name`'s oauthAccount record into the shared `.claude.json` at `shared` under
+/// Claude Code's lock, changing no other key: shared mode's step of `switch::to`.
+pub(crate) fn record(store: &Store, shared: &Path, name: &str) -> Result<()> {
   let record = profile_account(store, name)?
     .ok_or_else(|| format!("profile {name} records no oauthAccount; run ccusage login {name}"))?;
   let file = shared.join(SETTINGS);
-  {
-    // Held for a read, a merge and a rename: every session shares this file, and
-    // Claude Code writes over a lock held past its 10 s stale time.
-    let _lock = lock(&file)?;
-    let text = settings(&shared)?.ok_or_else(|| {
-      format!(
-        "{} does not exist; start Claude once with CLAUDE_CONFIG_DIR={}",
-        file.display(),
-        shared.display()
-      )
-    })?;
-    // A 0600 file staged beside it and renamed over it, as Claude Code saves its own.
-    storage::write_atomic(&file, with_account(&text, &record)?.as_bytes())?;
-  }
-  store.activate(name)?;
-  #[cfg(target_os = "macos")]
-  set_launchd(&store.profile_dir(name)?)?;
-  Ok(())
+  // Held for a read, a merge and a rename: every session shares this file, and
+  // Claude Code writes over a lock held past its 10 s stale time.
+  let _lock = lock(&file)?;
+  let text = settings(shared)?.ok_or_else(|| {
+    format!(
+      "{} does not exist; start Claude once with CLAUDE_CONFIG_DIR={}",
+      file.display(),
+      shared.display()
+    )
+  })?;
+  // A 0600 file staged beside it and renamed over it, as Claude Code saves its own.
+  storage::write_atomic(&file, with_account(&text, &record)?.as_bytes())
 }
 
 /// When Claude Code takes a `.claude.json`'s lock as abandoned and writes over it: 10 s
@@ -137,7 +126,7 @@ pub fn launchctl() -> Command {
 /// Point launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR at `dir`, so Claude Code started
 /// from a GUI app follows the active profile as a terminal session does.
 #[cfg(target_os = "macos")]
-fn set_launchd(dir: &Path) -> Result<()> {
+pub(crate) fn set_launchd(dir: &Path) -> Result<()> {
   let status = launchctl()
     .args(["setenv", LOGIN_DIR])
     .arg(dir)
