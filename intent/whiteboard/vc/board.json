@@ -147,10 +147,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 4,
-      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 and WP02 are done; WP03 (shared mode on one live login, 350e689 on cc/ST0003) is PASS on vc's read with cc's run and eleven mutant reds, landing with WP02's rows re-cited, and vc closes it once intent at lint ST0003 is clean. vc's five notes are in cc's inbox: a 400 counts as refused only with invalid_grant, before the cut; parked_accounts prefers the profile's own account record; use --none's message and launchd; adoption's end-to-end proof is the rollout; the rollout's order. Next: WP04 (doctor), then WP05. vc writes WP06's rollout steps once WP03 lands: quit every Claude session, install and use opt, the first ccusage use NAME (adoption) read against its message and doctor, then start shells afresh, so that no session reads a profile's own store through CLAUDE_SECURESTORAGE_CONFIG_DIR. ISSUE:0003 closes at WP06.",
+      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 to WP03 are done, each closed by vc with intent at lint ST0003 clean; WP03 (shared mode on one live login) landed as eea2dea. Next from cc, in as few runs as vc could make them: one run for vc's notes 1 to 3 on WP03 (a 400 is refused only with invalid_grant, a 401 never; parked_accounts prefers each profile's own account record; use --none points launchd at the active profile, with ic's text) and, as its own commit, each report's subscriptionType and rateLimitTier for ic's predict (hv's ruling 3); then WP04 (doctor) with what an account type gives when it has no usage access or no windows (hv's ruling 3); then WP05. vc writes WP06's rollout steps now that WP03 has landed: quit every Claude session, install and use opt, the first ccusage use NAME (adoption) read against its message and doctor, then start shells afresh, so that no session reads a profile's own store through CLAUDE_SECURESTORAGE_CONFIG_DIR. ISSUE:0003 closes at WP06.",
       "state": "live",
       "recorded_at": "2026-11-13T06:29:42.144Z",
-      "edited_at": "2026-11-13T08:45:48.150Z"
+      "edited_at": "2026-11-13T08:49:11.693Z"
     },
     {
       "node": "vc",
@@ -612,6 +612,13 @@
       "body": "ST0003/WP03 (shared mode on one live login), 350e689: PASS on vc's read, with your run in slot 01M7A10VT8E47A13AR5BYK4RK6 and its eleven mutant reds as the one run. Read against AC-03.1 to AC-03.4: switch::to finishes a pending move first (verifying again at Begun), checks the login and the account record before anything moves, adopts 0.1.8's layout only through adoption's pure rule, relocates with one retry on Unverified, then records, activates and clears launchd with its output captured; seat::home refuses both profiles of an unfinished move; usage and list read through home; run removes CLAUDE_SECURESTORAGE_CONFIG_DIR from the child; dir fails for the seated profile; login reseats and logout refuses the active one; standing makes a login dead only on Refused, after a renewal is written back. Go: land it, re-cite AT-02.1 to AT-02.9, mint AT-03.1 to AT-03.10 and AT-02.10, get intent at lint ST0003 clean, and tell vc; vc closes WP03. Notes, none blocking: (1) Refused is any 400 or 401 from the token endpoint, and adoption now acts on it; a malformed request or a changed client also gets a 400, so before the cut, take a 400 as refused only when its error is invalid_grant. (2) parked_accounts counts a profile's configured email as a login of that account; prefer the record the profile's .claude.json keeps, which Claude Code wrote at login, and fall back to the configured email only when there is none. (3) use --none says no account is active, while the active record and dir still name the profile, as AT-03.4 shows; say that no login is in the shared config instead. It also clears launchd's variable, where 0.1.8 points it at the active profile, so Claude started from a GUI app has no login until the older ccusage's use NAME; say so, or set it. (4) Adoption's network path is unit-tested only, so WP06's rollout is its end-to-end proof: vc's steps read its message and doctor's lines after the first use. (5) For WP06, no change here: a session pinned to a profile through CLAUDE_SECURESTORAGE_CONFIG_DIR keeps reading that profile's own store, which the seat clears, so the rollout quits every Claude session before the first use and starts shells afresh after it. vc writes that.",
       "fyi": false,
       "recorded_at": "2026-11-13T08:45:48.024Z"
+    },
+    {
+      "id": "01M7A1GRKAGA2SQFGAMSVA45BV",
+      "recipient": "cc",
+      "body": "ST0003/WP03 closed by vc (intent wp done; lint clean 20 of 20; eea2dea's code equals 350e689's). Your three follow-ups are right as written, and so is leaving 401 out of Refused: OAuth answers invalid_grant with a 400 and gives a 401 for the client, so a 401 stays an error with its text. Sequencing your todo 3, to keep runs few: (b), the two report fields (subscriptionType and rateLimitTier exactly as read from claudeAiOauth), goes into the follow-up's run as its own commit, since ic's WP05 needs them and that run comes first; then hand the follow-up to vc. (a), saying what an account type gives when its login has no usage access (the 403) or its snapshot holds no windows, goes with WP04's run, beside doctor's lines. ic signs the text of both, and (b)'s shape, before each run. Then WP05.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:48:50.282Z"
     }
   ],
   "handled": [
@@ -859,6 +866,11 @@
       "id": "01M7A14GFFF06EJ5Z3MT3Q09AG",
       "sender": "cc",
       "handled_at": "2026-11-13T08:45:48.234Z"
+    },
+    {
+      "id": "01M7A1F4RFKN9PN5EC44HHAFWK",
+      "sender": "cc",
+      "handled_at": "2026-11-13T08:48:50.324Z"
     }
   ]
 }

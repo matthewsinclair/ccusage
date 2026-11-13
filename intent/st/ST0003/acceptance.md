@@ -24,7 +24,7 @@ title: Live account switching: ccusage use moves the active login into the share
 - AC-02.3 Each refusal (no parked login, an only login in the way, an outgoing login that does not verify, a document over the `security -i` limit) happens before any write. -- satisfied: yes (computed)
 - AC-02.4 A move waits for a held Claude Code lock, and on a disposable keychain it creates no item and keeps `apple-tool:` on each item it writes. -- satisfied: yes (computed)
 
-### WP-03 -- Shared mode on one live login: use, run, dir, login, logout and adoption (status: WIP)
+### WP-03 -- Shared mode on one live login: use, run, dir, login, logout and adoption (status: Done)
 
 - AC-03.1 In shared mode `ccusage use NAME` puts NAME's login in the shared store and its account record in the shared `.claude.json`, parks the previous account's login in its profile, and unsets launchd's variable. -- satisfied: yes (computed)
 - AC-03.2 Usage fetches, renewals and `list` read each account's login from where it lives, before and after a switch. -- satisfied: yes (computed)
@@ -64,7 +64,7 @@ _(no tests in this group)_
 - AT-02.9 `src/seat.rs:1074` -- covers AC-02.4, AC-02.3 -- status: green -- On a disposable keychain, a document over the security -i line is refused before any write, and a move creates no item and keeps apple-tool: and /usr/bin/security on each item it writes; red under the mutant that checks each write only as it is made, in WP02's mutant run at ffc95a1, whose move code 90bd7ea keeps; green in WP02's measured run at 90bd7ea, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5, landed as 9afdf86, and in bin/devbin test keychain at 26da10a, Desk slot 01M79ZAX3CB02ZEKV3RSC1JJ5G
 - AT-02.10 `src/seat.rs:864` -- covers AC-02.2 -- status: green -- An interrupted move whose parked login has gone from its profile's store is refused as changed and writes nothing more; red under the mutant that takes a lost park for no change, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea
 
-### WP-03 -- Shared mode on one live login: use, run, dir, login, logout and adoption (status: WIP)
+### WP-03 -- Shared mode on one live login: use, run, dir, login, logout and adoption (status: Done)
 
 - AT-03.1 `src/seat.rs:1000` -- covers AC-03.2 -- status: green -- A login is read from the shared store while its profile is seated, from its own store otherwise and with shared mode off, and neither of an unfinished move's profiles is read; red under the mutant whose home ignores the seat, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea
 - AT-03.2 `tests/cli.rs:887` -- covers AC-03.1 -- status: green -- use seats the profile's login in the shared store, copies only its account record into the shared .claude.json, and clears launchd's login directory; red under the mutant that leaves launchd set, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea
