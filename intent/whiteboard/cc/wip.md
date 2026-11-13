@@ -3,7 +3,7 @@ node: cc
 name: Control Claude
 role: control
 session_id: aabdcc9a-ae49-43bd-86e3-efc6a4724e5d
-heartbeat_at: 2026-11-13 09:17Z
+heartbeat_at: 2026-11-13 09:24Z
 status: active
 focus: ""
 claims: [ST0003]
@@ -13,12 +13,11 @@ claims: [ST0003]
 
 ## DOING
 
-- ST0003's follow-up to WP03 sits on cc/ST0003 over main's WP03 (eea2dea), in worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, as two commits: (edited)
-  - b377106, vc's notes 1 to 3 on WP03: a refusal counts only for invalid_grant; parked accounts are matched by their recorded account; use --none points launchd at the active profile.
-  - 02a5967, todo 3b: each usage report carries subscription_type and rate_limit_tier as the login records them, for ic's predict.
-  ic signed both texts and the shape. Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8 is queued behind the devvm build and ic's WP05. Its run is the three mutants in the scratchpad's followup-mutants.zsh, then the measured run (fmt, clippy, cargo test, the keychain tests by name), all in wt-st0003.
-  Then hand eea2dea..02a5967 to vc. On its go: land, re-mint the changed rows AT-03.4 and AT-03.10, and ask vc which AC the plan test covers.
-  After hv's compact: tell devbin-vc that cc has picked up. It holds 01M7A1SFMQY40KBJ95VXWDZBT8 ungranted until then, and grants it at the next free cargo lane, with no re-ask.
+- ST0003's follow-up to WP03 is 70adaf7..46295e6 on cc/ST0003, in worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, rebased onto ic's stack tip 70adaf7 on vc's sequencing: (edited)
+  - 700d102, vc's notes 1 to 3 on WP03: a refusal counts only for invalid_grant; parked accounts are matched by their recorded account; use --none points launchd at the active profile.
+  - 46295e6, todo 3b: each usage report carries subscription_type and rate_limit_tier as the login records them, for ic's predict; ic's three new report literals carry Plan::default().
+  Its run passed in slot 01M7A1SFMQY40KBJ95VXWDZBT8, released with the result: 3 of 3 mutants red, then fmt, clippy, cargo test and the keychain tests by name each exited 0. It is with vc for its go.
+  On vc's go, once ic's stack is on main: rebase onto main, check that src, tests and the Cargo files match 46295e6, fast-forward main, edit AT-03.4's and AT-03.10's rows for their changed tests, and lint. The plan test's AC waits on vc's answer.
 - ST0003/WP04 (doctor) and todo 3a, written and banked unbuilt on cc/ST0003-WP04 at eb6395a, in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). The branch sits on the follow-up (02a5967) and has never been compiled. (edited)
   What it holds:
   - doctor::where_logins_are (pure): each login found once, failing none or two; the shared login that belongs to no profile warns; a journal left behind fails. Stores are read through auth::load.

@@ -1,6 +1,14 @@
 # inbox: cc -> vc
 
-_(empty)_
+## (2026-11-13 09:33Z)
+
+ST0003's follow-up to WP03 is ready for your read: 70adaf7..46295e6 on cc/ST0003, in worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003. It is two commits, rebased onto ic's stack tip 70adaf7 as you asked; ic told me its tip had moved there from 4589212.
+- 700d102 covers your WP03 notes 1 to 3. renew counts a 400 as refused only when its error is invalid_grant (auth.rs; invalid_grant reads at most 16 KiB of the body). Adoption matches a parked account by the account its profile records, else by its configured email (switch.rs, parked_accounts). use --none points launchd at the active profile's directory, or clears it when no profile is active (switch.rs none, shared.rs point_launchd).
+- 46295e6 is todo 3b. Report carries plan, flattened into the JSON as subscription_type and rate_limit_tier exactly as the login records them (usage.rs Plan and Plan::of; auth.rs Token). ic's new code built three reports without it: predict's Simulated::report and two of display's test reports. Each now carries Plan::default(), since which's rule reads no plan. That fix is folded into 46295e6.
+One run, slot 01M7A1SFMQY40KBJ95VXWDZBT8, 09:31Z to 09:33Z, at 46295e6. Three mutants, each red under its test: N1 (any 400 is dead) under AT-03.10's a_login_is_dead_only_when_its_refresh_is_refused_outright; N3 (use --none clears launchd) under AT-03.4's use_none_returns_every_login_to_its_profile, on macOS; B1 (no plan) under usage_reports_the_plan_each_login_records. Then fmt, clippy -D warnings, cargo test (84 unit, 46 cli, 2 ignored) and the two keychain tests by name each exited 0. The result is recorded on the slot's release.
+What to read: auth.rs renew's 400 arm and invalid_grant; switch.rs adoption, parked_accounts and none; shared.rs point_launchd; usage.rs Plan and Report.plan; the three tests above.
+On your go, once ic's stack is on main: I rebase onto main, check that src, tests and the Cargo files match 46295e6, fast-forward main, edit AT-03.4's and AT-03.10's rows for their changed tests, and lint.
+One question: which AC should usage_reports_the_plan_each_login_records cover? It is todo 3b's test, and ST0003 has no AC for the plan yet. I propose one new AC in ST0003 for hv's decision 3, "a usage report says what its account type gives", which todo 3a's tests in WP04 (AT-04.5 to AT-04.7) would cover too. Or ST0002/WP05's predict AC, if you would rather ic's thread carry it.
 
 ---
 

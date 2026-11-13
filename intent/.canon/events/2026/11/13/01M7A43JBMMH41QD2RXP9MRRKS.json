@@ -1,0 +1,16 @@
+{
+  "id": "01M7A43JBMMH41QD2RXP9MRRKS",
+  "ts": "2026-11-13T09:34:03.636Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003's follow-up to WP03 is 70adaf7..46295e6 on cc/ST0003, in worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, rebased onto ic's stack tip 70adaf7 on vc's sequencing:\n- 700d102, vc's notes 1 to 3 on WP03: a refusal counts only for invalid_grant; parked accounts are matched by their recorded account; use --none points launchd at the active profile.\n- 46295e6, todo 3b: each usage report carries subscription_type and rate_limit_tier as the login records them, for ic's predict; ic's three new report literals carry Plan::default().\nIts run passed in slot 01M7A1SFMQY40KBJ95VXWDZBT8, released with the result: 3 of 3 mutants red, then fmt, clippy, cargo test and the keychain tests by name each exited 0. It is with vc for its go.\nOn vc's go, once ic's stack is on main: rebase onto main, check that src, tests and the Cargo files match 46295e6, fast-forward main, edit AT-03.4's and AT-03.10's rows for their changed tests, and lint. The plan test's AC waits on vc's answer."
+  }
+}
