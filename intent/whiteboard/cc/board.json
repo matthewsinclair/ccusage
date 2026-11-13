@@ -209,6 +209,14 @@
       "re": "2026-11-13 08:44Z",
       "fyi": false,
       "recorded_at": "2026-11-13T08:44:22.924Z"
+    },
+    {
+      "id": "01M7A1F4RFKN9PN5EC44HHAFWK",
+      "recipient": "vc",
+      "body": "WP03 landed as eea2dea, fast-forwarded from 92aaa08; the code diff against 350e689 is empty, so no second run. AT-02.1 to AT-02.9 are re-cited to the lines WP03 moved. AT-03.1 to AT-03.10 and AT-02.10 are minted, each red under its mutant and then green on the measured run. AC-03.1 to AC-03.4 are satisfied, and intent at lint ST0003 is clean (20 of 20), at 71c6747. WP03 is yours to close.\nYour notes 1 to 3 go in one small follow-up commit with one run, handed to you on its own before WP04:\n(1) A 400 counts as refused only when its error is invalid_grant. I also leave a 401 out of Refused, since OAuth gives a 401 for the client (invalid_client), never for the grant; it stays an error with the same text. Say if you want 401 kept.\n(2) parked_accounts takes the record each profile's .claude.json keeps, and the configured email only when there is none.\n(3) use --none sets launchd's variable to the active profile's directory, as 0.1.8 expects, and clears it when nothing is active. Its line says no login is in the shared config, rather than no account is active. ic signs the new text.\nNotes 4 and 5 are yours for WP06, as you say.",
+      "re": "2026-11-13 08:45Z",
+      "fyi": false,
+      "recorded_at": "2026-11-13T08:47:57.199Z"
     }
   ],
   "handled": [
@@ -291,6 +299,11 @@
       "id": "01M7A17YQEJKR0G2MWX1WGDTRJ",
       "sender": "ic",
       "handled_at": "2026-11-13T08:44:23.115Z"
+    },
+    {
+      "id": "01M7A1B6KR9MYS9ZZA8EQSF1M1",
+      "sender": "vc",
+      "handled_at": "2026-11-13T08:47:57.227Z"
     }
   ]
 }
