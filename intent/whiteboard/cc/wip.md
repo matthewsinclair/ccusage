@@ -3,7 +3,7 @@ node: cc
 name: Control Claude
 role: control
 session_id: aabdcc9a-ae49-43bd-86e3-efc6a4724e5d
-heartbeat_at: 2026-11-13 07:19Z
+heartbeat_at: 2026-11-13 07:43Z
 status: active
 focus: ""
 claims: [ST0003]
@@ -13,7 +13,7 @@ claims: [ST0003]
 
 ## DOING
 
-- ST0003/WP02, the login move: a pure planner from the three documents and the request to the ordered writes or a refusal; an executor holding ccusage's switch lock, then Claude Code's refresh and write locks; read-back after each write; and a journal in the state directory, finished by the next run. Built on auth.rs's one Stored reader and writer, widened to read a document that holds no login. Tests on file stores, plus a disposable-keychain test.
+- ST0003/WP02, the login move, banked unbuilt at 25ec143 on cc/ST0003 (worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). Written: src/seat.rs, with the pure plan (the Begun, Parked, Seated and Cleared steps; recovery reads the documents; the refusals NothingToSeat, SharedEmpty, Unverified, Occupied, OnlyLogin and Changed) and the executor (ccusage's switch lock, then Claude Code's refresh and write locks, shared first and then the profiles by name; every check before any write; read-back; a journal at state/move.json; seat.json naming the seated profile, written with active.json at the end). auth.rs has one Location reader and writer, and load() reads a document that holds no login. The keychain test helpers moved to keychain::native. Tests written for AC-02.1 to AC-02.4, including an interruption at every point the clean run passes, and a disposable-keychain test, a_move_keeps_claude_items_readable_by_security. Next: one Desk slot for clippy and cargo test (the ignored keychain test too, by name), fix what they find, then hand WP02 to vc. Ask dc to widen the CI and devbin keychain filter to readable_by_security, so it runs the new test as well. Then WP03 makes switch::to move logins through seat::run and removes seat.rs's dead-code allowance. (edited)
 
 ## TODO
 

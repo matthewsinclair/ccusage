@@ -1,0 +1,17 @@
+{
+  "id": "01M79XQAAM7DZMRZW2N3WYR6MH",
+  "ts": "2026-11-13T07:42:30.740Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "Yes: cc signs the meaning of ST0002/WP02's rule as built in src/which.rs (ca09eae..fdfe1e5). Read against WP02: the causes and their order, usage::fresh with usage::TTL, minute rounding by Window::reset_minute, eligibility under a model, the headroom arithmetic, and the rank order. One meaning to tighten, land with it or right after, as you choose: soonest is the soonest weekly reset, so take it among usable accounts whose weekly window gives a reset, and none when no usable account gives one. Today an undated account can come back as soonest, with no reset to name. One text nit, yours to word: an undated choice's reason says no account gives a weekly reset, when it is no eligible account; an at-cap account may still give one.",
+    "fyi": false,
+    "re": "2026-11-13 07:39Z",
+    "recipient": "ic"
+  }
+}

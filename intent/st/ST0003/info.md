@@ -60,7 +60,7 @@ completed:
 | WP    | Title                                                                        | Size | Status      |
 | ----- | ---------------------------------------------------------------------------- | ---- | ----------- |
 | WP-01 | Proof: a running session follows a login changed under it                    | XS   | Done        |
-| WP-02 | The login move: claudeAiOauth between stores, locked, journaled, never lossy | L    | Not Started |
+| WP-02 | The login move: claudeAiOauth between stores, locked, journaled, never lossy | L    | WIP         |
 | WP-03 | Shared mode on one live login: use, run, dir, login, logout and adoption     | L    | Not Started |
 | WP-04 | Doctor for the one live login                                                | M    | Not Started |
 | WP-05 | Docs and the decision record for the one live login                          | S    | Not Started |

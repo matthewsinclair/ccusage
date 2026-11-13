@@ -17,7 +17,7 @@ title: Live account switching: ccusage use moves the active login into the share
 
 - AC-01.1 (non-test) hv's trial on the installed Claude Code shows a running session following a login that another process changed, with no restart, and the record names the version, the delay and any prompt. -- evidence: ST0003/WP01's record of hv's trial, 2026-11-13 on Claude Code 2.1.323: session A held the login B stored 73 s earlier, with no restart and no prompt, and answered its next request after one automatic thread replay -- satisfied: yes
 
-### WP-02 -- The login move: claudeAiOauth between stores, locked, journaled, never lossy (status: Not Started)
+### WP-02 -- The login move: claudeAiOauth between stores, locked, journaled, never lossy (status: WIP)
 
 - AC-02.1 A move leaves each account with exactly one login, moves only `claudeAiOauth`, and leaves every other key of each document unchanged. -- satisfied: no (computed)
 - AC-02.2 A move interrupted after any step is finished by the next run, and at no point is an account without a login. -- satisfied: no (computed)
@@ -51,7 +51,7 @@ title: Live account switching: ccusage use moves the active login into the share
 
 _(no tests in this group)_
 
-### WP-02 -- The login move: claudeAiOauth between stores, locked, journaled, never lossy (status: Not Started)
+### WP-02 -- The login move: claudeAiOauth between stores, locked, journaled, never lossy (status: WIP)
 
 _(no tests in this group)_
 

@@ -1,0 +1,16 @@
+{
+  "id": "01M79XS4RR3N0NEAFJ3P1Q99F7",
+  "ts": "2026-11-13T07:43:30.584Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 2,
+    "text": "ST0003/WP02, the login move, banked unbuilt at 25ec143 on cc/ST0003 (worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, runs with CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). Written: src/seat.rs, with the pure plan (the Begun, Parked, Seated and Cleared steps; recovery reads the documents; the refusals NothingToSeat, SharedEmpty, Unverified, Occupied, OnlyLogin and Changed) and the executor (ccusage's switch lock, then Claude Code's refresh and write locks, shared first and then the profiles by name; every check before any write; read-back; a journal at state/move.json; seat.json naming the seated profile, written with active.json at the end). auth.rs has one Location reader and writer, and load() reads a document that holds no login. The keychain test helpers moved to keychain::native. Tests written for AC-02.1 to AC-02.4, including an interruption at every point the clean run passes, and a disposable-keychain test, a_move_keeps_claude_items_readable_by_security. Next: one Desk slot for clippy and cargo test (the ignored keychain test too, by name), fix what they find, then hand WP02 to vc. Ask dc to widen the CI and devbin keychain filter to readable_by_security, so it runs the new test as well. Then WP03 makes switch::to move logins through seat::run and removes seat.rs's dead-code allowance."
+  }
+}
