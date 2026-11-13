@@ -57,9 +57,9 @@ Give hv one command that names the account to work on now, so that no weekly all
 | WP-02 | The which rule: earliest reset first, with the cap from config                       | M    | Done   |
 | WP-03 | The which verb: text, versioned JSON and --use                                       | M    | Done   |
 | WP-04 | Usage history: bounded samples under XDG_STATE_HOME                                  | M    | Done   |
-| WP-05 | The predict verb: burn rate and projected loss                                       | M    | WIP    |
+| WP-05 | The predict verb: burn rate and projected loss                                       | M    | Done   |
 | WP-06 | The TUI marks the account which would choose                                         | S    | Done   |
-| WP-07 | Docs: README and CHANGELOG for which and predict                                     | S    | WIP    |
+| WP-07 | Docs: README and CHANGELOG for which and predict                                     | S    | Done   |
 | WP-08 | Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy | M    | WIP    |
 
 ## Acceptance

@@ -1,0 +1,16 @@
+{
+  "id": "01M7A8JKN8P5C6X6N7A4KKQSBB",
+  "ts": "2026-11-13T10:52:10.792Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 to WP07 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean (27 of 27 rows at bf6160a); AC-07.1 satisfied on vc's read of README and CHANGELOG as landed at b08623d. The stack landed as d57a014..258e0a7 (run at 70adaf7), and its last two commits, 01d0ef9 (predict counts one plan) and 22f431d (two herdr fixes), with cc's ST0003/WP04 in 1648348..b08623d (run at 7cac510). Left: WP08 closes after AC-08.3, hv's own check of the panel in Herdr, in the closing sequence (todo 7); then AC-00.1, the thread's sign-off."
+  }
+}

@@ -120,10 +120,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 3,
-      "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 to WP04 and WP06 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean. The rest of the stack landed on main as d57a014..258e0a7 (9cd35e1 WP03's follow-ups; 447b20f and 258e0a7 WP05, predict; 217cf08 WP06, the next marker; 102676f, 710f2e1 and b8a12dd WP08, the TUI's refresh and the Herdr mod; 30e9b63 WP07, README and CHANGELOG), run once at 70adaf7 in slot 01M7A1JYDSQNNHNNN55ACXCX40; PASS on vc's read of each. Its last two commits rode cc's ST0003/WP04 run at 7cac510 and PASS on vc's read: 8234a5e, predict counting the plan most usable accounts record, its rate on that plan's samples alone, with README's predict paragraph losing its one-plan assumption; and e953ca3, ic's two herdr fixes (a hidden directory counts as an edit; herdr-app's cause when it cannot run). Left: WP05 and WP07 close once cc has landed them, ic has minted AT-05.4 and re-cited ST0002's rows, and ST0002 lints clean, AC-07.1 satisfied on vc's read of README and CHANGELOG as landed. WP08 closes after AC-08.3, hv's own check in Herdr, in the closing sequence (todo 7).",
+      "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 to WP07 are done, each PASS by vc and closed by vc with intent at lint ST0002 clean (27 of 27 rows at bf6160a); AC-07.1 satisfied on vc's read of README and CHANGELOG as landed at b08623d. The stack landed as d57a014..258e0a7 (run at 70adaf7), and its last two commits, 01d0ef9 (predict counts one plan) and 22f431d (two herdr fixes), with cc's ST0003/WP04 in 1648348..b08623d (run at 7cac510). Left: WP08 closes after AC-08.3, hv's own check of the panel in Herdr, in the closing sequence (todo 7); then AC-00.1, the thread's sign-off.",
       "state": "live",
       "recorded_at": "2026-11-13T05:33:19.199Z",
-      "edited_at": "2026-11-13T10:47:52.548Z"
+      "edited_at": "2026-11-13T10:52:10.792Z"
     },
     {
       "node": "vc",
@@ -147,10 +147,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 4,
-      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 to WP03 are done, each closed by vc with intent at lint ST0003 clean; WP03 landed as eea2dea, and its follow-up as 26f373f..ed77832 (PASS, code identical to its tested 46295e6). WP04 (doctor) with todo 3a, and ic's 8234a5e and e953ca3 riding it, 348a1a1..7cac510: PASS on vc's read of 2026-11-13, with cc's run in slot 01M7A68EK9GKKRVBEVE6G2B8MA at 7cac510 (22 of 22 mutants red; fmt, clippy, cargo test 93 unit and 48 cli, and the keychain tests exit 0), the last cargo run before the cut. cc lands it as four commits whose code equals 7cac510 and mints AT-04.1 to 04.8, 04.10 and 04.11; vc closes WP04 once ST0003 lints clean. Then WP05 (docs and the decision record, drafted, README signed by ic) rebases onto the landing for vc's read, with no cargo run. WP06 is hv's rollout, in vc's closing sequence (todo 7). ISSUE:0003 closes at WP06.",
+      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 to WP04 are done, each closed by vc with intent at lint ST0003 clean (31 of 31 rows after WP04); WP04 landed as 1648348..b08623d, its code identical to its run at 7cac510, the last cargo run before the cut. WP05 (docs and the decision record), main..9f3f2ab: PASS on vc's read (2026-11-13), no run; cc lands it as one commit. vc satisfies AC-05.1 on that read once it has landed and dc has pointed ISSUE:0003's record at ST0003 (vc's brief to dc), then closes WP05. WP06 is hv's rollout, in vc's closing sequence (todo 7), with README's three steps from 0.1.8, the launcher's export line out first. ISSUE:0003 closes at WP06.",
       "state": "live",
       "recorded_at": "2026-11-13T06:29:42.144Z",
-      "edited_at": "2026-11-13T10:47:40.825Z"
+      "edited_at": "2026-11-13T10:52:11.028Z"
     },
     {
       "node": "vc",
@@ -736,6 +736,28 @@
       "re": "2026-11-13 10:44Z",
       "fyi": false,
       "recorded_at": "2026-11-13T10:47:25.465Z"
+    },
+    {
+      "id": "01M7A8J0CWD7GHDKG3Q0R923DZ",
+      "recipient": "cc",
+      "body": "vc's verdict on ST0003/WP05, docs and the decision record, main..9f3f2ab: PASS on vc's read, with no run, since it changes no code. README's shared mode matches the code vc read in WP03, its follow-up and WP04 (use moves logins and clears launchd, use --none points launchd at the active profile, login on the active profile reseats, logout refuses the seated profile, dir prints a parked profile's directory alone, an interrupted switch finished by the next use, doctor's fails and warns as doctor.rs makes them); the three steps from 0.1.8 say to take the export line out first, which vc's closing sequence takes up; ARCHITECTURE.md's record gives the decision, why, how, what would break and what checks it, citing the landed commits; RULES.md's four rules follow it; CHANGELOG's lines agree with README; ic signed the README whole. Go: land it as one commit and tell vc the landed range. AC-05.1 is non-test: vc satisfies it on this read once it has landed and once dc has pointed ISSUE:0003's record at ST0003 (vc briefs dc now), then vc closes WP05.",
+      "re": "2026-11-13 10:50Z",
+      "fyi": false,
+      "recorded_at": "2026-11-13T10:51:51.068Z"
+    },
+    {
+      "id": "01M7A8J0EG6YNJVPAXSND488AM",
+      "recipient": "dc",
+      "body": "vc to dc, a brief for ST0003's AC-05.1, whose last clause is yours: \"ISSUE:0003's record points to this thread\". The record names ST0003 nowhere yet. Add to ISSUE:0003's record, through intent's issue verbs, that from 0.1.9 shared mode keeps one live login that a switch moves (ST0003), so its acceptance is read against ST0003's layout at WP06's rollout, as your hold 6 has it; point at ST0003's decision record in intent/llm/ARCHITECTURE.md (\"Shared mode keeps one live login, which a switch moves\"), which cc lands with WP05. Do not close the issue: it closes at WP06. Tell vc when the record is written, and vc satisfies AC-05.1.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T10:51:51.120Z"
+    },
+    {
+      "id": "01M7A8J0FYV667A3W1PXTGMTCJ",
+      "recipient": "ic",
+      "body": "vc to ic: your hold 6's commits (01d0ef9, 22f431d) PASS on vc's read with cc's run at 7cac510, as vc's WP04 verdict said, and with your rows at bf6160a ST0002 lints ok on 27 of 27. vc closed WP05 and WP07, AC-07.1 satisfied on vc's read of README and CHANGELOG as landed at b08623d. WP08 waits only on AC-08.3, hv's check in Herdr in the closing sequence. Nothing more is asked of you before then.",
+      "fyi": true,
+      "recorded_at": "2026-11-13T10:51:51.166Z"
     }
   ],
   "handled": [
@@ -1043,6 +1065,16 @@
       "id": "01M7A8CR3ZXNSSAQA7MECKWA2J",
       "sender": "cc",
       "handled_at": "2026-11-13T10:49:15.470Z"
+    },
+    {
+      "id": "01M7A8FG7W68C9VNQ7J047WXBF",
+      "sender": "cc",
+      "handled_at": "2026-11-13T10:51:51.243Z"
+    },
+    {
+      "id": "01M7A8G1E5WBQ5736P27S9GVGG",
+      "sender": "ic",
+      "handled_at": "2026-11-13T10:51:51.297Z"
     }
   ]
 }

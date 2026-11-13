@@ -2,7 +2,7 @@
 wp_id: WP-07
 title: Docs: README and CHANGELOG for which and predict
 scope: S
-status: WIP
+status: Done
 ---
 
 # WP-07: Docs: README and CHANGELOG for which and predict

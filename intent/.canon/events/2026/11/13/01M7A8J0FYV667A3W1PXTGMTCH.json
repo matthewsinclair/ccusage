@@ -1,0 +1,17 @@
+{
+  "id": "01M7A8J0FYV667A3W1PXTGMTCH",
+  "ts": "2026-11-13T10:51:51.166Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to ic: your hold 6's commits (01d0ef9, 22f431d) PASS on vc's read with cc's run at 7cac510, as vc's WP04 verdict said, and with your rows at bf6160a ST0002 lints ok on 27 of 27. vc closed WP05 and WP07, AC-07.1 satisfied on vc's read of README and CHANGELOG as landed at b08623d. WP08 waits only on AC-08.3, hv's check in Herdr in the closing sequence. Nothing more is asked of you before then.",
+    "fyi": true,
+    "re": null,
+    "recipient": "ic"
+  }
+}

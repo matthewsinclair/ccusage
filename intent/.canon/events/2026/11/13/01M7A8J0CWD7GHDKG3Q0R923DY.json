@@ -1,0 +1,17 @@
+{
+  "id": "01M7A8J0CWD7GHDKG3Q0R923DY",
+  "ts": "2026-11-13T10:51:51.068Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc's verdict on ST0003/WP05, docs and the decision record, main..9f3f2ab: PASS on vc's read, with no run, since it changes no code. README's shared mode matches the code vc read in WP03, its follow-up and WP04 (use moves logins and clears launchd, use --none points launchd at the active profile, login on the active profile reseats, logout refuses the seated profile, dir prints a parked profile's directory alone, an interrupted switch finished by the next use, doctor's fails and warns as doctor.rs makes them); the three steps from 0.1.8 say to take the export line out first, which vc's closing sequence takes up; ARCHITECTURE.md's record gives the decision, why, how, what would break and what checks it, citing the landed commits; RULES.md's four rules follow it; CHANGELOG's lines agree with README; ic signed the README whole. Go: land it as one commit and tell vc the landed range. AC-05.1 is non-test: vc satisfies it on this read once it has landed and once dc has pointed ISSUE:0003's record at ST0003 (vc briefs dc now), then vc closes WP05.",
+    "fyi": false,
+    "re": "2026-11-13 10:50Z",
+    "recipient": "cc"
+  }
+}

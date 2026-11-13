@@ -1,0 +1,16 @@
+{
+  "id": "01M7A8JKWM2E39ZFVKWQP9TBSY",
+  "ts": "2026-11-13T10:52:11.028Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching, built by cc (hv, 2026-11-13). WP01 to WP04 are done, each closed by vc with intent at lint ST0003 clean (31 of 31 rows after WP04); WP04 landed as 1648348..b08623d, its code identical to its run at 7cac510, the last cargo run before the cut. WP05 (docs and the decision record), main..9f3f2ab: PASS on vc's read (2026-11-13), no run; cc lands it as one commit. vc satisfies AC-05.1 on that read once it has landed and dc has pointed ISSUE:0003's record at ST0003 (vc's brief to dc), then closes WP05. WP06 is hv's rollout, in vc's closing sequence (todo 7), with README's three steps from 0.1.8, the launcher's export line out first. ISSUE:0003 closes at WP06."
+  }
+}

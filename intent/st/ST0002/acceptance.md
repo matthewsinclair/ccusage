@@ -39,7 +39,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 - AC-04.1 Each successful fetch records a sample for each window whose percent changed, in a 0600 file under XDG_STATE_HOME; a cache hit records nothing; and samples are dropped by age, one weekly window, not at a reset. -- satisfied: yes (computed)
 
-### WP-05 -- The predict verb: burn rate and projected loss (status: WIP)
+### WP-05 -- The predict verb: burn rate and projected loss (status: Done)
 
 - AC-05.1 `ccusage predict` reports each account's projected unused percent and the total projected loss from a fixture history, says how much history it rests on, and says plainly when there is too little. -- satisfied: yes (computed)
 
@@ -47,9 +47,9 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 - AC-06.1 The TUI overview marks the account `which` chooses once every account's fresh report is in, and never on partial or stale data. -- satisfied: yes (computed)
 
-### WP-07 -- Docs: README and CHANGELOG for which and predict (status: WIP)
+### WP-07 -- Docs: README and CHANGELOG for which and predict (status: Done)
 
-- AC-07.1 (non-test) README and the CHANGELOG describe `which`, `predict`, the cap key, the history file, the JSON contract, the Herdr mod and the refresh policy as built. -- satisfied: no
+- AC-07.1 (non-test) README and the CHANGELOG describe `which`, `predict`, the cap key, the history file, the JSON contract, the Herdr mod and the refresh policy as built. -- evidence: vc's read of README's which, predict, usage history, Herdr panel and refresh policy sections and CHANGELOG's 0.1.9 lines, as landed at b08623d (predict's one plan and herdr's install terms included), 2026-11-13 -- satisfied: yes
 
 ### WP-08 -- Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy (status: WIP)
 
@@ -93,7 +93,7 @@ _(no tests in this group)_
 - AT-04.4 `tests/cli.rs:416` -- covers AC-04.1 -- status: green -- Usage read from a fresh cache, or held back by a rate-limit cooldown, records no history under XDG_STATE_HOME; red before WP04: written against history::FILE, it could not compile before it (the property is structural, as only the success arm records); green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP
 - AT-04.5 `src/history.rs:294` -- covers AC-04.1 -- status: green -- Samples go by age alone, once older than one weekly window: a window that has since reset keeps its sample, and the next window at the same percent is a window of its own; red under the mutants that drop a sample at one week and that know a window without its reset, in the first WP04 run at 31c0482, Desk slot 01M79ZVHT2C8B2ADTBWY7YQ73W; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP
 
-### WP-05 -- The predict verb: burn rate and projected loss (status: WIP)
+### WP-05 -- The predict verb: burn rate and projected loss (status: Done)
 
 - AT-05.1 `src/predict.rs:388` -- covers AC-05.1 -- status: green -- The burn rate is the rises in the weekly windows across every account over the hours from the first weekly sample to the last, a rise across a reset counting from 0 and a fall as none; the test computes its expected rate from the fixture history; red under the mutants that count no rise across a reset and that count a fall, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)
 - AT-05.2 `src/predict.rs:437` -- covers AC-05.1 -- status: green -- Following which::choose from now at the rate, each account's projected percent at its current reset, held at the cap, its unused share as 100 less that, and the total, each computed in the test from a fixture whose climb to the cap ends part way through a second; red under the mutants that take the last account instead of the rule's choice, that climb past the cap, and that count unused from the cap instead of 100, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)
@@ -105,7 +105,7 @@ _(no tests in this group)_
 - AT-06.1 `src/display.rs:1046` -- covers AC-06.1 -- status: green -- display::next is which::choose's choice once every report is in and fresh, an account that failed counting as in; a report yet to come, or usage as old as the cache's lifetime, gives no marker and the TUI's notice to refresh; with nothing eligible the overview says so; one account's usage shows no marker; red under the mutants that ignore freshness, that mark every account but the choice, and that count a failed account as not in, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)
 - AT-06.2 `tests/cli.rs:1625` -- covers AC-06.1 -- status: green -- ccusage usage --all marks which's choice next, as the TUI does, while ccusage usage NAME marks none; red under the mutant that leaves usage --all without the marker, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)
 
-### WP-07 -- Docs: README and CHANGELOG for which and predict (status: WIP)
+### WP-07 -- Docs: README and CHANGELOG for which and predict (status: Done)
 
 _(no tests in this group)_
 

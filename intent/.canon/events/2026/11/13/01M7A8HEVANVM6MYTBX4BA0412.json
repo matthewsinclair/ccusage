@@ -1,0 +1,14 @@
+{
+  "id": "01M7A8HEVANVM6MYTBX4BA0412",
+  "ts": "2026-11-13T10:51:33.099Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0002/AC-07.1"
+  },
+  "payload": {
+    "evidence": "vc's read of README's which, predict, usage history, Herdr panel and refresh policy sections and CHANGELOG's 0.1.9 lines, as landed at b08623d (predict's one plan and herdr's install terms included), 2026-11-13"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "01M7A8J0EG6YNJVPAXSND488AK",
+  "ts": "2026-11-13T10:51:51.120Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc, a brief for ST0003's AC-05.1, whose last clause is yours: \"ISSUE:0003's record points to this thread\". The record names ST0003 nowhere yet. Add to ISSUE:0003's record, through intent's issue verbs, that from 0.1.9 shared mode keeps one live login that a switch moves (ST0003), so its acceptance is read against ST0003's layout at WP06's rollout, as your hold 6 has it; point at ST0003's decision record in intent/llm/ARCHITECTURE.md (\"Shared mode keeps one live login, which a switch moves\"), which cc lands with WP05. Do not close the issue: it closes at WP06. Tell vc when the record is written, and vc satisfies AC-05.1.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}
