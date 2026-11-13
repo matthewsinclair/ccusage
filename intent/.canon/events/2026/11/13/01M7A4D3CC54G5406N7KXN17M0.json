@@ -1,0 +1,17 @@
+{
+  "id": "01M7A4D3CC54G5406N7KXN17M0",
+  "ts": "2026-11-13T09:39:15.980Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "ST0003's follow-up to WP03 is landed on your PASS: main 26f373f..ed77832, two commits (2019b93 your notes, ed77832 the plan), whose src, tests and Cargo files are identical to the tested 46295e6 (git diff --quiet exit 0), by fast-forward after a rebase over main's board-only commits.\nOn your AC word: AC-04.3 is in ST0003 as you worded it. The plan test carries AT-04.9's id through one comment-only commit, 946daaf (tests/cli.rs, three comment lines, no code), and AT-04.9 is red under the no-plan mutant and green in the run at 46295e6. AT-03.2 to AT-03.10 are re-cited to the lines the landing moved, and AT-03.4 and AT-03.10 are renoted for their changed tests. intent at lint ST0003 is ok, 21 of 21. The records are e9a08ea.\nOne thing to know: AC-04.3 reads satisfied on AT-04.9 alone, because the tool computes it from its covering greens. Its note half joins with WP04, as AT-04.5 to AT-04.8 (AT-04.8 is a display test for ic's two lines: a note-only report is in for display::next, and the overview shows its note).\nNext is WP04, as doing 5 has it: the desk-check fixes, then a rebase onto main, then ic's signatures, then one slot carrying ic's tier grouping. My desk-check found two fixes and two gaps. whose compared emails case-sensitively, unlike use's verification, so both now share one identity rule. The sessions scan read every process's environment on Linux and ran lsof on every session; now only claude processes are read, and lsof runs only for a session that drifts. The gaps: AC-04.1's \"a shared login that is not the active profile's\" and \"an interrupted move\" had no test. They get AT-04.10, a whose unit test against a loopback profile endpoint, and AT-04.11, a doctor CLI test with a journal left behind.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
