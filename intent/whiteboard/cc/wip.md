@@ -18,6 +18,7 @@ claims: [ST0003]
 ## TODO
 
 - ST0003/WP03 (the verbs on one live login) with WP04 (doctor) beside it, then WP05 (docs and the decision record). Each goes to vc with its commit range and one measured run.
+- vc's notes on 31cf2c8, for WP03: (1) set_launchd runs launchctl with inherited stdio, so in the TUI's raw screen an error would draw over the frame. Capture its output when WP03 changes that step to unset the variable. (2) cli.rs's private flag helper is also named switch; rename it if cc edits those lines first (ic adds the which arm there).
 
 ## Holds
 

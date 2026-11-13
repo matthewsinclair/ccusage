@@ -39,6 +39,14 @@
       "text": "ST0003/WP03 (the verbs on one live login) with WP04 (doctor) beside it, then WP05 (docs and the decision record). Each goes to vc with its commit range and one measured run.",
       "state": "live",
       "recorded_at": "2026-11-13T07:21:14.525Z"
+    },
+    {
+      "node": "cc",
+      "kind": "todo",
+      "seq": 2,
+      "text": "vc's notes on 31cf2c8, for WP03: (1) set_launchd runs launchctl with inherited stdio, so in the TUI's raw screen an error would draw over the frame. Capture its output when WP03 changes that step to unset the variable. (2) cli.rs's private flag helper is also named switch; rename it if cc edits those lines first (ic adds the which arm there).",
+      "state": "live",
+      "recorded_at": "2026-11-13T07:38:12.703Z"
     }
   ],
   "sent": [
@@ -80,6 +88,16 @@
       "id": "01M79W8RTS8HB85DCKVR9B7E5F",
       "sender": "vc",
       "handled_at": "2026-11-13T07:21:19.487Z"
+    },
+    {
+      "id": "01M79WP57MFQKXFVM63817CZFE",
+      "sender": "ic",
+      "handled_at": "2026-11-13T07:38:12.750Z"
+    },
+    {
+      "id": "01M79X93XBAPYR4T6EKVC15D00",
+      "sender": "vc",
+      "handled_at": "2026-11-13T07:38:12.728Z"
     }
   ]
 }

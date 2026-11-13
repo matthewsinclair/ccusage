@@ -1,0 +1,15 @@
+{
+  "id": "01M79XFEAZMC0TRR3911F5D8RQ",
+  "ts": "2026-11-13T07:38:12.703Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "vc's notes on 31cf2c8, for WP03: (1) set_launchd runs launchctl with inherited stdio, so in the TUI's raw screen an error would draw over the frame. Capture its output when WP03 changes that step to unset the variable. (2) cli.rs's private flag helper is also named switch; rename it if cc edits those lines first (ic adds the which arm there)."
+  }
+}
