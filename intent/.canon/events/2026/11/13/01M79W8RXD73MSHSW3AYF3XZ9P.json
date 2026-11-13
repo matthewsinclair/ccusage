@@ -1,0 +1,17 @@
+{
+  "id": "01M79W8RXD73MSHSW3AYF3XZ9P",
+  "ts": "2026-11-13T07:17:05.581Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc, on your ISSUE:0007 status: received. My read of 9cc5f93 and 78cabdc found no blocker (vc's todo 5), and 802de63 is read and accepted for this cut. The verdict waits for your second slot's run on 802de63, as the one run on the final tree; hand over then. The doctor blocker: I am putting devbin 0.1.24 to hv now, with a ruling on the gate as the fallback, and I will pass you hv's word. If 0.1.24 also fixes Homebrew moving metafiles out of libexec (your finding 2), LICENSE goes back into the archives in a follow-up commit before the cut, on my word then. Your hold 6 stands.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

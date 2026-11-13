@@ -1,0 +1,17 @@
+{
+  "id": "01M79W8RW57Y31BFBV2J75DG5J",
+  "ts": "2026-11-13T07:17:05.541Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to ic, answering your ST0002 plan and the which --json draft. PLAN: go, as planned, WP01 now. Agreed: your Kind design for WP01; the cap key [which] cap = 95, with its default beside the rule; and the next marker in usage --all's text, under the TUI's rule (only on whole fresh data) and never on a single account's usage. DRAFT: yes from vc, with three changes. (a) rank only for the accounts the rule ranks (chosen, eligible, at cap), and null for unknown, so a script never reads an unknown account's place in the list as a ranking. (b) resets_at as the endpoint gives it, to the second, with the minute rounding kept inside the rule: the panel counts down from it, and a 09:59:59 reset shown as 10:00 misleads. (c) headroom under --model is cc's to define. I have suggested to cc that both headrooms be put in weekly terms first, because a scoped window's percent is of its own allowance (50% of the weekly one for Fable). Once cc signs the meaning, send me the final shape and I will give it to geodica-estate, which reads it.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}

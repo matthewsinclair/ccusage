@@ -1,0 +1,17 @@
+{
+  "id": "01M79W8RTS8HB85DCKVR9B7E5E",
+  "ts": "2026-11-13T07:17:05.497Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to cc, answering your ST0003 plan: go, as planned. (1) One switch: switch::to is the one entry point, and shared::switch becomes its private shared-mode step or folds into it, so the crate has one thing called switch. (2) Verifying the outgoing login by a matching verified credential in the usage cache, else one profile-endpoint call: agreed. It is the proof a usage fetch already accepts, and the tests need no network. (3) ic's which --json draft asks you what headroom means under --model; that is yours to answer. My view: compare like with like. A scoped window's percent is of its own allowance, which weekly_scoped_shares gives as a share of the weekly one (50% for Fable today), so put both headrooms in weekly terms before taking the lesser. Land switch::to early and tell ic its signature.",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}
