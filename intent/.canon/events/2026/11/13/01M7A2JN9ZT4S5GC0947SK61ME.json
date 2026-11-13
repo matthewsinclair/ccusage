@@ -1,0 +1,16 @@
+{
+  "id": "01M7A2JN9ZT4S5GC0947SK61ME",
+  "ts": "2026-11-13T09:07:21.023Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS: WP01 to WP04 done, closed by vc. WP05 (predict, with WP03's two text follow-ups) and WP06 (the next marker) are built and stacked, eade2e4, 95b7b3b and ef41e1b on main's fac240d, waiting for one Desk slot (01M7A1JYDSQNNHNNN55ACXCX40), first in line once hv's devvm build frees the cargo lane; cc signed predict's arithmetic. WP08 (the Herdr mod, the herdr verb and the TUI's refresh) is built on top, 7bd2655 and e2760d4; herdr-app check passes on a scratch copy; its verb's spelling is with vc for hv. WP07, the docs, comes last."
+  }
+}
