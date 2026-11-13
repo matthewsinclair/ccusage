@@ -2,7 +2,8 @@ use crate::{
   Result, auth,
   config::{self, Config, Profile, Store},
   display, storage,
-  usage::Client,
+  usage::{self, Client, Report},
+  which,
 };
 use std::path::PathBuf;
 
@@ -28,6 +29,9 @@ Usage: ccusage [--config PATH] [--no-color] [--verbose] [COMMAND]
                                Show plan usage (default: active account)
   usage --demo [--json] [--verbose]
                                Show plan usage from fixture data, with no account
+  which [--json] [--model NAME] [--use] [--refresh]
+                               Name the account to work on: the soonest weekly reset
+                               with headroom below the cap; --use makes it active
   tui [--demo]                 Interactive account dashboard (demo works without setup)
   shell zsh|bash               Print an optional wrapper for plain claude
   paths                        Show resolved XDG directories
@@ -336,14 +340,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
         }
         vec![store.select(args.first().map(String::as_str))?]
       };
-      if names.is_empty() {
-        return Err("no profiles; run ccusage add NAME".into());
-      }
-      let client = Client::default();
-      let reports: Vec<_> = names
-        .iter()
-        .map(|name| client.report(&store, name, refresh))
-        .collect();
+      let reports = reports(&store, &names, refresh)?;
       if json {
         println!("{}", serde_json::to_string_pretty(&reports)?);
       } else {
@@ -351,6 +348,58 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       }
       if reports.iter().any(|report| report.error.is_some()) {
         return Err("some accounts could not refresh; see per-account errors".into());
+      }
+    }
+    "which" => {
+      let json = switch(&mut args, "--json");
+      let activate = switch(&mut args, "--use");
+      let refresh = switch(&mut args, "--refresh");
+      let model = argument(&mut args, "--model")?;
+      empty(&args)?;
+      let names: Vec<_> = store.config.profiles.keys().cloned().collect();
+      let reports = reports(&store, &names, refresh)?;
+      let model = model
+        .map(|asked| which::model_named(&reports, &asked))
+        .transpose()?;
+      let (now, cap) = (crate::now(), store.config.cap());
+      let choice = which::choose(&reports, now, cap, model.as_deref(), usage::TTL);
+      let chosen = choice.chosen().map(|account| account.name.clone());
+      // With nothing eligible, --use changes nothing; with the choice active already,
+      // it says so.
+      let already = chosen.is_some() && store.active()? == chosen;
+      let switched = match &chosen {
+        Some(name) if activate && !already => Some(crate::switch::to(&store, name)?),
+        _ => None,
+      };
+      let active = store.active()?;
+      if json {
+        println!(
+          "{}",
+          which::view::json(
+            &choice,
+            now,
+            cap,
+            model.as_deref(),
+            active.as_deref(),
+            switched.is_some()
+          )?
+        );
+      } else {
+        println!("{}", which::view::text(&choice, now, cap));
+        match (&chosen, switched) {
+          (Some(name), Some(switched)) => println!("{}", switched.message(name)),
+          (Some(name), None) if activate => println!("{name} is already the active account."),
+          _ => {}
+        }
+      }
+      if chosen.is_none() {
+        return Err(
+          format!(
+            "nothing eligible: {}",
+            which::view::nothing_eligible(&choice, now, cap)
+          )
+          .into(),
+        );
       }
     }
     "tui" => {
@@ -362,6 +411,20 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
     }
   }
   Ok(())
+}
+
+/// Each named account's usage report, as usage and which read them.
+fn reports(store: &Store, names: &[String], refresh: bool) -> Result<Vec<Report>> {
+  if names.is_empty() {
+    return Err("no profiles; run ccusage add NAME".into());
+  }
+  let client = Client::default();
+  Ok(
+    names
+      .iter()
+      .map(|name| client.report(store, name, refresh))
+      .collect(),
+  )
 }
 
 fn clear_cache(store: &Store, name: &str) -> Result<()> {

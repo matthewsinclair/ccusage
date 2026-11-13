@@ -137,6 +137,22 @@ esac
     Ok(())
   }
   fn cached(&self, name: &str, timestamp: i64, retry_at: i64) -> Result<()> {
+    self.cached_usage(
+      name,
+      timestamp,
+      retry_at,
+      serde_json::json!({"five_hour":{"utilization":62,"resets_at":null}}),
+    )
+  }
+  /// `name` logged in with the fixture's token, and its usage cached at `timestamp` as
+  /// `snapshot`, rate limited until `retry_at`. The profile's email is the fixture's.
+  fn cached_usage(
+    &self,
+    name: &str,
+    timestamp: i64,
+    retry_at: i64,
+    snapshot: serde_json::Value,
+  ) -> Result<()> {
     let source = self.root.join("data/ccusage/profiles").join(name);
     use sha2::{Digest, Sha256};
     storage::write_atomic(
@@ -145,12 +161,58 @@ esac
     )?;
     let credential_id = format!("{:x}", Sha256::digest(b"TEST_TOKEN\0test@example.com"));
     let cache = serde_json::json!({"fetched_at":timestamp,"retry_at":retry_at,"source":source,"credential_id":credential_id,
-      "snapshot":{"five_hour":{"utilization":62,"resets_at":null}}});
+      "snapshot":snapshot});
     storage::write_atomic(
       &self.root.join(format!("cache/ccusage/{name}.json")),
       &serde_json::to_vec(&cache)?,
     )
   }
+  /// The which tests' accounts, with usage cached now and resets relative to it: work,
+  /// the soonest reset with headroom, with a Fable window; personal, eligible with a
+  /// later reset; spare, at the cap with the soonest reset of all; and broken, with no
+  /// login, so unknown.
+  fn which_accounts(&self) -> Result<()> {
+    self.setup()?;
+    for name in ["personal", "spare"] {
+      self.ok(&["add", name, "--email", "test@example.com"])?;
+    }
+    self.ok(&["add", "broken"])?;
+    let (now, cap) = (ccusage::now(), ccusage::which::DEFAULT_CAP);
+    self.cached_usage("work", now, 0, weekly(cap / 2.0, 2 * DAY, Some(FABLE))?)?;
+    self.cached_usage("personal", now, 0, weekly(0.0, 5 * DAY, None)?)?;
+    self.cached_usage("spare", now, 0, weekly(cap, DAY, None)?)
+  }
+}
+
+const DAY: i64 = 86_400;
+/// The Fable window's percent in the which tests.
+const FABLE: f64 = 10.0;
+
+/// Usage whose weekly window is at `percent` and resets `in_seconds` from now, with a
+/// Fable window at `fable`, whose share is half the weekly allowance, when one is given.
+fn weekly(percent: f64, in_seconds: i64, fable: Option<f64>) -> Result<serde_json::Value> {
+  let reset = (time::OffsetDateTime::now_utc() + time::Duration::seconds(in_seconds))
+    .format(&time::format_description::well_known::Rfc3339)?;
+  let mut limits =
+    vec![serde_json::json!({"kind": "weekly_all", "percent": percent, "resets_at": reset})];
+  if let Some(fable) = fable {
+    limits.push(
+      serde_json::json!({"kind": "weekly_scoped", "percent": fable, "resets_at": reset,
+      "scope": {"model": {"display_name": "Fable"}}}),
+    );
+  }
+  Ok(serde_json::json!({"limits": limits,
+    "weekly_scoped_shares": [{"limit_index": 1, "allowance_percent_of_weekly": 50}]}))
+}
+
+/// The account each line of the which text is about, in order: the name before its
+/// colon, for every line but a "Nothing eligible" one.
+fn line_names(text: &str) -> Vec<&str> {
+  text
+    .lines()
+    .filter(|line| !line.starts_with("Nothing eligible"))
+    .filter_map(|line| line.split_once(':').map(|(name, _)| name))
+    .collect()
 }
 impl Drop for Sandbox {
   fn drop(&mut self) {
@@ -977,5 +1039,193 @@ fn shared_mode_use_waits_for_claude_codes_settings_lock() -> Result<()> {
   fs::remove_dir(&lock)?;
   assert!(child.wait()?.success());
   assert!(fs::read_to_string(shared.join(".claude.json"))?.contains("\"u-work\""));
+  Ok(())
+}
+
+// ST0002 AT-03.1: the choice with its reason, then the rest in rank order; exit 1 with none.
+#[test]
+fn which_names_the_soonest_reset_with_headroom_then_ranks_the_rest() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.which_accounts()?;
+  let cap = ccusage::which::DEFAULT_CAP;
+  let output = sandbox.run(&["which"])?;
+  assert!(output.status.success());
+  let text = String::from_utf8(output.stdout)?;
+  assert_eq!(line_names(&text), ["work", "personal", "spare", "broken"]);
+  let lines: Vec<_> = text.lines().collect();
+  assert!(lines[0].ends_with(", soonest reset with headroom"));
+  assert!(lines[0].contains(&format!("Fable {FABLE}% used")));
+  assert!(lines[1].ends_with(", eligible"));
+  assert!(lines[2].ends_with(&format!(", at the {cap}% cap")));
+  assert!(lines[3].starts_with("broken: unknown, "));
+  assert!(sandbox.ok(&["help"])?.contains("which [--json]"));
+  // With nothing eligible, stdout says so first and names the soonest reset, and the
+  // reason goes to stderr with exit 1.
+  let now = ccusage::now();
+  sandbox.cached_usage("work", now, 0, weekly(cap, 2 * DAY, None)?)?;
+  sandbox.cached_usage("personal", now, 0, weekly(100.0, 5 * DAY, None)?)?;
+  let output = sandbox.run(&["which"])?;
+  assert!(!output.status.success());
+  let text = String::from_utf8(output.stdout)?;
+  let first = text.lines().next().ok_or("the report's first line")?;
+  assert!(first.starts_with("Nothing eligible: ") && first.contains("spare's"));
+  assert_eq!(line_names(&text), ["spare", "work", "personal", "broken"]);
+  assert!(String::from_utf8(output.stderr)?.contains("nothing eligible: "));
+  Ok(())
+}
+
+// ST0002 AT-03.2: version 1 of the agreed shape, in the text's order.
+#[test]
+fn which_json_is_version_1_of_the_agreed_shape_in_the_texts_order() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.which_accounts()?;
+  let cap = ccusage::which::DEFAULT_CAP;
+  let text = sandbox.ok(&["which"])?;
+  let json: serde_json::Value = serde_json::from_str(&sandbox.ok(&["which", "--json"])?)?;
+  let keys = |value: &serde_json::Value| -> Vec<String> {
+    value
+      .as_object()
+      .map(|object| object.keys().cloned().collect())
+      .unwrap_or_default()
+  };
+  assert_eq!(
+    keys(&json),
+    [
+      "version",
+      "now",
+      "cap",
+      "model",
+      "active",
+      "choice",
+      "activated",
+      "soonest",
+      "accounts"
+    ]
+  );
+  assert_eq!(json["version"], ccusage::which::view::VERSION);
+  assert_eq!(json["cap"], cap);
+  assert_eq!(json["model"], serde_json::Value::Null);
+  assert_eq!(json["choice"], "work");
+  assert_eq!(json["activated"], false);
+  assert_eq!(json["soonest"]["name"], "spare");
+  let accounts = json["accounts"].as_array().ok_or("an accounts array")?;
+  let field = |name: &str| -> Vec<serde_json::Value> {
+    accounts
+      .iter()
+      .map(|account| account[name].clone())
+      .collect()
+  };
+  assert_eq!(field("name"), line_names(&text));
+  assert_eq!(field("state"), ["chosen", "eligible", "at_cap", "unknown"]);
+  assert_eq!(
+    field("rank"),
+    [
+      serde_json::json!(1),
+      serde_json::json!(2),
+      serde_json::json!(3),
+      serde_json::Value::Null
+    ]
+  );
+  assert_eq!(
+    field("cause"),
+    [
+      serde_json::Value::Null,
+      serde_json::Value::Null,
+      serde_json::Value::Null,
+      serde_json::json!("error")
+    ]
+  );
+  assert_eq!(accounts[0]["headroom"], cap / 2.0);
+  assert_eq!(accounts[2]["headroom"], 0.0);
+  for account in accounts {
+    assert_eq!(
+      keys(account),
+      [
+        "name",
+        "state",
+        "rank",
+        "percent",
+        "headroom",
+        "resets_at",
+        "reason",
+        "cause",
+        "scoped",
+        "session",
+        "fetched_at",
+        "error"
+      ]
+    );
+  }
+  let scoped = &accounts[0]["scoped"][0];
+  assert_eq!(keys(scoped), ["model", "percent", "share", "resets_at"]);
+  assert_eq!(
+    (&scoped["model"], &scoped["percent"]),
+    (&serde_json::json!("Fable"), &serde_json::json!(FABLE))
+  );
+  // Every time is RFC 3339 in UTC, to the second, with a Z.
+  for stamp in [
+    &json["now"],
+    &json["soonest"]["resets_at"],
+    &accounts[0]["resets_at"],
+    &accounts[0]["fetched_at"],
+    &scoped["resets_at"],
+  ] {
+    let stamp = stamp.as_str().ok_or("a time is a string")?;
+    assert!(stamp.ends_with('Z') && !stamp.contains('.'));
+    time::OffsetDateTime::parse(stamp, &time::format_description::well_known::Rfc3339)?;
+  }
+  Ok(())
+}
+
+// ST0002 AT-03.3: which --use makes the choice active through use's one function.
+#[test]
+fn which_use_makes_the_choice_active_and_changes_nothing_when_nothing_is_eligible() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.which_accounts()?;
+  let active = sandbox.root.join("state/ccusage/active.json");
+  let said = sandbox.ok(&["which", "--use"])?;
+  assert!(said.ends_with("Active: work. Future ccusage run launches use this account.\n"));
+  assert_eq!(fs::read_to_string(&active)?, "\"work\"");
+  assert!(
+    sandbox
+      .ok(&["which", "--use"])?
+      .ends_with("work is already the active account.\n")
+  );
+  let json: serde_json::Value = serde_json::from_str(&sandbox.ok(&["which", "--use", "--json"])?)?;
+  assert_eq!(
+    (&json["active"], &json["activated"]),
+    (&serde_json::json!("work"), &serde_json::json!(false))
+  );
+  sandbox.ok(&["use", "personal"])?;
+  let json: serde_json::Value = serde_json::from_str(&sandbox.ok(&["which", "--use", "--json"])?)?;
+  assert_eq!(
+    (&json["active"], &json["activated"]),
+    (&serde_json::json!("work"), &serde_json::json!(true))
+  );
+  // With nothing eligible, --use leaves the active account as it was.
+  sandbox.ok(&["use", "personal"])?;
+  let (now, cap) = (ccusage::now(), ccusage::which::DEFAULT_CAP);
+  sandbox.cached_usage("work", now, 0, weekly(cap, 2 * DAY, None)?)?;
+  sandbox.cached_usage("personal", now, 0, weekly(cap, 5 * DAY, None)?)?;
+  assert!(!sandbox.run(&["which", "--use"])?.status.success());
+  assert_eq!(fs::read_to_string(&active)?, "\"personal\"");
+  Ok(())
+}
+
+// ST0002 AT-03.4: a model no scoped window carries is refused, naming the models seen.
+#[test]
+fn which_refuses_a_model_no_scoped_window_carries_and_names_the_models_seen() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.which_accounts()?;
+  let output = sandbox.run(&["which", "--model", "Fabel"])?;
+  assert!(!output.status.success());
+  assert!(output.stdout.is_empty());
+  let refusal = String::from_utf8(output.stderr)?;
+  assert!(refusal.contains("Fabel") && refusal.contains("the models seen: Fable"));
+  // Any case of a model seen is that model, spelled as the usage spells it.
+  let json: serde_json::Value =
+    serde_json::from_str(&sandbox.ok(&["which", "--model", "fable", "--json"])?)?;
+  assert_eq!(json["model"], "Fable");
+  assert_eq!(json["choice"], "work");
   Ok(())
 }

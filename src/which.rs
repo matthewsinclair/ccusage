@@ -5,7 +5,12 @@
 //! call it. It is pure: the time now, the cap and the usage cache's lifetime are its
 //! arguments, and it reads no clock, file or network.
 
-use crate::usage::{self, Kind, Report, Window};
+pub mod view;
+
+use crate::{
+  Result,
+  usage::{self, Kind, Report, Window},
+};
 use std::cmp::Ordering;
 
 /// The cap a config that sets none gets, in percent of the weekly allowance.
@@ -223,9 +228,42 @@ fn assess(report: &Report, now: i64, cap: f64, model: Option<&str>, lifetime: i6
 /// The account's scoped window for `model`, matched by name regardless of case.
 fn scoped_for<'a>(scoped: &'a [Window], model: &str) -> Option<&'a Window> {
   scoped.iter().find(|window| match &window.kind {
-    Kind::WeeklyScoped(Some(name)) => name.to_lowercase() == model.to_lowercase(),
+    Kind::WeeklyScoped(Some(name)) => same_model(name, model),
     _ => false,
   })
+}
+
+/// Whether two names name one model: the rule matches model names regardless of case.
+fn same_model(a: &str, b: &str) -> bool {
+  a.to_lowercase() == b.to_lowercase()
+}
+
+/// The model `asked` names, spelled as the usage spells it, matched regardless of case
+/// against every scoped window the reports carry. A name that no scoped window carries
+/// is refused, naming the models seen, so a misspelt model never passes as a model with
+/// no weekly limit of its own.
+pub fn model_named(reports: &[Report], asked: &str) -> Result<String> {
+  let mut seen: Vec<String> = reports
+    .iter()
+    .filter_map(|report| report.snapshot.as_ref()?.windows().ok())
+    .flatten()
+    .filter_map(|window| window.kind.model().map(str::to_owned))
+    .collect();
+  seen.sort();
+  seen.dedup();
+  if let Some(model) = seen.iter().find(|model| same_model(model, asked)) {
+    return Ok(model.clone());
+  }
+  let asked = crate::clean(asked);
+  let refusal = if seen.is_empty() {
+    format!("no account's usage has a weekly limit for {asked}, or for any model")
+  } else {
+    format!(
+      "no account's usage has a weekly limit for {asked}; the models seen: {}",
+      seen.join(", ")
+    )
+  };
+  Err(refusal.into())
 }
 
 /// Why a usable account below the cap stands where it does: chosen or eligible, after
