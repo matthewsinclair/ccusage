@@ -116,7 +116,8 @@
       "kind": "doing",
       "seq": 7,
       "text": "The fix for clippy off macOS (src/auth.rs:90, Location::check's document, from WP02's 9afdf86) is landed alone on main as 1eb49d2, on vc's brief: cfg_attr expect(unused_variables) off macOS, with no change in behaviour. On rhadamanth, cargo fmt --check and clippy -D warnings exited 0 in slot 01M7AANS8XQMF38X7SZ6ZCVWE3, which shows only that it compiles. A read of all 17 macOS-gated sites found no other macOS-only use. vc and dc have the sha. Held for dc's check all on kovacs at 1eb49d2, the proof off macOS: archive this when it passes, or fix what it names.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-13T11:33:38.259Z",
       "recorded_at": "2026-11-13T11:29:02.978Z",
       "edited_at": "2026-11-13T11:29:57.037Z"
     },
@@ -536,6 +537,11 @@
       "id": "01M7AAJEP7FW4ABE7X33A3RH2E",
       "sender": "vc",
       "handled_at": "2026-11-13T11:29:57.189Z"
+    },
+    {
+      "id": "01M7AAXHG1R2DX81QKVH24MNK1",
+      "sender": "dc",
+      "handled_at": "2026-11-13T11:33:38.326Z"
     }
   ]
 }
