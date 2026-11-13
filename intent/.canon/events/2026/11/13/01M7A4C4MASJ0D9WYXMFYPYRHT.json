@@ -1,0 +1,16 @@
+{
+  "id": "01M7A4C4MASJ0D9WYXMFYPYRHT",
+  "ts": "2026-11-13T09:38:44.490Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ST0003/WP04 (doctor) and todo 3a, on cc/ST0003-WP04 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target), rebased onto the follow-up (46295e6) and not yet built. WP04's ACs are AC-04.1 (where each login is, an interrupted move, a shared login that is not the active profile's, either flag off its default) and AC-04.2 (sessions that will not follow a switch); todo 3a joins AC-04.3.\nWhat it holds:\n- doctor::where_logins_are (pure): each login found once, failing none or two; the shared login that belongs to no profile warns; a journal left behind fails.\n- usage::whose, which never renews and never reports a check it did not make, sharing one identity rule with use's verified_token.\n- doctor::switch_flags (pure), from Claude Code's flag cache as Claude Code reads it.\n- src/sessions.rs: ps -E behind CCUSAGE_PS, /proc on Linux, keeping only the two variables; lsof behind CCUSAGE_LSOF, only for a session that drifts.\n- doctor::line_room with keychain::Item::capacity, the security -i line built in one place.\n- Todo 3a, with ic's shape and texts: Report.note, which, display::lines and display::next.\nIts tests are AT-04.1 to AT-04.8, and AT-04.10 and AT-04.11 for whose and the interrupted move.\nNext:\n1. Finish the desk-check fixes, rebase onto main (946daaf), and send ic the tip with the display and doctor texts to sign.\n2. Ask the Desk for one slot, carrying ic's tier grouping for predict with ic's commit and mutants: build, fix, mutants, the measured run.\n3. Hand WP04 to vc."
+  }
+}

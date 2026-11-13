@@ -13,29 +13,24 @@ claims: [ST0003]
 
 ## DOING
 
-- ST0003's follow-up to WP03 is 70adaf7..46295e6 on cc/ST0003, in worktree /Users/matts/Devel/scratch/ccusage-cc/wt-st0003, rebased onto ic's stack tip 70adaf7 on vc's sequencing: (edited)
-  - 700d102, vc's notes 1 to 3 on WP03: a refusal counts only for invalid_grant; parked accounts are matched by their recorded account; use --none points launchd at the active profile.
-  - 46295e6, todo 3b: each usage report carries subscription_type and rate_limit_tier as the login records them, for ic's predict; ic's three new report literals carry Plan::default().
-  Its run passed in slot 01M7A1SFMQY40KBJ95VXWDZBT8, released with the result: 3 of 3 mutants red, then fmt, clippy, cargo test and the keychain tests by name each exited 0. It is with vc for its go.
-  On vc's go, once ic's stack is on main: rebase onto main, check that src, tests and the Cargo files match 46295e6, fast-forward main, edit AT-03.4's and AT-03.10's rows for their changed tests, and lint. The plan test's AC waits on vc's answer.
-- ST0003/WP04 (doctor) and todo 3a, written and banked unbuilt on cc/ST0003-WP04 at eb6395a, in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target). The branch sits on the follow-up (02a5967) and has never been compiled. (edited)
+- ST0003/WP04 (doctor) and todo 3a, on cc/ST0003-WP04 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target), rebased onto the follow-up (46295e6) and not yet built. WP04's ACs are AC-04.1 (where each login is, an interrupted move, a shared login that is not the active profile's, either flag off its default) and AC-04.2 (sessions that will not follow a switch); todo 3a joins AC-04.3. (edited)
   What it holds:
-  - doctor::where_logins_are (pure): each login found once, failing none or two; the shared login that belongs to no profile warns; a journal left behind fails. Stores are read through auth::load.
-  - usage::whose, which never renews and returns Whose::Profile, Another or Unchecked, so doctor never reports a check it did not make. The CLI doctor test seeds a verified cache.
-  - doctor::switch_flags (pure), from cachedGrowthBookFeatures, else cachedFeatureFlags. tengu_bubbly_fountain defaults off and tengu_streamed_thimble on, as Claude Code 2.1.323's binary has it.
-  - src/sessions.rs: ps -E behind CCUSAGE_PS and lsof behind CCUSAGE_LSOF (the Sandbox sets both stand-ins), /proc on Linux, keeping only the two variables. sessions::drift.
+  - doctor::where_logins_are (pure): each login found once, failing none or two; the shared login that belongs to no profile warns; a journal left behind fails.
+  - usage::whose, which never renews and never reports a check it did not make, sharing one identity rule with use's verified_token.
+  - doctor::switch_flags (pure), from Claude Code's flag cache as Claude Code reads it.
+  - src/sessions.rs: ps -E behind CCUSAGE_PS, /proc on Linux, keeping only the two variables; lsof behind CCUSAGE_LSOF, only for a session that drifts.
   - doctor::line_room with keychain::Item::capacity, the security -i line built in one place.
-  - Todo 3a, with ic's shape and texts: Report.note; a 403 is the no-figures note unless the plan is max or pro; no windows is the no-limits note; which reads the note at the top of assess; the overview shows the note.
-  Its tests are AT-04.1 to AT-04.7.
-  Next, after the follow-up's run:
-  1. Rebase onto main, with ic's WP05, and add ic's display::next line, so a note counts as in.
-  2. One Desk slot: build, fix, mutants, the measured run.
-  3. ic signs the doctor texts; then hand WP04 to vc.
+  - Todo 3a, with ic's shape and texts: Report.note, which, display::lines and display::next.
+  Its tests are AT-04.1 to AT-04.8, and AT-04.10 and AT-04.11 for whose and the interrupted move.
+  Next:
+  1. Finish the desk-check fixes, rebase onto main (946daaf), and send ic the tip with the display and doctor texts to sign.
+  2. Ask the Desk for one slot, carrying ic's tier grouping for predict with ic's commit and mutants: build, fix, mutants, the measured run.
+  3. Hand WP04 to vc.
 
 ## TODO
 
 - ST0003/WP05 (docs and the decision record) after WP04, to vc with its commit range and one measured run. (edited)
-- hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. In cc's remit: (a) usage.rs: a login without usage access ends in an error (HTTP 403, lacks usage access), and an account whose snapshot holds no windows shows nothing useful; each should say what that account type gives instead. (b) for ic's predict (agreed with ic): each usage report carries the login's subscriptionType and rateLimitTier exactly as read from its claudeAiOauth, so predict sums only the accounts of the most common tier (a tie goes to the active account's tier, else the lexically first) and leaves the rest out as another plan's allowance. Not started; vc sequences it after WP03 and WP04. (edited)
+- hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. vc gave it ST0003's AC-04.3: a usage report says what its account type gives. Its plan half (b) is landed, as AT-04.9. Its note half (a) rides WP04 (doing 5): a 403 on a plan that is not paid, and a snapshot with no windows, each give the report a note in place of figures, and which, display::lines and display::next read the note, as AT-04.5 to AT-04.8. (edited)
 
 ## Holds
 

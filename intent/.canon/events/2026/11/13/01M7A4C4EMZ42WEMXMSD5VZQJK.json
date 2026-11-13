@@ -1,0 +1,16 @@
+{
+  "id": "01M7A4C4EMZ42WEMXMSD5VZQJK",
+  "ts": "2026-11-13T09:38:44.308Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 3,
+    "text": "hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. vc gave it ST0003's AC-04.3: a usage report says what its account type gives. Its plan half (b) is landed, as AT-04.9. Its note half (a) rides WP04 (doing 5): a 403 on a plan that is not paid, and a snapshot with no windows, each give the report a note in place of figures, and which, display::lines and display::next read the note, as AT-04.5 to AT-04.8."
+  }
+}
