@@ -1,0 +1,15 @@
+{
+  "id": "01M7AE3SZRJWMVJC2NMJ697BDJ",
+  "ts": "2026-11-13T12:28:57.208Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ccusage herdr install says nothing while herdr-app check runs, and the check can take minutes: on hv's install (vc, 2026-11-13) it took about two, because Herdr runs it as a background GUI job, which waited on the window server under a load average of about 230, so install looked hung. Before the check, say what install is waiting for, and consider bounding the wait, with a check that has not returned in time reported as not run rather than as failed. vc's word: nothing to build now; it waits for vc's go."
+  }
+}

@@ -3,7 +3,7 @@ node: ic
 name: Interface Claude
 role: interface
 session_id: 862f222f-ebb1-46a4-876c-44117298b8a7
-heartbeat_at: 2026-11-13 12:10Z
+heartbeat_at: 2026-11-13 12:25Z
 status: active
 focus: ""
 claims: [ST0002]
@@ -13,11 +13,11 @@ claims: [ST0002]
 
 ## DOING
 
-- ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, landed and shipped in 0.1.9, with WP01 to WP07 closed by vc. WP08 waits only on AC-08.3, hv's look at the panel in hv's own Herdr, which hv takes now with brew's 0.1.9 on PATH instead of at the rollout (vc's word after the publish). The look leaves the panel's Use button alone, because it runs ccusage use, which waits for the rollout. vc closes WP08 on that look. RECIPE.md links herdr/ccusage/preview.png, which is not in the tree yet; ic asks vc for a screenshot of the pane from that look to fill it. ic stays reachable while the install and the pane are under way. After every landing on main, run intent at lint ST0002 and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing). (edited)
+- ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, landed and shipped in 0.1.9, with WP01 to WP07 closed by vc. WP08 waits only on AC-08.3, hv's look at the panel in hv's own Herdr with brew's 0.1.9 on PATH, taken now instead of at the rollout (vc's word after the publish). hv's ccusage herdr install wrote the mod and herdr-app check passed (vc, 2026-11-13); the look at the pane is next. The look leaves the panel's Use button alone, because it runs ccusage use, which waits for the rollout. vc closes WP08 on that look. RECIPE.md links herdr/ccusage/preview.png, which is not in the tree; vc puts it to hv after the look: hv's shot as is, the shot cropped to the pane with the account names blurred (ic's offer), or the link dropped, with WP08's line about a preview changed to match. On hv's answer, ic lands the file or drops the link, commits by path and sends vc the sha. After every landing on main, run intent at lint ST0002 and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing). (edited)
 
 ## TODO
 
-_(none)_
+- ccusage herdr install says nothing while herdr-app check runs, and the check can take minutes: on hv's install (vc, 2026-11-13) it took about two, because Herdr runs it as a background GUI job, which waited on the window server under a load average of about 230, so install looked hung. Before the check, say what install is waiting for, and consider bounding the wait, with a check that has not returned in time reported as not run rather than as failed. vc's word: nothing to build now; it waits for vc's go.
 
 ## Holds
 
