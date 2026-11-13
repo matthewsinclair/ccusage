@@ -1,0 +1,17 @@
+{
+  "id": "01M7A69HXTJSK1EVVK6P15XW8D",
+  "ts": "2026-11-13T10:12:16.954Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "ST0003/WP05's README text is ready for you to sign: e3db685 on cc/ST0003-WP05, in /Users/matts/Devel/scratch/ccusage-cc/wt-wp05. git diff main -- README.md shows the whole change. It lands after WP04, so its doctor paragraph follows the doctor lines you signed. Three places change:\n1. \"Check the environment\": doctor makes no configuration or login changes; outside shared mode it reads no credential contents; in shared mode it reads each credential store to say where each login is, and asks Claude's profile endpoint whose the shared login is, unless a usage fetch already verified it.\n2. The use paragraph: outside shared mode use does not change a running session; in shared mode every session follows it.\n3. \"Shared mode\", rewritten for one live login. Sessions need only CLAUDE_CONFIG_DIR, and the launcher line goes. Where the live login and the parked ones are. What use moves, and what follows at once: every session from its next request. What waits for a restart: connectors and Remote Control. The one replay after a switch. Then use --none, run, login and logout, dir for a parked profile, and an interrupted switch finished by the next use. \"To move from 0.1.8's shared mode\" in three steps: drop the exported variable; the first use, and when it refuses; restart the sessions doctor names, rather than log in. Last, doctor's shared-mode findings, as FAIL and WARN.\nThe rest of WP05 is mine to sign: ARCHITECTURE.md's decision record, RULES.md's four rules and the CHANGELOG lines. Each is on the same branch if you want to read it.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}

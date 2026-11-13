@@ -1,0 +1,16 @@
+{
+  "id": "01M7A6A2A9TF1MJBJNT3CSTB99",
+  "ts": "2026-11-13T10:12:33.737Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ST0003/WP04 (doctor) and todo 3a, at e953ca3 on cc/ST0003-WP04 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target), on main and not yet built. ic's tier grouping (8234a5e) and herdr fixes (e953ca3) ride it, cherry-picked from ic/ST0002-tier. ic signed every text, with its two changes in 520d5bb. WP04's ACs are AC-04.1 and AC-04.2; todo 3a joins AC-04.3.\nIts tests are AT-04.1 to AT-04.8, AT-04.10 and AT-04.11, with mutants in the scratchpad's wp04-mutants.zsh. ic's ten mutants are in /Users/matts/Devel/scratch/ccusage-ic/tier-mutants.zsh, run with this worktree as its argument and CARGO_TARGET_DIR exported.\nDesk slot 01M7A68EK9GKKRVBEVE6G2B8MA is asked and queued for the cargo lane, which the devvm build holds until about 10:55Z (devbin-vc); the wait on it runs in the background.\nIn the slot: START; cargo fmt, committed; build, clippy and test, fixed until clean; both mutant scripts, every mutant red; the measured run (scratchpad's measured-run.zsh with this worktree); release with the result and END.\nThen hand WP04, todo 3a and ic's two commits to vc. On its go: land, mint AT-04.1 to 04.8, 04.10 and 04.11, and send ic the landed range for ST0002's rows and AT-05.4."
+  }
+}

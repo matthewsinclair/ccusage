@@ -13,23 +13,15 @@ claims: [ST0003]
 
 ## DOING
 
-- ST0003/WP04 (doctor) and todo 3a, at 0465377 on cc/ST0003-WP04 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target), on main and not yet built. WP04's ACs are AC-04.1 (where each login is, an interrupted move, a shared login that is not the active profile's, either flag off its default) and AC-04.2 (sessions that will not follow a switch); todo 3a joins AC-04.3. (edited)
-  What it holds:
-  - doctor::where_logins_are (pure): each login found once, failing none or two, with ccusage login NAME as the remedy; the shared login that belongs to no profile warns; a journal left behind fails.
-  - usage::whose, which never renews and never reports a check it did not make, sharing one identity rule (Expected) with use's verified_token.
-  - doctor::switch_flags (pure), from Claude Code's flag cache as Claude Code reads it.
-  - src/sessions.rs: ps -E behind CCUSAGE_PS, /proc on Linux reading only a claude process's environment, keeping only the two variables; lsof behind CCUSAGE_LSOF, only for a session doctor reports.
-  - doctor::line_room with keychain::Item::capacity and the pure keychain::room, tested against update_line.
-  - Todo 3a, with ic's shape and texts: Report.note, which, display::lines and display::next.
-  Its tests are AT-04.1 to AT-04.8, AT-04.10 and AT-04.11; the mutants are in the scratchpad's wp04-mutants.zsh, one or two per AT.
-  Next:
-  1. ic signs the texts sent on the board (the two display lines, doctor's 21 lines) and gives its tier-grouping commit and mutants.
-  2. Ask the Desk for one slot: cargo fmt, build, fix, both mutant scripts, the measured run.
-  3. Hand WP04 and todo 3a to vc.
+- ST0003/WP04 (doctor) and todo 3a, at e953ca3 on cc/ST0003-WP04 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04 (CARGO_TARGET_DIR=/Users/matts/Devel/scratch/ccusage-cc/target), on main and not yet built. ic's tier grouping (8234a5e) and herdr fixes (e953ca3) ride it, cherry-picked from ic/ST0002-tier. ic signed every text, with its two changes in 520d5bb. WP04's ACs are AC-04.1 and AC-04.2; todo 3a joins AC-04.3. (edited)
+  Its tests are AT-04.1 to AT-04.8, AT-04.10 and AT-04.11, with mutants in the scratchpad's wp04-mutants.zsh. ic's ten mutants are in /Users/matts/Devel/scratch/ccusage-ic/tier-mutants.zsh, run with this worktree as its argument and CARGO_TARGET_DIR exported.
+  Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA is asked and queued for the cargo lane, which the devvm build holds until about 10:55Z (devbin-vc); the wait on it runs in the background.
+  In the slot: START; cargo fmt, committed; build, clippy and test, fixed until clean; both mutant scripts, every mutant red; the measured run (scratchpad's measured-run.zsh with this worktree); release with the result and END.
+  Then hand WP04, todo 3a and ic's two commits to vc. On its go: land, mint AT-04.1 to 04.8, 04.10 and 04.11, and send ic the landed range for ST0002's rows and AT-05.4.
+- ST0003/WP05 (docs and the decision record), drafted at e3db685 on cc/ST0003-WP05 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp05, on vc's word to draft it now and land it after WP04. It holds README's shared mode for one live login, with the move from 0.1.8; ARCHITECTURE.md's decision record; RULES.md's four rules; and the CHANGELOG's 0.1.9 lines. ic signs the README text; it was asked on the board. Next: once WP04 lands, rebase onto it, check every claim against the landed code, and hand it to vc with AC-05.1 for vc's read. ISSUE:0003's pointer to this thread is dc's, on vc's brief.
 
 ## TODO
 
-- ST0003/WP05 (docs and the decision record) after WP04, to vc with its commit range and one measured run. (edited)
 - hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. vc gave it ST0003's AC-04.3: a usage report says what its account type gives. Its plan half (b) is landed, as AT-04.9. Its note half (a) rides WP04 (doing 5): a 403 on a plan that is not paid, and a snapshot with no windows, each give the report a note in place of figures, and which, display::lines and display::next read the note, as AT-04.5 to AT-04.8. (edited)
 
 ## Holds
