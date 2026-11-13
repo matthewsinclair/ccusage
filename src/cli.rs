@@ -191,7 +191,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
     if json {
       println!("{}", serde_json::to_string_pretty(&reports)?);
     } else {
-      display::print(&reports, None, no_color, verbose)?;
+      display::print(&reports, None, None, no_color, verbose)?;
     }
     return Ok(());
   }
@@ -372,7 +372,18 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       if json {
         println!("{}", serde_json::to_string_pretty(&reports)?);
       } else {
-        display::print(&reports, store.active()?.as_deref(), no_color, verbose)?;
+        // Every account's usage marks which's choice, as the TUI does, on whole, fresh
+        // data alone; one account's usage never does, and here no key can refresh.
+        let next = all
+          .then(|| display::next(&reports, crate::now(), store.config.cap()))
+          .filter(|next| *next != display::Next::Refresh);
+        display::print(
+          &reports,
+          store.active()?.as_deref(),
+          next.as_ref(),
+          no_color,
+          verbose,
+        )?;
       }
       if reports.iter().any(|report| report.error.is_some()) {
         return Err("some accounts could not refresh; see per-account errors".into());

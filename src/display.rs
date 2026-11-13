@@ -84,25 +84,78 @@ fn colored(text: impl Into<String>, color: Color) -> Line {
   }]
 }
 
+/// The overview's next marker: the account the which rule would choose now.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Next {
+  /// The rule's choice, marked on its account.
+  Account(String),
+  /// Every report is in and fresh, and the rule finds nothing eligible.
+  Nothing,
+  /// A report is yet to come, or the usage in one is older than the cache's lifetime,
+  /// so the rule is not asked and the TUI says a refresh is needed.
+  Refresh,
+}
+
+/// The next marker for `reports` at `now`, under `cap`. The which rule is asked only
+/// once every account's report is in, with its usage or with an error, and none of that
+/// usage is older than the cache's lifetime, so the marker never stands on partial or
+/// stale data. An account that failed is in, and the rule passes over it.
+pub fn next(reports: &[Report], now: i64, cap: f64) -> Next {
+  let arrived = reports
+    .iter()
+    .all(|report| report.snapshot.is_some() || report.error.is_some());
+  let fresh = reports
+    .iter()
+    .filter(|report| report.snapshot.is_some())
+    .all(|report| {
+      report
+        .fetched_at
+        .is_some_and(|at| crate::usage::fresh(at, now, crate::usage::TTL))
+    });
+  if !(arrived && fresh) {
+    return Next::Refresh;
+  }
+  match crate::which::choose(reports, now, cap, None, crate::usage::TTL).chosen() {
+    Some(account) => Next::Account(account.name.clone()),
+    None => Next::Nothing,
+  }
+}
+
+/// The overview's lines. `next`, when given, marks the rule's choice on its account,
+/// says when nothing is eligible, and with `Next::Refresh` says a refresh is needed,
+/// which only the TUI passes.
 fn lines(
   reports: &[Report],
   active: Option<&str>,
   selected: Option<usize>,
+  next: Option<&Next>,
   width: usize,
   now: i64,
   verbose: bool,
 ) -> Vec<Line> {
-  let mut lines = vec![
-    colored(
-      "  CCUSAGE",
-      Color::Rgb {
-        r: 215,
-        g: 119,
-        b: 87,
-      },
-    ),
-    plain(""),
-  ];
+  let mut lines = vec![colored(
+    "  CCUSAGE",
+    Color::Rgb {
+      r: 215,
+      g: 119,
+      b: 87,
+    },
+  )];
+  match next {
+    Some(Next::Nothing) => lines.push(colored(
+      "  Nothing is eligible to be next; see ccusage which",
+      Color::DarkGrey,
+    )),
+    Some(Next::Refresh) => lines.push(colored(
+      format!(
+        "  Press r to refresh for the next marker: it needs every account's usage, none older than {}",
+        duration(crate::usage::TTL)
+      ),
+      Color::DarkGrey,
+    )),
+    Some(Next::Account(_)) | None => {}
+  }
+  lines.push(plain(""));
   for (index, report) in reports.iter().enumerate() {
     let marker = if selected == Some(index) { "›" } else { " " };
     let active = if active == Some(report.name.as_str()) {
@@ -110,8 +163,12 @@ fn lines(
     } else {
       ""
     };
+    let chosen = match next {
+      Some(Next::Account(name)) if *name == report.name => " · next",
+      _ => "",
+    };
     lines.push(plain(format!(
-      "{marker} {}{active}",
+      "{marker} {}{active}{chosen}",
       crate::clean(&report.name)
     )));
     if let Some(snapshot) = &report.snapshot {
@@ -380,11 +437,13 @@ fn append_details(lines: &mut Vec<Line>, report: &Report, width: usize) {
   }
 }
 
+/// The TUI's page: the overview, with `next` on it, or the selected account's details.
 fn page_lines(
   reports: &[Report],
   active: Option<&str>,
   selected: usize,
   detail: bool,
+  next: &Next,
   width: usize,
   now: i64,
 ) -> Vec<Line> {
@@ -393,12 +452,21 @@ fn page_lines(
       &reports[selected..=selected],
       active,
       None,
+      None,
       width,
       now,
       true,
     )
   } else {
-    lines(reports, active, Some(selected), width, now, false)
+    lines(
+      reports,
+      active,
+      Some(selected),
+      Some(next),
+      width,
+      now,
+      false,
+    )
   }
 }
 
@@ -418,16 +486,19 @@ fn write_line(output: &mut impl Write, line: &Line, width: usize, color: bool) -
   Ok(())
 }
 
+/// Prints the overview once. `next` is given for usage --all alone, never for one
+/// account's usage, and never as `Next::Refresh`, which has no key to press here.
 pub fn print(
   reports: &[Report],
   active: Option<&str>,
+  next: Option<&Next>,
   no_color: bool,
   verbose: bool,
 ) -> Result<()> {
   let mut out = io::stdout().lock();
   let color = !no_color && io::stdout().is_terminal() && std::env::var_os("NO_COLOR").is_none();
   let width = terminal::size().map_or(80, |(width, _)| usize::from(width));
-  for line in lines(reports, active, None, width, crate::now(), verbose) {
+  for line in lines(reports, active, None, next, width, crate::now(), verbose) {
     write_line(&mut out, &line, width, color)?;
     writeln!(out)?;
   }
@@ -513,6 +584,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
     String::new()
   };
   let color = !no_color && std::env::var_os("NO_COLOR").is_none();
+  let cap = store.map_or(crate::which::DEFAULT_CAP, |store| store.config.cap());
   let old_hook = std::panic::take_hook();
   std::panic::set_hook(Box::new(|info| {
     let _ = terminal::disable_raw_mode();
@@ -554,13 +626,17 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
         let (width, height) = terminal::size()?;
         let width = usize::from(width);
         let content_height = usize::from(height.saturating_sub(3));
+        // Asked again at every paint, so the marker moves as reports arrive, and goes
+        // once their usage is older than the cache's lifetime.
+        let now = crate::now();
         let frame = page_lines(
           &reports,
           active.as_deref(),
           selected,
           detail,
+          &next(&reports, now, cap),
           width,
-          crate::now(),
+          now,
         );
         scroll = scroll.min(frame.len().saturating_sub(content_height));
         let mut out = io::stdout().lock();
@@ -630,7 +706,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
                 scroll = scroll.saturating_add(1);
               } else {
                 selected = (selected + 1).min(reports.len().saturating_sub(1));
-                scroll_to(&reports, selected, &mut scroll);
+                scroll_to(&reports, selected, cap, &mut scroll);
               }
             }
             KeyCode::Up | KeyCode::Char('k') => {
@@ -638,7 +714,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
                 scroll = scroll.saturating_sub(1);
               } else {
                 selected = selected.saturating_sub(1);
-                scroll_to(&reports, selected, &mut scroll);
+                scroll_to(&reports, selected, cap, &mut scroll);
               }
             }
             KeyCode::PageDown => {
@@ -701,9 +777,21 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
   result
 }
 
-fn scroll_to(reports: &[Report], selected: usize, scroll: &mut usize) {
-  // Keep the selected account header visible even with a small terminal.
-  let preceding = lines(&reports[..selected], None, None, 80, crate::now(), false).len();
+fn scroll_to(reports: &[Report], selected: usize, cap: f64, scroll: &mut usize) {
+  // Keep the selected account header visible even with a small terminal. The lines
+  // above it count the next marker's notice as the frame does, so it reads all reports.
+  let now = crate::now();
+  let next = next(reports, now, cap);
+  let preceding = lines(
+    &reports[..selected],
+    None,
+    None,
+    Some(&next),
+    80,
+    now,
+    false,
+  )
+  .len();
   *scroll = preceding;
 }
 
@@ -719,7 +807,15 @@ mod tests {
   }
   #[test]
   fn narrow_rows_preserve_percent_and_reset() -> Result<()> {
-    let frame = lines(&crate::usage::demo(), None, None, 40, crate::now(), false);
+    let frame = lines(
+      &crate::usage::demo(),
+      None,
+      None,
+      None,
+      40,
+      crate::now(),
+      false,
+    );
     let mut output = Vec::new();
     for line in frame {
       write_line(&mut output, &line, 40, false)?;
@@ -749,16 +845,22 @@ mod tests {
     ))?);
     reports.push(other);
     let now = crate::now();
-    let detail = text(page_lines(&reports, None, 1, true, 80, now), 80)?;
+    let detail = text(
+      page_lines(&reports, None, 1, true, &Next::Refresh, 80, now),
+      80,
+    )?;
     assert!(detail.contains("personal-only"));
     assert!(!detail.contains("work (demo)"));
     assert!(detail.contains("WEEKLY BREAKDOWN"));
     assert!(detail.contains("Example model"));
     assert_eq!(
       detail,
-      text(lines(&reports[1..], None, None, 80, now, true), 80)?
+      text(lines(&reports[1..], None, None, None, 80, now, true), 80)?
     );
-    let overview = text(page_lines(&reports, None, 1, false, 80, now), 80)?;
+    let overview = text(
+      page_lines(&reports, None, 1, false, &Next::Refresh, 80, now),
+      80,
+    )?;
     assert!(overview.contains("work (demo)"));
     assert!(overview.contains("personal-only"));
     assert!(!overview.contains("WEEKLY BREAKDOWN"));
@@ -805,7 +907,7 @@ mod tests {
         snapshot: Some(snapshot),
       };
       assert_eq!(
-        row_labels(&lines(&[report], None, None, 80, 1, false)),
+        row_labels(&lines(&[report], None, None, None, 80, 1, false)),
         expected
       );
     }
@@ -824,7 +926,7 @@ mod tests {
         "metadata":{"enabled":false,"note":"A long explanatory message that must wrap and remain completely readable", "zero":0,"absent":null}
       }))?),
     };
-    let frame = lines(&[report], None, None, 40, 1, true);
+    let frame = lines(&[report], None, None, None, 40, 1, true);
     for line in &frame {
       assert!(
         line
@@ -840,6 +942,97 @@ mod tests {
     assert!(words.contains("Not provided"));
     assert!(words.contains("completely readable"));
     assert!(rendered.contains("0%"));
+    Ok(())
+  }
+
+  /// A report fetched at `fetched_at` whose weekly window is at `percent` and resets
+  /// `days` after `now`.
+  fn weekly_report(
+    name: &str,
+    now: i64,
+    fetched_at: i64,
+    percent: f64,
+    days: i64,
+  ) -> Result<Report> {
+    let reset = time::OffsetDateTime::from_unix_timestamp(now + days * 86_400)?
+      .format(&time::format_description::well_known::Rfc3339)?;
+    Ok(Report {
+      name: name.into(),
+      fetched_at: Some(fetched_at),
+      cached: true,
+      snapshot: Some(serde_json::from_value(serde_json::json!({"limits": [
+        {"kind": "weekly_all", "percent": percent, "resets_at": reset}
+      ]}))?),
+      error: None,
+    })
+  }
+
+  /// The accounts the overview marks next.
+  fn marked(frame: Vec<Line>) -> Result<Vec<String>> {
+    Ok(
+      text(frame, 80)?
+        .lines()
+        .filter_map(|line| line.strip_suffix(" · next"))
+        .map(|name| name.trim_start_matches(['›', ' ']).to_owned())
+        .collect(),
+    )
+  }
+
+  // ST0002 AT-06.1: the next marker is the which rule's choice, on whole, fresh data only.
+  #[test]
+  fn the_next_marker_is_the_rules_choice_and_only_on_whole_fresh_data() -> Result<()> {
+    let now = crate::now();
+    let cap = crate::which::DEFAULT_CAP;
+    let mut reports = vec![
+      weekly_report("later", now, now, 0.0, 5)?,
+      weekly_report("soon", now, now, cap / 2.0, 2)?,
+      // An account that failed is in, and the rule passes over it.
+      Report::failed("broken", "usage endpoint returned HTTP 500"),
+    ];
+    let next_now = next(&reports, now, cap);
+    assert_eq!(next_now, Next::Account("soon".into()));
+    let overview = lines(&reports, None, Some(0), Some(&next_now), 80, now, false);
+    assert_eq!(marked(overview)?, ["soon"]);
+    // A report yet to come: no marker, and the TUI says to refresh.
+    let mut waiting = reports.clone();
+    waiting.push(Report {
+      name: "pending".into(),
+      fetched_at: None,
+      cached: false,
+      snapshot: None,
+      error: None,
+    });
+    assert_eq!(next(&waiting, now, cap), Next::Refresh);
+    let frame = text(
+      lines(
+        &waiting,
+        None,
+        Some(0),
+        Some(&Next::Refresh),
+        80,
+        now,
+        false,
+      ),
+      80,
+    )?;
+    assert!(!frame.contains(" · next"));
+    assert!(frame.contains("Press r to refresh for the next marker"));
+    // Usage as old as the cache's lifetime is stale, and gets no marker either.
+    reports[1].fetched_at = Some(now - crate::usage::TTL);
+    assert_eq!(next(&reports, now, cap), Next::Refresh);
+    // With every account at the cap, the overview says nothing is eligible.
+    let full = [
+      weekly_report("a", now, now, cap, 1)?,
+      weekly_report("b", now, now, cap, 2)?,
+    ];
+    assert_eq!(next(&full, now, cap), Next::Nothing);
+    let frame = text(
+      lines(&full, None, None, Some(&Next::Nothing), 80, now, false),
+      80,
+    )?;
+    assert!(frame.contains("Nothing is eligible to be next"));
+    // One account's usage, which passes no marker, shows none.
+    assert!(marked(lines(&reports[1..2], None, None, None, 80, now, false))?.is_empty());
     Ok(())
   }
 }

@@ -1514,3 +1514,19 @@ fn predict_projects_each_accounts_unused_share_from_the_history_and_says_when_it
   assert_eq!(json["left_out"][0]["name"], "broken");
   Ok(())
 }
+
+// ST0002 AT-06.2: usage --all marks which's choice next; one account's usage marks none.
+#[test]
+fn usage_all_marks_the_next_account_and_one_accounts_usage_does_not() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.which_accounts()?;
+  // broken has no login, so usage --all exits 1, and its report marks the next all the same.
+  let all = String::from_utf8(sandbox.run(&["usage", "--all"])?.stdout)?;
+  let marked: Vec<_> = all
+    .lines()
+    .filter(|line| line.ends_with(" · next"))
+    .collect();
+  assert_eq!(marked, ["  work · next"]);
+  assert!(!sandbox.ok(&["usage", "work"])?.contains(" · next"));
+  Ok(())
+}
