@@ -217,9 +217,10 @@ pub(crate) fn fresh_at(
   fresh_with(agent, dir, rejected, endpoint, read_stored)
 }
 
-/// The token endpoint refused a login's refresh token outright (HTTP 400 or 401), so
-/// Claude can no longer renew that login. A network error, a timeout, a 429 or a 5xx is
-/// never this.
+/// The token endpoint refused a login's refresh token outright, with OAuth's
+/// invalid_grant, so Claude can no longer renew that login. Any other 400, such as a
+/// malformed request, a 401, which concerns the client, a network error, a timeout, a
+/// 429 or a 5xx is never this.
 #[derive(Debug)]
 pub(crate) struct Refused;
 
@@ -232,6 +233,20 @@ impl std::fmt::Display for Refused {
 }
 
 impl std::error::Error for Refused {}
+
+/// Whether a token endpoint's 400 refuses the refresh token itself: OAuth's
+/// invalid_grant. An answer that cannot be read is not that.
+fn invalid_grant(body: &mut ureq::Body) -> bool {
+  body
+    .with_config()
+    .limit(16 * 1024)
+    .read_to_vec()
+    .ok()
+    .and_then(|bytes| serde_json::from_slice::<serde_json::Value>(&bytes).ok())
+    .is_some_and(|answer| {
+      answer.get("error").and_then(serde_json::Value::as_str) == Some("invalid_grant")
+    })
+}
 
 fn fresh_with(
   agent: &ureq::Agent,
@@ -389,7 +404,10 @@ fn renew(agent: &ureq::Agent, endpoint: &str, stored: &Stored) -> Result<Renewal
       serde_json::from_slice(&bytes)
         .map_err(|_| "invalid token renewal response (contents redacted)".into())
     }
-    400 | 401 => Err(Refused.into()),
+    400 if invalid_grant(response.body_mut()) => Err(Refused.into()),
+    400 | 401 => Err(
+      "Claude could not renew this login; run ccusage login NAME if retrying does not help".into(),
+    ),
     403 => Err("Claude denied token renewal; check account access before logging in again".into()),
     429 => Err("token renewal rate limited; try again later".into()),
     status => Err(format!("token renewal returned HTTP {status}; try again later").into()),

@@ -130,20 +130,29 @@ pub fn launchctl() -> Command {
   Command::new(std::env::var_os("CCUSAGE_LAUNCHCTL").unwrap_or_else(|| "/bin/launchctl".into()))
 }
 
-/// Clear launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR, which ccusage 0.1.8 pointed at a
-/// profile, so Claude Code started from a GUI app reads the shared config's login as a
-/// terminal session does. launchctl's output is captured, so nothing it prints draws
-/// over the TUI's screen.
+/// Set launchd's CLAUDE_SECURESTORAGE_CONFIG_DIR, for Claude Code started from a GUI
+/// app. None clears it, so such a session reads the shared config's login as a terminal
+/// session does; a profile's directory points it at that profile's own login, as
+/// ccusage 0.1.8 does, once no login is shared. launchctl's output is captured, so
+/// nothing it prints draws over the TUI's screen.
 #[cfg(target_os = "macos")]
-pub(crate) fn unset_launchd() -> Result<()> {
-  let output = launchctl()
-    .args(["unsetenv", LOGIN_DIR])
+pub(crate) fn point_launchd(dir: Option<&Path>) -> Result<()> {
+  let mut command = launchctl();
+  match dir {
+    Some(dir) => command.args(["setenv", LOGIN_DIR]).arg(dir),
+    None => command.args(["unsetenv", LOGIN_DIR]),
+  };
+  let output = command
     .stdin(std::process::Stdio::null())
     .output()
-    .map_err(|_| "could not run launchctl to clear CLAUDE_SECURESTORAGE_CONFIG_DIR")?;
+    .map_err(|_| "could not run launchctl to change CLAUDE_SECURESTORAGE_CONFIG_DIR")?;
   if !output.status.success() {
     return Err(
-      "launchctl could not clear CLAUDE_SECURESTORAGE_CONFIG_DIR, so Claude started from a GUI app may still read a profile's own login; see ccusage doctor".into(),
+      match dir {
+        Some(_) => "launchctl could not set CLAUDE_SECURESTORAGE_CONFIG_DIR, so Claude started from a GUI app has no login until the next ccusage use; see ccusage doctor",
+        None => "launchctl could not clear CLAUDE_SECURESTORAGE_CONFIG_DIR, so Claude started from a GUI app may still read a profile's own login; see ccusage doctor",
+      }
+      .into(),
     );
   }
   Ok(())

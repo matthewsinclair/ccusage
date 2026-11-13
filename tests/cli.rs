@@ -977,8 +977,9 @@ fn shared_mode_switches_move_each_login_and_reads_follow_it() -> Result<()> {
 }
 
 // ST0003 AT-03.4: use --none puts the active login back in its profile and leaves the
-// shared store with none, the layout an older ccusage reads, and use seats it again;
-// --none is refused beside a name and with shared mode off.
+// shared store with none, the layout an older ccusage reads, with launchd pointed at
+// the active profile as 0.1.8 points it, and use seats it again; --none is refused
+// beside a name and with shared mode off.
 #[test]
 fn use_none_returns_every_login_to_its_profile() -> Result<()> {
   let sandbox = Sandbox::new()?;
@@ -987,7 +988,10 @@ fn use_none_returns_every_login_to_its_profile() -> Result<()> {
   sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
   assert!(!sandbox.run(&["use", "work", "--none"])?.status.success());
   let said = sandbox.ok(&["use", "--none"])?;
-  assert!(said.contains("No account is active"), "{said}");
+  assert!(
+    said.contains("No login is in the shared config now") && said.contains("reads work's"),
+    "{said}"
+  );
   assert_eq!(login_of(&shared)?, None);
   assert_eq!(
     login_of(&sandbox.profile("work"))?.as_deref(),
@@ -1000,6 +1004,15 @@ fn use_none_returns_every_login_to_its_profile() -> Result<()> {
   );
   sandbox.ok(&["use", "work"])?;
   assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_work"));
+  if cfg!(target_os = "macos") {
+    assert_eq!(
+      sandbox.launchctl()?,
+      format!(
+        "unsetenv CLAUDE_SECURESTORAGE_CONFIG_DIR\nsetenv CLAUDE_SECURESTORAGE_CONFIG_DIR {}\nunsetenv CLAUDE_SECURESTORAGE_CONFIG_DIR\n",
+        sandbox.profile("work").display()
+      )
+    );
+  }
   let off = Sandbox::new()?;
   off.setup()?;
   off.ok(&["login", "work"])?;

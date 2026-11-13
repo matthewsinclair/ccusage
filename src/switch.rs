@@ -69,24 +69,39 @@ fn adoption(standing: &Standing, parked: &[Value]) -> Result<String> {
   }
 }
 
-/// The account records of the profiles that hold a login of their own: each one's
-/// configured email, and the record its `.claude.json` keeps.
+/// The account records of the profiles that hold a login of their own: the record each
+/// one's `.claude.json` keeps, which Claude Code wrote at login, else its configured
+/// email when it keeps none.
 fn parked_accounts(store: &Store) -> Result<Vec<Value>> {
   let mut records = Vec::new();
   for name in store.config.profiles.keys() {
     if auth::read(&store.profile_dir(name)?).is_err() {
       continue;
     }
-    if let Some(email) = &store.profile(name)?.email {
-      records.push(serde_json::json!({ "emailAddress": email }));
+    match shared::profile_account(store, name)? {
+      Some(record) => records.push(record),
+      None => records.extend(
+        store
+          .profile(name)?
+          .email
+          .as_ref()
+          .map(|email| serde_json::json!({ "emailAddress": email })),
+      ),
     }
-    records.extend(shared::profile_account(store, name)?);
   }
   Ok(records)
 }
 
-/// What `use --none` says once it is done.
-pub const NONE: &str = "No account is active: every login is back in its own profile and the shared config holds none, as an older ccusage expects.";
+/// What `use --none` says once it is done: that the shared config holds no login, and,
+/// with a profile still active, whose own login Claude started from a GUI app reads.
+/// Pure.
+pub fn none_message(active: Option<&str>) -> String {
+  let returned = "No login is in the shared config now: every login is back in its own profile, as an older ccusage expects";
+  match active {
+    Some(name) => format!("{returned}, and Claude started from a GUI app reads {name}'s login."),
+    None => format!("{returned}."),
+  }
+}
 
 /// Make `name` the active account. A profile with no login, or in shared mode with no
 /// account record, is refused before anything changes. In shared mode an unfinished
@@ -121,14 +136,16 @@ pub fn to(store: &Store, name: &str) -> Result<Switched> {
   shared::record(store, &shared, name)?;
   store.activate(name)?;
   #[cfg(target_os = "macos")]
-  shared::unset_launchd()?;
+  shared::point_launchd(None)?;
   Ok(switched)
 }
 
 /// Put the active account's login back in its profile and leave the shared store
-/// without one, as ccusage 0.1.8 kept them: shared mode's way off. Refused when shared
-/// mode is off, where no login is shared.
-pub fn none(store: &Store) -> Result<()> {
+/// without one, as ccusage 0.1.8 kept them: shared mode's way off. On macOS launchd
+/// then points Claude started from a GUI app at the active profile's own login, as
+/// 0.1.8 does. Gives the active profile, which stays selected. Refused when shared mode
+/// is off, where no login is shared.
+pub fn none(store: &Store) -> Result<Option<String>> {
   if store.shared_dir()?.is_none() {
     return Err(
       "shared mode is off, so no login is shared and use --none has nothing to do".into(),
@@ -144,9 +161,13 @@ pub fn none(store: &Store) -> Result<()> {
       },
     )?;
   }
+  let active = store.active()?;
   #[cfg(target_os = "macos")]
-  shared::unset_launchd()?;
-  Ok(())
+  match &active {
+    Some(name) => shared::point_launchd(Some(&store.profile_dir(name)?))?,
+    None => shared::point_launchd(None)?,
+  }
+  Ok(active)
 }
 
 /// Seat `name`'s fresh login, which `ccusage login` has just put in its profile's own

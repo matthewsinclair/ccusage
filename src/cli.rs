@@ -308,8 +308,8 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
         if !args.is_empty() {
           return Err("use takes a profile name or --none, not both; see ccusage help".into());
         }
-        crate::switch::none(&store)?;
-        println!("{}", crate::switch::NONE);
+        let active = crate::switch::none(&store)?;
+        println!("{}", crate::switch::none_message(active.as_deref()));
       } else {
         let name = one(&args)?;
         println!("{}", crate::switch::to(&store, name)?.message(name));

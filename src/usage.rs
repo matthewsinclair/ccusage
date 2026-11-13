@@ -910,7 +910,8 @@ mod tests {
   }
 
   // ST0003 AT-03.10: a login is dead only when the token endpoint refuses its refresh
-  // outright; a 5xx is an error, so adoption stops instead of replacing it.
+  // with invalid_grant; another 400, a 401 or a 5xx is an error, so adoption stops
+  // instead of replacing it.
   #[test]
   fn a_login_is_dead_only_when_its_refresh_is_refused_outright() -> Result<()> {
     use std::{
@@ -918,9 +919,11 @@ mod tests {
       net::TcpListener,
       time::Instant,
     };
-    for (index, (status, dead)) in [
-      ("400 Bad Request", true),
-      ("503 Service Unavailable", false),
+    for (index, (status, body, dead)) in [
+      ("400 Bad Request", r#"{"error":"invalid_grant"}"#, true),
+      ("400 Bad Request", r#"{"error":"invalid_request"}"#, false),
+      ("401 Unauthorized", r#"{"error":"invalid_client"}"#, false),
+      ("503 Service Unavailable", "", false),
     ]
     .into_iter()
     .enumerate()
@@ -941,7 +944,8 @@ mod tests {
         let _ = stream.read(&mut request)?;
         write!(
           stream,
-          "HTTP/1.1 {status}\r\nConnection: close\r\nContent-Length: 0\r\n\r\n"
+          "HTTP/1.1 {status}\r\nConnection: close\r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n{body}",
+          body.len()
         )?;
         Ok(())
       });
@@ -954,9 +958,9 @@ mod tests {
       server.join().map_err(|_| "token fixture panicked")??;
       std::fs::remove_dir_all(&dir)?;
       if dead {
-        assert!(matches!(standing, Ok(Standing::Dead)), "{status}");
+        assert!(matches!(standing, Ok(Standing::Dead)), "{status} {body}");
       } else {
-        assert!(standing.is_err(), "{status}");
+        assert!(standing.is_err(), "{status} {body}");
       }
     }
     Ok(())
