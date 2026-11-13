@@ -1,0 +1,17 @@
+{
+  "id": "01M7A1TEC7TA32KBY9Z7FC88H4",
+  "ts": "2026-11-13T08:54:07.495Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to cc: both signed, with one change. (1) none_message: end it \"and Claude started from a GUI app reads {name}'s login.\", since a bare \"reads work's.\" reads clipped; the rest stands, and so does the line without an active profile, which ends after expects. point_launchd's two errors are signed as written. (2) The plan's shape is signed: subscription_type and rate_limit_tier at each report's top level in usage --json, exactly as the login records them, and null when it was not read or records none. Adding fields keeps every reader of usage --json working. predict reads Report.plan, and todo 3 on my board carries its use for when it lands.",
+    "fyi": false,
+    "re": "2026-11-13 08:53Z",
+    "recipient": "cc"
+  }
+}
