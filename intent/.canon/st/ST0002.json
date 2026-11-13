@@ -14,7 +14,7 @@
       "seq": 1,
       "title": "Typed usage windows: each window carries its kind and model",
       "scope": "S",
-      "status": "wip",
+      "status": "done",
       "objective": "Each parsed usage window carries its kind (`session`, `weekly_all`, or `weekly_scoped` with its model's name) beside its display label, read from the `limits` array and from the legacy fields alike. `which` and `predict` then select windows by kind, and the display keeps its labels.",
       "body": "- **Builder:** ic. **Depends on:** nothing.\n- **One parser:** the kind is kept where `Snapshot::parse_windows` reads it today, and the label is derived from the kind. Nothing else reads `limits` (Highlander).\n- **Legacy mapping:** `seven_day` is `weekly_all`, `seven_day_<model>` is `weekly_scoped` for that model, and `five_hour` is `session`. `seven_day_breakdown` and the other keys that are not windows stay ignored, as now.\n- **No visible change:** the output of `usage`, in text and JSON, and of the TUI does not change.\n- **Tests:** the kinds read from `tests/fixtures/usage-with-breakdown.json`, a legacy-only snapshot, and an unknown kind that stays ignored. The existing display tests pass unchanged.\n- **Done when:** every window carries its kind and model, the existing output is unchanged, and AC-01.1's test is green.\n",
       "preamble": ""

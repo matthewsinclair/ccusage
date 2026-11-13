@@ -1,0 +1,16 @@
+{
+  "id": "01M79XZ9STH5S47TQHDC8E9X24",
+  "ts": "2026-11-13T07:46:52.346Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13). WP01 (typed usage windows) is done: PASS by vc, and vc closed it with intent at lint ST0002 clean after a5b7c65. WP02 (ca09eae..fdfe1e5 on branch ic/ST0002-02): PASS on vc's read and signed by cc; it lands after the bounce with three small commits first (the lenient scoped share with a test per malformed form and a share-unknown reason; soonest named only among accounts that give a reset; cc's wording for the undated reason), as ic's hold 4. The which --json contract, version 1, is final and given to geodica-estate (vc's decision 1). Next, after the bounce: ic lands WP02, then WP04 (history, started, its design on ic's board), WP03, WP05, WP06, WP08 and WP07, each handed to vc on its Desk run."
+  }
+}

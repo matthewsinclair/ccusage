@@ -17,7 +17,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 - AC-00.1 (non-test) On hv's five accounts, hv's own `ccusage which` names the account the rule picks from `ccusage --all`, and `ccusage predict` runs without error. -- satisfied: no
 
-### WP-01 -- Typed usage windows: each window carries its kind and model (status: WIP)
+### WP-01 -- Typed usage windows: each window carries its kind and model (status: Done)
 
 - AC-01.1 Every parsed usage window carries its kind, and its model when scoped, read from the `limits` array and the legacy fields alike, and the output of `usage` and of the TUI is unchanged. -- satisfied: yes (computed)
 
@@ -63,7 +63,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 _(no tests in this group)_
 
-### WP-01 -- Typed usage windows: each window carries its kind and model (status: WIP)
+### WP-01 -- Typed usage windows: each window carries its kind and model (status: Done)
 
 - AT-01.1 `src/usage.rs:729` -- covers AC-01.1 -- status: green -- The kinds and model read from the limits fixture, with the scoped window's share; red before WP01: written against Kind, it could not compile on the parser before it; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
 - AT-01.2 `src/usage.rs:817` -- covers AC-01.1 -- status: green -- A legacy-only snapshot maps onto the same kinds; breakdown metadata is not a window; red under the legacy-kind mutant (seven_day read as the session) in WP01's run; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2
