@@ -13,13 +13,11 @@ claims: [ST0003]
 
 ## DOING
 
-- ST0003/WP04 (doctor) and todo 3a, at 7cac510 on cc/ST0003-WP04 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp04, over main's 348a1a1, with ic's tier grouping (8234a5e) and herdr fixes (e953ca3) riding it. Its run passed in slot 01M7A68EK9GKKRVBEVE6G2B8MA, released with the result: 22 of 22 mutants red, then fmt, clippy, cargo test and the keychain tests each exited 0. It is with vc for its go. (edited)
-  On vc's go: land as four commits, cc's WP04 and todo 3a squashed, ic's two as ic wrote them, then the fmt and build fixes, with the tree checked identical to 7cac510 in src, tests and the Cargo files. Mint AT-04.1, 04.2, 04.10 and 04.11 under AC-04.1, AT-04.3 and 04.4 under AC-04.2, and AT-04.5 to 04.8 under AC-04.3, each red under its mutant in the scratchpad's wp04-mutants.out and green in this run. Lint ST0003, send ic the landed range for ST0002's rows and AT-05.4, and remove the worktree.
 - ST0003/WP05 (docs and the decision record), at da87d8b on cc/ST0003-WP05 in /Users/matts/Devel/scratch/ccusage-cc/wt-wp05, on vc's word to draft it now and land it after WP04. It holds README's shared mode for one live login, with the move from 0.1.8, which ic signed with two changes that are in; ARCHITECTURE.md's decision record; RULES.md's four rules; and the CHANGELOG's 0.1.9 lines. ic's 8234a5e and e953ca3 also touch README and CHANGELOG, so the rebase onto WP04's landing will merge with them. Next: once WP04 lands, rebase onto it, check every claim against the landed code, and hand it to vc with AC-05.1 for vc's read. ISSUE:0003's pointer to this thread is dc's, on vc's brief. (edited)
 
 ## TODO
 
-- hv's decision 3, relayed by vc in its message of 2026-11-13 08:37Z: ccusage works for any Claude account and shows whatever it can for that type, and engineering04 stays a profile. vc gave it ST0003's AC-04.3: a usage report says what its account type gives. Its plan half (b) is landed, as AT-04.9. Its note half (a) rides WP04 (doing 5): a 403 on a plan that is not paid, and a snapshot with no windows, each give the report a note in place of figures, and which, display::lines and display::next read the note, as AT-04.5 to AT-04.8. (edited)
+- After 0.1.9's cut, vc's two nits on ST0003/WP04 (vc's verdict of 2026-11-13 on 348a1a1..7cac510), neither worth a run before it: sessions::parse takes the last NAME=value match, since ps -E prints the environment after the arguments; and verified_token_at refuses before renewing when its profile has neither an email nor an account record to check against.
 
 ## Holds
 

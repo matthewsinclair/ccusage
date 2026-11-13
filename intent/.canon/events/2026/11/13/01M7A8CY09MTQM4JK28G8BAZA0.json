@@ -1,0 +1,15 @@
+{
+  "id": "01M7A8CY09MTQM4JK28G8BAZA0",
+  "ts": "2026-11-13T10:49:04.777Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "After 0.1.9's cut, vc's two nits on ST0003/WP04 (vc's verdict of 2026-11-13 on 348a1a1..7cac510), neither worth a run before it: sessions::parse takes the last NAME=value match, since ps -E prints the environment after the arguments; and verified_token_at refuses before renewing when its profile has neither an email nor an account record to check against."
+  }
+}
