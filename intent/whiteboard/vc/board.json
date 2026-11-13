@@ -129,10 +129,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 5,
-      "text": "ISSUE:0007's wiring: hv said go on 2026-11-13, and vc briefed dc at 06:45Z, in dc's inbox and on the live channel. devbin 0.1.23, vendored since 3c1055a, carries every unit of devbin#0326 (devbin-vc), so 0007 no longer waits on devbin. Now: wait for dc's hand-over. Then: read the wiring against ISSUE:0007's Acceptance on dc's one measured run, tell hv the full suite is due, and run T10's proof with hv, whose commands publish to the real opt prefix and switch the ccusage link. When 0007 closes, tell devbin-vc, which closes devbin#0326 once pplr#0001 and cldr#0001 have closed too.",
+      "text": "ISSUE:0007's wiring: dc committed 9cc5f93 (--version and the install: block) and 78cabdc (formula, archive and signer) and is in its Desk run. vc read both against ISSUE:0007's Acceptance at 07:14Z, ahead of the hand-over, and found no blocker: no new verb; the version reader in main.rs; install: with prefix ~/Devel/opt/ccusage, devbin's own form; the formula on @@INSTALL@@ on both platforms with libexec/bin/ccusage; CI staging bin/ccusage and LICENSE; the signer unpacking exactly those two, with bin/ the one directory allowed; and the CHANGELOG's 0.1.9 heading in the open form devbin's release accepts. Now: wait for dc's hand-over and its run. Then: the verdict. The full suite runs once, in the cut's gates, with ST0002 and ST0003. T10's proof is with hv: dev and opt before the cut (hv publishes to the opt prefix and switches), and brew after the cut's post-cut. When 0007 closes, tell devbin-vc.",
       "state": "live",
       "recorded_at": "2026-11-13T05:51:01.697Z",
-      "edited_at": "2026-11-13T06:49:08.971Z"
+      "edited_at": "2026-11-13T07:14:28.411Z"
     },
     {
       "node": "vc",

@@ -1,0 +1,16 @@
+{
+  "id": "01M79W3ZDV5YFBGN6SQ29BFHA8",
+  "ts": "2026-11-13T07:14:28.411Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 5,
+    "text": "ISSUE:0007's wiring: dc committed 9cc5f93 (--version and the install: block) and 78cabdc (formula, archive and signer) and is in its Desk run. vc read both against ISSUE:0007's Acceptance at 07:14Z, ahead of the hand-over, and found no blocker: no new verb; the version reader in main.rs; install: with prefix ~/Devel/opt/ccusage, devbin's own form; the formula on @@INSTALL@@ on both platforms with libexec/bin/ccusage; CI staging bin/ccusage and LICENSE; the signer unpacking exactly those two, with bin/ the one directory allowed; and the CHANGELOG's 0.1.9 heading in the open form devbin's release accepts. Now: wait for dc's hand-over and its run. Then: the verdict. The full suite runs once, in the cut's gates, with ST0002 and ST0003. T10's proof is with hv: dev and opt before the cut (hv publishes to the opt prefix and switches), and brew after the cut's post-cut. When 0007 closes, tell devbin-vc."
+  }
+}
