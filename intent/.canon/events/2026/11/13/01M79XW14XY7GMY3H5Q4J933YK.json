@@ -1,0 +1,16 @@
+{
+  "id": "01M79XW14XY7GMY3H5Q4J933YK",
+  "ts": "2026-11-13T07:45:05.181Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS at the fold for hv's compact: WP01 landed (488e31c..0da313c), vc PASS, ATs AT-01.1 to 01.4 green and lint clean (a5b7c65); vc closes it. WP02 vc PASS and cc signed, on branch ic/ST0002-02 (ca09eae..fdfe1e5), not landed (hold 4). WP04 started, worktree wt-st0002-04 on ic/ST0002-04 (stacked on WP02), no code yet (todo 1). Next after the bounce: hold 4, then WP04."
+  }
+}

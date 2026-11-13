@@ -3,7 +3,7 @@ node: ic
 name: Interface Claude
 role: interface
 session_id: 862f222f-ebb1-46a4-876c-44117298b8a7
-heartbeat_at: 2026-11-13 07:23Z
+heartbeat_at: 2026-11-13 07:45Z
 status: active
 focus: ""
 claims: [ST0002]
@@ -13,15 +13,15 @@ claims: [ST0002]
 
 ## DOING
 
-- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/, one Desk cargo slot for its measured run, then the hand-over to vc. WP01 landed (488e31c..0da313c) and is with vc; WP02 is ready on its branch, waiting on cc's sign-off (hold 3). Now: WP04, usage history. (edited)
+- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/ on branch ic/ST0002-NN, one Desk cargo slot (CARGO_TARGET_DIR=~/Devel/scratch/ccusage-ic/target) for its measured run, then the hand-over to vc. WHERE EACH STANDS at the fold for hv's compact: WP01 landed (488e31c..0da313c), vc PASS, ATs AT-01.1 to 01.4 green and lint clean (a5b7c65); vc closes it. WP02 vc PASS and cc signed, on branch ic/ST0002-02 (ca09eae..fdfe1e5), not landed (hold 4). WP04 started, worktree wt-st0002-04 on ic/ST0002-04 (stacked on WP02), no code yet (todo 1). Next after the bounce: hold 4, then WP04. (edited)
 
 ## TODO
 
-_(none)_
+- ST0002/WP04 design, decided before the fold: src/history.rs; a Sample is an account, a usage::Window and sampled_at; history.jsonl in the state dir, read with storage::read_optional, rewritten whole with storage::write_atomic, under a File::lock (flock) on history.lock, not auth_lock (Claude Code's protocol, and cc's); a mirror Line struct on disk (account, kind, model, percent, share, resets_at RFC 3339, sampled_at), unknown fields ignored for mixed brew and dev builds; Kind::name and Kind::from_name as the one name mapping, used by parse_windows too; usage::WEEK defined once; keep a window's first sample, then one per changed percent, the same window while Window::reset_minute is unchanged; drop samples older than WEEK, never at a reset; the hook in Client::load's Fetch::Success arm, a failed write joining the report's error beside the cache's ('usage fetched, but ...'); Client gains an endpoint field so a loopback unit test proves a fetch records and a cache hit does not; doctor's file_check covers history.jsonl; tests per the WP: unchanged percent, age drop vs reset kept, 0600, concurrent writers, only the windows' fields in each line.
 
 ## Holds
 
-- ST0002/WP02 (ca09eae..fdfe1e5 on branch ic/ST0002-02) lands on main once cc signs the rule's meaning. Released when cc's yes is in ic's inbox; then ic lands it, mints AC-02.1 to AC-02.4's ATs, and tells vc.
+- ST0002/WP02 lands after hv's compact (vc's word), with three commits added to its range first, which ride on its run (vc): (a) vc's share leniency: a malformed weekly_scoped_shares, a bad entry or a share outside 0..100 leaves those windows with no share instead of refusing the snapshot, a unit test per malformed form, and under --model the reason says the model's share is unknown instead of a bare eligible; (b) cc's tightening: soonest is taken among usable accounts whose weekly window gives a reset, none when none does; (c) cc's text nit: an undated choice's reason says no eligible account gives a weekly reset. Then rebase on main, land, mint AC-02.1 to 02.4's ATs with id comments over their tests, intent at lint ST0002 clean, and tell vc what the new commits ran with. Released when the compact is done and vc's go to continue is in.
 
 ## Watch-outs
 

@@ -1,0 +1,15 @@
+{
+  "id": "01M79XW17S2CJCF61RV2Y081Z8",
+  "ts": "2026-11-13T07:45:05.273Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ST0002/WP02 lands after hv's compact (vc's word), with three commits added to its range first, which ride on its run (vc): (a) vc's share leniency: a malformed weekly_scoped_shares, a bad entry or a share outside 0..100 leaves those windows with no share instead of refusing the snapshot, a unit test per malformed form, and under --model the reason says the model's share is unknown instead of a bare eligible; (b) cc's tightening: soonest is taken among usable accounts whose weekly window gives a reset, none when none does; (c) cc's text nit: an undated choice's reason says no eligible account gives a weekly reset. Then rebase on main, land, mint AC-02.1 to 02.4's ATs with id comments over their tests, intent at lint ST0002 clean, and tell vc what the new commits ran with. Released when the compact is done and vc's go to continue is in."
+  }
+}

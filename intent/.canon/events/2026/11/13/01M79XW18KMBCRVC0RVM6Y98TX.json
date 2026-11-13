@@ -1,0 +1,15 @@
+{
+  "id": "01M79XW18KMBCRVC0RVM6Y98TX",
+  "ts": "2026-11-13T07:45:05.299Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ST0002/WP04 design, decided before the fold: src/history.rs; a Sample is an account, a usage::Window and sampled_at; history.jsonl in the state dir, read with storage::read_optional, rewritten whole with storage::write_atomic, under a File::lock (flock) on history.lock, not auth_lock (Claude Code's protocol, and cc's); a mirror Line struct on disk (account, kind, model, percent, share, resets_at RFC 3339, sampled_at), unknown fields ignored for mixed brew and dev builds; Kind::name and Kind::from_name as the one name mapping, used by parse_windows too; usage::WEEK defined once; keep a window's first sample, then one per changed percent, the same window while Window::reset_minute is unchanged; drop samples older than WEEK, never at a reset; the hook in Client::load's Fetch::Success arm, a failed write joining the report's error beside the cache's ('usage fetched, but ...'); Client gains an endpoint field so a loopback unit test proves a fetch records and a cache hit does not; doctor's file_check covers history.jsonl; tests per the WP: unchanged percent, age drop vs reset kept, 0600, concurrent writers, only the windows' fields in each line."
+  }
+}
