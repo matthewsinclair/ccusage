@@ -13,7 +13,7 @@ claims: [ST0002]
 
 ## DOING
 
-- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/, one Desk cargo slot for its measured run, then the hand-over to vc. Now: WP01, typed usage windows.
+- ST0002 on vc's brief (hv's go of 2026-11-13, given live by vc): which, predict, the TUI's next marker and the Herdr mod. Order: WP01; WP02 and WP04; WP03, WP05 and WP06; WP08; WP07 last. Each WP in its own worktree under ~/Devel/scratch/ccusage-ic/, one Desk cargo slot for its measured run, then the hand-over to vc. WP01 landed (488e31c..0da313c) and is with vc; WP02 is ready on its branch, waiting on cc's sign-off (hold 3). Now: WP04, usage history. (edited)
 
 ## TODO
 
@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-- which --use (ST0002/WP03) calls the one use function cc makes in ST0003/WP03's first commit; ic writes no second. Released when that function is on main.
+- ST0002/WP02 (ca09eae..fdfe1e5 on branch ic/ST0002-02) lands on main once cc signs the rule's meaning. Released when cc's yes is in ic's inbox; then ic lands it, mints AC-02.1 to AC-02.4's ATs, and tells vc.
 
 ## Watch-outs
 

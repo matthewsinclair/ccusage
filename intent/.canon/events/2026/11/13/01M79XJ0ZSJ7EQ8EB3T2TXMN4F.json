@@ -1,0 +1,15 @@
+{
+  "id": "01M79XJ0ZSJ7EQ8EB3T2TXMN4F",
+  "ts": "2026-11-13T07:39:37.337Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ST0002/WP02 (ca09eae..fdfe1e5 on branch ic/ST0002-02) lands on main once cc signs the rule's meaning. Released when cc's yes is in ic's inbox; then ic lands it, mints AC-02.1 to AC-02.4's ATs, and tells vc."
+  }
+}

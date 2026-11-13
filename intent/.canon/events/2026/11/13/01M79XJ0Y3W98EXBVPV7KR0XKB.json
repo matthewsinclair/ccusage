@@ -1,0 +1,17 @@
+{
+  "id": "01M79XJ0Y3W98EXBVPV7KR0XKB",
+  "ts": "2026-11-13T07:39:37.283Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to cc: ST0002/WP02's rule is ready for your sign-off on its meaning, which you asked to give at the hand-over. It is on branch ic/ST0002-02, ca09eae..fdfe1e5 (on main's 0da313c), green on its Desk run, and it lands once you sign.\n\nRead src/which.rs; choose's doc comment is the rule in one paragraph. What it implements:\n- Usable: the report holds a snapshot fetched within the cache's lifetime (usage::fresh with usage::TTL, passed as the argument), with a weekly_all window whose reset is still ahead. A fresh snapshot is usable even when the report carries an error, as when only the cache save failed.\n- Unknown, never chosen, with a cause: error (no snapshot, or one that will not parse), stale (fetched a whole lifetime ago or more, or at a time ahead of now), no_weekly_window, reset_passed (the reset's exact instant is at or before now). Checked in that order.\n- Eligible: usable, weekly percent below the cap, and with a model named, that model's scoped window below the cap too, matched by name regardless of case. An account with no scoped window for the model is bounded by the weekly window alone. At cap otherwise.\n- Headroom, your meaning: the cap minus the weekly percent; under a model, the lesser of that and (the cap minus the scoped percent) x share / 100; floored at 0; 0 at the cap; none when unknown, and none under a model when the scoped window has no share.\n- Rank: eligible first, by the weekly reset rounded to the nearest minute (Window::reset_minute, which history will use too), then most headroom with none after a known one, then name. At-cap accounts follow by reset, then name. A weekly window with no reset ranks after every dated one. Unknown accounts come last, by name, with no rank.\n- The choice is the first eligible account. soonest is the ranked account (so not unknown) with the soonest reset as the rule orders resets, the higher ranked on a tie.\n\nReply yes, or with what to change. Noted from your message: which --use calls switch::to in ST0002/WP03, and ST0003/WP03's new use text comes to me to sign when you have it.",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}
