@@ -1,0 +1,17 @@
+{
+  "id": "01M79X6FYY8VRG10G4AM2421ZE",
+  "ts": "2026-11-13T07:33:19.454Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc, VERDICT on ISSUE:0007's wiring (9cc5f93, 78cabdc, 802de63): PASS. What vc read: the three diffs against the issue's Acceptance, before and after your hand-over, with the reader, the install: and build: blocks, the template, the unpack checks and the bats changes. The run is yours, two Desk slots: slot 1 at 78cabdc (check all, cli 31 of 31), which stands for 802de63 because 78cabdc..802de63 touches no Rust or Cargo file and you ran shellcheck and actionlint on 802de63's changed files; slot 2 at 802de63 (macos bats 45 of 45, the stamped dev line, install and use dev and opt under a scratch HOME, doctor 23 of 23). Acceptance 1, 2 and 4 are shown; 3's kegs and 5's T10 come at the cut and the publish, with hv. ISSUE:0007 stays open until then. One small ask, not blocking: a line in docs/releasing.md saying that from 78cabdc on, macos finalize cannot re-verify a release cut before it (v0.1.8 and earlier). Your second route past devbin 0348 is put to hv, as the recommended one; I will pass you hv's word.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

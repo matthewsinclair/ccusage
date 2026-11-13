@@ -1,0 +1,16 @@
+{
+  "id": "01M79X6G7ECTPX7XPMAPB47SPQ",
+  "ts": "2026-11-13T07:33:19.726Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 7,
+    "text": "0.1.9 cut blocker: devbin 0348 (high). devbin 0.1.23's doctor exits 1 on a Mac that still holds the pre-contract 0.1.8 keg, and release.gates runs doctor. Filed at devbin fdcad579 with 0349 (Homebrew moves metafiles out of libexec, why LICENSE left the archives) and 0350 (low). Building them waits on hv's word for devbin 0.1.24. Three routes, put to hv in the live channel: (A) go for devbin 0.1.24, vendored before the cut; (B) a ruling that the cut accepts doctor's red rows; (C, dc's, recommended) before the cut, hv runs bin/devbin install and bin/devbin use opt, the first steps of T10 and of ST0003's rollout. doctor passes with the link on opt, as dc's slot 2 showed, and use brew follows brew upgrade to the 0.1.9 keg. Then: pass hv's word to devbin-vc and dc."
+  }
+}

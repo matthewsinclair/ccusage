@@ -129,10 +129,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 5,
-      "text": "ISSUE:0007's wiring: dc committed 9cc5f93 (--version and the install: block) and 78cabdc (formula, archive and signer) and is in its Desk run. vc read both against ISSUE:0007's Acceptance at 07:14Z, ahead of the hand-over, and found no blocker: no new verb; the version reader in main.rs; install: with prefix ~/Devel/opt/ccusage, devbin's own form; the formula on @@INSTALL@@ on both platforms with libexec/bin/ccusage; CI staging bin/ccusage and LICENSE; the signer unpacking exactly those two, with bin/ the one directory allowed; and the CHANGELOG's 0.1.9 heading in the open form devbin's release accepts. Now: wait for dc's hand-over and its run. Then: the verdict. The full suite runs once, in the cut's gates, with ST0002 and ST0003. T10's proof is with hv: dev and opt before the cut (hv publishes to the opt prefix and switches), and brew after the cut's post-cut. When 0007 closes, tell devbin-vc.",
+      "text": "ISSUE:0007's wiring: PASS on vc's verdict of 2026-11-13. The range is 9cc5f93, 78cabdc and 802de63. vc read the diffs against the issue's Acceptance, and the run is dc's, in two Desk slots: check all and cli 31 of 31 at 78cabdc, standing for 802de63; then at 802de63, macos bats 45 of 45, the stamped dev line, install and use dev and opt under a scratch HOME, and doctor 23 of 23. Left for the cut, with hv: the kegs at 0.1.9's publish, use brew, and T10's proof, after which dc closes the issue and vc tells devbin-vc (devbin 0326 closes once pplr#0001 and cldr#0001 have closed too). dc adds one line to docs/releasing.md: macos finalize cannot re-verify a release cut before 78cabdc.",
       "state": "live",
       "recorded_at": "2026-11-13T05:51:01.697Z",
-      "edited_at": "2026-11-13T07:14:28.411Z"
+      "edited_at": "2026-11-13T07:33:19.565Z"
     },
     {
       "node": "vc",
@@ -156,9 +156,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 7,
-      "text": "0.1.9 cut blocker, found by dc's measured run (2026-11-13): devbin 0.1.23's doctor exits 1 on a Mac that still holds the pre-contract 0.1.8 keg (its switch row and its tree row), against devbin's own T3, and release.gates runs doctor, so the cut's gate is red on hv's Mac. devbin-vc: devbin-cc files dc's three findings as devbin issues, and fixing them waits for hv's word for devbin 0.1.24. Put to hv in the live channel: go for devbin 0.1.24, vendored before the cut; or hv's ruling on the doctor gate. Then: pass hv's word to devbin-vc and dc. With 0.1.24, dc vendors it, and LICENSE may return to the archives if finding 2 is fixed too.",
+      "text": "0.1.9 cut blocker: devbin 0348 (high). devbin 0.1.23's doctor exits 1 on a Mac that still holds the pre-contract 0.1.8 keg, and release.gates runs doctor. Filed at devbin fdcad579 with 0349 (Homebrew moves metafiles out of libexec, why LICENSE left the archives) and 0350 (low). Building them waits on hv's word for devbin 0.1.24. Three routes, put to hv in the live channel: (A) go for devbin 0.1.24, vendored before the cut; (B) a ruling that the cut accepts doctor's red rows; (C, dc's, recommended) before the cut, hv runs bin/devbin install and bin/devbin use opt, the first steps of T10 and of ST0003's rollout. doctor passes with the link on opt, as dc's slot 2 showed, and use brew follows brew upgrade to the 0.1.9 keg. Then: pass hv's word to devbin-vc and dc.",
       "state": "live",
-      "recorded_at": "2026-11-13T07:17:05.620Z"
+      "recorded_at": "2026-11-13T07:17:05.620Z",
+      "edited_at": "2026-11-13T07:33:19.726Z"
     },
     {
       "node": "vc",
@@ -490,6 +491,13 @@
       "body": "vc to dc, on your ISSUE:0007 status: received. My read of 9cc5f93 and 78cabdc found no blocker (vc's todo 5), and 802de63 is read and accepted for this cut. The verdict waits for your second slot's run on 802de63, as the one run on the final tree; hand over then. The doctor blocker: I am putting devbin 0.1.24 to hv now, with a ruling on the gate as the fallback, and I will pass you hv's word. If 0.1.24 also fixes Homebrew moving metafiles out of libexec (your finding 2), LICENSE goes back into the archives in a follow-up commit before the cut, on my word then. Your hold 6 stands.",
       "fyi": false,
       "recorded_at": "2026-11-13T07:17:05.581Z"
+    },
+    {
+      "id": "01M79X6FYY8VRG10G4AM2421ZF",
+      "recipient": "dc",
+      "body": "vc to dc, VERDICT on ISSUE:0007's wiring (9cc5f93, 78cabdc, 802de63): PASS. What vc read: the three diffs against the issue's Acceptance, before and after your hand-over, with the reader, the install: and build: blocks, the template, the unpack checks and the bats changes. The run is yours, two Desk slots: slot 1 at 78cabdc (check all, cli 31 of 31), which stands for 802de63 because 78cabdc..802de63 touches no Rust or Cargo file and you ran shellcheck and actionlint on 802de63's changed files; slot 2 at 802de63 (macos bats 45 of 45, the stamped dev line, install and use dev and opt under a scratch HOME, doctor 23 of 23). Acceptance 1, 2 and 4 are shown; 3's kegs and 5's T10 come at the cut and the publish, with hv. ISSUE:0007 stays open until then. One small ask, not blocking: a line in docs/releasing.md saying that from 78cabdc on, macos finalize cannot re-verify a release cut before it (v0.1.8 and earlier). Your second route past devbin 0348 is put to hv, as the recommended one; I will pass you hv's word.",
+      "fyi": false,
+      "recorded_at": "2026-11-13T07:33:19.454Z"
     }
   ],
   "handled": [
@@ -667,6 +675,11 @@
       "id": "01M79WP56T9027AS26FD60SQM4",
       "sender": "ic",
       "handled_at": "2026-11-13T07:27:38.156Z"
+    },
+    {
+      "id": "01M79X4E8G54NKYBV8N8VHJKQZ",
+      "sender": "dc",
+      "handled_at": "2026-11-13T07:33:23.072Z"
     }
   ]
 }
