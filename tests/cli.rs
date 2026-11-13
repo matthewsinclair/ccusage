@@ -1530,3 +1530,88 @@ fn usage_all_marks_the_next_account_and_one_accounts_usage_does_not() -> Result<
   assert!(!sandbox.ok(&["usage", "work"])?.contains(" · next"));
   Ok(())
 }
+
+// ST0002 AT-08.1: herdr install and remove touch only an unedited copy of their own mod.
+#[test]
+fn herdr_install_writes_the_mod_and_replaces_or_removes_only_its_own_unedited_copy() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let home = sandbox.root.join("herdr");
+  let herdr = |args: &[&str], fails: bool| -> Result<Output> {
+    let mut command = sandbox.command();
+    command.env("HERDR_APP_HOME", &home).args(args);
+    if fails {
+      command.env("HERDR_CHECK_FAILS", "1");
+    }
+    Ok(command.output()?)
+  };
+  // With no Herdr home there is nothing to put the mod into.
+  let output = herdr(&["herdr", "install"], false)?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stderr)?.contains("no Herdr home"));
+  fs::create_dir_all(home.join("layouts"))?;
+  let (keys, layout) = ("{\"keep\": true}\n", "{\"id\": \"root\"}\n");
+  fs::write(home.join("keys.json"), keys)?;
+  fs::write(home.join("layouts/main.json"), layout)?;
+  let dir = home.join("mods").join(ccusage::herdr::MOD);
+  let source = include_str!("../herdr/ccusage/main.js");
+  // With no herdr-app on PATH the mod is written and said to be unchecked.
+  let output = herdr(&["herdr", "install"], false)?;
+  assert!(output.status.success());
+  let said = String::from_utf8(output.stdout)?;
+  assert!(said.contains("herdr-app is not on PATH"));
+  assert!(said.contains(ccusage::herdr::OPEN));
+  assert_eq!(fs::read_to_string(dir.join("main.js"))?, source);
+  assert!(
+    fs::read_to_string(dir.join("lifetime.js"))?
+      .contains(&format!("LIFETIME = {};", ccusage::usage::TTL))
+  );
+  // A stand-in herdr-app, as launchctl has one: no test reaches the real Herdr.
+  let stand_in = sandbox.root.join("bin/herdr-app");
+  fs::write(
+    &stand_in,
+    "#!/bin/sh\nhere=$(/usr/bin/dirname \"$0\")\n/bin/echo \"$*\" >> \"$here/../herdr-app.log\"\nif [ -n \"$HERDR_CHECK_FAILS\" ]; then /bin/echo 'main.js: the stand-in refuses' >&2; exit 1; fi\n",
+  )?;
+  fs::set_permissions(&stand_in, fs::Permissions::from_mode(0o700))?;
+  // Files Herdr writes into a mod's folder are no edit, so the copy is replaced.
+  fs::write(dir.join("jsconfig.json"), "{}")?;
+  let output = herdr(&["herdr", "install"], false)?;
+  assert!(output.status.success());
+  assert!(String::from_utf8(output.stdout)?.contains("herdr-app check passed."));
+  assert!(
+    fs::read_to_string(sandbox.root.join("herdr-app.log"))?
+      .contains(&format!("check {}", dir.display()))
+  );
+  // An edited copy is refused and left as it is, until --force replaces it.
+  fs::write(dir.join("main.js"), "// mine")?;
+  let output = herdr(&["herdr", "install"], false)?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stderr)?.contains("--force"));
+  assert_eq!(fs::read_to_string(dir.join("main.js"))?, "// mine");
+  assert!(
+    herdr(&["herdr", "install", "--force"], false)?
+      .status
+      .success()
+  );
+  assert_eq!(fs::read_to_string(dir.join("main.js"))?, source);
+  // A failed check is reported, and the verb exits 1.
+  let output = herdr(&["herdr", "install"], true)?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stdout)?.contains("herdr-app check failed: main.js"));
+  // remove takes out an unedited copy, and an edited one only with --force.
+  assert!(herdr(&["herdr", "remove"], false)?.status.success());
+  assert!(!dir.exists());
+  assert!(herdr(&["herdr", "install"], false)?.status.success());
+  fs::write(dir.join("extra.js"), "")?;
+  assert!(!herdr(&["herdr", "remove"], false)?.status.success());
+  assert!(dir.join("extra.js").exists());
+  assert!(
+    herdr(&["herdr", "remove", "--force"], false)?
+      .status
+      .success()
+  );
+  assert!(!dir.exists());
+  // Layouts and keys.json are as they were.
+  assert_eq!(fs::read_to_string(home.join("keys.json"))?, keys);
+  assert_eq!(fs::read_to_string(home.join("layouts/main.json"))?, layout);
+  Ok(())
+}

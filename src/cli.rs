@@ -37,6 +37,9 @@ Usage: ccusage [--config PATH] [--no-color] [--verbose] [COMMAND]
   predict [--json]             Project from the usage history how much of each account's
                                weekly allowance goes unused at its reset, following which
   tui [--demo]                 Interactive account dashboard (demo works without setup)
+  herdr install|remove [--force]
+                               Put the ccusage panel into Herdr's mods, or take it out;
+                               --force replaces or removes a copy ccusage did not write
   shell zsh|bash               Print an optional wrapper for plain claude
   paths                        Show resolved XDG directories
   doctor                       Check Claude, configuration, and private-file permissions
@@ -150,6 +153,28 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
     println!(
       "# Add to ~/.{shell}rc after installing ccusage on PATH.\nclaude() {{ command ccusage run -- \"$@\"; }}"
     );
+    return Ok(());
+  }
+  if command == "herdr" {
+    let force = flag(&mut args, "--force");
+    match args
+      .iter()
+      .map(String::as_str)
+      .collect::<Vec<_>>()
+      .as_slice()
+    {
+      ["install"] => {
+        let installed = crate::herdr::install(force)?;
+        println!("{}", installed.said);
+        if !installed.passed {
+          return Err("herdr-app check failed on the mod; see above".into());
+        }
+      }
+      ["remove"] => println!("{}", crate::herdr::remove(force)?),
+      _ => {
+        return Err("herdr takes install or remove, and --force; see ccusage help".into());
+      }
+    }
     return Ok(());
   }
   if command == "paths" {
