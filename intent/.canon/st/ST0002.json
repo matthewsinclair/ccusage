@@ -255,7 +255,7 @@
     {
       "id": "AT-01.4",
       "kind": "test",
-      "file": "src/display.rs:753",
+      "file": "src/display.rs:930",
       "covers": [
         "AC-01.1"
       ],
@@ -295,7 +295,7 @@
     {
       "id": "AT-02.4",
       "kind": "test",
-      "file": "tests/cli.rs:298",
+      "file": "tests/cli.rs:310",
       "covers": [
         "AC-02.3"
       ],
@@ -315,7 +315,7 @@
     {
       "id": "AT-03.1",
       "kind": "test",
-      "file": "tests/cli.rs:1191",
+      "file": "tests/cli.rs:1204",
       "covers": [
         "AC-03.1"
       ],
@@ -325,7 +325,7 @@
     {
       "id": "AT-03.2",
       "kind": "test",
-      "file": "tests/cli.rs:1223",
+      "file": "tests/cli.rs:1242",
       "covers": [
         "AC-03.2"
       ],
@@ -335,7 +335,7 @@
     {
       "id": "AT-03.3",
       "kind": "test",
-      "file": "tests/cli.rs:1326",
+      "file": "tests/cli.rs:1345",
       "covers": [
         "AC-03.3"
       ],
@@ -345,7 +345,7 @@
     {
       "id": "AT-03.4",
       "kind": "test",
-      "file": "tests/cli.rs:1361",
+      "file": "tests/cli.rs:1380",
       "covers": [
         "AC-03.4"
       ],
@@ -385,7 +385,7 @@
     {
       "id": "AT-04.4",
       "kind": "test",
-      "file": "tests/cli.rs:390",
+      "file": "tests/cli.rs:403",
       "covers": [
         "AC-04.1"
       ],
@@ -401,6 +401,86 @@
       ],
       "status": "green",
       "note": "Samples go by age alone, once older than one weekly window: a window that has since reset keeps its sample, and the next window at the same percent is a window of its own; red under the mutants that drop a sample at one week and that know a window without its reset, in the first WP04 run at 31c0482, Desk slot 01M79ZVHT2C8B2ADTBWY7YQ73W; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP"
+    },
+    {
+      "id": "AT-05.1",
+      "kind": "test",
+      "file": "src/predict.rs:276",
+      "covers": [
+        "AC-05.1"
+      ],
+      "status": "green",
+      "note": "The burn rate is the rises in the weekly windows across every account over the hours from the first weekly sample to the last, a rise across a reset counting from 0 and a fall as none; the test computes its expected rate from the fixture history; red under the mutants that count no rise across a reset and that count a fall, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+    },
+    {
+      "id": "AT-05.2",
+      "kind": "test",
+      "file": "src/predict.rs:325",
+      "covers": [
+        "AC-05.1"
+      ],
+      "status": "green",
+      "note": "Following which::choose from now at the rate, each account's projected percent at its current reset, held at the cap, its unused share as 100 less that, and the total, each computed in the test from a fixture whose climb to the cap ends part way through a second; red under the mutants that take the last account instead of the rule's choice, that climb past the cap, and that count unused from the cap instead of 100, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+    },
+    {
+      "id": "AT-05.3",
+      "kind": "test",
+      "file": "tests/cli.rs:1449",
+      "covers": [
+        "AC-05.1"
+      ],
+      "status": "green",
+      "note": "ccusage predict says plainly when there is too little history and exits 0, then from a fixture history gives the rate, the samples and hours it rests on, each account's unused share and the total, and the accounts left out, in text and in its versioned JSON; red under the mutant whose JSON gives no samples, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+    },
+    {
+      "id": "AT-06.1",
+      "kind": "test",
+      "file": "src/display.rs:1031",
+      "covers": [
+        "AC-06.1"
+      ],
+      "status": "green",
+      "note": "display::next is which::choose's choice once every report is in and fresh, an account that failed counting as in; a report yet to come, or usage as old as the cache's lifetime, gives no marker and the TUI's notice to refresh; with nothing eligible the overview says so; one account's usage shows no marker; red under the mutants that ignore freshness, that mark every account but the choice, and that count a failed account as not in, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+    },
+    {
+      "id": "AT-06.2",
+      "kind": "test",
+      "file": "tests/cli.rs:1519",
+      "covers": [
+        "AC-06.1"
+      ],
+      "status": "green",
+      "note": "ccusage usage --all marks which's choice next, as the TUI does, while ccusage usage NAME marks none; red under the mutant that leaves usage --all without the marker, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+    },
+    {
+      "id": "AT-08.1",
+      "kind": "test",
+      "file": "tests/cli.rs:1535",
+      "covers": [
+        "AC-08.1"
+      ],
+      "status": "green",
+      "note": "ccusage herdr install writes the mod and a record of it into a scratch Herdr home, refuses a missing home, replaces only its own unedited copy (files Herdr writes there aside), refuses an edited one until --force, reports herdr-app check's verdict and exits 1 when it fails; remove takes out an unedited copy, and an edited one only with --force; layouts and keys.json are as they were; red under the mutants that replace an edited copy, that count Herdr's jsconfig.json as an edit, and that take a failed check for a pass, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+    },
+    {
+      "id": "AT-08.2",
+      "kind": "test",
+      "file": "src/display.rs:1089",
+      "covers": [
+        "AC-08.2"
+      ],
+      "status": "green",
+      "note": "display::due names the accounts whose usage is missing or older than the cache's lifetime and that the TUI last asked for a whole lifetime ago or more, or never, so no account is asked twice in a lifetime, one whose ask brought nothing fresh included; red under the mutants that ignore when an account was last asked and that take fresh usage as stale, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+    },
+    {
+      "id": "AT-08.3",
+      "kind": "test",
+      "file": "tests/cli.rs:383",
+      "covers": [
+        "AC-08.2"
+      ],
+      "status": "green",
+      "note": "A rate-limited account's cooldown holds through --refresh, its last usage kept and the cooldown said, with no request made; the cache every fetch reads through, the TUI's included, fetches nothing before an account's retry time; red under the mutant that changes what the cooldown says, which the test pins, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
     }
   ]
 }
