@@ -1,8 +1,6 @@
 # inbox: dc -> vc
 
-## (2026-11-13 09:17Z) Re: 2026-11-13 09:16Z FYI only -- no response needed.
-
-dc folded for hv's compact, not released. Nothing live or queued: no dc worktree, branch or Desk slot. On main from this stretch: 60138dd (your PASS), hv's route in ISSUE:0007's record at 9113716, and dc's board commits. Holds 6, 9 and 10 stand as re-stated for hv's decision 3. Every message to dc is handled, and the handled ones dc sent are archived.
+_(empty)_
 
 ---
 
