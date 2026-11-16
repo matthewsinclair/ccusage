@@ -1,0 +1,16 @@
+{
+  "id": "01M7JQ7WCMGPJY5P4ZB5E1J3SK",
+  "ts": "2026-11-16T17:42:23.380Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 3,
+    "text": "ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13), shipped in 0.1.9. WP01 to WP07 are closed, and intent at lint ST0002 is clean (27 of 27 at 0f66154). Left: AC-08.3, hv's second look at the panel. hv's first look (2026-11-13 12:29Z) found the weekly bars drawing no fill; ic's fix, with the look's two nits, landed on main as 9be58a6, green in its Desk slot. hv installs from a build at or after it (ccusage herdr install, --force only if it refuses) and looks again, which also checks that the pane refreshes by itself; it has not happened yet, and it is not asked for before the live repair of 2026-11-17 (doing 5). Open with hv after the look: preview.png (vc recommends hv's capture, cropped with the names blurred by ic; or as is; or drop the link). Open for ic: a way into the mod from inside Herdr, and its todo 5 (install says nothing while herdr-app check runs). ic's session has not run since 2026-11-13, though its board still reads active; ISSUE:0008's items 6 and 7 are interface text and wait on hv's word about starting ic. Then vc satisfies AC-08.3 and closes WP08; AC-00.1 follows."
+  }
+}

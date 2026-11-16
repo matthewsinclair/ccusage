@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-16T17:28:37Z:v0.32: vc - ISSUE:0008: live repair first thing 2026-11-17; cc builds"
+verblock: "2026-11-16T17:42:06Z:v0.33: vc - localfold: 0009 landed; tap push and local push are hv's"
 ---
 
 # Work In Progress
@@ -40,8 +40,9 @@ In 0.1.9. WP01 to WP07 are closed. Left: AC-08.3, hv's second look at the panel.
 
 ## Upcoming Work
 
-- ISSUE:0009 (medium), dc: LICENSE goes back into each release archive and installed tree, now that devbin 0349's fix is vendored (0.1.25). dc builds it on a branch for vc to land.
-- The tap's CI runs `brew style` and `brew audit --strict` again (hv's ISSUE:0004 ruling 3): dc prepares the change in a scratch clone of the tap and hands vc the diff; the push waits for hv's OK.
+- ISSUE:0009 (medium), dc: LICENSE is back in each release archive and installed tree, on main. Left: before the cut, with the kovacs gates, a scratch-HOME `bin/devbin install` listing the opt tree and its manifest; after the cut's `brew upgrade ccusage`, doctor's tree row on rhadamanth's keg and on kovacs's, where dc closes it.
+- The tap's CI runs `brew style` and `brew audit --strict` again (hv's ISSUE:0004 ruling 3): dc's commit 434d105 is ready in its scratch clone and hv said push it (decision 9), but the permission check refused dc's push, so it is hv's own command (vc's todo 9 has it). Then dc reports the tap's CI on both runners, and on green vc lands `docs/releasing.md`'s line from `dc/tap-ci-docs`.
+- main is ahead of `local`: the permission check refused vc's `git push local main`, so that is hv's own command too (vc's todo 11).
 - ISSUE:0003 (medium) closes at ST0003/WP06; its last acceptance line reads each account once in Claude Usage (hv's decision 3).
 - One cut carries ISSUE:0008's code, cc's two nits and ISSUE:0009, on hv's word, with dc's run of the gates on kovacs first.
 - Open with hv from ISSUE:0008: whether ic starts or cc takes the interface text; and whether the launch-time fix goes to Molt's or Intent's desk (a shell that outlives a switch keeps its pin, since `env.sh` runs at shell start alone).

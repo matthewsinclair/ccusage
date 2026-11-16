@@ -1,0 +1,15 @@
+{
+  "id": "01M7JQ7WN6QV9RK9H2ZY2DHWYZ",
+  "ts": "2026-11-16T17:42:23.654Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "main is ahead of the local remote (20 commits at 17:42Z on 2026-11-16, the two devbin sweeps of 2026-11-14 and this session's). hv's decision 4 sends main to local once committed, but the permission check refused vc's git push local main on 2026-11-16, and vc tries no other route. It is hv's own command, put to hv in vc's window: git push local main, run in the checkout as a ! command or in hv's terminal. Nothing goes upstream but a release."
+  }
+}
