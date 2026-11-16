@@ -1,0 +1,16 @@
+{
+  "id": "01M7JQ5CH4SFYHB0PPMJR39E6H",
+  "ts": "2026-11-16T17:41:01.605Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 9,
+    "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). hv's OK to push came on 2026-11-16 (\"do it now\", decision 9), but the permission check in dc's session refused dc's git push to the tap, so nothing was sent and the tap's main is still cf77911 (dc's ls-remote, 17:39Z). dc tried no other route and asked no seat to push; vc does not push it either. It is hv's own command now, put to hv in vc's window on 2026-11-16: git -C /Users/matts/Devel/scratch/ccusage-dc/homebrew-ccusage push git@github.com-matthewsinclair:matthewsinclair/homebrew-ccusage.git 434d105:refs/heads/main, as a ! command or in hv's own terminal, or the patch by hand. Once 434d105 is on the tap's main: vc tells dc, dc reports the tap's CI on macos-15 and ubuntu-22.04 (dc's hold 14), and on green vc lands b3ca1c1 from dc/tap-ci-docs and archives this."
+  }
+}

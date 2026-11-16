@@ -186,10 +186,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 9,
-      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). hv's OK to push came on 2026-11-16 (\"do it now\", decision 9), and vc passed it to dc the same minute: dc pushes 434d105 (test.yml alone, back to 65cac20's exactly) from its scratch clone to the tap's main, by fast-forward from cf77911, and reports the tap's CI on macos-15 and ubuntu-22.04. Left: on green, vc lands b3ca1c1 from dc/tap-ci-docs (docs/releasing.md's one line) and archives this; on red, vc reads the failing step with dc before anything more changes on the tap.",
+      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). hv's OK to push came on 2026-11-16 (\"do it now\", decision 9), but the permission check in dc's session refused dc's git push to the tap, so nothing was sent and the tap's main is still cf77911 (dc's ls-remote, 17:39Z). dc tried no other route and asked no seat to push; vc does not push it either. It is hv's own command now, put to hv in vc's window on 2026-11-16: git -C /Users/matts/Devel/scratch/ccusage-dc/homebrew-ccusage push git@github.com-matthewsinclair:matthewsinclair/homebrew-ccusage.git 434d105:refs/heads/main, as a ! command or in hv's own terminal, or the patch by hand. Once 434d105 is on the tap's main: vc tells dc, dc reports the tap's CI on macos-15 and ubuntu-22.04 (dc's hold 14), and on green vc lands b3ca1c1 from dc/tap-ci-docs and archives this.",
       "state": "live",
       "recorded_at": "2026-11-13T12:17:46.968Z",
-      "edited_at": "2026-11-16T17:38:55.749Z"
+      "edited_at": "2026-11-16T17:41:01.605Z"
     },
     {
       "node": "vc",
@@ -1283,6 +1283,11 @@
       "id": "01M7JPSD86SS402WJ18V2TMTS3",
       "sender": "dc",
       "handled_at": "2026-11-16T17:35:35.023Z"
+    },
+    {
+      "id": "01M7JQ3ZY9TQGC0ZDSF38961SG",
+      "sender": "dc",
+      "handled_at": "2026-11-16T17:41:01.490Z"
     }
   ]
 }
