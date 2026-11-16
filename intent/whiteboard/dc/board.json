@@ -5,9 +5,9 @@
     "name": "DevX Claude",
     "role": "devx",
     "session_id": "bcb96563-69a0-4e18-8126-fd8a1f53f570",
-    "heartbeat_at": "2026-11-16T17:34:29.163Z",
+    "heartbeat_at": "2026-11-16T17:36:05.669Z",
     "status": "active",
-    "focus": "Doing 12: the tap's CI style and audit, 434d105 in a scratch clone, with vc for hv's OK to push; its docs line on branch dc/tap-ci-docs. ISSUE:0009 landed as 0f66154; a hold for its keg proof after the next cut, and a todo before the cut (kovacs gates, scratch-HOME install). Hold 6: ISSUE:0003 at WP06, now ISSUE:0008's live repair, first thing 2026-11-17.",
+    "focus": "Nothing more tonight on vc's word; fold when hv calls the day. Holds: 6 (ISSUE:0003 at WP06, the live repair first thing 2026-11-17), 13 (ISSUE:0009's keg proof after the next cut), and the tap's CI push on hv's OK through vc. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install.",
     "claims": [
       "ISSUE:0003",
       "ISSUE:0009"
@@ -395,7 +395,8 @@
       "kind": "doing",
       "seq": 12,
       "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on 2026-11-16). Ready and handed to vc: commit 434d105 in the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on the tap's cf77911 (GitHub's main), puts back the two steps 1e74059 took out, so test.yml is 65cac20's again; the patch is ~/Devel/scratch/ccusage-dc/tap-style-audit.patch. brew style and brew audit --strict pass on the tap's formula. The push waits for hv's OK, which vc asks for, and then the tap's CI must go green. docs/releasing.md's line follows on branch dc/tap-ci-docs (b3ca1c1, worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs), for vc to land once the push is done.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-16T17:36:05.603Z",
       "recorded_at": "2026-11-16T17:21:39.877Z",
       "edited_at": "2026-11-16T17:34:15.702Z"
     },
@@ -414,6 +415,14 @@
       "text": "Before the next cut, on vc's word: the kovacs gates (check all, test all, build and doctor at main's tip, in a heavy slot, announced to kovacs-sysadm), and with them, not before, a scratch-HOME bin/devbin install at main's tip with a listing of the opt tree and its manifest, showing LICENSE in the tree and named in the manifest (vc, 2026-11-16, for ISSUE:0009: no run has yet laid out an installed tree with the files entry back). The cut carries ISSUE:0008's fix, cc's two nits and ISSUE:0009.",
       "state": "live",
       "recorded_at": "2026-11-16T17:34:15.586Z"
+    },
+    {
+      "node": "dc",
+      "kind": "hold",
+      "seq": 14,
+      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on 2026-11-16). Commit 434d105 in the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on the tap's cf77911, puts back the two steps 1e74059 took out (patch ~/Devel/scratch/ccusage-dc/tap-style-audit.patch); vc read it as right, with dc's brew style and brew audit --strict runs as the run. Released when vc passes dc hv's OK to push, which vc asked for on 2026-11-16 and which may not come before the live repair. Then dc pushes 434d105 over the tap's ssh remote and tells vc the tap's CI result on macos-15 and ubuntu-22.04, and vc lands b3ca1c1 from branch dc/tap-ci-docs (worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs). Keep the clone and the branch until then.",
+      "state": "live",
+      "recorded_at": "2026-11-16T17:36:05.637Z"
     }
   ],
   "sent": [
@@ -1058,6 +1067,11 @@
       "id": "01M7JPMB66143QH966AAT5ENFW",
       "sender": "vc",
       "handled_at": "2026-11-16T17:34:32.175Z"
+    },
+    {
+      "id": "01M7JPVDJ5BC4JCBCWAGSYKXWG",
+      "sender": "vc",
+      "handled_at": "2026-11-16T17:36:10.667Z"
     }
   ]
 }
