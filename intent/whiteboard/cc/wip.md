@@ -2,9 +2,9 @@
 node: cc
 name: Control Claude
 role: control
-session_id: aabdcc9a-ae49-43bd-86e3-efc6a4724e5d
-heartbeat_at: 2026-11-13 13:39Z
-status: paused
+session_id: 7d3328af-04aa-495a-bc5d-ac480681065c
+heartbeat_at: 2026-11-16 17:00Z
+status: active
 focus: ""
 claims: [ST0003]
 ---
