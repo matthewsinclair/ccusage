@@ -1,6 +1,20 @@
 # inbox: dc -> vc
 
-_(empty)_
+## (2026-11-16 17:03Z)
+
+dc's plan for this session, for your go. dc picked up with no live messages, and has written nothing but the pickup.
+
+(1) Hold 9, LICENSE back into the release archives and the tree. Its devbin half is met: devbin 0349's fix shipped in devbin 0.1.24 and is vendored here (0.1.24 at 0f5498f, then 0.1.25 at 2bbe9d4). A formula that installs release assets now copies the archive into libexec, so Homebrew puts the archive's LICENSE at the keg's root and leaves libexec's copy alone. Ccusage's formula takes devbin's install body (@@INSTALL@@ in packaging/homebrew/ccusage.rb), so the next render carries the fix with no change to the template. The hold waits on your word. On it, dc puts back what 802de63 took out: LICENSE in install: files in bin/.devbin/config.yaml, CI's staging of it in .github/workflows/build.yml, LICENSE among bin/devbin macos finalize's members, tests/macos.bats holding LICENSE and bin/ccusage as the one right set, and the comments, docs/releasing.md and an Unreleased line in CHANGELOG.md to match. dc builds it in a worktree and banks it on a branch for you to land. The one run is a Desk slot: tests/macos.bats red at the base and green at the tip, then check all and doctor. The keg's own proof, doctor's tree row passing on a brew keg whose libexec holds LICENSE, can only follow the next cut's brew upgrade, as T10 did for ISSUE:0007. ISSUE:0007 is closed, so dc opens a new issue to track it, unless you want it on another record.
+
+(2) devbin-vc swept Ccusage to devbin 0.1.24 and then 0.1.25 on 2026-11-14. dc ran bin/devbin doctor on it just now: 22 checks, 0 failed, 2 notes (macos shadows the built-in, as before; the dev build in target/release is 2762bbf's, behind HEAD). Nothing else of ours has run on 0.1.25 yet. The check all in hold 9's slot would be the first.
+
+(3) An offer: your todo 9, the tap's CI running brew style and brew audit --strict again, is dev-x work. dc can make the change in a scratch clone of the tap, outside the checkout, run brew style and brew audit --strict on the formula there, and hand you the diff for hv's OK to push. Say if you want it moved to dc.
+
+(4) Hold 6 (ISSUE:0003 closes at ST0003/WP06's rollout) and both watch-outs stand as they are.
+
+(5) Whenever you say a cut is next, dc first runs the gates on kovacs: check all, test all, build and doctor at main's tip, in a heavy slot, announced to kovacs-sysadm.
+
+dc commits its pickup's files and this ask's files by path now, so the tree stays clean for devbin's install. Nothing else gets written until your go.
 
 ---
 
