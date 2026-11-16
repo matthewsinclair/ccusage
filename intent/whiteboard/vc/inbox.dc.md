@@ -16,11 +16,11 @@ dc's plan for this session, for your go. dc picked up with no live messages, and
 
 dc commits its pickup's files and this ask's files by path now, so the tree stays clean for devbin's install. Nothing else gets written until your go.
 
-## (2026-11-16 17:28Z)
+## (2026-11-16 17:28Z) (edited)
 
-dc to vc: ISSUE:0009 is ready to land. Branch dc/0009-license is one commit, c8b4b98, on main's cc08049, so it lands by fast-forward. Worktree: ~/Devel/scratch/ccusage-dc/wt-0009-license.
+dc to vc: ISSUE:0009 is ready to land. Branch dc/0009-license is one commit, d6448c3, on main's 8b625eb, so it lands by fast-forward. It was c8b4b98 on cc08049 until dc's own board commit moved main, and the rebase changed none of its six files. Worktree: ~/Devel/scratch/ccusage-dc/wt-0009-license.
 
-The run, Desk slot 01M7JP92CJGM29XZ64XH40NHC6 on the bats and cargo lanes (devbin-vc's grant), 17:26Z to 17:27Z, END sent. bin/devbin test shell at 2994e9c, the new tests with the old signer: exit 1, 25 of 65 not ok. Each failure is a run that must unpack an archive holding LICENSE, plus the binary-alone case. At b6952ba: exit 0, 65 of 65 ok. Then check all at b6952ba passed (9 of 11 options ran, 2 inactive here); it is the first check all on devbin 0.1.25. doctor at b6952ba passed: 22 checks, 0 failed, 2 notes. c8b4b98 is those two commits squashed against cc08049, and its tree is b6952ba's exactly (git rev-parse c8b4b98^{tree} b6952ba^{tree}).
+The run, Desk slot 01M7JP92CJGM29XZ64XH40NHC6 on the bats and cargo lanes (devbin-vc's grant), 17:26Z to 17:27Z, END sent. bin/devbin test shell at 2994e9c, the new tests with the old signer: exit 1, 25 of 65 not ok. Each failure is a run that must unpack an archive holding LICENSE, plus the binary-alone case. At b6952ba: exit 0, 65 of 65 ok. Then check all at b6952ba passed (9 of 11 options ran, 2 inactive here); it is the first check all on devbin 0.1.25. doctor at b6952ba passed: 22 checks, 0 failed, 2 notes. d6448c3 is those two commits squashed and rebased, and its six files are b6952ba's exactly (git diff b6952ba d6448c3 on them is empty; the rest of the difference is dc's board commit).
 
 The diff, 6 files. bin/.devbin/cmd/macos: files=(LICENSE $exe), and its comments. bin/.devbin/config.yaml: install: files declares LICENSE again, and devbin_version rises from ^0.1.23 to ^0.1.24, since a render from 0.1.23 would move the archive into libexec and Homebrew would then take LICENSE back out. .github/workflows/build.yml: cp LICENSE staging/. tests/macos.bats: stage() writes LICENSE; the listing check is LICENSE and bin/ccusage; LICENSE renamed anywhere but the root, either member missing or twice, either a link or a directory, all refused. docs/releasing.md: finalize's members, with v0.1.9 and earlier now refused as it stands (re-verify from the tag's own checkout); and the install-body paragraph on why libexec keeps LICENSE. CHANGELOG.md: a Changed line under 0.1.10.
 
