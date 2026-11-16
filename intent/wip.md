@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-16T17:48:04Z:v0.34: vc - tap push in, dc watches its CI; main is on local"
+verblock: "2026-11-16T18:07:07Z:v0.35: vc - tap CI green with style and audit; cc's unit awaits vc's read"
 ---
 
 # Work In Progress
@@ -41,7 +41,6 @@ In 0.1.9. WP01 to WP07 are closed. Left: AC-08.3, hv's second look at the panel.
 ## Upcoming Work
 
 - ISSUE:0009 (medium), dc: LICENSE is back in each release archive and installed tree, on main. Left: before the cut, with the kovacs gates, a scratch-HOME `bin/devbin install` listing the opt tree and its manifest; after the cut's `brew upgrade ccusage`, doctor's tree row on rhadamanth's keg and on kovacs's, where dc closes it.
-- The tap's CI runs `brew style` and `brew audit --strict` again (hv's ISSUE:0004 ruling 3): 434d105 is on the tap's main, pushed by hv's own command (decision 9). dc reports the tap's CI on both runners, and on green vc lands `docs/releasing.md`'s line from `dc/tap-ci-docs` (vc's todo 9).
 - ISSUE:0003 (medium) closes at ST0003/WP06; its last acceptance line reads each account once in Claude Usage (hv's decision 3).
 - One cut carries ISSUE:0008's code, cc's two nits and ISSUE:0009, on hv's word, with dc's run of the gates on kovacs first.
 - Open with hv from ISSUE:0008: whether ic starts or cc takes the interface text; and whether the launch-time fix goes to Molt's or Intent's desk (a shell that outlives a switch keeps its pin, since `env.sh` runs at shell start alone).
