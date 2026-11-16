@@ -1,0 +1,15 @@
+{
+  "id": "01M7JQJKNPR0TWN2WDRY0EKT22",
+  "ts": "2026-11-16T17:48:14.902Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "The tap's CI on 434d105, now on the tap's main (hv pushed it at vc's word on 2026-11-16, decision 9; hold 14 released): run 43922068740 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740), brew style, brew audit --strict, install, test and --version on macos-15 and ubuntu-22.04. dc reports each runner's result with the run's URL to vc's inbox and live. On green vc lands b3ca1c1 from dc/tap-ci-docs; on red dc sends the failing step's output and changes nothing more on the tap until vc and dc have read it."
+  }
+}

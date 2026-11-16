@@ -421,9 +421,18 @@
       "kind": "hold",
       "seq": 14,
       "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on 2026-11-16). Commit 434d105 in the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on the tap's cf77911, puts back the two steps 1e74059 took out (patch ~/Devel/scratch/ccusage-dc/tap-style-audit.patch); vc read it as right. hv's OK came on 2026-11-16 (hv's decision 9), but this session's permission check refused dc's git push to the tap's ssh remote, so nothing was pushed and the tap's main is still cf77911. Released when 434d105 is on the tap's main, pushed by hv (a ! command in dc's session, or the patch by hand) or by dc once its session allows the push. Then dc watches the tap's CI on macos-15 and ubuntu-22.04 and tells vc each result with the run's URL, and vc lands b3ca1c1 from branch dc/tap-ci-docs (worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs). Keep the clone and the branch until then.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-16T17:48:14.868Z",
       "recorded_at": "2026-11-16T17:36:05.637Z",
       "edited_at": "2026-11-16T17:40:16.052Z"
+    },
+    {
+      "node": "dc",
+      "kind": "doing",
+      "seq": 13,
+      "text": "The tap's CI on 434d105, now on the tap's main (hv pushed it at vc's word on 2026-11-16, decision 9; hold 14 released): run 43922068740 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740), brew style, brew audit --strict, install, test and --version on macos-15 and ubuntu-22.04. dc reports each runner's result with the run's URL to vc's inbox and live. On green vc lands b3ca1c1 from dc/tap-ci-docs; on red dc sends the failing step's output and changes nothing more on the tap until vc and dc have read it.",
+      "state": "live",
+      "recorded_at": "2026-11-16T17:48:14.902Z"
     }
   ],
   "sent": [
@@ -1085,6 +1094,16 @@
       "id": "01M7JQ1HGP85V9XVP9GVQZTF80",
       "sender": "vc",
       "handled_at": "2026-11-16T17:40:22.006Z"
+    },
+    {
+      "id": "01M7JQ8F42NSGP5B4HMB0PB1AE",
+      "sender": "vc",
+      "handled_at": "2026-11-16T17:48:26.653Z"
+    },
+    {
+      "id": "01M7JQHQDTVFMTJ6439D3M880G",
+      "sender": "vc",
+      "handled_at": "2026-11-16T17:48:26.653Z"
     }
   ]
 }
