@@ -6,18 +6,17 @@ session_id: 7d3328af-04aa-495a-bc5d-ac480681065c
 heartbeat_at: 2026-11-16 17:00Z
 status: active
 focus: ""
-claims: [ST0003]
+claims: [ST0003, ISSUE:0008]
 ---
 
 # Control Claude (cc)
 
 ## DOING
 
-_(none)_
+- ISSUE:0008 (high), on vc's go of 2026-11-16: the fix outline's items 1 to 5 (doctor says whose login each own store holds, renewing nothing; the two-logins finding and usage's refusal give the restart before ccusage login NAME and name the pinned sessions; login, use, use --none and which --use refuse a move that would empty a store a running session is pinned to, with no override flag; a reporting verb says when its own shell exports the variable while a profile is seated; predict's rate keeps a failed account's samples on its last good plan and names what it leaves out), with todo 4's two nits in the same unit. One worktree off main's tip, branch cc/ISSUE-0008, banked as I go; one Desk cargo slot, red at the unfixed tree and green at the fix; no --json shape change; tests cited under ST0003's criteria where they fit, else ISSUE:0008's Acceptance. Items 6 and 7 wait for vc's word.
 
 ## TODO
 
-- On vc's word, in a Desk slot in the next Ccusage session, since hv's decision 6 closed the day (vc's todo 8): vc's two nits on ST0003/WP04 (vc's verdict of 2026-11-13 on 348a1a1..7cac510), neither worth a run before 0.1.9's cut: sessions::parse takes the last NAME=value match, since ps -E prints the environment after the arguments; and verified_token_at refuses before renewing when its profile has neither an email nor an account record to check against. (edited)
 - ST0003/WP06, the rollout of the one live login on rhadamanth, later and on hv's word (hv's decision 5), now that 0.1.9 is published. hv runs every step, vc writes the commands and checks from metadata, and dc closes ISSUE:0003 at its end. cc stands by for anything the rollout finds in the code: doctor's report of the layout before the rollout, use's adoption of 0.1.8's shared login, launchd's variable, and the live switch under running sessions. AC-06.1 and AC-06.2 stay open until its record satisfies them.
 
 ## Holds
@@ -26,7 +25,7 @@ _(none)_
 
 ## Watch-outs
 
-- hv's decision 5 (2026-11-13, vc's FYI): 0.1.9 is released ahead of ST0003/WP06's rollout. Until the rollout, nobody runs ccusage use or ccusage which --use on 0.1.9, since either one begins it, and hv's live config, launchd and Keychain changes are hv's own commands. (edited)
+- The rollout began on 2026-11-15, when hv seated hello by hand (ISSUE:0008; vc's brief of 2026-11-16). From now on hv alone runs ccusage use, ccusage login and ccusage which --use, on vc's steps; no seat runs them, and no build of cc's runs against the real XDG config or reads a real Keychain item. (edited)
 
 ## Decisions
 

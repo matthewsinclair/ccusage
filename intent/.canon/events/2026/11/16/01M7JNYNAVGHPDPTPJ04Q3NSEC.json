@@ -1,0 +1,16 @@
+{
+  "id": "01M7JNYNAVGHPDPTPJ04Q3NSEC",
+  "ts": "2026-11-16T17:19:52.667Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "seq": 1,
+    "text": "The rollout began on 2026-11-15, when hv seated hello by hand (ISSUE:0008; vc's brief of 2026-11-16). From now on hv alone runs ccusage use, ccusage login and ccusage which --use, on vc's steps; no seat runs them, and no build of cc's runs against the real XDG config or reads a real Keychain item."
+  }
+}
