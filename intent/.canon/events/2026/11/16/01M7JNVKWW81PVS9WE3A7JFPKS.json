@@ -1,0 +1,15 @@
+{
+  "id": "01M7JNVKWW81PVS9WE3A7JFPKS",
+  "ts": "2026-11-16T17:18:12.893Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0008"
+  },
+  "payload": {
+    "severity": "high",
+    "title": "Pinned sessions defeat a switch and ccusage does not say so: the remedy doctor gives loops, a login of another account reads OK, and predict drops a failed account from its burn rate"
+  }
+}
