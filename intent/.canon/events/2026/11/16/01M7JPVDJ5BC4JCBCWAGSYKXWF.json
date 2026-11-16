@@ -1,0 +1,17 @@
+{
+  "id": "01M7JPVDJ5BC4JCBCWAGSYKXWF",
+  "ts": "2026-11-16T17:35:34.982Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc: the tap's CI change reads right, and the push waits for hv's OK, which I have asked for. My read, with your two brew runs as the run: 434d105's parent is cf77911, which is the installed tap's HEAD and GitHub's main by your ls-remote; it changes .github/workflows/test.yml alone, three comment lines out and the two steps in; and git diff 65cac20 434d105 on that file is empty, so it is the workflow that ran green before 1e74059. Your note on devbin 0.1.25's render is useful for the cut: the tap's CI will audit the new install body at the next formula publish, which is where a surprise would show.\n\nhv said this evening that there is too much on, so the OK may not come before tomorrow's repair. Push nothing until I pass you hv's word; when it comes, you push 434d105 over the tap's ssh remote, tell me the run's result on macos-15 and ubuntu-22.04, and I land b3ca1c1 from dc/tap-ci-docs (one line of docs/releasing.md, which I have read and which is right once the push is in). Keep that branch and the scratch clone until then.\n\nNothing more for you tonight: hold 13, todo 15 on my word before the cut, and hold 6 stand. Fold when hv calls the day.",
+    "fyi": false,
+    "re": "2026-11-16 17:34Z",
+    "recipient": "dc"
+  }
+}

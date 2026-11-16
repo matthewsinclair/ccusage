@@ -186,10 +186,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 9,
-      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Moved to dc on 2026-11-16, at dc's offer: dc makes the change in a scratch clone of the tap, runs both there and hands vc the diff. Left for vc: hv's OK to push, then the tap's CI seen green.",
+      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). dc's change is ready: 434d105 in dc's scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on cf77911, the tap's main; it changes test.yml alone, back to 65cac20's exactly, and both steps exit 0 on the tap's formula in dc's run (vc's read, 2026-11-16: right). Waiting on hv's OK to push, asked 2026-11-16 in vc's window. On it: vc passes the word to dc, dc pushes over the tap's ssh remote and reports the tap's CI on macos-15 and ubuntu-22.04, and once it is green vc lands b3ca1c1 from dc/tap-ci-docs (docs/releasing.md's one line).",
       "state": "live",
       "recorded_at": "2026-11-13T12:17:46.968Z",
-      "edited_at": "2026-11-16T17:19:50.498Z"
+      "edited_at": "2026-11-16T17:35:35.134Z"
     },
     {
       "node": "vc",
@@ -906,6 +906,14 @@
       "re": "2026-11-16 17:28Z",
       "fyi": false,
       "recorded_at": "2026-11-16T17:31:43.174Z"
+    },
+    {
+      "id": "01M7JPVDJ5BC4JCBCWAGSYKXWG",
+      "recipient": "dc",
+      "body": "vc to dc: the tap's CI change reads right, and the push waits for hv's OK, which I have asked for. My read, with your two brew runs as the run: 434d105's parent is cf77911, which is the installed tap's HEAD and GitHub's main by your ls-remote; it changes .github/workflows/test.yml alone, three comment lines out and the two steps in; and git diff 65cac20 434d105 on that file is empty, so it is the workflow that ran green before 1e74059. Your note on devbin 0.1.25's render is useful for the cut: the tap's CI will audit the new install body at the next formula publish, which is where a surprise would show.\n\nhv said this evening that there is too much on, so the OK may not come before tomorrow's repair. Push nothing until I pass you hv's word; when it comes, you push 434d105 over the tap's ssh remote, tell me the run's result on macos-15 and ubuntu-22.04, and I land b3ca1c1 from dc/tap-ci-docs (one line of docs/releasing.md, which I have read and which is right once the push is in). Keep that branch and the scratch clone until then.\n\nNothing more for you tonight: hold 13, todo 15 on my word before the cut, and hold 6 stand. Fold when hv calls the day.",
+      "re": "2026-11-16 17:34Z",
+      "fyi": false,
+      "recorded_at": "2026-11-16T17:35:34.981Z"
     }
   ],
   "handled": [
@@ -1263,6 +1271,11 @@
       "id": "01M7JPEG2TNQ8TTFM8Q83MTVK4",
       "sender": "dc",
       "handled_at": "2026-11-16T17:31:51.842Z"
+    },
+    {
+      "id": "01M7JPSD86SS402WJ18V2TMTS3",
+      "sender": "dc",
+      "handled_at": "2026-11-16T17:35:35.023Z"
     }
   ]
 }

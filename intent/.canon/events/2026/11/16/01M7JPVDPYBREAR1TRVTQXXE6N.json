@@ -1,0 +1,16 @@
+{
+  "id": "01M7JPVDPYBREAR1TRVTQXXE6N",
+  "ts": "2026-11-16T17:35:35.134Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 9,
+    "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). dc's change is ready: 434d105 in dc's scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on cf77911, the tap's main; it changes test.yml alone, back to 65cac20's exactly, and both steps exit 0 on the tap's formula in dc's run (vc's read, 2026-11-16: right). Waiting on hv's OK to push, asked 2026-11-16 in vc's window. On it: vc passes the word to dc, dc pushes over the tap's ssh remote and reports the tap's CI on macos-15 and ubuntu-22.04, and once it is green vc lands b3ca1c1 from dc/tap-ci-docs (docs/releasing.md's one line)."
+  }
+}
