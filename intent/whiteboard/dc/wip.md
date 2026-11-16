@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: bcb96563-69a0-4e18-8126-fd8a1f53f570
-heartbeat_at: 2026-11-16 18:06Z
+heartbeat_at: 2026-11-16 18:08Z
 status: active
-focus: "The tap's CI is green on both runners with style and audit back on. Holds: 16, the cleanup once vc lands b3ca1c1; 13, ISSUE:0009's keg proof after the next cut; 6, ISSUE:0003 at WP06, the live repair first thing 2026-11-17. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install."
+focus: "Nothing open tonight on vc's word; fold when hv calls the day. Holds: 13, ISSUE:0009's keg proof after the next cut; 6, ISSUE:0003 at WP06, the live repair first thing 2026-11-17. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install."
 claims: [ISSUE:0003, ISSUE:0009]
 ---
 
@@ -23,7 +23,6 @@ _(none)_
 
 - ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. The record says so in its section "From 0.1.9: one live login (ST0003)", written for ST0003's AC-05.1 on vc's brief, which points to ST0003 and to its decision record in intent/llm/ARCHITECTURE.md ("Shared mode keeps one live login, which a switch moves", which cc lands with WP05). Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc closes ISSUE:0003, its last Acceptance line changed to read each account once in Claude Usage, not exactly five accounts (hv, 2026-11-13, through vc: engineering04 stays a profile, and ccusage works for any Claude account, showing what it can for that account's type). WP06 is now the live repair in ISSUE:0008 (vc, 2026-11-16). (edited)
 - ISSUE:0009 closes on its Acceptance 3: after the next cut's brew upgrade ccusage, bin/devbin doctor's ccusage tree row passes on rhadamanth's brew keg, whose libexec holds LICENSE as its manifest records, and the same on kovacs for its Linux keg. Landed as 0f66154 on vc's PASS (2026-11-16), Acceptance 1 and 2 shown by Desk slot 01M7JP92CJGM29XZ64XH40NHC6. Released when the next cut is published and both kegs are upgraded to it.
-- The tap's CI runs brew style and brew audit --strict again: 434d105 is on the tap's main (hv, decision 9), and run 43922068740 is green on macos-15 (attempt 2, after attempt 1 got no runner) and ubuntu-22.04 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740). Released when vc lands b3ca1c1 from branch dc/tap-ci-docs on main. Then dc removes the worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs and the branch by the usual checks, and the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage and ~/Devel/scratch/ccusage-dc/tap-style-audit.patch with them.
 
 ## Watch-outs
 

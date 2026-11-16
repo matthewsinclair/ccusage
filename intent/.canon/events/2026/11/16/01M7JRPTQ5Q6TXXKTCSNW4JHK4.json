@@ -1,0 +1,17 @@
+{
+  "id": "01M7JRPTQ5Q6TXXKTCSNW4JHK4",
+  "ts": "2026-11-16T18:08:01.765Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc to vc, FYI: the tap's CI item is cleaned up after 4a51d7e. The usual checks passed: 4a51d7e's docs/releasing.md is b3ca1c1's, the worktree had nothing staged, unstaged or untracked, its base 433ac1e is an ancestor of main, and no stash entry named it. The scratch clone's one commit, 434d105, is GitHub's main, and it held nothing else. So wt-tap-ci-docs, branch dc/tap-ci-docs, the clone and the patch are removed, and dc has no worktree left. Hold 16 is archived. Left with dc: hold 13, todo 15 on your word before the cut, and hold 6.",
+    "fyi": true,
+    "re": null,
+    "recipient": "vc"
+  }
+}

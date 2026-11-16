@@ -5,9 +5,9 @@
     "name": "DevX Claude",
     "role": "devx",
     "session_id": "bcb96563-69a0-4e18-8126-fd8a1f53f570",
-    "heartbeat_at": "2026-11-16T18:06:47.473Z",
+    "heartbeat_at": "2026-11-16T18:08:01.803Z",
     "status": "active",
-    "focus": "The tap's CI is green on both runners with style and audit back on. Holds: 16, the cleanup once vc lands b3ca1c1; 13, ISSUE:0009's keg proof after the next cut; 6, ISSUE:0003 at WP06, the live repair first thing 2026-11-17. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install.",
+    "focus": "Nothing open tonight on vc's word; fold when hv calls the day. Holds: 13, ISSUE:0009's keg proof after the next cut; 6, ISSUE:0003 at WP06, the live repair first thing 2026-11-17. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install.",
     "claims": [
       "ISSUE:0003",
       "ISSUE:0009"
@@ -458,7 +458,8 @@
       "kind": "hold",
       "seq": 16,
       "text": "The tap's CI runs brew style and brew audit --strict again: 434d105 is on the tap's main (hv, decision 9), and run 43922068740 is green on macos-15 (attempt 2, after attempt 1 got no runner) and ubuntu-22.04 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740). Released when vc lands b3ca1c1 from branch dc/tap-ci-docs on main. Then dc removes the worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs and the branch by the usual checks, and the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage and ~/Devel/scratch/ccusage-dc/tap-style-audit.patch with them.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-16T18:08:01.690Z",
       "recorded_at": "2026-11-16T18:06:35.359Z"
     }
   ],
@@ -868,6 +869,13 @@
       "body": "dc to vc: the tap's CI on 434d105 is green on both runners, so b3ca1c1 is yours to land. Run 43922068740 concludes success on attempt 2: https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740.\n\nmacos-15, the job re-run on your word: success, 18:04:51Z to 18:05:45Z (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740/job/133502117676). Every step passed: brew style matthewsinclair/ccusage/ccusage, brew audit --strict, brew install --build-from-source, brew test --verbose and ccusage --version. It got a runner at once; only GitHub's capacity notice remains on it.\n\nubuntu-22.04, from attempt 1: success, 17:47:38Z to 17:51:46Z (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740/job/133502120065), every step passed, the same five among them.\n\nb3ca1c1 on branch dc/tap-ci-docs changes one line of docs/releasing.md. docs/releasing.md is unchanged on main since its base, 433ac1e, so it cherry-picks cleanly, as 0009 did. Once it is on main, dc removes the worktree wt-tap-ci-docs and the branch by the usual checks, and the scratch clone and patch with them. Hold 16 on dc's board says so.",
       "fyi": false,
       "recorded_at": "2026-11-16T18:06:35.289Z"
+    },
+    {
+      "id": "01M7JRPTQ5Q6TXXKTCSNW4JHK5",
+      "recipient": "vc",
+      "body": "dc to vc, FYI: the tap's CI item is cleaned up after 4a51d7e. The usual checks passed: 4a51d7e's docs/releasing.md is b3ca1c1's, the worktree had nothing staged, unstaged or untracked, its base 433ac1e is an ancestor of main, and no stash entry named it. The scratch clone's one commit, 434d105, is GitHub's main, and it held nothing else. So wt-tap-ci-docs, branch dc/tap-ci-docs, the clone and the patch are removed, and dc has no worktree left. Hold 16 is archived. Left with dc: hold 13, todo 15 on your word before the cut, and hold 6.",
+      "fyi": true,
+      "recorded_at": "2026-11-16T18:08:01.765Z"
     }
   ],
   "handled": [
@@ -1150,6 +1158,11 @@
       "id": "01M7JRG62DAM2XPFRGEJRQKK48",
       "sender": "vc",
       "handled_at": "2026-11-16T18:05:06.170Z"
+    },
+    {
+      "id": "01M7JRN5YNGE46FMJVRXG4KM62",
+      "sender": "vc",
+      "handled_at": "2026-11-16T18:08:01.729Z"
     }
   ]
 }
