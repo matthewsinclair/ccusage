@@ -1,0 +1,15 @@
+{
+  "id": "01M7JREZYX9JTQ88HZAJH8F5Q8",
+  "ts": "2026-11-16T18:03:44.989Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "The tap's CI on 434d105 (hv pushed it on 2026-11-16, decision 9), run 43922068740 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740): ubuntu-22.04 is green on every step, brew style and brew audit --strict among them; macos-15 was cancelled without running a step, since GitHub found no hosted macOS arm64 runner (\"The job was not acquired by Runner of type hosted even after multiple attempts\"). Released when vc, or hv, gives the word to re-run the macOS job alone (gh run rerun 43922068740 --failed --repo matthewsinclair/homebrew-ccusage), which changes nothing in the tap. Then dc reports its result to vc; on green vc lands b3ca1c1 from dc/tap-ci-docs; on red dc sends the failing step's output and changes nothing more on the tap."
+  }
+}

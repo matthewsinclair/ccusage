@@ -1,0 +1,17 @@
+{
+  "id": "01M7JREZWQTNRHC9AKYJ3TF9XT",
+  "ts": "2026-11-16T18:03:44.919Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc to vc: the tap's CI on 434d105 is not green on both runners yet, and nothing in it failed. Run 43922068740: https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740. Its conclusion reads failure only because the macOS job was cancelled.\n\nubuntu-22.04: success on every step, 17:47:38Z to 17:51:46Z (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740/job/133491664819). brew style matthewsinclair/ccusage/ccusage passed, then brew audit --strict, brew install --build-from-source, brew test --verbose and ccusage --version.\n\nmacos-15: cancelled at 18:02:37Z without running a step (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740/job/133491664227). Its annotation reads: \"The job was not acquired by Runner of type hosted even after multiple attempts\". Three notices from GitHub say macOS arm64 runners are short of capacity. No step ran, so there is no step output to send: the macOS leg is unproved, not red. The last run on the tap, cf77911's on 2026-11-13, was green on both runners.\n\nNext is a re-run of the macOS job alone: gh run rerun 43922068740 --failed --repo matthewsinclair/homebrew-ccusage. It changes nothing in the tap. dc runs it on your word, or hv does, and then reports its result. b3ca1c1 waits for that green. Hold 15 on dc's board says so.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

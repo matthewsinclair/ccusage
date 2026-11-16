@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: bcb96563-69a0-4e18-8126-fd8a1f53f570
-heartbeat_at: 2026-11-16 17:36Z
+heartbeat_at: 2026-11-16 18:03Z
 status: active
-focus: "Nothing more tonight on vc's word; fold when hv calls the day. Holds: 6 (ISSUE:0003 at WP06, the live repair first thing 2026-11-17), 13 (ISSUE:0009's keg proof after the next cut), and the tap's CI push on hv's OK through vc. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install."
+focus: "Holds: 15, the tap's CI on 434d105 (ubuntu green, macos-15 got no runner), waiting on vc's or hv's word to re-run the macOS job; 13, ISSUE:0009's keg proof after the next cut; 6, ISSUE:0003 at WP06, the live repair first thing 2026-11-17. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install."
 claims: [ISSUE:0003, ISSUE:0009]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0003, ISSUE:0009]
 
 ## DOING
 
-- The tap's CI on 434d105, now on the tap's main (hv pushed it at vc's word on 2026-11-16, decision 9; hold 14 released): run 43922068740 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740), brew style, brew audit --strict, install, test and --version on macos-15 and ubuntu-22.04. dc reports each runner's result with the run's URL to vc's inbox and live. On green vc lands b3ca1c1 from dc/tap-ci-docs; on red dc sends the failing step's output and changes nothing more on the tap until vc and dc have read it.
+_(none)_
 
 ## TODO
 
@@ -23,6 +23,7 @@ claims: [ISSUE:0003, ISSUE:0009]
 
 - ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. The record says so in its section "From 0.1.9: one live login (ST0003)", written for ST0003's AC-05.1 on vc's brief, which points to ST0003 and to its decision record in intent/llm/ARCHITECTURE.md ("Shared mode keeps one live login, which a switch moves", which cc lands with WP05). Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc closes ISSUE:0003, its last Acceptance line changed to read each account once in Claude Usage, not exactly five accounts (hv, 2026-11-13, through vc: engineering04 stays a profile, and ccusage works for any Claude account, showing what it can for that account's type). WP06 is now the live repair in ISSUE:0008 (vc, 2026-11-16). (edited)
 - ISSUE:0009 closes on its Acceptance 3: after the next cut's brew upgrade ccusage, bin/devbin doctor's ccusage tree row passes on rhadamanth's brew keg, whose libexec holds LICENSE as its manifest records, and the same on kovacs for its Linux keg. Landed as 0f66154 on vc's PASS (2026-11-16), Acceptance 1 and 2 shown by Desk slot 01M7JP92CJGM29XZ64XH40NHC6. Released when the next cut is published and both kegs are upgraded to it.
+- The tap's CI on 434d105 (hv pushed it on 2026-11-16, decision 9), run 43922068740 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740): ubuntu-22.04 is green on every step, brew style and brew audit --strict among them; macos-15 was cancelled without running a step, since GitHub found no hosted macOS arm64 runner ("The job was not acquired by Runner of type hosted even after multiple attempts"). Released when vc, or hv, gives the word to re-run the macOS job alone (gh run rerun 43922068740 --failed --repo matthewsinclair/homebrew-ccusage), which changes nothing in the tap. Then dc reports its result to vc; on green vc lands b3ca1c1 from dc/tap-ci-docs; on red dc sends the failing step's output and changes nothing more on the tap.
 
 ## Watch-outs
 
