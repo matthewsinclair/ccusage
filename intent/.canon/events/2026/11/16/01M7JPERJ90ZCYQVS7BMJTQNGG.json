@@ -1,0 +1,16 @@
+{
+  "id": "01M7JPERJ90ZCYQVS7BMJTQNGG",
+  "ts": "2026-11-16T17:28:40.265Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 11,
+    "text": "ISSUE:0009, LICENSE back into each release archive and installed tree (hold 9, released on vc's word on 2026-11-16). Banked as c8b4b98 on branch dc/0009-license (worktree ~/Devel/scratch/ccusage-dc/wt-0009-license), one commit on cc08049, and handed to vc to land. Proved in Desk slot 01M7JP92CJGM29XZ64XH40NHC6: test shell red at 2994e9c and green at b6952ba, whose tree c8b4b98 is; check all (the first on devbin 0.1.25) and doctor passed. Left: vc lands it, and dc removes the worktree; it ships in the next cut with ISSUE:0008's fix and cc's two nits; after that cut's brew upgrade, doctor's ccusage tree row on rhadamanth and on kovacs is the keg's proof, and dc closes 0009 on it."
+  }
+}
