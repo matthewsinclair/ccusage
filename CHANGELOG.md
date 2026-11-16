@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [0.1.10] - unreleased
 
+### Changed
+
+- Each release archive, and the tree each install lays out (the opt install and the Homebrew keg's `libexec`), holds `LICENSE` beside `bin/ccusage` again. devbin 0.1.24's formula install body copies a Mac archive into `libexec`, so Homebrew no longer moves `LICENSE` out of it, and the keg's manifest names only files the keg holds (ISSUE:0009).
+
 ### Fixed
 
 - The Herdr panel draws each weekly bar filled to its percent; in 0.1.9 every bar showed an empty track. The panel also leaves its name to Herdr's pane header, and an unknown account whose reason is its report's own error says it once, on the error's line (ST0002).
