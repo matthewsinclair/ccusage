@@ -1,0 +1,15 @@
+{
+  "id": "01M7JPS012TRPWR89VNN1DAQ94",
+  "ts": "2026-11-16T17:34:15.586Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "Before the next cut, on vc's word: the kovacs gates (check all, test all, build and doctor at main's tip, in a heavy slot, announced to kovacs-sysadm), and with them, not before, a scratch-HOME bin/devbin install at main's tip with a listing of the opt tree and its manifest, showing LICENSE in the tree and named in the manifest (vc, 2026-11-16, for ISSUE:0009: no run has yet laid out an installed tree with the files entry back). The cut carries ISSUE:0008's fix, cc's two nits and ISSUE:0009."
+  }
+}

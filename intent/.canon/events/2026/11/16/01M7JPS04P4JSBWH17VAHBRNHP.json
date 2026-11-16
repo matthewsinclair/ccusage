@@ -1,0 +1,16 @@
+{
+  "id": "01M7JPS04P4JSBWH17VAHBRNHP",
+  "ts": "2026-11-16T17:34:15.702Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 12,
+    "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on 2026-11-16). Ready and handed to vc: commit 434d105 in the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on the tap's cf77911 (GitHub's main), puts back the two steps 1e74059 took out, so test.yml is 65cac20's again; the patch is ~/Devel/scratch/ccusage-dc/tap-style-audit.patch. brew style and brew audit --strict pass on the tap's formula. The push waits for hv's OK, which vc asks for, and then the tap's CI must go green. docs/releasing.md's line follows on branch dc/tap-ci-docs (b3ca1c1, worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs), for vc to land once the push is done."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "01M7JPS001N8YPD1NXPYBQ2D4A",
+  "ts": "2026-11-16T17:34:15.553Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ISSUE:0009 closes on its Acceptance 3: after the next cut's brew upgrade ccusage, bin/devbin doctor's ccusage tree row passes on rhadamanth's brew keg, whose libexec holds LICENSE as its manifest records, and the same on kovacs for its Linux keg. Landed as 0f66154 on vc's PASS (2026-11-16), Acceptance 1 and 2 shown by Desk slot 01M7JP92CJGM29XZ64XH40NHC6. Released when the next cut is published and both kegs are upgraded to it."
+  }
+}

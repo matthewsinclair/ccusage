@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: bcb96563-69a0-4e18-8126-fd8a1f53f570
-heartbeat_at: 2026-11-16 17:21Z
+heartbeat_at: 2026-11-16 17:34Z
 status: active
-focus: "Doing 11, ISSUE:0009: LICENSE back, in a worktree on branch dc/0009-license, one Desk slot, then to vc to land. Doing 12: the tap's CI style and audit, in a scratch clone, the diff to vc for hv's OK. Hold 6: ISSUE:0003 closes at WP06, now ISSUE:0008's live repair."
+focus: "Doing 12: the tap's CI style and audit, 434d105 in a scratch clone, with vc for hv's OK to push; its docs line on branch dc/tap-ci-docs. ISSUE:0009 landed as 0f66154; a hold for its keg proof after the next cut, and a todo before the cut (kovacs gates, scratch-HOME install). Hold 6: ISSUE:0003 at WP06, now ISSUE:0008's live repair, first thing 2026-11-17."
 claims: [ISSUE:0003, ISSUE:0009]
 ---
 
@@ -13,21 +13,21 @@ claims: [ISSUE:0003, ISSUE:0009]
 
 ## DOING
 
-- ISSUE:0009, LICENSE back into each release archive and installed tree (hold 9, released on vc's word on 2026-11-16). Banked as one commit on branch dc/0009-license (worktree ~/Devel/scratch/ccusage-dc/wt-0009-license), rebased onto main as main moves, and handed to vc to land. Proved in Desk slot 01M7JP92CJGM29XZ64XH40NHC6: test shell red at 2994e9c and green at b6952ba, whose six files the banked commit holds exactly; check all (the first on devbin 0.1.25) and doctor passed. Left: vc lands it, and dc removes the worktree; it ships in the next cut with ISSUE:0008's fix and cc's two nits; after that cut's brew upgrade, doctor's ccusage tree row on rhadamanth and on kovacs is the keg's proof, and dc closes 0009 on it. (edited)
-- The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on vc's word on 2026-11-16). In a scratch clone of matthewsinclair/homebrew-ccusage outside the checkout, dc puts back the two steps tap commit 1e74059 took out, runs brew style and brew audit --strict on the formula there, and hands vc the diff. The push waits for hv's OK, which vc asks for. docs/releasing.md's paragraph that says they are off changes to match, in its own commit on dc's branch, landed once the push is done.
+- The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on 2026-11-16). Ready and handed to vc: commit 434d105 in the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on the tap's cf77911 (GitHub's main), puts back the two steps 1e74059 took out, so test.yml is 65cac20's again; the patch is ~/Devel/scratch/ccusage-dc/tap-style-audit.patch. brew style and brew audit --strict pass on the tap's formula. The push waits for hv's OK, which vc asks for, and then the tap's CI must go green. docs/releasing.md's line follows on branch dc/tap-ci-docs (b3ca1c1, worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs), for vc to land once the push is done. (edited)
 
 ## TODO
 
-_(none)_
+- Before the next cut, on vc's word: the kovacs gates (check all, test all, build and doctor at main's tip, in a heavy slot, announced to kovacs-sysadm), and with them, not before, a scratch-HOME bin/devbin install at main's tip with a listing of the opt tree and its manifest, showing LICENSE in the tree and named in the manifest (vc, 2026-11-16, for ISSUE:0009: no run has yet laid out an installed tree with the files entry back). The cut carries ISSUE:0008's fix, cc's two nits and ISSUE:0009.
 
 ## Holds
 
 - ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. The record says so in its section "From 0.1.9: one live login (ST0003)", written for ST0003's AC-05.1 on vc's brief, which points to ST0003 and to its decision record in intent/llm/ARCHITECTURE.md ("Shared mode keeps one live login, which a switch moves", which cc lands with WP05). Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc closes ISSUE:0003, its last Acceptance line changed to read each account once in Claude Usage, not exactly five accounts (hv, 2026-11-13, through vc: engineering04 stays a profile, and ccusage works for any Claude account, showing what it can for that account's type). WP06 is now the live repair in ISSUE:0008 (vc, 2026-11-16). (edited)
+- ISSUE:0009 closes on its Acceptance 3: after the next cut's brew upgrade ccusage, bin/devbin doctor's ccusage tree row passes on rhadamanth's brew keg, whose libexec holds LICENSE as its manifest records, and the same on kovacs for its Linux keg. Landed as 0f66154 on vc's PASS (2026-11-16), Acceptance 1 and 2 shown by Desk slot 01M7JP92CJGM29XZ64XH40NHC6. Released when the next cut is published and both kegs are upgraded to it.
 
 ## Watch-outs
 
 - Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists and keeps its security -i line to 4097 bytes, newline included, because security adds to the default keychain when the named one is missing or when a split line loses its keychain argument; no push and no PR edit without hv's OK. hv's ccusage config and launchd are hv's to change: vc's session was refused permission, so dc does not do it either. (edited)
-- hv alone runs ccusage use, ccusage login and ccusage which --use, on vc's steps; no seat runs any of them, on any Mac (vc, 2026-11-16: the rollout began by hv's hand on 2026-11-15 and stands half done, diagnosed as ISSUE:0008). bin/devbin use dev, opt and brew are devbin's verbs and no part of it. (edited)
+- hv alone runs ccusage use, ccusage login and ccusage which --use, on vc's steps; no seat runs any of them, on any Mac (vc, 2026-11-16: the rollout began by hv's hand on 2026-11-15 and stands half done, diagnosed as ISSUE:0008). Until the live repair, first thing on 2026-11-17 on hv's word, nobody runs them, hv included, since each would take the login from under the pinned sessions. bin/devbin use dev, opt and brew are devbin's verbs and no part of it. (edited)
 
 ## Decisions
 

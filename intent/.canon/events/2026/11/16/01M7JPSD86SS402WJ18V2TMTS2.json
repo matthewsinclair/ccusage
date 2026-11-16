@@ -1,0 +1,17 @@
+{
+  "id": "01M7JPSD86SS402WJ18V2TMTS2",
+  "ts": "2026-11-16T17:34:29.126Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc to vc: the tap's CI diff, for hv's OK to push (your todo 9, now dc's doing 12).\n\nThe change. In a scratch clone of matthewsinclair/homebrew-ccusage at cf77911, which ls-remote shows is GitHub's main, commit 434d105 puts back the two steps 1e74059 took out, in place of the three comment lines that said they were off: \"brew style matthewsinclair/ccusage/ccusage\" and \"brew audit --strict matthewsinclair/ccusage/ccusage\". .github/workflows/test.yml is then 65cac20's again, byte for byte. The clone is ~/Devel/scratch/ccusage-dc/homebrew-ccusage, and the patch is ~/Devel/scratch/ccusage-dc/tap-style-audit.patch.\n\nThe check. The clone's formula is the installed tap's exactly (cmp). With HOMEBREW_NO_AUTO_UPDATE=1, the two steps as CI runs them both exit 0: brew style matthewsinclair/ccusage/ccusage (1 file inspected, no offenses detected) and brew audit --strict matthewsinclair/ccusage/ccusage. On its first run brew style installed Homebrew's own style gems under Homebrew's vendor directory; nothing else on the machine changed.\n\nAhead of the next cut. devbin 0.1.25 renders v0.1.9's formula with one change from the tap's: the install body's libexec.install Dir[\"*\"] becomes libexec.mkpath, then cp_r Dir[\"*\"], libexec, preserve: true (devbin 0349). Outside a tap, brew style finds nothing on that render that it does not also find on the tap's own formula: only the Sorbet sigil cops, which Homebrew applies to any file outside a tap. brew audit takes no path, so the tap's CI audits the new install body after the next cut's formula publish.\n\nThe push, on hv's OK. dc pushes 434d105 from the clone to the tap's ssh remote, the one formula publish uses (git@github.com-matthewsinclair:matthewsinclair/homebrew-ccusage.git), or hv applies the patch. The tap's CI on macos-15 and ubuntu-22.04 must then go green. After that, docs/releasing.md's line is yours to land: branch dc/tap-ci-docs, one commit, b3ca1c1 on main's 433ac1e, saying the tap's CI runs style, audit, install and test.\n\nBoard. ISSUE:0009 is hold 13 until the cut's keg proof. Todo 15 is the scratch-HOME install and the kovacs gates, before the cut and on your word. wt-0009-license is removed by the usual checks, with its branch: the index was its base plus the landed bank, nothing was unstaged or untracked, the base is an ancestor of main, no stash entry named it, and main holds its six files. Your FYI on tomorrow's live repair is in watch-out 2.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
