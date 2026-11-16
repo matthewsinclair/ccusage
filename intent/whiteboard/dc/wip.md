@@ -13,7 +13,7 @@ claims: [ISSUE:0003, ISSUE:0009]
 
 ## DOING
 
-_(none)_
+- The tap's CI on 434d105, run 43922068740, attempt 2 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740): the macOS job alone, re-run on vc's word at 18:04Z after attempt 1's macos-15 got no runner; ubuntu-22.04 was green in attempt 1. If GitHub cancels it again for want of a runner, dc tries once more after about half an hour, then leaves it on a hold for after the live repair. dc reports the macOS result to vc's inbox and live; on green vc lands b3ca1c1 from dc/tap-ci-docs; on red dc sends the failing step's output and changes nothing more on the tap.
 
 ## TODO
 
@@ -23,7 +23,6 @@ _(none)_
 
 - ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. The record says so in its section "From 0.1.9: one live login (ST0003)", written for ST0003's AC-05.1 on vc's brief, which points to ST0003 and to its decision record in intent/llm/ARCHITECTURE.md ("Shared mode keeps one live login, which a switch moves", which cc lands with WP05). Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc closes ISSUE:0003, its last Acceptance line changed to read each account once in Claude Usage, not exactly five accounts (hv, 2026-11-13, through vc: engineering04 stays a profile, and ccusage works for any Claude account, showing what it can for that account's type). WP06 is now the live repair in ISSUE:0008 (vc, 2026-11-16). (edited)
 - ISSUE:0009 closes on its Acceptance 3: after the next cut's brew upgrade ccusage, bin/devbin doctor's ccusage tree row passes on rhadamanth's brew keg, whose libexec holds LICENSE as its manifest records, and the same on kovacs for its Linux keg. Landed as 0f66154 on vc's PASS (2026-11-16), Acceptance 1 and 2 shown by Desk slot 01M7JP92CJGM29XZ64XH40NHC6. Released when the next cut is published and both kegs are upgraded to it.
-- The tap's CI on 434d105 (hv pushed it on 2026-11-16, decision 9), run 43922068740 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740): ubuntu-22.04 is green on every step, brew style and brew audit --strict among them; macos-15 was cancelled without running a step, since GitHub found no hosted macOS arm64 runner ("The job was not acquired by Runner of type hosted even after multiple attempts"). Released when vc, or hv, gives the word to re-run the macOS job alone (gh run rerun 43922068740 --failed --repo matthewsinclair/homebrew-ccusage), which changes nothing in the tap. Then dc reports its result to vc; on green vc lands b3ca1c1 from dc/tap-ci-docs; on red dc sends the failing step's output and changes nothing more on the tap.
 
 ## Watch-outs
 

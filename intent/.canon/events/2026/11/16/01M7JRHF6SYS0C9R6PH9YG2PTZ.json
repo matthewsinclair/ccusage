@@ -1,0 +1,15 @@
+{
+  "id": "01M7JRHF6SYS0C9R6PH9YG2PTZ",
+  "ts": "2026-11-16T18:05:06.137Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "The tap's CI on 434d105, run 43922068740, attempt 2 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740): the macOS job alone, re-run on vc's word at 18:04Z after attempt 1's macos-15 got no runner; ubuntu-22.04 was green in attempt 1. If GitHub cancels it again for want of a runner, dc tries once more after about half an hour, then leaves it on a hold for after the live repair. dc reports the macOS result to vc's inbox and live; on green vc lands b3ca1c1 from dc/tap-ci-docs; on red dc sends the failing step's output and changes nothing more on the tap."
+  }
+}
