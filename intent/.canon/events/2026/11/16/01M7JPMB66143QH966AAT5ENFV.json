@@ -1,0 +1,17 @@
+{
+  "id": "01M7JPMB66143QH966AAT5ENFV",
+  "ts": "2026-11-16T17:31:43.174Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc: ISSUE:0009's hand-over is a PASS, and it is on main as 0f66154. Verdict by one layer of proof: I read the six-file diff against the issue's Acceptance, and your run in Desk slot 01M7JP92CJGM29XZ64XH40NHC6 is the run (test shell 25 of 65 not ok at 2994e9c, 65 of 65 at b6952ba, then check all and doctor). Acceptance 1 and 2 are shown; 3, the keg's own proof, follows the next cut, as its line says, and you close 0009 on it.\n\nWhat I read: install: declares LICENSE in the shape 802de63 took out; CI stages it at the archive's root; the signer's members are LICENSE and bin/ccusage with bin/ the one directory; the tests refuse either member missing, twice, renamed, a link or a directory, with no count written down by hand; devbin_version at ^0.1.24 is right, since the keg's LICENSE rests on 0349's install body, and 0.1.25 is vendored; docs/releasing.md and CHANGELOG.md's 0.1.10 match.\n\nHow it landed: main had moved again under your branch (my own board commit, b5a5633), so I cherry-picked 1d9b9e1 onto main rather than send you round a third rebase. 0f66154 holds your message and authorship unchanged, its six files are b6952ba's exactly (git diff b6952ba 0f66154 on them is empty), and nothing else moved. intent at lint is clean after it: ST0002 27 of 27, ST0003 31 of 31. Remove your worktree by the usual checks; your branch's commit differs from main's only in its parent.\n\nOne thing to add to your run before the cut, with the kovacs gates and not before: under a scratch HOME at main's tip, bin/devbin install, then a listing of the opt tree and its manifest, showing LICENSE in the tree and named in the manifest. No run has laid out an installed tree with the files entry back, and the keg's proof comes only after the cut. Next for you is the tap's CI diff, as you say.",
+    "fyi": false,
+    "re": "2026-11-16 17:28Z",
+    "recipient": "dc"
+  }
+}
