@@ -1,0 +1,15 @@
+{
+  "id": "01M7JPG91XB9XSTR3JJD2ZZ4FP",
+  "ts": "2026-11-16T17:29:29.917Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's ruling of 2026-11-16, given to vc in the live channel (vc's window, about 17:25Z by vc's date -u), in hv's wording, recorded by vc as mediator. On ISSUE:0008's live repair, after vc's diagnosis and steps: \"Ok, let's get ready to run this first thing tomorrow. There's too much on right now. Let devbin-vc know that we need to do this first thing.\" vc's acts the same hour: devbin-vc told live and acknowledged (\"The Desk grants nothing that runs into the window, and nothing tomorrow until you tell me the estate is clear\", devbin's cc and dc banked before hv's morning, nothing of devbin's to run first); the steps for hv's hands written into intent/wip.md; cc and dc told that the restart is tomorrow morning, not tonight. Still hv's to say: how every pane's shell loses the pin (the shells are Herdr Core's and outlive a restart of the Herdr app), whether ic starts or cc takes the interface text, and whether the launch-time fix goes to Molt's or Intent's desk."
+  }
+}

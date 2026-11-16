@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-13T12:34:36Z:v0.31: vc - Herdr look: bars draw no fill; Mac T10 re-run; hello's login"
+verblock: "2026-11-16T17:28:37Z:v0.32: vc - ISSUE:0008: live repair first thing 2026-11-17; cc builds"
 ---
 
 # Work In Progress
@@ -8,45 +8,48 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**ST0003: live account switching (hv, 2026-11-13), built by cc**
+**ST0003: the live repair, first thing 2026-11-17 on hv's word (ISSUE:0008, which is WP06's rollout)**
 
-In 0.1.9. WP01 to WP05 are closed. Left: WP06, hv's rollout (below), later on hv's decision 5, with AC-06.1 and AC-06.2; it closes ISSUE:0003. Then AC-00.1, the thread's sign-off.
+hello was seated in the shared config on 2026-11-15 at 19:19Z by hv's own hand, so the rollout has begun. The fleet then restarted from zsh shells alive since 2026-11-12, each still exporting `CLAUDE_SECURESTORAGE_CONFIG_DIR` as Molt's `env.sh` set it at that shell's start. At 17:02Z on 2026-11-16, 24 of 29 sessions were pinned to hello's own store and 1 to engineering01's, so no switch reaches them, hello has two logins, a switch away from hello is refused, and engineering01's own store holds a login as hello. ISSUE:0008 (high) has the diagnosis. hv, 2026-11-16: "let's get ready to run this first thing tomorrow" (decision 8). devbin-vc has it: the Desk grants nothing into the window, and nothing after it until vc says the estate is clear.
+
+Until it runs: no `ccusage login`, `use` or `which --use`, which would take the login from under the pinned sessions. If hello runs out first, one `/login` as an account with allowance, typed in any one session pinned to hello's store, moves all of them, and step 2 below clears it up.
+
+The steps, hv's hands, vc checking from metadata:
+
+1. Every Claude session quits. Then every shell that starts Claude loses the pin: `unset CLAUDE_SECURESTORAGE_CONFIG_DIR` in each pane. The shells belong to Herdr Core, which has run since 2026-11-12 and outlived the Herdr app's restart on 2026-11-15, so reopening the app clears nothing. Herdr can type the line into every pane (`hc ls --json` lists 91 terminals, `hc send <address> "<text>"` types into one), once no pane has a Claude prompt in it. Check in a pane: `echo ${CLAUDE_SECURESTORAGE_CONFIG_DIR-unset}; launchctl getenv CLAUDE_SECURESTORAGE_CONFIG_DIR` prints `unset`, then an empty line.
+2. With no session running: `ccusage login hello`, then `ccusage login engineering01`, the browser signed in to that account each time (ccusage checks the email after, and says when it is another's). Then `ccusage doctor` exits 0 with no line about a pinned session, and `ccusage usage --all` reads all five accounts.
+3. One session starts, ccusage-vc, and nothing else. vc checks that its own process carries no pin.
+4. The live switch (AC-06.2), with that one session open: `ccusage use engineering00`, and vc's session answers its next prompt with `/status` naming engineering00; then `ccusage which --use`, and it answers again on the account `which` named. No restart either time.
+5. The fleet starts. vc checks every `claude` process as it comes up: none carries the variable, and doctor shows one login an account. hv checks that Claude Usage lists each account once with nothing prompting (AC-06.1).
+6. dc closes ISSUE:0003; vc satisfies AC-06.1 and AC-06.2 and closes ST0003/WP06, then tells devbin-vc and geodica-estate that the estate is clear.
+
+Back-out: `ccusage use --none` puts the active login back in its profile and points launchd at it, as 0.1.8 kept them. It is refused while the active account's own store holds a login, so it works only after step 2.
+
+**ST0003: ISSUE:0008's code, built by cc for the next cut**
+
+cc builds the issue's fix outline items 1 to 5 with its two nits from WP04's verdict, in one worktree and one Desk slot (vc's brief, 2026-11-16): doctor says whose login each own store holds; the two-logins finding and usage's refusal give the remedy in the order that works and name the pinned sessions; `login`, `use`, `use --none` and `which --use` refuse a move that would empty a store a running session reads; a reporting verb says when its own shell exports the variable; predict's rate keeps a failed account's samples. Items 6 and 7 (the pinned count on which, predict and the TUI, and a fall inside a window) are interface text and wait on hv's word about ic. vc reads cc's diff and takes its run as the run.
 
 **ST0002: the which and predict verbs and the Herdr mod (hv, 2026-11-13), built by ic**
 
-In 0.1.9. WP01 to WP07 are closed. Left: AC-08.3. hv's first look (12:29Z) passed `herdr-app check` and showed each account's reset, state and `next` marker, but the weekly bars draw no fill, so it is not met. ic fixes `bar()` in `herdr/ccusage/main.js` (the fill has no height inside an `h_flex`); the mod is built into the binary, so the fix takes a Desk build, then hv's `ccusage herdr install --force` from the dev build and a second look, which also checks that the pane refreshes by itself. A card's dialog has a `Use NAME` button that runs `ccusage use`, so it is left alone until the rollout. Open with hv: `herdr/ccusage/preview.png` (vc recommends hv's capture, cropped with the names blurred), and, for ic, a way into the mod from inside Herdr, which has no menu for a mod pane (today: `herdr-app do tab.new '{"name":"ccusage","mod":"ccusage"}'`, or a key in Molt-matts' keys.json). Then vc closes WP08, and AC-00.1 is the thread's sign-off.
-
-**Ccusage 0.1.9: cut now, roll out later (hv's decision 5, 2026-11-13)**
-
-- Nobody runs `ccusage use` or `ccusage which --use` on 0.1.9 before the rollout, on any Mac: either one moves that account's login into the shared config, and every session pinned to it loses its login (25 on hello and 2 on engineering01 at 10:55Z).
-- ISSUE:0007 (medium) stays open on dc's hold 10 until T10 passes on hv's Mac and on Linux with brew alone. hv's first Mac run does not count: a second copy ran at the same time in hv's own terminal, so each doctor read the link one step ahead. Mac re-run, in one place, in the checkout: `bin/devbin use dev`, `use opt` and `use brew` in turn, each followed by `ccusage --version` and `bin/devbin doctor`, the link printed before and after each doctor (dc's loop, on vc's todo 5), resting at brew. Linux, dc on hv's OK in a heavy Desk slot: on kovacs, `brew install ccusage` from the tap, then in a clone at v0.1.9 `bin/devbin use brew`, the version line, doctor and a listing of the keg's libexec. Acceptance 4 closes on vc's PASS at 802de63, with ST0003 named for the change.
-- The rollout, later (ST0003/WP06):
-  1. `ccusage doctor`: exit 0; the shared config's own login warned as no profile's, each profile's login OK in its own store, each running session warned as pinned.
-  2. `ccusage which`, then `ccusage use <account>` for the higher ranked account no running session is pinned to (engineering02 or engineering04 at 10:55Z), or, once every session has quit, the account `which` names.
-  3. `ccusage doctor`: no FAIL; the account's login in the shared config and verified as its.
-  4. In a new tab, `echo ${CLAUDE_SECURESTORAGE_CONFIG_DIR-unset}; launchctl getenv CLAUDE_SECURESTORAGE_CONFIG_DIR` prints `unset`, then an empty line.
-  5. Claude sessions restarted from fresh tabs, never switching to an account a session is still pinned to. vc checks one login per account and the pinned count falling to 0; hv checks that Claude Usage lists each account once.
-  6. The live switch (AC-06.2): with a restarted session open, `ccusage use <another unpinned account>`; the session answers its next prompt, and `/status` names the new account. Once no session is pinned, `ccusage which --use` too.
-  7. dc closes ISSUE:0003; vc closes ST0003/WP06.
-- Back-out: `ccusage use --none` puts the active login back in its profile and points launchd at it, as 0.1.8 does.
+In 0.1.9. WP01 to WP07 are closed. Left: AC-08.3, hv's second look at the panel. ic's fix for the weekly bars landed as 9be58a6, green in its Desk slot. hv installs from a build at or after it (`ccusage herdr install`, `--force` only if it refuses) and looks again, which also checks that the pane refreshes by itself. Open with hv: `herdr/ccusage/preview.png` (vc recommends hv's capture, cropped with the names blurred), and, for ic, a way into the mod from inside Herdr, which has no menu for a mod pane. Then vc closes WP08, and AC-00.1 is the thread's sign-off. ic's session has not run since 2026-11-13.
 
 ## Active Steel Threads
 
 - ST0002: Add 'which' verb to indicate the best account to use to maximise token usage across accounts. WIP; WP08 waits on AC-08.3, hv's look.
-- ST0003: Live account switching: ccusage use moves the active login into the shared config, and running sessions follow. WIP; WP06, the rollout, later.
+- ST0003: Live account switching: ccusage use moves the active login into the shared config, and running sessions follow. WIP; WP06 is the live repair above.
 
 ## Upcoming Work
 
-- cc's two nits from WP04's verdict, in one Desk slot after vc's compact: `sessions::parse` takes the first NAME=value among the arguments and the environment (take the last, so the environment wins); `usage::verified_token_at` renews before refusing Unverified when nothing names the account (refuse first).
-- hello's stored login does not match hello's email (the Herdr pane, 12:29Z), and 25 running sessions use hello's store. vc reads which account it is, from files only, on hv's OK, and puts it to hv; it is put right before anything switches to hello (vc todo 10).
-- The tap's CI runs `brew style` and `brew audit --strict` again (hv's ISSUE:0004 ruling 3): 0.1.9's formula, rendered by devbin 0.1.23, meets the condition. Turn them back on in the tap's test.yml, push on hv's OK, and see it green (vc todo 9).
+- ISSUE:0009 (medium), dc: LICENSE goes back into each release archive and installed tree, now that devbin 0349's fix is vendored (0.1.25). dc builds it on a branch for vc to land.
+- The tap's CI runs `brew style` and `brew audit --strict` again (hv's ISSUE:0004 ruling 3): dc prepares the change in a scratch clone of the tap and hands vc the diff; the push waits for hv's OK.
 - ISSUE:0003 (medium) closes at ST0003/WP06; its last acceptance line reads each account once in Claude Usage (hv's decision 3).
-- devbin#0349 (LICENSE back in the archives) waits for a later devbin (dc's hold 9).
-- vc tells geodica-estate when the rollout is done.
+- One cut carries ISSUE:0008's code, cc's two nits and ISSUE:0009, on hv's word, with dc's run of the gates on kovacs first.
+- Open with hv from ISSUE:0008: whether ic starts or cc takes the interface text; and whether the launch-time fix goes to Molt's or Intent's desk (a shell that outlives a switch keeps its pin, since `env.sh` runs at shell start alone).
 
 ## Notes
 
-- hv's standing rulings are decisions 1 to 5 on hv's board: ccusage works for any Claude account type and shows whatever it can for that type; a login a switch drops lapses and is not revoked; engineering04 stays a profile until its allowance is exhausted; Herdr's verb is `ccusage herdr install` and `remove`; 0.1.9 is cut before the rollout, which follows later, fixing forward.
+- hv's standing rulings are decisions 1 to 8 on hv's board: ccusage works for any Claude account type and shows whatever it can for that type; a login a switch drops lapses and is not revoked; engineering04 stays a profile until its allowance is exhausted; Herdr's verb is `ccusage herdr install` and `remove`; 0.1.9 was cut before the rollout; hv alone runs `ccusage use`, `login` and `which --use`, on vc's steps.
+- A `/login` typed inside a Claude session writes into whichever store that session reads, with no check of whose login it is. `ccusage login NAME` checks the email after.
 - Before a cut, dc runs the project's gates on kovacs (Linux ARM64): Linux clippy sees code that only a macOS arm uses, which rhadamanth's runs miss, and the release config names no legs.
 - A cut runs in hv's own terminal tab (`bin/devbin release X.Y.Z`), never as a `!` command. The seats write nothing to the checkout, whiteboard verbs included, until vc says it is published.
 - All work lands on `main` in the one checkout; cc and ic build in their own worktrees and land by fast-forward. Every commit passes the pre-commit gate (guards, the rust and shell critics, intent doctor). main goes to `local` once committed (hv's decision 4); nothing goes upstream but a release.

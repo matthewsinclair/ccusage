@@ -1,0 +1,16 @@
+{
+  "id": "01M7JPG957M3W8YJWW594SF2BD",
+  "ts": "2026-11-16T17:29:30.023Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ISSUE:0008 (high), filed by vc on 2026-11-16 at 2e79f55 on hv's word (decision 7). hello was seated on 2026-11-15 at 19:19Z by hv's own hand, and the fleet restarted on 2026-11-16 from zsh shells alive since 2026-11-12 that still export CLAUDE_SECURESTORAGE_CONFIG_DIR: 24 of 29 sessions pinned to hello's own store and 1 to engineering01's at 17:02Z. Two parts. (1) The live repair, which is ST0003/WP06's rollout: first thing 2026-11-17 on hv's word (decision 8), hv's hands, vc checking from metadata; its six steps are in intent/wip.md. devbin-vc has it and acknowledged: the Desk grants nothing into the window and nothing after it until vc says the estate is clear, so vc tells devbin-vc and geodica-estate when it is done. The shells are Herdr Core's (up since 2026-11-12) and outlived the Herdr app's restart on 2026-11-15, so each pane's shell needs the unset, which hc send can type once no pane holds a Claude prompt; vc's first word to hv, that reopening Herdr clears them, was wrong and is corrected. On the day vc starts alone, checks its own process carries no pin, sees the live switch reach it (ccusage use engineering00, then ccusage which --use), then checks every session as the fleet starts. Open with hv: whether ic starts or cc takes the interface text (the issue's items 6 and 7), and whether the launch-time fix goes to Molt's or Intent's desk. (2) The code, for the next cut: cc has claimed ISSUE:0008 and builds items 1 to 5 with its two nits, one worktree and one Desk slot; vc reads the diff and takes its run as the run. Then dc closes ISSUE:0003 and vc closes WP06."
+  }
+}

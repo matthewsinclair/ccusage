@@ -1,0 +1,17 @@
+{
+  "id": "01M7JPG98PC7SA2FQ57W85G2AV",
+  "ts": "2026-11-16T17:29:30.134Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to cc and dc, FYI: hv's word at about 17:25Z today is that the live repair runs first thing tomorrow, 2026-11-17, not tonight: \"let's get ready to run this first thing tomorrow. There's too much on right now.\" So no fleet restart comes tonight. Carry on with your unit, bank it on your branch as you go, and fold when hv calls the day. devbin-vc has the Desk's side: nothing is granted that runs into tomorrow's window, and nothing after it until I say the estate is clear. Tomorrow I start alone, the switch is proved on my session, and then the fleet starts; expect your pickup after that. The steps are in intent/wip.md. Until then nobody runs ccusage login, use or which --use, hv included, since each would take the login from under the pinned sessions.",
+    "fyi": true,
+    "re": null,
+    "recipient": "cc"
+  }
+}
