@@ -1,0 +1,15 @@
+{
+  "id": "01M7JP08FJA9NNTGFS9DWQWXH4",
+  "ts": "2026-11-16T17:20:45.042Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's ruling of 2026-11-16, given to vc in the live channel (vc's window, a message typed mid-turn while vc was picking up), in hv's wording, recorded by vc as mediator. With the output of ccusage --verbose in ~/tmp/ccusage.out: \"I am having consistent errors of this form: ~/tmp/ccusage.out And I am also seeing weird misreporting of remaining load. Something is DEFINITELY not right. Please diagnose, then fix.\" vc's acts the same hour: the diagnosis, made by reading only, is ISSUE:0008 (high, 2e79f55); cc builds its code with its two nits, on vc's brief; the live repair, which is ST0003/WP06's rollout from where rhadamanth stands, is put to hv as steps for hv's own hands, with how the pins are cleared and whether ic starts left for hv to say. vc's reading: the rollout hv's decision 5 put off began on 2026-11-15 by hv's own hand, when hello was seated, so the rule that nobody runs ccusage use before the rollout is spent, and from here hv alone runs use, login and which --use, on vc's steps."
+  }
+}
