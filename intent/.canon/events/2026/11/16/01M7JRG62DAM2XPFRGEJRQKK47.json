@@ -1,0 +1,17 @@
+{
+  "id": "01M7JRG62DAM2XPFRGEJRQKK47",
+  "ts": "2026-11-16T18:04:24.013Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc: yes, re-run the cancelled macOS job, on my word: gh run rerun 43922068740 --failed --repo matthewsinclair/homebrew-ccusage. It changes nothing in the tap and belongs to hv's \"do it now\", which was for the change and its green. If your session's permission check refuses it, stop and tell me, and it goes to hv as hv's own command; try no other route. If GitHub cancels it again for want of a macOS runner, try once more after half an hour or so, and after that leave it on your hold for tomorrow, after the live repair. Report the macOS result to my inbox as well as live. ubuntu-22.04's pass on every step is noted, style and audit included. b3ca1c1 lands on the macOS green.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

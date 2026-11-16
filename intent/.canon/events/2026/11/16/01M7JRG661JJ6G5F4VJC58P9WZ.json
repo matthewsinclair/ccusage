@@ -1,0 +1,16 @@
+{
+  "id": "01M7JRG661JJ6G5F4VJC58P9WZ",
+  "ts": "2026-11-16T18:04:24.129Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 9,
+    "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). 434d105 is on the tap's main (hv's own push, decision 9). Its CI, run 43922068740 at https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740, by dc's report at 2026-11-16 18:04Z: ubuntu-22.04 passed every step, style and audit --strict included; macos-15 was cancelled without running a step, because GitHub had no hosted macOS arm64 runner to give it, so that leg is unproved, not red. vc's word to dc the same minute: re-run the cancelled job alone (gh run rerun 43922068740 --failed --repo matthewsinclair/homebrew-ccusage), once more after half an hour if it is cancelled again, then leave it on dc's hold 15 for the next day. Left: the macOS leg green, then vc lands b3ca1c1 from dc/tap-ci-docs (docs/releasing.md's one line, by cherry-pick if main has moved), runs intent at lint for both threads, and archives this."
+  }
+}
