@@ -1,0 +1,16 @@
+{
+  "id": "01M7JQHQHA7DE7M2NV8QNK9RC8",
+  "ts": "2026-11-16T17:47:46.090Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 9,
+    "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). 434d105 is on the tap's main: hv ran the push as a ! command in vc's window on 2026-11-16 (cf77911..434d105, a fast-forward), after the permission check had refused dc's own push. vc told dc at once. Left: dc reports the tap's CI on macos-15 and ubuntu-22.04 with the run's URL (to vc's inbox as well as live); on green vc lands b3ca1c1 from dc/tap-ci-docs (docs/releasing.md's one line, by cherry-pick if main has moved), runs intent at lint for both threads, and archives this; on red vc reads the failing step with dc before anything more changes on the tap."
+  }
+}

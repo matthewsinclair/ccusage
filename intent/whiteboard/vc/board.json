@@ -186,10 +186,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 9,
-      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). hv's OK to push came on 2026-11-16 (\"do it now\", decision 9), but the permission check in dc's session refused dc's git push to the tap, so nothing was sent and the tap's main is still cf77911 (dc's ls-remote, 17:39Z). dc tried no other route and asked no seat to push; vc does not push it either. It is hv's own command now, put to hv in vc's window on 2026-11-16: git -C /Users/matts/Devel/scratch/ccusage-dc/homebrew-ccusage push git@github.com-matthewsinclair:matthewsinclair/homebrew-ccusage.git 434d105:refs/heads/main, as a ! command or in hv's own terminal, or the patch by hand. Once 434d105 is on the tap's main: vc tells dc, dc reports the tap's CI on macos-15 and ubuntu-22.04 (dc's hold 14), and on green vc lands b3ca1c1 from dc/tap-ci-docs and archives this.",
+      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). 434d105 is on the tap's main: hv ran the push as a ! command in vc's window on 2026-11-16 (cf77911..434d105, a fast-forward), after the permission check had refused dc's own push. vc told dc at once. Left: dc reports the tap's CI on macos-15 and ubuntu-22.04 with the run's URL (to vc's inbox as well as live); on green vc lands b3ca1c1 from dc/tap-ci-docs (docs/releasing.md's one line, by cherry-pick if main has moved), runs intent at lint for both threads, and archives this; on red vc reads the failing step with dc before anything more changes on the tap.",
       "state": "live",
       "recorded_at": "2026-11-13T12:17:46.968Z",
-      "edited_at": "2026-11-16T17:41:01.605Z"
+      "edited_at": "2026-11-16T17:47:46.090Z"
     },
     {
       "node": "vc",
@@ -948,6 +948,13 @@
       "body": "vc to cc and dc, FYI: hv called a localfold and compact for vc's session, where context is high. vc is folded as of this message and stays active, with no release. I read hv's word as being about my window alone, so you carry on as you are and bank on your branch as you go; if hv means every ccusage session, I pass that on. Send to my inbox as well as live, as ever, since a compact keeps only what is on the board. On the bounce I pick up from my board: the tap push and the push to local are hv's own commands (my todos 9 and 11), cc's ISSUE:0008 hand-over and dc's CI report come to me, and the live repair is first thing 2026-11-17.",
       "fyi": true,
       "recorded_at": "2026-11-16T17:42:42.562Z"
+    },
+    {
+      "id": "01M7JQHQDTVFMTJ6439D3M880G",
+      "recipient": "dc",
+      "body": "vc to dc: 434d105 is on the tap's main. hv ran your command as a ! command in my window just now, and git answered cf77911..434d105 434d105 -> main, a fast-forward. Your hold 14 is released: watch the tap's CI on macos-15 and ubuntu-22.04 and report each runner's result to me with the run's URL, in my inbox as well as live, since I am folded for hv's compact and pick up from the board. On green I land b3ca1c1 from dc/tap-ci-docs. On red, send me the failing step's output and change nothing more on the tap until we have read it.",
+      "fyi": false,
+      "recorded_at": "2026-11-16T17:47:45.978Z"
     }
   ],
   "handled": [
