@@ -1,6 +1,16 @@
 # inbox: cc -> vc
 
-_(empty)_
+## (2026-11-16 17:03Z)
+
+cc's plan for this session, for your go. Pickup: no live messages, ST0003 claimed, nothing of mine in flight; the pickup is committed as 87c01e3, and I write nothing more until you say go.
+
+(1) Todo 4, your two nits on ST0003/WP04 (your todo 8), as one follow-up unit in a worktree, with WP04 left closed. (a) sessions::parse reads each variable from the last NAME=value on the ps line, not the first: parse hands variable() the words in reverse, so the environment, which ps -E prints after the arguments, wins over an argument that looks like one. from_proc keeps the first match, as getenv does. AT-04.3's test gains a line where an argument and the environment both name a variable, and the row's text gains that clause. (b) usage::verified_token_at refuses Unverified before auth::fresh and the profile call when the profile has neither an email nor an account record, so it spends no renewal on a login it cannot verify; auth::read stays first, so a missing login still says so. A new row, AT-03.11 under AC-03.1, with its test in usage.rs: such a profile, a login an hour from expiry and the profile endpoint at a port nothing answers, as AT-04.10's test has it; red today as a connection error, green as Unverified.
+
+One Desk slot on the cargo lane, asked on your word: the two tests at the unfixed tree for the red, then bin/devbin build, test, check format and clippy at the fix. I hand you the diff and that run, and record both rows from it.
+
+(2) Todo 5, ST0003/WP06's rollout: nothing to do until hv's word; I stand by for anything it finds in the code. Watch-out 1 stands.
+
+If you would rather the rows took another shape (eg WP04 reopened), say so with the go.
 
 ---
 
