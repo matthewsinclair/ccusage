@@ -215,7 +215,8 @@
       "kind": "todo",
       "seq": 11,
       "text": "main is ahead of the local remote (20 commits at 17:42Z on 2026-11-16, the two devbin sweeps of 2026-11-14 and this session's). hv's decision 4 sends main to local once committed, but the permission check refused vc's git push local main on 2026-11-16, and vc tries no other route. It is hv's own command, put to hv in vc's window: git push local main, run in the checkout as a ! command or in hv's terminal. Nothing goes upstream but a release.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-16T17:48:04.090Z",
       "recorded_at": "2026-11-16T17:42:23.654Z"
     }
   ],
