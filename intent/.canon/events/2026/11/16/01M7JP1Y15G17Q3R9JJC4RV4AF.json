@@ -1,0 +1,15 @@
+{
+  "id": "01M7JP1Y15G17Q3R9JJC4RV4AF",
+  "ts": "2026-11-16T17:21:39.877Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on vc's word on 2026-11-16). In a scratch clone of matthewsinclair/homebrew-ccusage outside the checkout, dc puts back the two steps tap commit 1e74059 took out, runs brew style and brew audit --strict on the formula there, and hands vc the diff. The push waits for hv's OK, which vc asks for. docs/releasing.md's paragraph that says they are off changes to match, in its own commit on dc's branch, landed once the push is done."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "01M7JP0X9NZKNQ5CXPCSG4P3MS",
+  "ts": "2026-11-16T17:21:06.358Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0009"
+  },
+  "payload": {
+    "severity": "medium",
+    "title": "LICENSE goes back into each release archive and installed tree, now that devbin 0349 keeps it in a keg's libexec"
+  }
+}

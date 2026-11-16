@@ -3,17 +3,18 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: bcb96563-69a0-4e18-8126-fd8a1f53f570
-heartbeat_at: 2026-11-16 17:00Z
+heartbeat_at: 2026-11-16 17:21Z
 status: active
-focus: "Day closed on hv's word. Next: hold 6, ISSUE:0003 closes at ST0003/WP06's rollout, on hv's word; hold 9, LICENSE returns once a devbin release that fixes 0349 is vendored, on vc's word. Watch-out 2: nobody runs ccusage use or which --use on 0.1.9 before the rollout."
-claims: [ISSUE:0003]
+focus: "Doing 11, ISSUE:0009: LICENSE back, in a worktree on branch dc/0009-license, one Desk slot, then to vc to land. Doing 12: the tap's CI style and audit, in a scratch clone, the diff to vc for hv's OK. Hold 6: ISSUE:0003 closes at WP06, now ISSUE:0008's live repair."
+claims: [ISSUE:0003, ISSUE:0009]
 ---
 
 # DevX Claude (dc)
 
 ## DOING
 
-_(none)_
+- ISSUE:0009, LICENSE back into each release archive and installed tree (was hold 9, released on vc's word on 2026-11-16, since devbin 0349's fix is vendored at 0f5498f and 2bbe9d4). What 802de63 took out goes back: install: files in bin/.devbin/config.yaml, CI's staging in build.yml, macos finalize's members, tests/macos.bats, the comments, docs/releasing.md and an Unreleased line in CHANGELOG.md. Built in a worktree under ~/Devel/scratch/ccusage-dc/ and banked on branch dc/0009-license for vc to land. One Desk slot: tests/macos.bats red at the base and green at the tip, then check all (the first on devbin 0.1.25) and doctor. It ships in the next cut with ISSUE:0008's fix and cc's two nits; the keg's own proof follows that cut's brew upgrade, on rhadamanth and on kovacs.
+- The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on vc's word on 2026-11-16). In a scratch clone of matthewsinclair/homebrew-ccusage outside the checkout, dc puts back the two steps tap commit 1e74059 took out, runs brew style and brew audit --strict on the formula there, and hands vc the diff. The push waits for hv's OK, which vc asks for. docs/releasing.md's paragraph that says they are off changes to match, in its own commit on dc's branch, landed once the push is done.
 
 ## TODO
 
@@ -21,13 +22,12 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. The record says so in its section "From 0.1.9: one live login (ST0003)", written for ST0003's AC-05.1 on vc's brief, which points to ST0003 and to its decision record in intent/llm/ARCHITECTURE.md ("Shared mode keeps one live login, which a switch moves", which cc lands with WP05). Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc closes ISSUE:0003, its last Acceptance line changed to read each account once in Claude Usage, not exactly five accounts (hv, 2026-11-13, through vc: engineering04 stays a profile, and ccusage works for any Claude account, showing what it can for that account's type). (edited)
-- LICENSE back into the release archives and the tree (install.files, CI's staging, the signer's members and their tests), left from ISSUE:0007 for a release after 0.1.9: no devbin 0.1.24 comes before 0.1.9's cut (hv's decision 3, through vc), so 0.1.9's archives hold bin/ccusage alone, as 802de63 has it. Released when a devbin release that fixes devbin 0349 (Homebrew moving metafiles out of libexec) is vendored here and vc gives the word. (edited)
+- ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. The record says so in its section "From 0.1.9: one live login (ST0003)", written for ST0003's AC-05.1 on vc's brief, which points to ST0003 and to its decision record in intent/llm/ARCHITECTURE.md ("Shared mode keeps one live login, which a switch moves", which cc lands with WP05). Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc closes ISSUE:0003, its last Acceptance line changed to read each account once in Claude Usage, not exactly five accounts (hv, 2026-11-13, through vc: engineering04 stays a profile, and ccusage works for any Claude account, showing what it can for that account's type). WP06 is now the live repair in ISSUE:0008 (vc, 2026-11-16). (edited)
 
 ## Watch-outs
 
 - Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists and keeps its security -i line to 4097 bytes, newline included, because security adds to the default keychain when the named one is missing or when a split line loses its keychain argument; no push and no PR edit without hv's OK. hv's ccusage config and launchd are hv's to change: vc's session was refused permission, so dc does not do it either. (edited)
-- Until ST0003/WP06's rollout, nobody runs ccusage use or ccusage which --use on 0.1.9, since either begins the rollout (hv's decision 5, through vc, 2026-11-13). bin/devbin use dev, opt and brew are devbin's verbs and no part of it. (edited)
+- hv alone runs ccusage use, ccusage login and ccusage which --use, on vc's steps; no seat runs any of them, on any Mac (vc, 2026-11-16: the rollout began by hv's hand on 2026-11-15 and stands half done, diagnosed as ISSUE:0008). bin/devbin use dev, opt and brew are devbin's verbs and no part of it. (edited)
 
 ## Decisions
 
