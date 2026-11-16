@@ -1,0 +1,15 @@
+{
+  "id": "01M7JQ1HFPYFBH2YHZET9QF9M9",
+  "ts": "2026-11-16T17:38:55.606Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's ruling of 2026-11-16, given to vc in the live channel (vc's window), in hv's wording, recorded by vc as mediator. On the tap's CI change (brew style and brew audit --strict back on in matthewsinclair/homebrew-ccusage's test.yml, dc's commit 434d105 on the tap's main cf77911, under hv's ISSUE:0004 ruling 3), vc put three options: OK the push, apply the patch by hand, or leave it until after the live repair. hv: \"do it now\". vc's reading: the first option, so dc pushes 434d105 to the tap now. vc's acts the same hour: the word passed to dc live and in its inbox; once the tap's CI is green on both runners, vc lands the matching line of docs/releasing.md (b3ca1c1 on dc/tap-ci-docs)."
+  }
+}

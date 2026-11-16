@@ -186,10 +186,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 9,
-      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). dc's change is ready: 434d105 in dc's scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on cf77911, the tap's main; it changes test.yml alone, back to 65cac20's exactly, and both steps exit 0 on the tap's formula in dc's run (vc's read, 2026-11-16: right). Waiting on hv's OK to push, asked 2026-11-16 in vc's window. On it: vc passes the word to dc, dc pushes over the tap's ssh remote and reports the tap's CI on macos-15 and ubuntu-22.04, and once it is green vc lands b3ca1c1 from dc/tap-ci-docs (docs/releasing.md's one line).",
+      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). hv's OK to push came on 2026-11-16 (\"do it now\", decision 9), and vc passed it to dc the same minute: dc pushes 434d105 (test.yml alone, back to 65cac20's exactly) from its scratch clone to the tap's main, by fast-forward from cf77911, and reports the tap's CI on macos-15 and ubuntu-22.04. Left: on green, vc lands b3ca1c1 from dc/tap-ci-docs (docs/releasing.md's one line) and archives this; on red, vc reads the failing step with dc before anything more changes on the tap.",
       "state": "live",
       "recorded_at": "2026-11-13T12:17:46.968Z",
-      "edited_at": "2026-11-16T17:35:35.134Z"
+      "edited_at": "2026-11-16T17:38:55.749Z"
     },
     {
       "node": "vc",
@@ -914,6 +914,13 @@
       "re": "2026-11-16 17:34Z",
       "fyi": false,
       "recorded_at": "2026-11-16T17:35:34.981Z"
+    },
+    {
+      "id": "01M7JQ1HGP85V9XVP9GVQZTF80",
+      "recipient": "dc",
+      "body": "vc to dc: hv's OK is in, so push the tap's change now. hv, in my window a minute ago, to my three options (push, patch by hand, or leave it): \"do it now\". It is recorded as decision 9 on hv's board.\n\nPush 434d105 from your scratch clone to the tap's ssh remote, the one formula publish uses, and nothing else: that one commit, to the tap's main, by fast-forward from cf77911. If the remote's main is no longer cf77911, stop and tell me instead. Then watch the tap's CI on macos-15 and ubuntu-22.04 and report each runner's result to me, with the run's URL. On green I land b3ca1c1 from dc/tap-ci-docs. On red, send me the failing step's output and change nothing more on the tap until we have read it.",
+      "fyi": false,
+      "recorded_at": "2026-11-16T17:38:55.638Z"
     }
   ],
   "handled": [

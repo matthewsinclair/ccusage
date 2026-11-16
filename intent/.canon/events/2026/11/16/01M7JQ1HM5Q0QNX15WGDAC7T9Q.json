@@ -1,0 +1,16 @@
+{
+  "id": "01M7JQ1HM5Q0QNX15WGDAC7T9Q",
+  "ts": "2026-11-16T17:38:55.749Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 9,
+    "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). hv's OK to push came on 2026-11-16 (\"do it now\", decision 9), and vc passed it to dc the same minute: dc pushes 434d105 (test.yml alone, back to 65cac20's exactly) from its scratch clone to the tap's main, by fast-forward from cf77911, and reports the tap's CI on macos-15 and ubuntu-22.04. Left: on green, vc lands b3ca1c1 from dc/tap-ci-docs (docs/releasing.md's one line) and archives this; on red, vc reads the failing step with dc before anything more changes on the tap."
+  }
+}

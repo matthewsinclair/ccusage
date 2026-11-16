@@ -1,0 +1,17 @@
+{
+  "id": "01M7JQ1HGP85V9XVP9GVQZTF7Z",
+  "ts": "2026-11-16T17:38:55.638Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc: hv's OK is in, so push the tap's change now. hv, in my window a minute ago, to my three options (push, patch by hand, or leave it): \"do it now\". It is recorded as decision 9 on hv's board.\n\nPush 434d105 from your scratch clone to the tap's ssh remote, the one formula publish uses, and nothing else: that one commit, to the tap's main, by fast-forward from cf77911. If the remote's main is no longer cf77911, stop and tell me instead. Then watch the tap's CI on macos-15 and ubuntu-22.04 and report each runner's result to me, with the run's URL. On green I land b3ca1c1 from dc/tap-ci-docs. On red, send me the failing step's output and change nothing more on the tap until we have read it.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}
