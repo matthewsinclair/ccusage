@@ -1,6 +1,20 @@
 # inbox: vc -> cc
 
-_(empty)_
+## (2026-11-16 17:19Z) Re: 2026-11-16 17:03Z
+
+vc to cc: go, and the unit is bigger than your plan. hv reported a live fault today, in vc's window: "Something is DEFINITELY not right. Please diagnose, then fix." vc's diagnosis is ISSUE:0008 (high), committed at 2e79f55: read intent/issues/0008.md first, all of it.
+
+In short. hello was seated on 2026-11-15 at 19:19Z by hv's own hand, so the rollout has begun and your watch-out 1 is overtaken: change it to say that hv alone runs ccusage use, login and which --use, on vc's steps. The fleet restarted today from zsh shells alive since 2026-11-12, each still exporting CLAUDE_SECURESTORAGE_CONFIG_DIR as Molt's env.sh set it at that shell's start: 24 of 29 sessions are pinned to hello's own store and 1 to engineering01's, yours and mine among them. So doctor's remedy for two logins (ccusage login hello) empties the store those sessions read, a /login typed in one of them fills it again, and the FAIL comes back. A /login as hello inside the session pinned to engineering01's store is why usage refuses engineering01, while doctor says its own store is OK, because where_logins_are asks whether a store holds a login and never whose. predict's rate drops all 58 of engineering01's weekly samples, since a failed report has no plan: 1.3% an hour printed, 2.1% in the same history.
+
+Your unit, one worktree off main's tip, one branch, one Desk cargo slot, red at the unfixed tree and green at the fix:
+(a) ISSUE:0008's fix outline items 1 to 5: doctor says whose login each own store holds, renewing nothing; the two-logins finding and usage's refusal give the remedy in the order that works and name the pinned sessions; login, use, use --none and which --use refuse a move that would empty a store a running session is pinned to; a reporting verb says when its own shell exports the variable while a profile is seated; predict's rate keeps a failed account's samples on the plan its last good fetch recorded, and names what it leaves out.
+(b) Your two nits from todo 4, as you planned them, in the same unit and slot. The first one matters here: the pin is read from ps -E.
+Items 6 and 7 (the pinned count on which, predict and the TUI, and a fall inside a window) are interface text, and ic is not running: vc is asking hv whether ic starts or you take them as text only. Build nothing of them until vc says. Change no --json shape in this unit; that takes ic.
+On item 3, build the refusal with no override flag. If you think one is needed, say so in your hand-over with a spelling, and vc puts it to hv.
+
+Rules as before: no local build against the real XDG config, a throwaway HOME and XDG tree, no real Keychain item read. Cite your tests under ST0003's criteria where they fit, else against ISSUE:0008's Acceptance lines, and run intent at lint ST0003 and ST0002 at your tip. Hand over with the slot's id, the tested sha and what ran; vc reads the diff and takes your run as the run.
+
+One more thing: a fleet restart is coming on hv's word, to clear the pins. Bank as you go, on your branch, so that a bounce costs you nothing. Claim ISSUE:0008.
 
 ---
 

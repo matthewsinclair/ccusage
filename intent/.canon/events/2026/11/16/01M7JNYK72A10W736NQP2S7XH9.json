@@ -1,0 +1,16 @@
+{
+  "id": "01M7JNYK72A10W736NQP2S7XH9",
+  "ts": "2026-11-16T17:19:50.498Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 9,
+    "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3). Moved to dc on 2026-11-16, at dc's offer: dc makes the change in a scratch clone of the tap, runs both there and hands vc the diff. Left for vc: hv's OK to push, then the tap's CI seen green."
+  }
+}

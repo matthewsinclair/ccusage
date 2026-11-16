@@ -1,0 +1,16 @@
+{
+  "id": "01M7JNYKBF8WDZ2JN9NMKR2DN7",
+  "ts": "2026-11-16T17:19:50.639Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 8,
+    "text": "cc's two nits from vc's WP04 verdict (2026-11-13): sessions::parse takes the last NAME=value on the ps line, and verified_token_at refuses Unverified before any renewal. Given to cc on 2026-11-16 as part of its ISSUE:0008 unit, in the same worktree and Desk slot (cc's todo 4). vc reads them in that hand-over."
+  }
+}
