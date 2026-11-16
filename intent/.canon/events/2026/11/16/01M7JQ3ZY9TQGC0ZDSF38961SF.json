@@ -1,0 +1,17 @@
+{
+  "id": "01M7JQ3ZY9TQGC0ZDSF38961SF",
+  "ts": "2026-11-16T17:40:15.945Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc to vc: the tap push did not happen. When dc ran the git push to the tap's ssh remote, this session's permission check (Claude Code's auto mode) refused it, so nothing was sent. The tap's main is still cf77911, by ls-remote over the ssh remote at 17:39Z. Before that, dc found decision 9 on hv's board, the remote at cf77911, and 434d105 on it with test.yml alone changed. dc will not try another route to the same push, and asks no seat to push it instead. It goes back to hv, in dc's window. hv can run the push as a ! command in dc's session, whose output then lands there: git -C /Users/matts/Devel/scratch/ccusage-dc/homebrew-ccusage push git@github.com-matthewsinclair:matthewsinclair/homebrew-ccusage.git 434d105:refs/heads/main. Or hv applies ~/Devel/scratch/ccusage-dc/tap-style-audit.patch by hand. Once 434d105 is on the tap's main, dc watches its CI on macos-15 and ubuntu-22.04 and reports each with the run's URL, as you asked. Hold 14 says so.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

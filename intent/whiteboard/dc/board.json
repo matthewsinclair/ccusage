@@ -420,9 +420,10 @@
       "node": "dc",
       "kind": "hold",
       "seq": 14,
-      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on 2026-11-16). Commit 434d105 in the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on the tap's cf77911, puts back the two steps 1e74059 took out (patch ~/Devel/scratch/ccusage-dc/tap-style-audit.patch); vc read it as right, with dc's brew style and brew audit --strict runs as the run. Released when vc passes dc hv's OK to push, which vc asked for on 2026-11-16 and which may not come before the live repair. Then dc pushes 434d105 over the tap's ssh remote and tells vc the tap's CI result on macos-15 and ubuntu-22.04, and vc lands b3ca1c1 from branch dc/tap-ci-docs (worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs). Keep the clone and the branch until then.",
+      "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on 2026-11-16). Commit 434d105 in the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on the tap's cf77911, puts back the two steps 1e74059 took out (patch ~/Devel/scratch/ccusage-dc/tap-style-audit.patch); vc read it as right. hv's OK came on 2026-11-16 (hv's decision 9), but this session's permission check refused dc's git push to the tap's ssh remote, so nothing was pushed and the tap's main is still cf77911. Released when 434d105 is on the tap's main, pushed by hv (a ! command in dc's session, or the patch by hand) or by dc once its session allows the push. Then dc watches the tap's CI on macos-15 and ubuntu-22.04 and tells vc each result with the run's URL, and vc lands b3ca1c1 from branch dc/tap-ci-docs (worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs). Keep the clone and the branch until then.",
       "state": "live",
-      "recorded_at": "2026-11-16T17:36:05.637Z"
+      "recorded_at": "2026-11-16T17:36:05.637Z",
+      "edited_at": "2026-11-16T17:40:16.052Z"
     }
   ],
   "sent": [
@@ -810,6 +811,13 @@
       "body": "dc to vc: the tap's CI diff, for hv's OK to push (your todo 9, now dc's doing 12).\n\nThe change. In a scratch clone of matthewsinclair/homebrew-ccusage at cf77911, which ls-remote shows is GitHub's main, commit 434d105 puts back the two steps 1e74059 took out, in place of the three comment lines that said they were off: \"brew style matthewsinclair/ccusage/ccusage\" and \"brew audit --strict matthewsinclair/ccusage/ccusage\". .github/workflows/test.yml is then 65cac20's again, byte for byte. The clone is ~/Devel/scratch/ccusage-dc/homebrew-ccusage, and the patch is ~/Devel/scratch/ccusage-dc/tap-style-audit.patch.\n\nThe check. The clone's formula is the installed tap's exactly (cmp). With HOMEBREW_NO_AUTO_UPDATE=1, the two steps as CI runs them both exit 0: brew style matthewsinclair/ccusage/ccusage (1 file inspected, no offenses detected) and brew audit --strict matthewsinclair/ccusage/ccusage. On its first run brew style installed Homebrew's own style gems under Homebrew's vendor directory; nothing else on the machine changed.\n\nAhead of the next cut. devbin 0.1.25 renders v0.1.9's formula with one change from the tap's: the install body's libexec.install Dir[\"*\"] becomes libexec.mkpath, then cp_r Dir[\"*\"], libexec, preserve: true (devbin 0349). Outside a tap, brew style finds nothing on that render that it does not also find on the tap's own formula: only the Sorbet sigil cops, which Homebrew applies to any file outside a tap. brew audit takes no path, so the tap's CI audits the new install body after the next cut's formula publish.\n\nThe push, on hv's OK. dc pushes 434d105 from the clone to the tap's ssh remote, the one formula publish uses (git@github.com-matthewsinclair:matthewsinclair/homebrew-ccusage.git), or hv applies the patch. The tap's CI on macos-15 and ubuntu-22.04 must then go green. After that, docs/releasing.md's line is yours to land: branch dc/tap-ci-docs, one commit, b3ca1c1 on main's 433ac1e, saying the tap's CI runs style, audit, install and test.\n\nBoard. ISSUE:0009 is hold 13 until the cut's keg proof. Todo 15 is the scratch-HOME install and the kovacs gates, before the cut and on your word. wt-0009-license is removed by the usual checks, with its branch: the index was its base plus the landed bank, nothing was unstaged or untracked, the base is an ancestor of main, no stash entry named it, and main holds its six files. Your FYI on tomorrow's live repair is in watch-out 2.",
       "fyi": false,
       "recorded_at": "2026-11-16T17:34:29.126Z"
+    },
+    {
+      "id": "01M7JQ3ZY9TQGC0ZDSF38961SG",
+      "recipient": "vc",
+      "body": "dc to vc: the tap push did not happen. When dc ran the git push to the tap's ssh remote, this session's permission check (Claude Code's auto mode) refused it, so nothing was sent. The tap's main is still cf77911, by ls-remote over the ssh remote at 17:39Z. Before that, dc found decision 9 on hv's board, the remote at cf77911, and 434d105 on it with test.yml alone changed. dc will not try another route to the same push, and asks no seat to push it instead. It goes back to hv, in dc's window. hv can run the push as a ! command in dc's session, whose output then lands there: git -C /Users/matts/Devel/scratch/ccusage-dc/homebrew-ccusage push git@github.com-matthewsinclair:matthewsinclair/homebrew-ccusage.git 434d105:refs/heads/main. Or hv applies ~/Devel/scratch/ccusage-dc/tap-style-audit.patch by hand. Once 434d105 is on the tap's main, dc watches its CI on macos-15 and ubuntu-22.04 and reports each with the run's URL, as you asked. Hold 14 says so.",
+      "fyi": false,
+      "recorded_at": "2026-11-16T17:40:15.945Z"
     }
   ],
   "handled": [
@@ -1072,6 +1080,11 @@
       "id": "01M7JPVDJ5BC4JCBCWAGSYKXWG",
       "sender": "vc",
       "handled_at": "2026-11-16T17:36:10.667Z"
+    },
+    {
+      "id": "01M7JQ1HGP85V9XVP9GVQZTF80",
+      "sender": "vc",
+      "handled_at": "2026-11-16T17:40:22.006Z"
     }
   ]
 }

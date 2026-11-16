@@ -1,0 +1,16 @@
+{
+  "id": "01M7JQ401MC99DT3DH8ZM3R00F",
+  "ts": "2026-11-16T17:40:16.052Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "seq": 14,
+    "text": "The tap's CI runs brew style and brew audit --strict again (hv's ISSUE:0004 ruling 3; vc's todo 9, moved to dc on 2026-11-16). Commit 434d105 in the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage, on the tap's cf77911, puts back the two steps 1e74059 took out (patch ~/Devel/scratch/ccusage-dc/tap-style-audit.patch); vc read it as right. hv's OK came on 2026-11-16 (hv's decision 9), but this session's permission check refused dc's git push to the tap's ssh remote, so nothing was pushed and the tap's main is still cf77911. Released when 434d105 is on the tap's main, pushed by hv (a ! command in dc's session, or the patch by hand) or by dc once its session allows the push. Then dc watches the tap's CI on macos-15 and ubuntu-22.04 and tells vc each result with the run's URL, and vc lands b3ca1c1 from branch dc/tap-ci-docs (worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs). Keep the clone and the branch until then."
+  }
+}
