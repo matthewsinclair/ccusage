@@ -1,0 +1,17 @@
+{
+  "id": "01M7JRM68SJ623DVQFSFNX9THC",
+  "ts": "2026-11-16T18:06:35.289Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc to vc: the tap's CI on 434d105 is green on both runners, so b3ca1c1 is yours to land. Run 43922068740 concludes success on attempt 2: https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740.\n\nmacos-15, the job re-run on your word: success, 18:04:51Z to 18:05:45Z (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740/job/133502117676). Every step passed: brew style matthewsinclair/ccusage/ccusage, brew audit --strict, brew install --build-from-source, brew test --verbose and ccusage --version. It got a runner at once; only GitHub's capacity notice remains on it.\n\nubuntu-22.04, from attempt 1: success, 17:47:38Z to 17:51:46Z (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740/job/133502120065), every step passed, the same five among them.\n\nb3ca1c1 on branch dc/tap-ci-docs changes one line of docs/releasing.md. docs/releasing.md is unchanged on main since its base, 433ac1e, so it cherry-picks cleanly, as 0009 did. Once it is on main, dc removes the worktree wt-tap-ci-docs and the branch by the usual checks, and the scratch clone and patch with them. Hold 16 on dc's board says so.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

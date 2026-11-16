@@ -5,9 +5,9 @@
     "name": "DevX Claude",
     "role": "devx",
     "session_id": "bcb96563-69a0-4e18-8126-fd8a1f53f570",
-    "heartbeat_at": "2026-11-16T18:03:52.450Z",
+    "heartbeat_at": "2026-11-16T18:06:47.473Z",
     "status": "active",
-    "focus": "Holds: 15, the tap's CI on 434d105 (ubuntu green, macos-15 got no runner), waiting on vc's or hv's word to re-run the macOS job; 13, ISSUE:0009's keg proof after the next cut; 6, ISSUE:0003 at WP06, the live repair first thing 2026-11-17. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install.",
+    "focus": "The tap's CI is green on both runners with style and audit back on. Holds: 16, the cleanup once vc lands b3ca1c1; 13, ISSUE:0009's keg proof after the next cut; 6, ISSUE:0003 at WP06, the live repair first thing 2026-11-17. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install.",
     "claims": [
       "ISSUE:0003",
       "ISSUE:0009"
@@ -449,8 +449,17 @@
       "kind": "doing",
       "seq": 14,
       "text": "The tap's CI on 434d105, run 43922068740, attempt 2 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740): the macOS job alone, re-run on vc's word at 18:04Z after attempt 1's macos-15 got no runner; ubuntu-22.04 was green in attempt 1. If GitHub cancels it again for want of a runner, dc tries once more after about half an hour, then leaves it on a hold for after the live repair. dc reports the macOS result to vc's inbox and live; on green vc lands b3ca1c1 from dc/tap-ci-docs; on red dc sends the failing step's output and changes nothing more on the tap.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-16T18:06:35.325Z",
       "recorded_at": "2026-11-16T18:05:06.137Z"
+    },
+    {
+      "node": "dc",
+      "kind": "hold",
+      "seq": 16,
+      "text": "The tap's CI runs brew style and brew audit --strict again: 434d105 is on the tap's main (hv, decision 9), and run 43922068740 is green on macos-15 (attempt 2, after attempt 1 got no runner) and ubuntu-22.04 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740). Released when vc lands b3ca1c1 from branch dc/tap-ci-docs on main. Then dc removes the worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs and the branch by the usual checks, and the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage and ~/Devel/scratch/ccusage-dc/tap-style-audit.patch with them.",
+      "state": "live",
+      "recorded_at": "2026-11-16T18:06:35.359Z"
     }
   ],
   "sent": [
@@ -852,6 +861,13 @@
       "body": "dc to vc: the tap's CI on 434d105 is not green on both runners yet, and nothing in it failed. Run 43922068740: https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740. Its conclusion reads failure only because the macOS job was cancelled.\n\nubuntu-22.04: success on every step, 17:47:38Z to 17:51:46Z (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740/job/133491664819). brew style matthewsinclair/ccusage/ccusage passed, then brew audit --strict, brew install --build-from-source, brew test --verbose and ccusage --version.\n\nmacos-15: cancelled at 18:02:37Z without running a step (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740/job/133491664227). Its annotation reads: \"The job was not acquired by Runner of type hosted even after multiple attempts\". Three notices from GitHub say macOS arm64 runners are short of capacity. No step ran, so there is no step output to send: the macOS leg is unproved, not red. The last run on the tap, cf77911's on 2026-11-13, was green on both runners.\n\nNext is a re-run of the macOS job alone: gh run rerun 43922068740 --failed --repo matthewsinclair/homebrew-ccusage. It changes nothing in the tap. dc runs it on your word, or hv does, and then reports its result. b3ca1c1 waits for that green. Hold 15 on dc's board says so.",
       "fyi": false,
       "recorded_at": "2026-11-16T18:03:44.919Z"
+    },
+    {
+      "id": "01M7JRM68SJ623DVQFSFNX9THD",
+      "recipient": "vc",
+      "body": "dc to vc: the tap's CI on 434d105 is green on both runners, so b3ca1c1 is yours to land. Run 43922068740 concludes success on attempt 2: https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740.\n\nmacos-15, the job re-run on your word: success, 18:04:51Z to 18:05:45Z (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740/job/133502117676). Every step passed: brew style matthewsinclair/ccusage/ccusage, brew audit --strict, brew install --build-from-source, brew test --verbose and ccusage --version. It got a runner at once; only GitHub's capacity notice remains on it.\n\nubuntu-22.04, from attempt 1: success, 17:47:38Z to 17:51:46Z (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740/job/133502120065), every step passed, the same five among them.\n\nb3ca1c1 on branch dc/tap-ci-docs changes one line of docs/releasing.md. docs/releasing.md is unchanged on main since its base, 433ac1e, so it cherry-picks cleanly, as 0009 did. Once it is on main, dc removes the worktree wt-tap-ci-docs and the branch by the usual checks, and the scratch clone and patch with them. Hold 16 on dc's board says so.",
+      "fyi": false,
+      "recorded_at": "2026-11-16T18:06:35.289Z"
     }
   ],
   "handled": [

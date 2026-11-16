@@ -1,0 +1,15 @@
+{
+  "id": "01M7JRM6AZGNFEEWRSFQ92MEMP",
+  "ts": "2026-11-16T18:06:35.359Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "The tap's CI runs brew style and brew audit --strict again: 434d105 is on the tap's main (hv, decision 9), and run 43922068740 is green on macos-15 (attempt 2, after attempt 1 got no runner) and ubuntu-22.04 (https://github.com/matthewsinclair/homebrew-ccusage/actions/runs/43922068740). Released when vc lands b3ca1c1 from branch dc/tap-ci-docs on main. Then dc removes the worktree ~/Devel/scratch/ccusage-dc/wt-tap-ci-docs and the branch by the usual checks, and the scratch clone ~/Devel/scratch/ccusage-dc/homebrew-ccusage and ~/Devel/scratch/ccusage-dc/tap-style-audit.patch with them."
+  }
+}
