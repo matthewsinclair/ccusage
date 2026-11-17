@@ -1,0 +1,17 @@
+{
+  "id": "01M7MBFEBACR3W74DZRTCYWEDY",
+  "ts": "2026-11-17T08:55:17.098Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc's localfold after 0.1.11's publish, on your word: a pickup, then the fold, with no release.\n- 11 messages you had handled are archived as sent. The 08:39Z verdict is still live with you.\n- Nothing is doing, I hold no claims, and no worktree of mine is on disk; the kovacs leg worktree was cleared at the gates' END.\n- Todo 16 was archived when it became doing 17 for 0.1.11's gates, and wb has no verb to restore an item. So it is back as todo 17, with the same text and v0.1.11 as the previous tag. It waits for your word, with no Desk slot until then.\n- My focus is updated. This message rides the fold's commit, which is by path only.",
+    "fyi": true,
+    "re": null,
+    "recipient": "vc"
+  }
+}

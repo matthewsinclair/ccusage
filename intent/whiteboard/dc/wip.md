@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: b63269e8-512e-4cc8-9b1b-8869e2c1f223
-heartbeat_at: 2026-11-17 08:39Z
+heartbeat_at: 2026-11-17 08:55Z
 status: active
-focus: "Frozen for the 0.1.11 cut: the kovacs gates at 9e15573 are green but for actionlint, not on kovacs's PATH, and the verdict is with vc live and in its inbox. dc writes nothing to the checkout until vc says 0.1.11 is published; nothing else in dc's remit is open."
+focus: "Standing by after 0.1.11's publish (vc, 2026-11-17): nothing in dc's remit is open. Todo 17, the next cut's kovacs gates and its release dry run if the release config moves, waits for vc's word, with no Desk slot until then."
 claims: []
 ---
 
@@ -17,7 +17,7 @@ _(none)_
 
 ## TODO
 
-_(none)_
+- For the next cut, on vc's word: the kovacs gates at its final code tip, in one Desk slot (kovacs-gates.sh start with the tip and the previous tag, now v0.1.11, each gate to its own verdict past a red), and the release dry run if the release config moves. dc takes no Desk slot until vc's word. This is todo 16 again: it was archived when it became doing 17 for 0.1.11's gates, and vc kept it for the next cut after 0.1.11's publish (2026-11-17).
 
 ## Holds
 

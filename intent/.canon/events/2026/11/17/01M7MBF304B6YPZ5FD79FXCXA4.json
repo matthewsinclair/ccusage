@@ -1,0 +1,15 @@
+{
+  "id": "01M7MBF304B6YPZ5FD79FXCXA4",
+  "ts": "2026-11-17T08:55:05.476Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "For the next cut, on vc's word: the kovacs gates at its final code tip, in one Desk slot (kovacs-gates.sh start with the tip and the previous tag, now v0.1.11, each gate to its own verdict past a red), and the release dry run if the release config moves. dc takes no Desk slot until vc's word. This is todo 16 again: it was archived when it became doing 17 for 0.1.11's gates, and vc kept it for the next cut after 0.1.11's publish (2026-11-17)."
+  }
+}
