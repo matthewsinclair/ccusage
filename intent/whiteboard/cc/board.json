@@ -8,9 +8,7 @@
     "heartbeat_at": "2026-11-17T07:19:30.216Z",
     "status": "active",
     "focus": "",
-    "claims": [
-      "ISSUE:0010"
-    ],
+    "claims": [],
     "recorded_at": "2026-11-11T17:55:10.738Z",
     "migrated_at": "2026-11-11T17:55:10.738Z"
   },
@@ -184,7 +182,8 @@
       "kind": "doing",
       "seq": 10,
       "text": "ISSUE:0010 landed by vc at f6788cd; its worktree removed, the branch cc/ISSUE-0010 kept as the record. Its test-only follow-up handed over to vc: cc/ISSUE-0010-counts at b602cd1 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0010-counts, off f6788cd, run in Desk slot 01M7M8R6G5CAFC14K56GD2Y3H4 (test rust, format and clippy green). Waiting for vc's landing, before any cut; then remove that worktree by the checks, and unclaim ISSUE:0010 when vc closes it",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T08:09:57.919Z",
       "recorded_at": "2026-11-17T07:58:54.373Z",
       "edited_at": "2026-11-17T08:08:50.673Z"
     }

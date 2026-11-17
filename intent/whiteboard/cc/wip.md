@@ -6,14 +6,14 @@ session_id: edfada23-dc96-4231-9b17-658f458b4261
 heartbeat_at: 2026-11-17 07:19Z
 status: active
 focus: ""
-claims: [ISSUE:0010]
+claims: []
 ---
 
 # Control Claude (cc)
 
 ## DOING
 
-- ISSUE:0010 landed by vc at f6788cd; its worktree removed, the branch cc/ISSUE-0010 kept as the record. Its test-only follow-up handed over to vc: cc/ISSUE-0010-counts at b602cd1 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0010-counts, off f6788cd, run in Desk slot 01M7M8R6G5CAFC14K56GD2Y3H4 (test rust, format and clippy green). Waiting for vc's landing, before any cut; then remove that worktree by the checks, and unclaim ISSUE:0010 when vc closes it (edited)
+_(none)_
 
 ## TODO
 
