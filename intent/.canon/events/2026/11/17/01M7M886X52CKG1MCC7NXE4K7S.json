@@ -1,0 +1,15 @@
+{
+  "id": "01M7M886X52CKG1MCC7NXE4K7S",
+  "ts": "2026-11-17T07:58:54.373Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ISSUE:0010's unit, on vc's go: banked on cc/ISSUE-0010 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0010 (red 3948105, green 0ce2f13, AT rows a07ed78, on main's 56270e1); Desk slot 01M7M6NNYD91SFXPA7W3HCCMRX queued behind devbin's 0.1.26 cut, its hold met; ic signing the final strings; then the run, red then green, and the hand-over to vc"
+  }
+}

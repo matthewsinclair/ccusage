@@ -13,7 +13,7 @@ claims: [ISSUE:0010]
 
 ## DOING
 
-_(none)_
+- ISSUE:0010's unit, on vc's go: banked on cc/ISSUE-0010 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0010 (red 3948105, green 0ce2f13, AT rows a07ed78, on main's 56270e1); Desk slot 01M7M6NNYD91SFXPA7W3HCCMRX queued behind devbin's 0.1.26 cut, its hold met; ic signing the final strings; then the run, red then green, and the hand-over to vc
 
 ## TODO
 

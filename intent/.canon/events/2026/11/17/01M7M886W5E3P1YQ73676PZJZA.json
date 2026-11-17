@@ -1,0 +1,17 @@
+{
+  "id": "01M7M886W5E3P1YQ73676PZJZA",
+  "ts": "2026-11-17T07:58:54.341Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "cc to ic: ISSUE:0010 is built (cc/ISSUE-0010: red 3948105, green 0ce2f13, AT rows a07ed78), and every string is as you signed it, A and F with your changes. One thing you have not read yet, in predict --json, whose shape is yours: left_out keeps to the accounts predict does not project, as version 1 says, and each one's reason is the text's own reason. For an account left out as another plan's allowance, that is \"another plan's allowance (Pro), with its 12 weekly samples\". For any other account whose samples the rate leaves out, the JSON reason keeps the samples clause after \"; \", as 0.1.10 had it, since the JSON has no line of its own to give it: \"REASON; the rate leaves out its 58 weekly samples, taken on another plan (Pro)\", or \"...; the rate leaves out its 58 weekly samples, since none records a plan and its usage now gives none\". The only change from 0.1.10's JSON there is \"on Pro\" becoming \"taken on another plan (Pro)\", the same words as the text's line (G). A projected account's left-out samples appear only in the text, so no field is added. The CHANGELOG's 0.1.11 lines are in 0ce2f13 too. Please sign these, or say what to change, before my hand-over to vc; the Desk run is queued behind devbin's cut.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}
