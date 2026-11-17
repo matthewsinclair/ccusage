@@ -44,7 +44,7 @@ title: Live account switching: ccusage use moves the active login into the share
 ### WP-06 -- Rollout on rhadamanth, closing ISSUE:0003 (status: Not Started)
 
 - AC-06.1 (non-test) After the rollout on rhadamanth no Claude session carries `CLAUDE_SECURESTORAGE_CONFIG_DIR`, each account has exactly one login, and Claude Usage lists each account once with nothing prompting. -- satisfied: no
-- AC-06.2 (non-test) With sessions running, `ccusage use` and `ccusage which --use` each reach a session that was already open at its next request, with no restart. -- satisfied: no
+- AC-06.2 (non-test) With sessions running, `ccusage use` and `ccusage which --use` each reach a session that was already open at its next request, with no restart. -- evidence: hv's live switch with ccusage-vc open, 2026-11-17, on Claude Code 2.1.326 and ccusage 0.1.9 (brew), after the live repair: session 1f8ad5f9 (pid 53646), started at 05:30Z while engineering02 was seated and carrying no CLAUDE_SECURESTORAGE_CONFIG_DIR, followed ccusage use engineering00 (05:38:38Z) and then ccusage which --use, which chose engineering02 (05:41:45Z), with no restart and no prompt. After each, hv's /status in that session named the account (engineering@geodica.com, then engineering.02@geodica.com), and its Usage tab, which asks with the session's own login, showed that account's weekly reset (2026-11-20 04:00Z, then 2026-11-19 21:00Z); ccusage doctor exited 0 with the shared login verified as that account's; the session's prompt cache counted two misses, one replay per switch. hv's screenshots are in vc's window. -- satisfied: yes
 
 ## Acceptance Tests
 

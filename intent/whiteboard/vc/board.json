@@ -5,9 +5,9 @@
     "name": "Validation Claude",
     "role": "validation",
     "session_id": "1f8ad5f9-8ef2-4931-bffe-b7473752f05d",
-    "heartbeat_at": "2026-11-17T05:32:49.728Z",
+    "heartbeat_at": "2026-11-17T05:44:23.428Z",
     "status": "active",
-    "focus": "The live repair (todo 13): steps 1 to 3 checked by vc at 05:31Z on 2026-11-17. vc's claude process and its shell, Herdr Core and launchd carry no CLAUDE_SECURESTORAGE_CONFIG_DIR (Herdr Core restarted at 05:27Z), doctor exits 0 with no pinned line and one login an account, usage --all reads all five, and engineering02 is seated (active.json written 05:26Z, by hv's hand). Step 4, the live switch with vc open (AC-06.2), is with hv",
+    "focus": "The live repair (todo 13): steps 1 to 4 done on 2026-11-17. AC-06.2 is satisfied (its event carries the stamp): hv's ccusage use engineering00 (05:38Z) and ccusage which --use to engineering02 (05:41Z) each reached vc's open session with no restart, /status and its Usage tab naming the account each time. AC-06.1 waits for hv's look at Claude Usage; then the day closes",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
