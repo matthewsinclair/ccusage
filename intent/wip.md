@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-17T08:54:35Z:v0.42: vc - after the 0.1.11 cut: nothing in flight"
+verblock: "2026-11-17T09:09:22Z:v0.43: vc - after the 0.1.11 cut: nothing in flight"
 ---
 
 # Work In Progress
@@ -10,9 +10,8 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 **No thread or issue open: the next work waits on hv's word**
 
-Open with hv:
-- Whether cc's finding goes to Intent: `intent at lint`, run in a git worktree, passed AT rows whose cited lines had moved; on main it reads right, so it may read the main checkout's files.
-- When the next release is cut: one cut with everything ready, never small ones. Before it, dc runs the kovacs gates at its final code tip.
+- When the next release is cut is hv's word: one cut with everything ready, never small ones. Before it, dc runs the kovacs gates at its final code tip.
+- cc's finding that `intent at lint`, run in a git worktree, passed AT rows whose cited lines had moved, is with intent-vc (hv's decision 20). Nothing in Ccusage waits on it.
 
 ## Active Steel Threads
 
