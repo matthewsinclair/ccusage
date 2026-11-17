@@ -18,7 +18,6 @@ claims: []
 - ST0003, live account switching, built by cc (hv, 2026-11-13), shipped in 0.1.9. WP01 to WP06 are closed: WP06, the rollout, closed on 2026-11-17 (fbcc2f5) on the live repair's end state, with AC-06.1 and AC-06.2 satisfied, and dc closed ISSUE:0003 (9304bb9). Left: ISSUE:0008's code on this thread's claim, landing for 0.1.10 (doing 5), then AC-00.1, the thread's sign-off. (edited)
 - ISSUE:0008 (high), for 0.1.10 first thing on hv's word (decision 12). The live repair is done (2026-11-17, WP06). The code: cc's unit, items 1 to 5 with its two nits from WP04 (todo 8), is on cc/ISSUE-0008 at 47aa80b; cc replays it onto main's tip as cc/ISSUE-0008-land with a git diff proof, its slot 01M7JQCS4KTNMQVRNWBQQ3KTGM standing as the run, and vc lands it by fast-forward on its read (todo 12). Then cc's follow-up unit on the landed tip: items 6 and 7, text only, and item 8, the incoming login verified before a switch seats it (added to the issue at 708bd5e), in one Desk cargo slot, red then green; vc reads and lands it. ic reads the new user-facing text as nits after the landing. Then the cut (doing 6). (edited)
 - The 0.1.10 cut, first thing on hv's word (decision 12): ISSUE:0008 whole, ISSUE:0009 (LICENSE back) and ic's Herdr bar fix (9be58a6), one cut. Sequence: cc's unit lands, cc's follow-up lands, vc says the tip is final, dc runs the kovacs gates and the scratch-HOME install at it in one heavy Desk slot (dc's todo 15), vc writes the cut's steps for hv's own terminal tab (bin/devbin release 0.1.10, never a ! command, seats frozen until the publish), then brew upgrade on rhadamanth and kovacs, dc's keg proof closes ISSUE:0009 (dc's hold 13), and hv's switch to brew. ST0002's sitting (AC-08.3 and AC-00.1) runs before the cut, so anything it finds rides the same cut. The Desk was HELD with its control orphaned at 05:58Z; devbin-vc is back and has hv's word from vc.
-- The Claude Usage PR, upstream to richhickson/claudecodeusage, on hv's word (decision 12): Claude Usage 1.18 names each Keychain item once per run and keeps history per item, so after a switch its names are stale and its history mixes accounts. ic builds the fix in hv's fork (/Users/matts/Devel/forks/claudecodeusage) on a branch from upstream's v1.18, with tests and a Desk run, and drafts the PR text in simple ASD-STE100 bullets. vc reads the change, puts the text to hv, and nothing is pushed or opened until hv says so.
 
 ## TODO
 
@@ -26,7 +25,7 @@ claims: []
 
 ## Holds
 
-_(none)_
+- Holding until richhickson merges https://github.com/richhickson/claudecodeusage/pull/18 (opened 2026-11-17 by hv's hand, head 52b846a: Claude Usage names an item's account again when its login changes, and keeps history per account) and ships it in a release: then hv updates Claude Usage from that release, and watch-out 2 (stale names after a switch) is spent. Check the PR's state at each pickup (gh pr view 18 -R richhickson/claudecodeusage --json state).
 
 ## Watch-outs
 

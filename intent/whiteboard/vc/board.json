@@ -254,7 +254,8 @@
       "kind": "doing",
       "seq": 7,
       "text": "The Claude Usage PR, upstream to richhickson/claudecodeusage, on hv's word (decision 12): Claude Usage 1.18 names each Keychain item once per run and keeps history per item, so after a switch its names are stale and its history mixes accounts. ic builds the fix in hv's fork (/Users/matts/Devel/forks/claudecodeusage) on a branch from upstream's v1.18, with tests and a Desk run, and drafts the PR text in simple ASD-STE100 bullets. vc reads the change, puts the text to hv, and nothing is pushed or opened until hv says so.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T06:22:00.002Z",
       "recorded_at": "2026-11-17T06:04:49.605Z"
     },
     {
@@ -272,6 +273,14 @@
       "text": "Claude Usage 1.18 (mainline, /Applications since 2026-11-17) keeps each Keychain item's first email for its whole run, so after any ccusage switch its names are stale until it restarts, and the shared item's history mixes the accounts seated there. Until ic's PR lands upstream: read accounts from ccusage, not Claude Usage's names, and expect hv to restart it after a switch. Its login item: the fork's test build has the same bundle id, so check at the next login that the one running is /Applications/ClaudeUsage.app.",
       "state": "live",
       "recorded_at": "2026-11-17T06:04:49.676Z"
+    },
+    {
+      "node": "vc",
+      "kind": "hold",
+      "seq": 5,
+      "text": "Holding until richhickson merges https://github.com/richhickson/claudecodeusage/pull/18 (opened 2026-11-17 by hv's hand, head 52b846a: Claude Usage names an item's account again when its login changes, and keeps history per account) and ships it in a release: then hv updates Claude Usage from that release, and watch-out 2 (stale names after a switch) is spent. Check the PR's state at each pickup (gh pr view 18 -R richhickson/claudecodeusage --json state).",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:22:00.037Z"
     }
   ],
   "sent": [

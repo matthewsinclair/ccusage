@@ -1,0 +1,15 @@
+{
+  "id": "01M7M2PRV55T5TMWTTYP889ZFT",
+  "ts": "2026-11-17T06:22:00.037Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "Holding until richhickson merges https://github.com/richhickson/claudecodeusage/pull/18 (opened 2026-11-17 by hv's hand, head 52b846a: Claude Usage names an item's account again when its login changes, and keeps history per account) and ships it in a release: then hv updates Claude Usage from that release, and watch-out 2 (stale names after a switch) is spent. Check the PR's state at each pickup (gh pr view 18 -R richhickson/claudecodeusage --json state)."
+  }
+}
