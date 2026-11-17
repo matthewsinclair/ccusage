@@ -1,0 +1,16 @@
+{
+  "id": "01M7M1NF0VHE4DFKBHZBS1FK82",
+  "ts": "2026-11-17T06:03:48.635Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, shipped in 0.1.9, WP01 to WP07 closed by vc. Left: AC-08.3, hv's second look at the panel, and AC-00.1. The sitting is a go (vc, 2026-11-17): vc puts ic's steps to hv now, before the 0.1.10 cut, so anything the look finds rides that cut; ic stays ready to answer what hv sees. hv's steps: /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage herdr install (0.1.9 dev 9be58a6b78d5, its src and herdr equal to main's; hv's installed copy is 0.1.9's, unedited, so --force only if it refuses), then herdr-app do pane.split '{\"direction\":\"right\",\"mod\":\"ccusage\"}' and the look: bars filled to their percent, resets, tags, the next marker, predict's line, and the as-of time moving on past five minutes with nothing clicked; for AC-00.1, hv's own ccusage which, --all and predict. Then preview.png: as is, cropped to the pane with the names blurred by ic, or the link dropped. On a pass vc closes WP08 and ST0002; ic removes wt-st0002-08-fill by the usual checks, deletes its merged branches (ic/ST0002-02, -03, -04, -07 and -08-fill) and sends vc the sha. After every landing on main, run intent at lint ST0002 (27 of 27 at c4f51ee) and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing)."
+  }
+}

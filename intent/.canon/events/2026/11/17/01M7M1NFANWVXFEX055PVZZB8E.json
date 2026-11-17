@@ -1,0 +1,15 @@
+{
+  "id": "01M7M1NFANWVXFEX055PVZZB8E",
+  "ts": "2026-11-17T06:03:48.949Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ic's offer 5, kept by vc (2026-11-17): once cc's ISSUE:0008 unit lands, read its new user-facing text (sessions::remedy, shared::shell_pin, doctor's new FAIL and INFO, and items 6 and 7, which cc now builds, text only, with no --json field this cut) and send cc nits for after the landing, holding nothing up."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "01M7M1NFBT08418ERMMYHG5BBP",
+  "ts": "2026-11-17T06:03:48.986Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "The way into the Herdr mod from inside Herdr (vc's word, 2026-11-17): options in words to vc after hv's look, no code. Found by reading: ~/.config/herdr-app/keys.json is a link into Molt-matts (config/herdr-app/keys.json), so a key is hv's, in Molt, and never written by ccusage (AC-08.1). keys.json binds cmd-p to mod.open:picker, and picker's mod.json gives an overlay (popup, at top, 640 wide, 0.8 high). Options: (a) an overlay size in ccusage's mod.json, so mod.open:ccusage toggles the panel as a popup, with a key hv adds in Molt, which the macOS menu bar then shows; (b) a key bound to pane.split with the mod as its args, no change to the mod; (c) a ccusage herdr open verb for a terminal."
+  }
+}

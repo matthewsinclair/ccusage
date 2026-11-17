@@ -5,7 +5,7 @@
     "name": "Interface Claude",
     "role": "interface",
     "session_id": "2383b046-340f-4fb4-ad39-d1ae912ebf62",
-    "heartbeat_at": "2026-11-17T05:55:00.816Z",
+    "heartbeat_at": "2026-11-17T06:02:46.318Z",
     "status": "active",
     "focus": "",
     "claims": [
@@ -19,10 +19,10 @@
       "node": "ic",
       "kind": "doing",
       "seq": 1,
-      "text": "ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, landed and shipped in 0.1.9, with WP01 to WP07 closed by vc. WP08 waits only on AC-08.3, hv's look at the panel in hv's own Herdr. hv's first look found the weekly bars drawing no fill: an h_flex centers its children on the cross axis, so the bar's fill, which has no content, was 0px tall. The fix, with the look's two nits, landed on main as 9be58a6 on hv's decision 6, after Desk slot 01M7AEX036ZT6XBCBVVJM85BY2: bin/devbin build, AT-08.1 (1 passed, 0 failed), check format and clippy, all green with every seal empty, and herdr-app check passed on a scratch install. Next: hv's plain ccusage herdr install from ic's build, /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage (ccusage 0.1.9 (dev, 9be58a6b78d5)), --force only if it refuses, then hv's second look, the Use button left alone until the rollout; on a pass vc closes WP08 and ST0002. Then ic runs /in-finish with a release, removes the worktree /Users/matts/Devel/scratch/ccusage-ic/wt-st0002-08-fill, and sends vc the sha. RECIPE.md links herdr/ccusage/preview.png, which is not in the tree; vc puts it to hv after the look: hv's shot as is, the shot cropped to the pane with the account names blurred (ic's offer), or the link dropped, with WP08's line about a preview changed to match. After every landing on main, run intent at lint ST0002 (27 of 27 at 9be58a6) and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing).",
+      "text": "ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, shipped in 0.1.9, WP01 to WP07 closed by vc. Left: AC-08.3, hv's second look at the panel, and AC-00.1. The sitting is a go (vc, 2026-11-17): vc puts ic's steps to hv now, before the 0.1.10 cut, so anything the look finds rides that cut; ic stays ready to answer what hv sees. hv's steps: /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage herdr install (0.1.9 dev 9be58a6b78d5, its src and herdr equal to main's; hv's installed copy is 0.1.9's, unedited, so --force only if it refuses), then herdr-app do pane.split '{\"direction\":\"right\",\"mod\":\"ccusage\"}' and the look: bars filled to their percent, resets, tags, the next marker, predict's line, and the as-of time moving on past five minutes with nothing clicked; for AC-00.1, hv's own ccusage which, --all and predict. Then preview.png: as is, cropped to the pane with the names blurred by ic, or the link dropped. On a pass vc closes WP08 and ST0002; ic removes wt-st0002-08-fill by the usual checks, deletes its merged branches (ic/ST0002-02, -03, -04, -07 and -08-fill) and sends vc the sha. After every landing on main, run intent at lint ST0002 (27 of 27 at c4f51ee) and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing).",
       "state": "live",
       "recorded_at": "2026-11-13T07:15:04.319Z",
-      "edited_at": "2026-11-13T13:24:57.308Z"
+      "edited_at": "2026-11-17T06:03:48.635Z"
     },
     {
       "node": "ic",
@@ -130,9 +130,34 @@
       "node": "ic",
       "kind": "todo",
       "seq": 5,
-      "text": "ccusage herdr install says nothing while herdr-app check runs, and the check can take minutes: on hv's install (vc, 2026-11-13) it took about two, because Herdr runs it as a background GUI job, which waited on the window server under a load average of about 230, so install looked hung. Before the check, say what install is waiting for, and consider bounding the wait, with a check that has not returned in time reported as not run rather than as failed. vc's word: nothing to build now; it waits for vc's go.",
+      "text": "ccusage herdr install says nothing while herdr-app check runs, and the check can take minutes: on hv's install (vc, 2026-11-13) it took about two, because Herdr runs it as a background GUI job, which waited on the window server under a load average of about 230, so install looked hung. Before the check, say what install is waiting for, and consider bounding the wait, with a check that has not returned in time reported as not run rather than as failed. check in src/herdr.rs runs Command::output() with no bound. vc's word (2026-11-17): after the 0.1.10 cut, as a nit.",
       "state": "live",
-      "recorded_at": "2026-11-13T12:28:57.208Z"
+      "recorded_at": "2026-11-13T12:28:57.208Z",
+      "edited_at": "2026-11-17T06:03:48.851Z"
+    },
+    {
+      "node": "ic",
+      "kind": "doing",
+      "seq": 2,
+      "text": "Claude Usage PR upstream, first (hv's decision 12; vc's brief, 2026-11-17). v1.18's ClaudeUsage/UsageManager.swift names each Keychain item once per run (profileLabels, set when nil and never cleared, lines 311 to 313), and UsageHistoryStore records per item (record(service:)). So when an item's login becomes another account's, the name stays the old account's until a restart, and that item's history, sparklines, forecast and History window mix both accounts. The fix, the smallest that works: resolve the email again when an item's token is not the one its name was resolved with, and keep history per account (the resolved email), carrying each item's existing history over in a way the PR states. Tests beside upstream's own. Where: hv's fork /Users/matts/Devel/forks/claudecodeusage (origin matthewsinclair, upstream richhickson): fetch upstream, branch from upstream's main at v1.18 in a new worktree outside the fork's checkout; the checkout (fix/account-picker, clean) and its branches stay as they are. Build and test in a Desk slot from devbin-vc. Then the title, the body (hv: simple, succinct, bullets and short sentences in basic ASD-STE100 form), the branch and the run go to vc, who puts the text to hv. Nothing pushed and no PR until hv says so.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:03:48.725Z"
+    },
+    {
+      "node": "ic",
+      "kind": "todo",
+      "seq": 6,
+      "text": "ic's offer 5, kept by vc (2026-11-17): once cc's ISSUE:0008 unit lands, read its new user-facing text (sessions::remedy, shared::shell_pin, doctor's new FAIL and INFO, and items 6 and 7, which cc now builds, text only, with no --json field this cut) and send cc nits for after the landing, holding nothing up.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:03:48.949Z"
+    },
+    {
+      "node": "ic",
+      "kind": "todo",
+      "seq": 7,
+      "text": "The way into the Herdr mod from inside Herdr (vc's word, 2026-11-17): options in words to vc after hv's look, no code. Found by reading: ~/.config/herdr-app/keys.json is a link into Molt-matts (config/herdr-app/keys.json), so a key is hv's, in Molt, and never written by ccusage (AC-08.1). keys.json binds cmd-p to mod.open:picker, and picker's mod.json gives an overlay (popup, at top, 640 wide, 0.8 high). Options: (a) an overlay size in ccusage's mod.json, so mod.open:ccusage toggles the panel as a popup, with a key hv adds in Molt, which the macOS menu bar then shows; (b) a key bound to pane.split with the mod as its args, no change to the mod; (c) a ccusage herdr open verb for a terminal.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:03:48.986Z"
     }
   ],
   "sent": [
@@ -488,6 +513,11 @@
       "id": "01M7A94AWF94KFE4YR7Z4AENBQ",
       "sender": "vc",
       "handled_at": "2026-11-13T12:10:37.427Z"
+    },
+    {
+      "id": "01M7M1JPVMDDRB6PMPP64JDEPG",
+      "sender": "vc",
+      "handled_at": "2026-11-17T06:03:54.530Z"
     }
   ]
 }
