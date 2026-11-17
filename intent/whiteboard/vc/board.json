@@ -5,7 +5,7 @@
     "name": "Validation Claude",
     "role": "validation",
     "session_id": "1f8ad5f9-8ef2-4931-bffe-b7473752f05d",
-    "heartbeat_at": "2026-11-17T07:34:46.134Z",
+    "heartbeat_at": "2026-11-17T07:42:57.095Z",
     "status": "active",
     "focus": "0.1.10 is published and runs from brew on rhadamanth, kovacs and gyges; ISSUE:0009 is closed (e880eef). Building for the next release on vc's go: cc's ISSUE:0010 unit with ic's text nits, and ic's install-silence unit; vc reads each hand-over (todo 16). hv adds the cmd-shift-u key (decision 17). PR #18 waits upstream (hold 5)",
     "claims": [],
