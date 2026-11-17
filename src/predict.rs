@@ -715,6 +715,10 @@ mod tests {
       // As an older ccusage wrote them.
       taken("c", 0.0, now - MIN_SPAN, None)?,
       taken("c", 6.0, now, None)?,
+      // gone's profile was taken out of the config since, so its samples are neither
+      // counted nor named, whatever plan they record.
+      taken("gone", 0.0, now - MIN_SPAN, Some(&max))?,
+      taken("gone", 30.0, now, Some(&max))?,
     ];
     let reading = |name: &str| -> Result<Report> {
       let mut planned = report(name, now, 0.0, now + WEEK)?;
@@ -737,6 +741,13 @@ mod tests {
     ];
     let failed = project(&history, &failing, now, cap, None)?;
     assert_eq!(failed.rate, read.rate);
+    for projection in [&read, &failed] {
+      assert!(
+        projection.left_out.iter().all(|(name, _)| name != "gone"),
+        "{:?}",
+        projection.left_out
+      );
+    }
     let why = |name: &str| {
       failed
         .left_out
@@ -757,6 +768,45 @@ mod tests {
       "{}",
       why("c")
     );
+    Ok(())
+  }
+
+  // ISSUE:0008 Acceptance 6: predict says when a weekly window's newest sample is below an
+  // earlier one in the same window, as the usage endpoint reported them, and nothing of it
+  // otherwise.
+  #[test]
+  fn predict_says_when_a_windows_newest_sample_is_below_an_earlier_one() -> Result<()> {
+    let now = at("2026-11-16T05:00:00Z")?;
+    let cap = which::DEFAULT_CAP;
+    // A window that reset three hours ago, and the one that followed it.
+    let (ended, current) = (now - 3 * HOUR, now - 3 * HOUR + WEEK);
+    let history = [
+      // a's current window rises.
+      sample("a", 2.0, current, now - 2 * HOUR)?,
+      sample("a", 5.0, current, now - HOUR)?,
+      // a's last window fell from 38% to 9%, and read no more before it reset.
+      sample("a", 38.0, ended, now - 20 * HOUR)?,
+      sample("a", 9.0, ended, now - 17 * HOUR)?,
+      // b's fell, then rose past where it had been.
+      sample("b", 50.0, ended, now - 20 * HOUR)?,
+      sample("b", 10.0, ended, now - 10 * HOUR)?,
+      sample("b", 60.0, ended, now - 5 * HOUR)?,
+    ];
+    let reports = [
+      report("a", now, 5.0, current)?,
+      report("b", now, 0.0, current)?,
+    ];
+    let said = view::text(&project(&history, &reports, now, cap, None)?, now);
+    let fell: Vec<&str> = said.lines().filter(|line| line.contains("fell")).collect();
+    assert_eq!(
+      fell,
+      [
+        "a: weekly usage fell from 38% at 2026-11-15T09:00:00Z to 9% at 2026-11-15T12:00:00Z, in the window ending 2026-11-16T02:00:00Z, as the usage endpoint reported it; the rate counts a fall as no use"
+      ],
+      "{said}"
+    );
+    let steady = view::text(&project(&history[..2], &reports, now, cap, None)?, now);
+    assert!(!steady.contains("fell"), "{steady}");
     Ok(())
   }
 }

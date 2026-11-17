@@ -37,6 +37,10 @@ case "$1 $2" in
     # Each profile's login is its own, so a test can tell where each one went.
     /usr/bin/printf '{"claudeAiOauth":{"accessToken":"TEST_TOKEN_%s","expiresAt":9999999999999}}\n' \
       "$(/usr/bin/basename "$CLAUDE_CONFIG_DIR")" > "$CLAUDE_CONFIG_DIR/.credentials.json"
+    # The account record Claude writes at login, when a test has said whose it is.
+    if [ -f "$CLAUDE_CONFIG_DIR/.next-record" ]; then
+      /bin/mv "$CLAUDE_CONFIG_DIR/.next-record" "$CLAUDE_CONFIG_DIR/.claude.json"
+    fi
     ;;
   'auth status') /bin/echo '{"email":"test@example.com"}' ;;
   'auth logout') /bin/rm -f "$CLAUDE_CONFIG_DIR/.credentials.json" ;;
@@ -119,6 +123,9 @@ esac
       format!("claude_config_dir = \"{}\"\n{text}", shared.display()).as_bytes(),
     )?;
     self.login_with_record("work", "u-work", "test@example.com")?;
+    // A usage fetch verified work's own login where it lives, so a switch to work checks
+    // it with no network.
+    self.verified("work", &self.profile("work"), "TEST_TOKEN_work")?;
     Ok(shared)
   }
   /// Log `name` in, as Claude Code would, with an oauthAccount record of its own.
@@ -1015,6 +1022,9 @@ fn use_none_returns_every_login_to_its_profile() -> Result<()> {
     sandbox.ok(&["dir"])?,
     format!("{}\n", sandbox.profile("work").display())
   );
+  // A usage fetch verified work's login back in its own store, so the switch to it checks
+  // it with no network.
+  sandbox.verified("work", &sandbox.profile("work"), "TEST_TOKEN_work")?;
   sandbox.ok(&["use", "work"])?;
   assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_work"));
   if cfg!(target_os = "macos") {
@@ -1082,8 +1092,8 @@ fn shared_mode_use_refuses_a_profile_without_an_account_record() -> Result<()> {
 fn shared_mode_run_reads_the_shared_login_and_switches_first() -> Result<()> {
   let sandbox = Sandbox::new()?;
   let shared = sandbox.shared()?;
-  sandbox.ok(&["add", "home"])?;
-  sandbox.login_with_record("home", "u-home", "home@example.com")?;
+  sandbox.ok(&["add", "home", "--email", "test@example.com"])?;
+  sandbox.login_with_record("home", "u-home", "test@example.com")?;
   sandbox.ok(&["use", "work"])?;
   let output = sandbox
     .command()
@@ -1098,7 +1108,9 @@ fn shared_mode_run_reads_the_shared_login_and_switches_first() -> Result<()> {
   );
   assert!(text.contains("storage=unset\n"), "{text}");
   // A profile that is not active is switched to first, so the record matches the login.
+  // Usage fetches verified work's seated login and home's parked one where each lives.
   sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
+  sandbox.verified("home", &sandbox.profile("home"), "TEST_TOKEN_home")?;
   let output = sandbox.run(&["run", "home"])?;
   let text = String::from_utf8(output.stdout)?;
   assert!(text.contains("storage=unset\n"), "{text}");
@@ -1960,6 +1972,13 @@ fn reporting_verbs_say_when_their_shell_pins_claude_while_a_profile_is_seated() 
   assert!(!said.contains(note), "{said}");
   sandbox.ok(&["use", "work"])?;
   sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
+  // usage checks its arguments before it says anything of the shell, as which and predict
+  // do.
+  let (_, said) = pinned(&["usage", "work", "extra"])?;
+  assert!(
+    said.contains("usage accepts one name or --all") && !said.contains(note),
+    "{said}"
+  );
   for args in [
     &["usage", "work", "--json"][..],
     &["which", "--json"],
@@ -2061,5 +2080,117 @@ fn predict_keeps_a_failed_accounts_samples_on_their_plan_and_names_those_it_leav
   );
   let broken = reason("broken")?;
   assert!(!broken.contains("weekly samples"), "{broken}");
+  Ok(())
+}
+
+// ISSUE:0008 Acceptance 5: which and predict say on stderr how many running sessions are
+// pinned away from the shared config, so that a switch does not move them, and nothing of
+// it when none is.
+#[test]
+fn which_and_predict_say_how_many_running_sessions_a_switch_does_not_move() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  let work = sandbox.profile("work");
+  let following = |pid: u32| {
+    format!(
+      " {pid} Mon Nov 16 16:30:00 2026 claude CLAUDE_CONFIG_DIR={}\n",
+      shared.display()
+    )
+  };
+  let said =
+    |args: &[&str]| -> Result<String> { Ok(String::from_utf8(sandbox.run(args)?.stderr)?) };
+  let verbs = [&["which", "--json"][..], &["predict", "--json"]];
+  // Two sessions pinned to work's own store, and one that follows the shared config.
+  fs::write(
+    sandbox.root.join("ps.out"),
+    format!(
+      "{}{}{}",
+      pinned_session(501, &shared, &work),
+      pinned_session(502, &shared, &work),
+      following(503)
+    ),
+  )?;
+  for args in verbs {
+    let note = said(args)?;
+    assert!(
+      note.contains("2 running Claude sessions are pinned"),
+      "{args:?}: {note}"
+    );
+  }
+  fs::write(sandbox.root.join("ps.out"), following(503))?;
+  for args in verbs {
+    let note = said(args)?;
+    assert!(!note.contains("pinned"), "{args:?}: {note}");
+  }
+  Ok(())
+}
+
+// ISSUE:0008, vc's note on its items 1 to 5: a switch that cannot list the running sessions
+// to check them goes ahead, and says on stderr that none was checked.
+#[test]
+fn a_switch_says_when_it_could_not_check_the_running_sessions() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  let unreadable = sandbox.root.join("bin/ps-unreadable");
+  fs::write(&unreadable, "#!/bin/sh\nexit 1\n")?;
+  fs::set_permissions(&unreadable, fs::Permissions::from_mode(0o700))?;
+  let output = sandbox
+    .command()
+    .args(["use", "work"])
+    .env("CCUSAGE_PS", &unreadable)
+    .output()?;
+  assert!(output.status.success());
+  let said = String::from_utf8(output.stderr)?;
+  assert!(
+    said.contains("running Claude sessions were not checked before switching to work"),
+    "{said}"
+  );
+  assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_work"));
+  Ok(())
+}
+
+// ISSUE:0008 Acceptance 7: ccusage login of the seated profile, signed in as another
+// account, is refused before any write, journal or selection, and the refusal carries no
+// token. With no email configured, the account record Claude's login writes must name the
+// account the profile's record named before.
+#[test]
+fn a_login_of_the_seated_profile_as_another_account_is_refused_before_any_move() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  sandbox.ok(&["add", "home"])?;
+  sandbox.login_with_record("home", "u-home", "home@example.com")?;
+  // home seated, as a switch leaves it: its login in the shared store and none in its own.
+  let home = sandbox.profile("home");
+  storage::write_atomic(
+    &shared.join(".credentials.json"),
+    br#"{"claudeAiOauth":{"accessToken":"OLD_home","expiresAt":9999999999999}}"#,
+  )?;
+  storage::write_atomic(&home.join(".credentials.json"), b"{}")?;
+  let seat = sandbox.root.join("state/ccusage/seat.json");
+  storage::write_atomic(&seat, br#"{"seated":"home"}"#)?;
+  // Claude's login signs in as another account, and records that account.
+  fs::write(
+    home.join(".next-record"),
+    serde_json::to_vec(
+      &serde_json::json!({"oauthAccount": {"accountUuid": "u-other", "emailAddress": "other@example.com"}}),
+    )?,
+  )?;
+  let refused = sandbox.run(&["login", "home"])?;
+  assert!(!refused.status.success());
+  let said = String::from_utf8(refused.stderr)?;
+  assert!(
+    said.contains("home's own store holds a login that could not be verified as home's"),
+    "{said}"
+  );
+  assert!(
+    !said.contains("TEST_TOKEN") && !said.contains("OLD_home"),
+    "{said}"
+  );
+  // Nothing moved: the shared store keeps home's seated login, the fresh one stays in
+  // home's own store, and no switch was journaled.
+  assert_eq!(login_of(&shared)?.as_deref(), Some("OLD_home"));
+  assert_eq!(login_of(&home)?.as_deref(), Some("TEST_TOKEN_home"));
+  assert_eq!(fs::read(&seat)?, br#"{"seated":"home"}"#);
+  assert!(!sandbox.root.join("state/ccusage/move.json").exists());
   Ok(())
 }

@@ -505,6 +505,12 @@ fn page_lines(
   }
 }
 
+/// The TUI's page with `pinned`, how many running sessions a switch does not move, said
+/// under the overview's title. Pure.
+fn noted(frame: Vec<Line>, _detail: bool, _pinned: Option<&str>) -> Vec<Line> {
+  frame
+}
+
 fn write_line(output: &mut impl Write, line: &Line, width: usize, color: bool) -> io::Result<()> {
   let mut remaining = width;
   for span in line {
@@ -763,7 +769,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
                 scroll = scroll.saturating_add(1);
               } else {
                 selected = (selected + 1).min(reports.len().saturating_sub(1));
-                scroll_to(&reports, selected, cap, &mut scroll);
+                scroll_to(&reports, selected, cap, false, &mut scroll);
               }
             }
             KeyCode::Up | KeyCode::Char('k') => {
@@ -771,7 +777,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
                 scroll = scroll.saturating_sub(1);
               } else {
                 selected = selected.saturating_sub(1);
-                scroll_to(&reports, selected, cap, &mut scroll);
+                scroll_to(&reports, selected, cap, false, &mut scroll);
               }
             }
             KeyCode::PageDown => {
@@ -836,7 +842,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
   result
 }
 
-fn scroll_to(reports: &[Report], selected: usize, cap: f64, scroll: &mut usize) {
+fn scroll_to(reports: &[Report], selected: usize, cap: f64, _pinned: bool, scroll: &mut usize) {
   // Keep the selected account header visible even with a small terminal. The lines
   // above it count the next marker's notice as the frame does, so it reads all reports.
   let now = crate::now();
@@ -892,6 +898,41 @@ mod tests {
       output.push(b'\n');
     }
     Ok(String::from_utf8(output)?)
+  }
+
+  // ISSUE:0008 Acceptance 5: the overview says how many running sessions a switch does not
+  // move, under its title, and nothing of it when none is; the details page leaves it out,
+  // and the overview still scrolls to the selected account's header.
+  #[test]
+  fn the_overview_says_how_many_sessions_a_switch_does_not_move() -> Result<()> {
+    let reports = [
+      Report::failed("a", "usage endpoint returned HTTP 500"),
+      Report::failed("b", "usage endpoint returned HTTP 500"),
+    ];
+    let (now, cap) = (crate::now(), crate::which::DEFAULT_CAP);
+    let next = next(&reports, now, cap);
+    let note = "2 running Claude sessions are pinned";
+    let page = |detail: bool, pinned: Option<&str>| {
+      noted(
+        page_lines(&reports, None, 1, detail, &next, 80, now),
+        detail,
+        pinned,
+      )
+    };
+    let overview = page(false, Some(note));
+    let mut scroll = 0;
+    scroll_to(&reports, 1, cap, true, &mut scroll);
+    let header: String = overview
+      .get(scroll)
+      .ok_or("the selected account's header is in the overview")?
+      .iter()
+      .map(|span| span.text.as_str())
+      .collect();
+    assert_eq!(header, "› b");
+    assert!(text(overview, 80)?.contains(note));
+    assert!(!text(page(false, None), 80)?.contains("pinned"));
+    assert!(!text(page(true, Some(note)), 80)?.contains(note));
+    Ok(())
   }
 
   #[test]

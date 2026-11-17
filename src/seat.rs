@@ -143,6 +143,8 @@ pub(crate) enum Refusal {
   OnlyLogin,
   /// An interrupted move found a login where it had not left one.
   Changed,
+  /// The incoming profile's own login was not verified as that profile's account's.
+  Foreign(String),
 }
 
 impl std::fmt::Display for Refusal {
@@ -169,6 +171,10 @@ impl std::fmt::Display for Refusal {
       ),
       Self::Changed => formatter.write_str(
         "an interrupted switch cannot be finished, because a login is no longer where the switch left it; nothing more was written; see ccusage doctor",
+      ),
+      Self::Foreign(name) => write!(
+        formatter,
+        "{name}'s own store holds a login that could not be verified as {name}'s, so it was not seated and nothing was moved; run ccusage login {name}, and see ccusage doctor"
       ),
     }
   }
@@ -200,15 +206,23 @@ pub(crate) struct Side<'a> {
   pub document: &'a Document,
 }
 
+/// The access tokens verified before a move began, each as its profile's: the shared
+/// login's as the outgoing profile's, and the incoming profile's own login as the
+/// incoming one's. Each is needed only while its login is still to move.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub(crate) struct Verified<'a> {
+  pub outgoing: Option<&'a str>,
+  pub incoming: Option<&'a str>,
+}
+
 /// The writes that finish `request` from `step`, in order, given each store's
-/// document now; or the refusal that stops it before any write. `verified` is the
-/// shared login's access token, verified as the outgoing profile's before the move
-/// began. A write the journal had not yet recorded is recognised from the documents
-/// and not made again. Pure.
+/// document now; or the refusal that stops it before any write. `verified` holds the
+/// tokens verified before the move began. A write the journal had not yet recorded is
+/// recognised from the documents and not made again. Pure.
 pub(crate) fn plan(
   step: Step,
   request: &Move,
-  verified: Option<&str>,
+  verified: Verified,
   shared: &Document,
   from: Option<Side>,
   to: Option<Side>,
@@ -223,7 +237,7 @@ pub(crate) fn plan(
         let held = held.ok_or_else(|| Refusal::SharedEmpty(side.name.to_owned()))?;
         match login(side.document) {
           None => {
-            if verified.is_none() || verified != access_token(held) {
+            if verified.outgoing.is_none() || verified.outgoing != access_token(held) {
               return Err(Refusal::Unverified(side.name.to_owned()));
             }
             writes.push(Write {
@@ -477,14 +491,15 @@ fn side<'a>(pair: Option<(&'a str, &Place)>, document: &'a Option<Document>) -> 
     .map(|((name, _), document)| Side { name, document })
 }
 
-/// Make `request`, or finish it when the journal holds it. `verified` is the shared
-/// login's access token, verified as `request.from`'s; it is needed only while that
-/// login is still to be parked.
+/// Make `request`, or finish it when the journal holds it. `verified` holds the shared
+/// login's access token, verified as `request.from`'s, and the incoming profile's own
+/// login's, verified as `request.to`'s; each is needed only while its login is still to
+/// move.
 pub(crate) fn run(
   store: &Store,
   request: &Move,
   places: &Places,
-  verified: Option<&str>,
+  verified: Verified,
 ) -> Result<()> {
   run_until(store, request, places, verified, &mut |_| Ok(()))
 }
@@ -501,7 +516,7 @@ fn run_until(
   store: &Store,
   request: &Move,
   places: &Places,
-  verified: Option<&str>,
+  verified: Verified,
   stop: &mut dyn FnMut(Point) -> Result<()>,
 ) -> Result<()> {
   let from = paired(&request.from, &places.from)?;
@@ -671,7 +686,33 @@ mod tests {
       }
     }
 
+    /// The access token of the incoming profile's own login, as a usage fetch leaves it
+    /// verified where it lives; the tests of that check pass `Verified` whole instead.
+    fn admitted(&self, request: &Move) -> Result<Option<String>> {
+      let Some(to) = request.to.as_deref() else {
+        return Ok(None);
+      };
+      Ok(
+        super::login(&self.document(to)?)
+          .and_then(access_token)
+          .map(str::to_owned),
+      )
+    }
+
+    /// `request`, with `verified` as the outgoing login's token and the incoming login
+    /// verified.
     fn run(&self, request: &Move, verified: Option<&str>) -> Result<()> {
+      let admitted = self.admitted(request)?;
+      self.run_verified(
+        request,
+        Verified {
+          outgoing: verified,
+          incoming: admitted.as_deref(),
+        },
+      )
+    }
+
+    fn run_verified(&self, request: &Move, verified: Verified) -> Result<()> {
       run(&self.store, request, &self.places(request), verified)
     }
 
@@ -681,6 +722,11 @@ mod tests {
       verified: Option<&str>,
       stop: &mut dyn FnMut(Point) -> Result<()>,
     ) -> Result<()> {
+      let admitted = self.admitted(request)?;
+      let verified = Verified {
+        outgoing: verified,
+        incoming: admitted.as_deref(),
+      };
       run_until(&self.store, request, &self.places(request), verified, stop)
     }
 
@@ -962,6 +1008,89 @@ mod tests {
     Ok(())
   }
 
+  // ISSUE:0008 Acceptance 7: an incoming login is seated only once it is verified as the
+  // incoming profile's, whatever the move: one that is another account's, or was not
+  // checked, is refused as foreign before any write, journal or selection, and its
+  // message carries no token; an interrupted move stops there too, writing nothing more.
+  #[test]
+  fn an_incoming_login_not_verified_as_its_profiles_is_refused_before_any_write() -> Result<()> {
+    let [shared, a, b] = seated_a()?;
+    let only_b = |replace| Move {
+      to: Some(B.into()),
+      replace,
+      ..Move::default()
+    };
+    let switch = |incoming| Verified {
+      outgoing: Some("ACCESS_A"),
+      incoming,
+    };
+    let cases = [
+      // A switch whose incoming login is another account's, or was not checked.
+      (
+        [shared.clone(), a.clone(), b.clone()],
+        a_to_b(),
+        switch(Some("ACCESS_OTHER")),
+      ),
+      (
+        [shared.clone(), a.clone(), b.clone()],
+        a_to_b(),
+        switch(None),
+      ),
+      // A login seated in a shared store that holds none.
+      (
+        [without_login(&shared), a.clone(), b.clone()],
+        only_b(false),
+        Verified::default(),
+      ),
+      // A move that says replace: the first switch on 0.1.8's layout, and the seat of a
+      // fresh login of the seated profile.
+      (
+        [shared.clone(), with_login(&a, &login_a()), b.clone()],
+        only_b(true),
+        Verified::default(),
+      ),
+    ];
+    for (documents, request, verified) in cases {
+      let fixture = Fixture::new(documents)?;
+      let before = fixture.bytes()?;
+      let error = fixture
+        .run_verified(&request, verified)
+        .err()
+        .ok_or_else(|| format!("expected {request:?} to be refused as foreign"))?;
+      assert_eq!(
+        error.downcast_ref::<Refusal>(),
+        Some(&Refusal::Foreign(B.into())),
+        "{request:?}"
+      );
+      assert!(!error.to_string().contains("ACCESS_"));
+      assert_eq!(fixture.bytes()?, before, "{request:?}");
+      assert!(!fixture.journal(), "{request:?}");
+      assert_eq!(fixture.store.active()?, None, "{request:?}");
+      assert_eq!(Seat::load(&fixture.store)?, Seat::default(), "{request:?}");
+    }
+    // Interrupted once a's login is parked, the move is finished only with b's verified.
+    let fixture = Fixture::new(seated_a()?)?;
+    let stopped = fixture.until(&a_to_b(), Some("ACCESS_A"), &mut |point| match point {
+      Point::Journaled(Step::Parked) => Err(crate::Error::from("interrupted")),
+      _ => Ok(()),
+    });
+    assert!(stopped.is_err());
+    let before = fixture.bytes()?;
+    let refused = fixture
+      .run_verified(&a_to_b(), Verified::default())
+      .err()
+      .ok_or("expected the unverified finish to be refused as foreign")?;
+    assert_eq!(
+      refused.downcast_ref::<Refusal>(),
+      Some(&Refusal::Foreign(B.into()))
+    );
+    assert_eq!(fixture.bytes()?, before);
+    assert!(fixture.journal());
+    fixture.run(&a_to_b(), None)?;
+    assert_eq!(fixture.holders(&login_b())?, [SHARED]);
+    Ok(())
+  }
+
   // ST0003 AT-02.7: the only-login refusal gives way to a move that says replace, which
   // WP03's adoption decides.
   #[test]
@@ -1154,23 +1283,17 @@ mod tests {
     }
     shared.location.write(&padded(low)?)?;
     let before = items()?;
-    let refused = run(
-      &fixture.store,
-      &a_to_b(),
-      &places(&a_to_b()),
-      Some("ACCESS_A"),
-    );
+    let verified = Verified {
+      outgoing: Some("ACCESS_A"),
+      incoming: Some("ACCESS_B"),
+    };
+    let refused = run(&fixture.store, &a_to_b(), &places(&a_to_b()), verified);
     assert!(refused.is_err_and(|error| error.to_string().contains("too large")));
     assert_eq!(items()?, before);
     assert!(!fixture.journal());
     // Unpadded, the same move goes ahead.
     shared.location.write(&serde_json::to_vec(&documents[0])?)?;
-    run(
-      &fixture.store,
-      &a_to_b(),
-      &places(&a_to_b()),
-      Some("ACCESS_A"),
-    )?;
+    run(&fixture.store, &a_to_b(), &places(&a_to_b()), verified)?;
     assert_eq!(super::login(&read(A)?), Some(&login_a()));
     assert_eq!(super::login(&read(SHARED)?), Some(&login_b()));
     assert_eq!(super::login(&read(B)?), None);

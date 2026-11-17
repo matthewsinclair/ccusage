@@ -5,7 +5,7 @@
 use crate::{
   Result, auth,
   config::Store,
-  seat::{self, Move, Refusal, Step},
+  seat::{self, Move, Refusal, Step, Verified},
   shared,
   usage::{self, Standing},
 };
@@ -217,7 +217,12 @@ fn reseat(store: &Store, name: &str) -> Result<()> {
     replace: true,
     ..Move::default()
   };
-  seat::run(store, &request, &seat::places(store, &request)?, None)?;
+  seat::run(
+    store,
+    &request,
+    &seat::places(store, &request)?,
+    Verified::default(),
+  )?;
   shared::record(store, &shared, name)
 }
 
@@ -238,7 +243,15 @@ fn finish(store: &Store) -> Result<()> {
     (Some(from), Step::Begun) => Some(usage::verified_token(store, from, &places.shared.dir)?),
     _ => None,
   };
-  seat::run(store, &journal.request, &places, verified.as_deref())
+  seat::run(
+    store,
+    &journal.request,
+    &places,
+    Verified {
+      outgoing: verified.as_deref(),
+      ..Verified::default()
+    },
+  )
 }
 
 /// Make `request`, with its outgoing login verified first. Claude Code may renew that
@@ -253,7 +266,18 @@ fn relocate(store: &Store, request: &Move) -> Result<()> {
       .map(|from| usage::verified_token(store, from, &places.shared.dir))
       .transpose()
   };
-  match seat::run(store, request, &places, verify()?.as_deref()) {
+  let attempt = |outgoing: Option<String>| {
+    seat::run(
+      store,
+      request,
+      &places,
+      Verified {
+        outgoing: outgoing.as_deref(),
+        ..Verified::default()
+      },
+    )
+  };
+  match attempt(verify()?) {
     Err(error)
       if request.from.is_some()
         && matches!(
@@ -261,7 +285,7 @@ fn relocate(store: &Store, request: &Move) -> Result<()> {
           Some(Refusal::Unverified(_))
         ) =>
     {
-      seat::run(store, request, &places, verify()?.as_deref())
+      attempt(verify()?)
     }
     moved => moved,
   }
