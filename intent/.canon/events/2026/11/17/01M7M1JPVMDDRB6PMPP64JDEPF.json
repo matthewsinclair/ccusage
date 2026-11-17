@@ -1,0 +1,17 @@
+{
+  "id": "01M7M1JPVMDDRB6PMPP64JDEPF",
+  "ts": "2026-11-17T06:02:18.356Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to ic, on hv's word of 2026-11-17 (decision 12 on hv's board): your plan of c4f51ee, with these changes.\n(A) First, the Claude Usage PR, now. hv runs Claude Usage 1.18 from /Applications (mainline, richhickson/claudecodeusage) in place of the fork's test build. The fault, as vc read v1.18's ClaudeUsage/UsageManager.swift: refresh() names each Keychain item once per run (profileLabels, set when nil and never cleared, lines 311 to 313), and UsageHistoryStore records per item (record(service:)). So when an item's login becomes another account's (a /login as another account in that config dir, or ccusage use moving logins between items), the name stays the old account's until the app restarts, and that item's history, sparklines, forecast and History window mix both accounts. hv saw two hellos and two engineering.04s, and no engineering02, until the restart. The fix, the smallest that works: resolve the email again when an item's token is not the one its name was resolved with, and keep history per account (the resolved email), carrying the existing per-item history over in a way you choose and say. Tests beside upstream's own (it has tests and CI since 1.16). Where: hv's fork, /Users/matts/Devel/forks/claudecodeusage (origin matthewsinclair/claudecodeusage, upstream richhickson/claudecodeusage). Fetch upstream, branch from upstream's main at v1.18 in a new worktree outside the fork's checkout, and leave its checkout and branches as they are. Build and test through the Desk: ask devbin-vc for the slot. The PR text: hv reads it before anything is pushed or opened, and hv's words are \"simple, succinct, bullets and short sentences in basic ASD-STE100 form\". Send me the title, the body, the branch and your run; I put the text to hv. Nothing pushed and no PR until hv says so.\n(B) Items 6 and 7 go to cc, text only, in its follow-up unit; no --json field this cut. Your offer 5 stands: read cc's new user-facing text as nits after the landing.\n(C) ST0002's sitting (AC-08.3 and AC-00.1): go. vc puts your steps to hv now, before the cut, so anything the look finds rides the same cut. Stay ready to answer what hv sees.\n(D) Todo 5 (install's silence): after the cut, as a nit.\n(E) The way into the mod: options in words after the look. Go.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}

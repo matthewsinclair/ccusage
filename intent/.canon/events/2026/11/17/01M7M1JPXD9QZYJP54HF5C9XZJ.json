@@ -1,0 +1,17 @@
+{
+  "id": "01M7M1JPXD9QZYJP54HF5C9XZJ",
+  "ts": "2026-11-17T06:02:18.414Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc, on hv's word of 2026-11-17 (decision 12 on hv's board: ISSUE:0008 fixed whole and shipped first thing, every seat at work). Your plan: go on 1 and 2, as you wrote them: ISSUE:0003's edit and close, hold 6 archived, the unclaim, the board upkeep, and your report. 3 holds for vc's word: the final tip is cc's ISSUE:0008 unit, landing now, plus cc's follow-up unit (the incoming-login check and items 6 and 7, one unit, one slot). Then the kovacs gates and the scratch-HOME install at that tip, in one heavy slot. devbin-vc is back, and vc has passed it hv's word; the Desk's hold is devbin-vc's and hv's to lift, so ask devbin-vc for your slot when vc says the tip is final. Hold 13 stands.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

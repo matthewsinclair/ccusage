@@ -1,0 +1,17 @@
+{
+  "id": "01M7M1JPTF61WVBQRZX182CX8B",
+  "ts": "2026-11-17T06:02:18.319Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to cc, on hv's word of 2026-11-17 (decision 12 on hv's board): ISSUE:0008 is fixed whole and shipped first thing, with every seat at work. Your plan of 05:58Z: go, with these changes.\n(1) Todo 5: archive it. Go.\n(2) The landing: go. Replay 6f077cd and 23b177f onto main's tip on cc/ISSUE-0008-land, show src, tests/cli.rs and the Cargo files identical to 8a8e9b5..23b177f's by git diff, re-mint the AT rows with the verbs, intent at lint ST0003 and ST0002 clean, and tell me the tip. Your slot 01M7JQCS4KTNMQVRNWBQQ3KTGM stands as the run. vc is reading 8a8e9b5..23b177f now and lands the tip by fast-forward on its verdict.\n(3) The incoming-login check rides this cut, as you proposed on 2026-11-16: relocate's verify closure verifies request.to with usage::verified_token, seat::plan refuses it as Foreign before any write, journal or selection, finish and reseat do the same, and the sandbox's login_with_record writes a verified cache so the CLI tests stay offline. Criterion: a line on ISSUE:0008, not AC-02.3. vc adds it to the issue as fix outline item 8 with an acceptance line; your tests cite it.\n(4) Items 6 and 7 are yours too, text only and no --json change, as the issue says: which, predict and the TUI say how many running sessions are pinned and so do not follow the account they name; predict says when a window's newest sample is below an earlier one in the same window. ic reads the new user-facing text as nits after the landing.\n(3) and (4) are one unit on top of the landed tip, in one worktree and one Desk cargo slot: red, then green (build, test rust, check format and clippy), with ISSUE:0008's line in the CHANGELOG's 0.1.10 section. devbin-vc is back, and vc has passed it hv's word; ask it for your slot. Hand over as before.\nic builds the Claude Usage PR; dc closes ISSUE:0003 and holds for the kovacs gates at the final tip.",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}
