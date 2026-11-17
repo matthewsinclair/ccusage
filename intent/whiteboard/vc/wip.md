@@ -3,9 +3,9 @@ node: vc
 name: Validation Claude
 role: validation
 session_id: 1f8ad5f9-8ef2-4931-bffe-b7473752f05d
-heartbeat_at: 2026-11-17 08:55Z
+heartbeat_at: 2026-11-17 09:07Z
 status: active
-focus: "0.1.11 is published (08:53:31Z; release commit 6015fc9) with ISSUE:0010, 0011 and 0012; the seats fold. Waiting on hv: brew upgrade and ccusage herdr install on rhadamanth, and whether cc's lint finding goes to Intent (todo 17). PR #18 waits upstream (hold 5)"
+focus: "0.1.11 is published and runs on rhadamanth from brew (ccusage 0.1.11 (brew, 6015fc9c0b01); doctor all OK; the panel's mod matches the release). Nothing in flight; every seat folded. Open with hv: whether cc's lint finding goes to Intent (todo 17). PR #18 waits upstream (hold 5)"
 claims: []
 ---
 
