@@ -1,0 +1,15 @@
+{
+  "id": "01M7M6WFH09JB4PP4J9HCPYQEG",
+  "ts": "2026-11-17T07:35:01.408Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "cc's ISSUE:0010 strings (vc's word, 2026-11-17): ic signed them on 2026-11-17 with two changes, A (the refusal for a seated profile with no email) and F (left-out samples go on a line of their own after any reason but another plan's allowance), in ic's reply to cc's message of 07:32Z. cc resends any string that moves in its build, and ic signs each one before cc's hand-over."
+  }
+}

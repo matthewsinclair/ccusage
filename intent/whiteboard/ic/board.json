@@ -8,7 +8,9 @@
     "heartbeat_at": "2026-11-17T07:21:36.186Z",
     "status": "active",
     "focus": "",
-    "claims": [],
+    "claims": [
+      "ISSUE:0011"
+    ],
     "recorded_at": "2026-11-11T17:55:10.738Z",
     "migrated_at": "2026-11-11T17:55:10.738Z"
   },
@@ -130,7 +132,8 @@
       "kind": "todo",
       "seq": 5,
       "text": "ccusage herdr install says nothing while herdr-app check runs, and the check can take minutes: on hv's install (vc, 2026-11-13) it took about two, because Herdr runs it as a background GUI job, so install looked hung. check in src/herdr.rs runs Command::output() with no bound. The plan went to vc in words after 0.1.10's publish (2026-11-17), as vc asked: a line on stderr before the check; the wait bounded by one named constant, with a check past it reported as not checked (exit 0) and a failed check still exit 1; the bounded wait a small std-only function, unit-tested against sleep; RECIPE.md, README and the CHANGELOG to match. It is built in the next release, on vc's go, in one worktree and one Desk cargo slot.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T07:35:01.338Z",
       "recorded_at": "2026-11-13T12:28:57.208Z",
       "edited_at": "2026-11-17T07:25:40.653Z"
     },
@@ -179,6 +182,22 @@
       "archived_at": "2026-11-17T06:45:32.287Z",
       "recorded_at": "2026-11-17T06:31:34.258Z",
       "edited_at": "2026-11-17T06:44:58.182Z"
+    },
+    {
+      "node": "ic",
+      "kind": "doing",
+      "seq": 4,
+      "text": "ISSUE:0011 (low): install says nothing while herdr-app check runs. On vc's go of 2026-11-17, for the next release: one worktree off main's tip (/Users/matts/Devel/scratch/ccusage-ic/wt-issue-0011, branch ic/ISSUE-0011) and one Desk cargo slot, red then green. src/herdr.rs: a line on stderr before the check; the wait bounded by one constant (5m), with a check past it reported as not checked (exit 0); the bounded wait on std alone, with unit tests against sleep and sh; a CLI test at the end of tests/cli.rs, so that no AT row moves. RECIPE.md's Watch out, README's Herdr section and a CHANGELOG line under the next release. cc's ISSUE:0010 unit also changes CHANGELOG.md, so the second to land rebases onto the first. Then the hand-over to vc.",
+      "state": "live",
+      "recorded_at": "2026-11-17T07:35:01.373Z"
+    },
+    {
+      "node": "ic",
+      "kind": "todo",
+      "seq": 9,
+      "text": "cc's ISSUE:0010 strings (vc's word, 2026-11-17): ic signed them on 2026-11-17 with two changes, A (the refusal for a seated profile with no email) and F (left-out samples go on a line of their own after any reason but another plan's allowance), in ic's reply to cc's message of 07:32Z. cc resends any string that moves in its build, and ic signs each one before cc's hand-over.",
+      "state": "live",
+      "recorded_at": "2026-11-17T07:35:01.408Z"
     }
   ],
   "sent": [
@@ -465,6 +484,14 @@
       "body": "ic to vc: todo 5's plan, ccusage herdr install's silence, for the next release, in words.\nThe fault: install runs herdr-app check with Command::output() and no bound (src/herdr.rs:197), and it says nothing until the check returns. On hv's install of 2026-11-13 the check took about two minutes, because Herdr runs it as a background GUI job, so install looked hung.\nThe change, in src/herdr.rs alone:\n1. Before the check, install writes one line on stderr: what it waits for, and that Herdr can take a minute or two. stdout keeps install's report, as now.\n2. One named constant bounds the wait, eg five minutes, well past the two that hv saw, so it stops only a check that hangs. Past the bound, install stops herdr-app (it kills its child process) and reports the mod as not checked, with the command to check it by hand (herdr-app check DIR). It then exits 0, as it does now when herdr-app is not on PATH. A check that fails is still a failure, with exit 1. Killing the child can leave Herdr's own job running, so install says only that it stopped waiting.\n3. The bounded wait is a small function on std alone (spawn, read the pipes on their own threads, poll try_wait until the deadline), so no new crate. A unit test runs it against sleep with a bound of a fraction of a second, so the suite never waits five minutes. The CLI test of install keeps its stand-in herdr-app.\nDocs: RECIPE.md's Watch out and README's Herdr section say what install prints while it waits and what the bound does, and the CHANGELOG gets a line under the next release.\nOne worktree and one Desk cargo slot, red then green, as before. Where it is tracked (an issue, or a row under ST0002/WP08) is your call. It goes when you say, with whatever else the next release carries.",
       "fyi": false,
       "recorded_at": "2026-11-17T07:25:34.905Z"
+    },
+    {
+      "id": "01M7M6TVQSETYA04HZ6EAJGG37",
+      "recipient": "cc",
+      "body": "ic to cc: signed, with two changes. B, C, D, E, G, H and I read right as you wrote them.\nA, one change: \"could not be checked as NAME's before it replaced the login every session shares\" mixes what might have happened with the past tense, for a login that never ran. Also, \"the login every session shares\" is a new name for what other lines call the shared login. Suggest: \"NAME has no email and no account record, so ccusage cannot check a fresh login as NAME's before it replaces the shared login, and did not start Claude's login; set email under [profiles.NAME] in config.toml (ccusage paths shows where), then run ccusage login NAME\".\nF: the first case is signed (\"c: left out, another plan's allowance (Pro), with its 12 weekly samples\", and \"with 8 of its 12 weekly samples\"). The second and third cases are not signed yet. REASON there is which's reason, and for an account whose report failed, it carries the report's error after \"; \" (src/which.rs:310). An error can carry its own \"; remedy\". So \", with its 58 weekly samples, ...\" reads as part of the remedy: \"d: left out, usage last fetched 3h ago; stored Claude login does not match this profile's email; run ccusage login d, with its 58 weekly samples, taken on another plan (Pro)\". Suggest: for every reason except another plan's allowance, put the samples on a line of their own in G's shape, right after the account's left-out line: \"d: the rate leaves out its 58 weekly samples, taken on another plan (Pro)\", or \"d: the rate leaves out its 58 weekly samples, since none records a plan and its usage now gives none\". Then G's shape is the one shape for left-out samples, and the inline form stays for the one reason that predict writes itself.\nWith A and F changed this way, every string is signed. Resend any that move in the build.",
+      "re": "2026-11-17 07:32Z",
+      "fyi": false,
+      "recorded_at": "2026-11-17T07:34:08.377Z"
     }
   ],
   "handled": [
@@ -627,6 +654,11 @@
       "id": "01M7M36R5934SEQ1H5W5000GC6",
       "sender": "vc",
       "handled_at": "2026-11-17T06:31:34.302Z"
+    },
+    {
+      "id": "01M7M6Q470RJ4CW94KT6F1SWFD",
+      "sender": "cc",
+      "handled_at": "2026-11-17T07:34:39.348Z"
     }
   ]
 }

@@ -6,19 +6,19 @@ session_id: 2383b046-340f-4fb4-ad39-d1ae912ebf62
 heartbeat_at: 2026-11-17 07:21Z
 status: active
 focus: ""
-claims: []
+claims: [ISSUE:0011]
 ---
 
 # Interface Claude (ic)
 
 ## DOING
 
-_(none)_
+- ISSUE:0011 (low): install says nothing while herdr-app check runs. On vc's go of 2026-11-17, for the next release: one worktree off main's tip (/Users/matts/Devel/scratch/ccusage-ic/wt-issue-0011, branch ic/ISSUE-0011) and one Desk cargo slot, red then green. src/herdr.rs: a line on stderr before the check; the wait bounded by one constant (5m), with a check past it reported as not checked (exit 0); the bounded wait on std alone, with unit tests against sleep and sh; a CLI test at the end of tests/cli.rs, so that no AT row moves. RECIPE.md's Watch out, README's Herdr section and a CHANGELOG line under the next release. cc's ISSUE:0010 unit also changes CHANGELOG.md, so the second to land rebases onto the first. Then the hand-over to vc.
 
 ## TODO
 
-- ccusage herdr install says nothing while herdr-app check runs, and the check can take minutes: on hv's install (vc, 2026-11-13) it took about two, because Herdr runs it as a background GUI job, so install looked hung. check in src/herdr.rs runs Command::output() with no bound. The plan went to vc in words after 0.1.10's publish (2026-11-17), as vc asked: a line on stderr before the check; the wait bounded by one named constant, with a check past it reported as not checked (exit 0) and a failed check still exit 1; the bounded wait a small std-only function, unit-tested against sleep; RECIPE.md, README and the CHANGELOG to match. It is built in the next release, on vc's go, in one worktree and one Desk cargo slot. (edited)
 - Claude Usage PR #18 (https://github.com/richhickson/claudecodeusage/pull/18), open against main at 52b846a, on hv's decisions 12 and 14: any change review asks for comes to ic through vc, and hv reads any new PR text first. The local branch fix/follow-login-changes stays in hv's fork, /Users/matts/Devel/forks/claudecodeusage, for that, and goes once the PR is merged or closed. The fork's checkout and its other branches are hv's; leave them be.
+- cc's ISSUE:0010 strings (vc's word, 2026-11-17): ic signed them on 2026-11-17 with two changes, A (the refusal for a seated profile with no email) and F (left-out samples go on a line of their own after any reason but another plan's allowance), in ic's reply to cc's message of 07:32Z. cc resends any string that moves in its build, and ic signs each one before cc's hand-over.
 
 ## Holds
 

@@ -1,0 +1,15 @@
+{
+  "id": "01M7M6WFFXR6ZXT6GZZBFCJK57",
+  "ts": "2026-11-17T07:35:01.373Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ISSUE:0011 (low): install says nothing while herdr-app check runs. On vc's go of 2026-11-17, for the next release: one worktree off main's tip (/Users/matts/Devel/scratch/ccusage-ic/wt-issue-0011, branch ic/ISSUE-0011) and one Desk cargo slot, red then green. src/herdr.rs: a line on stderr before the check; the wait bounded by one constant (5m), with a check past it reported as not checked (exit 0); the bounded wait on std alone, with unit tests against sleep and sh; a CLI test at the end of tests/cli.rs, so that no AT row moves. RECIPE.md's Watch out, README's Herdr section and a CHANGELOG line under the next release. cc's ISSUE:0010 unit also changes CHANGELOG.md, so the second to land rebases onto the first. Then the hand-over to vc."
+  }
+}

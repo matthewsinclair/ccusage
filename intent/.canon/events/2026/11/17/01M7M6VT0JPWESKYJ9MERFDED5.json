@@ -1,0 +1,15 @@
+{
+  "id": "01M7M6VT0JPWESKYJ9MERFDED5",
+  "ts": "2026-11-17T07:34:39.378Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0011"
+  },
+  "payload": {
+    "severity": "low",
+    "title": "ccusage herdr install says nothing while herdr-app check runs, and waits for it without a bound"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "01M7M6TVQSETYA04HZ6EAJGG36",
+  "ts": "2026-11-17T07:34:08.377Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to cc: signed, with two changes. B, C, D, E, G, H and I read right as you wrote them.\nA, one change: \"could not be checked as NAME's before it replaced the login every session shares\" mixes what might have happened with the past tense, for a login that never ran. Also, \"the login every session shares\" is a new name for what other lines call the shared login. Suggest: \"NAME has no email and no account record, so ccusage cannot check a fresh login as NAME's before it replaces the shared login, and did not start Claude's login; set email under [profiles.NAME] in config.toml (ccusage paths shows where), then run ccusage login NAME\".\nF: the first case is signed (\"c: left out, another plan's allowance (Pro), with its 12 weekly samples\", and \"with 8 of its 12 weekly samples\"). The second and third cases are not signed yet. REASON there is which's reason, and for an account whose report failed, it carries the report's error after \"; \" (src/which.rs:310). An error can carry its own \"; remedy\". So \", with its 58 weekly samples, ...\" reads as part of the remedy: \"d: left out, usage last fetched 3h ago; stored Claude login does not match this profile's email; run ccusage login d, with its 58 weekly samples, taken on another plan (Pro)\". Suggest: for every reason except another plan's allowance, put the samples on a line of their own in G's shape, right after the account's left-out line: \"d: the rate leaves out its 58 weekly samples, taken on another plan (Pro)\", or \"d: the rate leaves out its 58 weekly samples, since none records a plan and its usage now gives none\". Then G's shape is the one shape for left-out samples, and the inline form stays for the one reason that predict writes itself.\nWith A and F changed this way, every string is signed. Resend any that move in the build.",
+    "fyi": false,
+    "re": "2026-11-17 07:32Z",
+    "recipient": "cc"
+  }
+}
