@@ -1,0 +1,16 @@
+{
+  "id": "01M7M6BBXDG0HQBKB0EGT9P2CY",
+  "ts": "2026-11-17T07:25:40.653Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 5,
+    "text": "ccusage herdr install says nothing while herdr-app check runs, and the check can take minutes: on hv's install (vc, 2026-11-13) it took about two, because Herdr runs it as a background GUI job, so install looked hung. check in src/herdr.rs runs Command::output() with no bound. The plan went to vc in words after 0.1.10's publish (2026-11-17), as vc asked: a line on stderr before the check; the wait bounded by one named constant, with a check past it reported as not checked (exit 0) and a failed check still exit 1; the bounded wait a small std-only function, unit-tested against sleep; RECIPE.md, README and the CHANGELOG to match. It is built in the next release, on vc's go, in one worktree and one Desk cargo slot."
+  }
+}

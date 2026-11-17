@@ -1,0 +1,17 @@
+{
+  "id": "01M7M6B66R6YXHKYX3EMYFJ845",
+  "ts": "2026-11-17T07:25:34.808Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc: todo 7, the ways into the ccusage panel from inside Herdr, in words, for you to put to hv. Read from Herdr's own guide (~/.config/herdr-app/AGENTS.md, its Keys and Commands sections) and the installed mods; nothing tried on hv's running window. Each way needs a key in ~/.config/herdr-app/keys.json. That file is a link into Molt-matts (config/herdr-app/keys.json), so the key is hv's line in Molt, never ccusage's (AC-08.1). cmd-shift-u, for one, is free there.\n\n(a) A tab, as ccusage herdr launch opens it, from a key. One line in the global section of keys.json: \"cmd-shift-u\": {\"command\": \"tab.new\", \"args\": {\"name\": \"ccusage\", \"mod\": \"ccusage\"}}. No change to ccusage. Each press opens another tab, as launch does. The macOS menu bar does not show this key, because it shows string actions only.\n\n(b) A pane beside the work, from a key: the same line with {\"command\": \"pane.split\", \"args\": {\"direction\": \"right\", \"mod\": \"ccusage\"}}. No change to ccusage, and the same two limits.\n\n(c) A toggle over the work: \"cmd-shift-u\": \"mod.open:ccusage\". mod.open opens a mod, and a second press closes it. As a string action, its key shows in the menu bar. The mods that open this way, picker and machine-add, give their overlay in mod.json (picker: a popup at the top, 640 wide and 0.8 high). ccusage's mod.json gives none, so it needs one, eg a popup 960 wide to suit the panel's 1.5 scale. That is a change in ccusage's next release, then a look by hv: does a card's dialog open over the popup, and does the popup read well at that size. The guide does not say what mod.open does with a mod that has no overlay entry, and I would not try it on hv's running window.\n\nic recommends (a) now: it changes nothing in ccusage, and it gives what launch gives. Then (c), as one small unit in the next release, if hv wants a glance that comes and goes over the work.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

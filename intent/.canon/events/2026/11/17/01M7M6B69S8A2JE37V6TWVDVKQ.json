@@ -1,0 +1,17 @@
+{
+  "id": "01M7M6B69S8A2JE37V6TWVDVKQ",
+  "ts": "2026-11-17T07:25:34.905Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc: todo 5's plan, ccusage herdr install's silence, for the next release, in words.\nThe fault: install runs herdr-app check with Command::output() and no bound (src/herdr.rs:197), and it says nothing until the check returns. On hv's install of 2026-11-13 the check took about two minutes, because Herdr runs it as a background GUI job, so install looked hung.\nThe change, in src/herdr.rs alone:\n1. Before the check, install writes one line on stderr: what it waits for, and that Herdr can take a minute or two. stdout keeps install's report, as now.\n2. One named constant bounds the wait, eg five minutes, well past the two that hv saw, so it stops only a check that hangs. Past the bound, install stops herdr-app (it kills its child process) and reports the mod as not checked, with the command to check it by hand (herdr-app check DIR). It then exits 0, as it does now when herdr-app is not on PATH. A check that fails is still a failure, with exit 1. Killing the child can leave Herdr's own job running, so install says only that it stopped waiting.\n3. The bounded wait is a small function on std alone (spawn, read the pipes on their own threads, poll try_wait until the deadline), so no new crate. A unit test runs it against sleep with a bound of a fraction of a second, so the suite never waits five minutes. The CLI test of install keeps its stand-in herdr-app.\nDocs: RECIPE.md's Watch out and README's Herdr section say what install prints while it waits and what the bound does, and the CHANGELOG gets a line under the next release.\nOne worktree and one Desk cargo slot, red then green, as before. Where it is tracked (an issue, or a row under ST0002/WP08) is your call. It goes when you say, with whatever else the next release carries.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
