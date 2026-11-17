@@ -13,6 +13,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - `ccusage herdr install` says on stderr that it is waiting while `herdr-app check` runs, which Herdr does as a background job that can take a minute or two, and stops waiting after five minutes, reporting the mod as not checked, with the command to check it by hand. Before, it said nothing until the check returned, and waited with no bound (ISSUE:0011).
+- `which`, `predict` and the dashboard say how many running Claude sessions read a login other than the shared config's, so do not follow a switch, in the words `doctor` and the remedies use. `doctor`'s warning for such a session names the variable to unset, and its finding of two logins names the profile it leaves with one. `predict` says what the rate leaves out of an account's samples once, after another plan's allowance or on a line of its own, and gives a fall in usage in durations, as its other lines give times (ISSUE:0010).
+
+### Fixed
+
+- `predict` no longer lists an account it projects among those left out, in its text or in `--json`'s `left_out`, when the rate leaves out some of that account's samples, as after a change of plan (ISSUE:0010).
+- In shared mode, `ccusage login NAME` of the active profile, when the profile has neither an email nor an account record, is refused before Claude's login runs and says to set `email` under `[profiles.NAME]`: a fresh login could not be checked as the profile's own, and before, any account that signed in twice was seated. A renewed login that turns out to be another account's gets usage's remedy rather than a bare refusal. A running session is matched to a profile's store as Claude Code reaches it: on macOS by the Keychain item, which another Unicode spelling of the path names too, and elsewhere through the filesystem, by a symlink or a path relative to the session's directory. A switch whose incoming login cannot be verified is refused after one check, not two (ISSUE:0010).
 
 ## [0.1.10] - 2026-11-17
 

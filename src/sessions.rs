@@ -61,10 +61,22 @@ impl Named {
   }
 }
 
-/// The form `dir` names its store by on this platform, besides its path (`Named`).
+/// The form `dir` names its store by on macOS, besides its path (`Named`): the Keychain
+/// item it names, which Claude Code hashes from the variable's value as written, in NFC,
+/// resolving nothing. So another Unicode spelling of a path names its item, while a
+/// symlink or a relative path names another.
+#[cfg(target_os = "macos")]
+fn form(dir: &Path, _cwd: impl FnOnce() -> Option<String>) -> Option<String> {
+  Some(crate::keychain::service(dir))
+}
+
+/// The form `dir` names its store by off macOS, besides its path (`Named`): the
+/// directory the filesystem reaches from it, where Claude Code reads the credentials
+/// file. So a symlink, or a relative path from the session's working directory, reaches
+/// the same file.
+#[cfg(not(target_os = "macos"))]
 fn form(dir: &Path, cwd: impl FnOnce() -> Option<String>) -> Option<String> {
-  let _ = (dir, cwd);
-  None
+  reached(dir, cwd).map(|path| path.to_string_lossy().into_owned())
 }
 
 /// The directory the filesystem reaches from `dir`, through any symlink, and from `cwd`
@@ -72,8 +84,12 @@ fn form(dir: &Path, cwd: impl FnOnce() -> Option<String>) -> Option<String> {
 /// not exist, or a relative one whose working directory is not known.
 #[cfg(any(test, not(target_os = "macos")))]
 fn reached(dir: &Path, cwd: impl FnOnce() -> Option<String>) -> Option<PathBuf> {
-  let _ = (dir, cwd);
-  None
+  let dir = if dir.is_relative() {
+    Path::new(&cwd()?).join(dir)
+  } else {
+    dir.to_owned()
+  };
+  dir.canonicalize().ok()
 }
 
 /// `session` with the stores its directories name (`Stores`), its working directory read
@@ -306,7 +322,7 @@ fn reading(name: &str, pinned: &[&Session]) -> String {
 pub(crate) fn remedy(name: &str, pinned: Option<&[&Session]>) -> String {
   match pinned {
     None => format!(
-      "the running Claude sessions could not be listed, so first restart any started with {LOGIN_DIR} naming {name}'s own store from a shell without it, and only then run ccusage login {name}"
+      "the running Claude sessions could not be listed, so first restart, from a shell without {LOGIN_DIR} (unset {LOGIN_DIR}), any Claude session started with it naming {name}'s own store, and only then run ccusage login {name}"
     ),
     Some([]) => format!("{}, so run ccusage login {name}", reading(name, &[])),
     Some(pinned) => format!(
@@ -324,8 +340,8 @@ pub(crate) fn unchecked(what: &str) -> String {
 }
 
 /// What which, predict and the TUI say while running sessions read a login other than the
-/// shared config's (`drift`), so that a switch does not move them: how many, and that
-/// doctor names them. None when every one follows. Pure.
+/// shared config's (`drift`), so do not follow a switch: how many, and that doctor names
+/// them, in the words doctor and the remedies use. None when every one follows. Pure.
 pub(crate) fn unfollowing(sessions: &[Session], shared: &Named) -> Option<String> {
   match sessions
     .iter()
@@ -334,11 +350,11 @@ pub(crate) fn unfollowing(sessions: &[Session], shared: &Named) -> Option<String
   {
     0 => None,
     1 => Some(
-      "1 running Claude session is pinned to a login other than the shared config's, so a switch does not move it; ccusage doctor names it"
+      "1 running Claude session reads a login other than the shared config's, so it does not follow a switch; ccusage doctor names it"
         .to_owned(),
     ),
     count => Some(format!(
-      "{count} running Claude sessions are pinned to logins other than the shared config's, so a switch does not move them; ccusage doctor names them"
+      "{count} running Claude sessions read a login other than the shared config's, so they do not follow a switch; ccusage doctor names them"
     )),
   }
 }

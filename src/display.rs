@@ -505,7 +505,7 @@ fn page_lines(
   }
 }
 
-/// The TUI's page with `pinned`, how many running sessions a switch does not move, said
+/// The TUI's page with `pinned`, how many running sessions do not follow a switch, said
 /// under the overview's title, since it qualifies the account the next marker names; the
 /// details page leaves it out. Pure.
 fn noted(mut frame: Vec<Line>, detail: bool, pinned: Option<&str>) -> Vec<Line> {
@@ -646,8 +646,10 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
   };
   let color = !no_color && std::env::var_os("NO_COLOR").is_none();
   let cap = store.map_or(crate::which::DEFAULT_CAP, |store| store.config.cap());
-  // How many running sessions a switch does not move, in shared mode: read again when a
-  // fetch ends and after a switch, not at every paint, since it lists every process.
+  // How many running sessions do not follow a switch, in shared mode: read again when a
+  // fetch ends and after a switch, not at every paint, since it lists every process. A
+  // shared config that cannot be read is each account's row's to say, as it does, and
+  // leaves nothing to count against (ISSUE:0010 item 5).
   let pinned_now = || {
     store
       .and_then(|store| store.shared_dir().ok().flatten())

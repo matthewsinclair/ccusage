@@ -126,7 +126,7 @@ fn where_logins_are(
       (true, Holds::Login, Holds::Login) => (
         "FAIL",
         format!(
-          "{name} has two logins, the shared config's and another in its own store, so a switch away from {name} is refused; {}, which leaves it one login",
+          "{name} has two logins, the shared config's and another in its own store, so a switch away from {name} is refused; {}, which leaves {name} one login",
           remedy()
         ),
       ),
@@ -560,13 +560,15 @@ pub fn run(path: &Path) -> Result<()> {
 
 /// Doctor's warning for `session`, which `drift` holds to a login other than the shared
 /// config's, so it does not follow a switch: which session, since when and in what
-/// directory (`cwd`), what holds it, and the restart that ends it. Pure.
+/// directory (`cwd`), what holds it, and the restart that ends it, from a shell without
+/// that variable, named as the remedies name it. Pure.
 fn unfollowed(session: &Session, drift: &Drift, cwd: Option<&str>) -> String {
   format!(
-    "Claude session {} (started {}, in {}) runs with {drift}, so it does not follow a switch; restart it from a shell without it",
+    "Claude session {} (started {}, in {}) runs with {drift}, so it does not follow a switch; restart it from a shell without {variable} (unset {variable})",
     session.pid,
     session.started.as_deref().unwrap_or("at an unknown time"),
-    cwd.unwrap_or("an unknown directory")
+    cwd.unwrap_or("an unknown directory"),
+    variable = drift.variable
   )
 }
 

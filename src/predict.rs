@@ -98,10 +98,15 @@ pub struct Projection {
   /// Each account on that plan that the rule can use now, in the order it ranks them
   /// now, projected; none with too little history.
   pub accounts: Vec<Projected>,
-  /// The accounts left out of the arithmetic, each with why: those on another plan, and
-  /// those the rule cannot use now, so any whose usage gives no weekly window, as a free
-  /// plan's does.
+  /// The accounts left out of the arithmetic, each with why: those on another plan, with
+  /// how many of their weekly samples the rate leaves out, and those the rule cannot use
+  /// now, so any whose usage gives no weekly window, as a free plan's does. An account
+  /// the rule projects is never one of them.
   pub left_out: Vec<(String, String)>,
+  /// Every other account whose weekly samples the rate leaves out, with what predict
+  /// says of them (`samples_left_out`), apart from any reason it is left out, since such
+  /// a reason can end in a remedy (`samples_of`).
+  pub samples: Vec<(String, String)>,
   /// Each weekly window whose newest sample is below an earlier one (`falls`).
   pub falls: Vec<Fall>,
 }
@@ -160,6 +165,16 @@ impl Projection {
       .rate
       .per_hour
       .map(|_| self.accounts.iter().map(|account| account.unused).sum())
+  }
+
+  /// What predict says of `name`'s weekly samples that the rate leaves out, when it says
+  /// it apart from `name`'s other reasons (`samples`).
+  pub fn samples_of(&self, name: &str) -> Option<&str> {
+    self
+      .samples
+      .iter()
+      .find(|(account, _)| account.as_str() == name)
+      .map(|(_, said)| said.as_str())
   }
 }
 
@@ -295,20 +310,29 @@ struct Counted<'a> {
   latest: Option<(i64, Option<&'a Plan>)>,
 }
 
-/// What predict says of an account's weekly samples that the rate leaves out: how many,
-/// and the plan the latest of them was taken on, or that none can be told. Pure.
-fn samples_left_out(counted: &Counted) -> String {
-  let which = if counted.left == counted.weekly {
+/// How many of an account's weekly samples the rate leaves out, in words. Pure.
+fn which_samples(counted: &Counted) -> String {
+  if counted.left == counted.weekly {
     format!("its {} weekly samples", counted.left)
   } else {
     format!("{} of its {} weekly samples", counted.left, counted.weekly)
-  };
+  }
+}
+
+/// What predict says of an account's weekly samples that the rate leaves out, apart from
+/// any reason the account is left out: how many, and the other plan the latest of them
+/// was taken on, or that none can be told. Pure.
+fn samples_left_out(counted: &Counted) -> String {
+  let which = which_samples(counted);
   match counted
     .latest
     .and_then(|(_, plan)| plan)
     .filter(|plan| **plan != Plan::default())
   {
-    Some(plan) => format!("the rate leaves out {which}, on {}", described(plan)),
+    Some(plan) => format!(
+      "the rate leaves out {which}, taken on another plan ({})",
+      described(plan)
+    ),
     None => {
       format!("the rate leaves out {which}, since none records a plan and its usage now gives none")
     }
@@ -400,6 +424,7 @@ pub fn project(
     }
   }
   let mut left_out = Vec::new();
+  let mut elsewhere = Vec::new();
   let mut accounts = Vec::new();
   for account in &choice.accounts {
     match (account.rank, weekly_reset(account)) {
@@ -419,9 +444,17 @@ pub fn project(
       }),
       (Some(_), Some(_)) => {
         let other = plan_of(reports, &account.name).cloned().unwrap_or_default();
+        // The samples the rate leaves out go with the plan that leaves the account out,
+        // said once.
+        let with = by_account
+          .get(account.name.as_str())
+          .filter(|counted| counted.left > 0)
+          .map(|counted| format!(", with {}", which_samples(counted)))
+          .unwrap_or_default();
+        elsewhere.push(account.name.as_str());
         left_out.push((
           account.name.clone(),
-          format!("another plan's allowance ({})", described(&other)),
+          format!("another plan's allowance ({}){with}", described(&other)),
         ));
       }
       (Some(_), None) => {
@@ -430,21 +463,20 @@ pub fn project(
       (None, _) => left_out.push((account.name.clone(), account.reason.clone())),
     }
   }
-  // Every account whose weekly samples the rate leaves out is named, with how many,
-  // beside any other reason it is left out.
-  for (name, counted) in by_account.iter().filter(|(_, counted)| counted.left > 0) {
-    let note = samples_left_out(counted);
-    match left_out.iter_mut().find(|(left, _)| left == name) {
-      Some((_, why)) => *why = format!("{why}; {note}"),
-      None => left_out.push(((*name).to_owned(), note)),
-    }
-  }
+  // Every other account whose weekly samples the rate leaves out is named, with how
+  // many and why, projected or not.
+  let apart: Vec<(String, String)> = by_account
+    .iter()
+    .filter(|(name, counted)| counted.left > 0 && !elsewhere.contains(*name))
+    .map(|(name, counted)| ((*name).to_owned(), samples_left_out(counted)))
+    .collect();
   let Some(per_hour) = rate.per_hour else {
     return Ok(Projection {
       plan,
       rate,
       accounts: Vec::new(),
       left_out,
+      samples: apart,
       falls,
     });
   };
@@ -503,6 +535,7 @@ pub fn project(
       })
       .collect(),
     left_out,
+    samples: apart,
     falls,
   })
 }

@@ -178,17 +178,32 @@ pub fn none(store: &Store) -> Result<Option<String>> {
 /// `ccusage login NAME`: Claude's login in `name`'s own store, and, for the profile
 /// seated in shared mode, that fresh login seated in place of the old one, which empties
 /// its own store again. So for the seated profile it is refused before Claude's login
-/// runs while running sessions read their login from that store, and the account its
-/// own record names is read first, since Claude's login rewrites that record.
+/// runs when there is nothing to check the fresh login against (`uncheckable`), or while
+/// running sessions read their login from that store; and the account its own record
+/// names is read first, since Claude's login rewrites that record.
 pub fn login(store: &Store, name: &str) -> Result<()> {
   let before = if store.shared_dir()?.is_some() && seat::seated(store)?.as_deref() == Some(name) {
+    let before = shared::profile_account(store, name)?;
+    if before.is_none() && store.profile(name)?.email.is_none() {
+      return Err(uncheckable(name).into());
+    }
     unpinned(store, name, &format!("ccusage login {name}"))?;
-    shared::profile_account(store, name)?
+    before
   } else {
     None
   };
   auth::login(store, name)?;
   reseat(store, name, before.as_ref())
+}
+
+/// Why `ccusage login NAME` is refused for the seated profile `name` when it has no email
+/// and no account record: a fresh login could not be checked as its own before it
+/// replaced the shared login, so the record Claude's login wrote would decide alone, and
+/// any account signed in twice would be seated. An email gives the check. Pure.
+fn uncheckable(name: &str) -> String {
+  format!(
+    "{name} has no email and no account record, so ccusage cannot check a fresh login as {name}'s before it replaces the shared login, and did not start Claude's login; set email under [profiles.{name}] in config.toml (ccusage paths shows where), then run ccusage login {name}"
+  )
 }
 
 /// Refuses, before anything moves, `what`, a move that would take `name`'s login out of
@@ -319,8 +334,8 @@ fn finish(store: &Store) -> Result<()> {
 
 /// Make `request`, with its outgoing login verified first, and then its incoming one.
 /// Claude Code may renew either login between the check and the move's locks, which the
-/// move refuses as unverified or foreign, so both are verified once more and the move
-/// tried again.
+/// move refuses as unverified or foreign; when the login refused was one verified here,
+/// both are verified once more and the move tried again (`retries`).
 fn relocate(store: &Store, request: &Move) -> Result<()> {
   let places = seat::places(store, request)?;
   let verify = || -> Result<(Option<String>, Option<String>)> {
@@ -355,10 +370,15 @@ fn relocate(store: &Store, request: &Move) -> Result<()> {
 }
 
 /// Whether `relocate` tries its move again after `refusal`, given whether the outgoing
-/// and the incoming login were each verified (`checked`). Pure.
-fn retries(refusal: Option<&Refusal>, checked: (bool, bool)) -> bool {
-  let _ = checked;
-  matches!(refusal, Some(Refusal::Unverified(_) | Refusal::Foreign(_)))
+/// and the incoming login were each verified (`checked`): only when a renewal between
+/// the check and the move's locks can explain it, so for a login that was verified. A
+/// login that could not be verified at all is refused after one check. Pure.
+fn retries(refusal: Option<&Refusal>, (outgoing, incoming): (bool, bool)) -> bool {
+  match refusal {
+    Some(Refusal::Unverified(_)) => outgoing,
+    Some(Refusal::Foreign(_)) => incoming,
+    _ => false,
+  }
 }
 
 #[cfg(test)]

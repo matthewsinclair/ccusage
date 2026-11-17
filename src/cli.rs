@@ -517,8 +517,11 @@ fn shell_note(store: &Store) {
 }
 
 /// Says on stderr, for which and predict, how many running Claude sessions read a login
-/// other than the shared config's, so that a switch does not move them; nothing when
-/// none does, and nothing outside shared mode, where no switch moves a running session.
+/// other than the shared config's, so do not follow a switch; nothing when none does,
+/// and nothing outside shared mode, where no switch moves a running session. A shared
+/// config that cannot be read is not this note's to report: every account's report says
+/// so on the same run, and with no shared config there is nothing to count the sessions
+/// against (ISSUE:0010 item 5).
 fn sessions_note(store: &Store) {
   if let Ok(Some(shared)) = store.shared_dir()
     && let Some(note) = crate::sessions::unfollowing_now(&shared)

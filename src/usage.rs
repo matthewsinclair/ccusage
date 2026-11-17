@@ -507,10 +507,14 @@ impl std::fmt::Display for Mismatch {
 impl std::error::Error for Mismatch {}
 
 /// What usage says when a renewed login's identity could not be checked as its
-/// profile's, given `failure`, the check's own error. Pure.
+/// profile's, given `failure`, the check's own error: a renewed login that is another
+/// account's is the `Mismatch` it is, so its report gives the remedy; any other failure,
+/// such as the network's, withholds usage with no more said. Pure.
 fn renewal_unverified(failure: Option<crate::Error>) -> crate::Error {
-  let _ = failure;
-  "could not verify the renewed login matches this profile; usage withheld".into()
+  match failure {
+    Some(failure) if failure.is::<Mismatch>() => failure,
+    _ => "could not verify the renewed login matches this profile; usage withheld".into(),
+  }
 }
 
 fn check_identity(value: &serde_json::Value, expected: &str) -> Result<()> {
@@ -544,7 +548,11 @@ fn verify_identity_at(
 /// takes it out of the shared store. A usage cache that verified this exact token
 /// against `name`'s email while the login lived in `dir` is enough. Otherwise one call
 /// to the profile endpoint names the account, which must have `name`'s email or, with
-/// none configured, be the account `name`'s own `.claude.json` records.
+/// none configured, be the account `name`'s own `.claude.json` records. A token that is
+/// expired or about to expire is renewed first, where it lives and under Claude Code's
+/// locks, as Claude Code itself renews it, since the endpoint cannot check an expired
+/// one: so a login refused here may have been renewed in place, but none has moved
+/// (ISSUE:0010 item 3).
 pub(crate) fn verified_token(store: &Store, name: &str, dir: &Path) -> Result<String> {
   verified_token_at(&Client::default().agent, PROFILE_ENDPOINT, store, name, dir)
 }

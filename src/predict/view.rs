@@ -15,8 +15,11 @@ pub const VERSION: u32 = 1;
 
 /// The text: what the rate rests on, then each account's percent now, at its reset and
 /// unused there, then the total and the plan it is counted on; or, with too little
-/// history, a line saying so. The accounts left out follow, each with why, and then each
-/// weekly window whose usage fell. The JSON gives no falls: its shape is ic's to change.
+/// history, a line saying so. Then what the rate leaves out of the samples of each
+/// account not left out, the accounts left out, each with why and then with what the
+/// rate leaves out of its samples, on a line of its own, since a reason can end in a
+/// remedy, and then each weekly window whose usage fell. The JSON gives no falls: its
+/// shape is ic's to change.
 pub fn text(projection: &Projection, now: i64) -> String {
   let rate = &projection.rate;
   let history = format!(
@@ -54,38 +57,64 @@ pub fn text(projection: &Projection, now: i64) -> String {
       "Too little history to project: {history}; predict needs a day of it, with some use in it."
     )),
   }
-  lines.extend(
+  let said = |name: &str, what: &str| format!("{}: {what}", crate::clean(name));
+  let left = |name: &str| {
     projection
       .left_out
       .iter()
-      .map(|(name, why)| format!("{}: left out, {why}", crate::clean(name))),
+      .any(|(account, _)| account.as_str() == name)
+  };
+  lines.extend(
+    projection
+      .samples
+      .iter()
+      .filter(|(name, _)| !left(name.as_str()))
+      .map(|(name, apart)| said(name.as_str(), apart.as_str())),
   );
-  lines.extend(projection.falls.iter().map(fell));
+  for (name, why) in &projection.left_out {
+    lines.push(said(name.as_str(), format!("left out, {why}").as_str()));
+    lines.extend(
+      projection
+        .samples_of(name)
+        .map(|apart| said(name.as_str(), apart)),
+    );
+  }
+  lines.extend(projection.falls.iter().map(|fall| fell(fall, now)));
   lines.join("\n")
 }
 
-/// A weekly window whose usage fell, in words: from what to what, when, in which window,
-/// and that the figures are the usage endpoint's own.
-fn fell(fall: &Fall) -> String {
-  let at = |seconds: i64| stamp_unix(seconds).unwrap_or_else(|_| seconds.to_string());
+/// A weekly window whose usage fell, in words: from what to what, how long before `now`,
+/// in which window, and that the figures are the usage endpoint's own.
+fn fell(fall: &Fall, now: i64) -> String {
+  let ago = |seconds: i64| format!("{} ago", display::duration(now - seconds));
   let window = fall
     .resets_at
-    .map(|reset| format!(", in the window ending {}", at(reset)))
+    .map(|reset| {
+      if reset > now {
+        format!(
+          ", in the window that resets in {}",
+          display::duration(reset - now)
+        )
+      } else {
+        format!(", in the window that reset {}", ago(reset))
+      }
+    })
     .unwrap_or_default();
   format!(
-    "{}: weekly usage fell from {}% at {} to {}% at {}{window}, as the usage endpoint reported it; the rate counts a fall as no use",
+    "{}: weekly usage fell from {}% {} to {}% {}{window}, as the usage endpoint reported it; the rate counts a fall as no use",
     crate::clean(&fall.account),
     whole(fall.earlier.0),
-    at(fall.earlier.1),
+    ago(fall.earlier.1),
     whole(fall.newest.0),
-    at(fall.newest.1)
+    ago(fall.newest.1)
   )
 }
 
 /// The JSON, version 1: the plan counted, the rate and what it rests on, each account's
-/// projection, the total unused, and the accounts left out. With too little history the
-/// rate's percent_per_hour and the total are null, and no account is projected; the plan
-/// is null only when there is no account at all.
+/// projection, the total unused, and the accounts left out, each with why, and then with
+/// what the rate leaves out of its samples. With too little history the rate's
+/// percent_per_hour and the total are null, and no account is projected; the plan is null
+/// only when there is no account at all.
 pub fn json(projection: &Projection, now: i64, cap: f64) -> Result<String> {
   let document = Document {
     version: VERSION,
@@ -106,7 +135,13 @@ pub fn json(projection: &Projection, now: i64, cap: f64) -> Result<String> {
     left_out: projection
       .left_out
       .iter()
-      .map(|(name, reason)| LeftOut { name, reason })
+      .map(|(name, why)| LeftOut {
+        name,
+        reason: match projection.samples_of(name) {
+          Some(apart) => format!("{why}; {apart}"),
+          None => why.clone(),
+        },
+      })
       .collect(),
   };
   Ok(serde_json::to_string_pretty(&document)?)
@@ -153,5 +188,5 @@ struct Entry<'a> {
 #[derive(Serialize)]
 struct LeftOut<'a> {
   name: &'a str,
-  reason: &'a str,
+  reason: String,
 }
