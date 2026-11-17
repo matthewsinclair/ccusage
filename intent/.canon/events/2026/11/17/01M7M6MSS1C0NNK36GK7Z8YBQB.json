@@ -1,0 +1,15 @@
+{
+  "id": "01M7M6MSS1C0NNK36GK7Z8YBQB",
+  "ts": "2026-11-17T07:30:49.762Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.edit",
+  "subject": {
+    "type": "issue",
+    "id": "0010"
+  },
+  "payload": {
+    "bytes": 7068,
+    "title": "Nits from vc's reads of ISSUE:0008's two units and ic's read of its landed text, for a later release"
+  }
+}

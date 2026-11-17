@@ -6,7 +6,7 @@ session_id: edfada23-dc96-4231-9b17-658f458b4261
 heartbeat_at: 2026-11-17 07:19Z
 status: active
 focus: ""
-claims: []
+claims: [ISSUE:0010]
 ---
 
 # Control Claude (cc)

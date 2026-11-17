@@ -8,7 +8,9 @@
     "heartbeat_at": "2026-11-17T07:19:30.216Z",
     "status": "active",
     "focus": "",
-    "claims": [],
+    "claims": [
+      "ISSUE:0010"
+    ],
     "recorded_at": "2026-11-11T17:55:10.738Z",
     "migrated_at": "2026-11-11T17:55:10.738Z"
   },
