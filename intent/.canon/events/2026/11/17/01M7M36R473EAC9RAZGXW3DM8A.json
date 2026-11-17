@@ -1,0 +1,15 @@
+{
+  "id": "01M7M36R473EAC9RAZGXW3DM8A",
+  "ts": "2026-11-17T06:30:43.591Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's ruling of 2026-11-17, given to vc in the live channel (vc's window, read at 06:30Z by vc's date -u), in hv's wording, recorded by vc as mediator. hv asked, during the Herdr look: \"Is it possible to: 1. use a different (larger?) font for the ccusage panel (only) 2. add a 'herdr launch' verb to ccusage that runs (something like: \"herdr-app do tab.new '{\"name\":\"ccusage\",\"mod\":\"ccusage\"}'\") How easy/hard is that? For #1, the text is too small here [hv's screenshot]. It'd be better if it was substantially larger.\" vc answered that both are small, ic's, one unit and one Desk slot, riding 0.1.10 without moving the cut. hv: \"Do it\". vc's reading: ic builds both now, for 0.1.10: the ccusage panel's text, bars and spacing about one and a half times larger, in the mod alone; and ccusage herdr launch, which opens the panel as a tab of its own; hv's look is then made again from ic's build, and preview.png is taken from it."
+  }
+}
