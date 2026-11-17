@@ -1,9 +1,9 @@
 ---
 st_id: ST0003
 title: Live account switching: ccusage use moves the active login into the shared config, and running sessions follow
-status: WIP
+status: Completed
 created: 2026-11-13
-completed:
+completed: 2026-11-17
 ---
 
 # ST0003: Live account switching: ccusage use moves the active login into the shared config, and running sessions follow
