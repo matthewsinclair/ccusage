@@ -83,6 +83,14 @@
       "text": "hv's ruling of 2026-11-16, given to vc in the live channel (vc's window), in hv's wording, recorded by vc as mediator. On the tap's CI change (brew style and brew audit --strict back on in matthewsinclair/homebrew-ccusage's test.yml, dc's commit 434d105 on the tap's main cf77911, under hv's ISSUE:0004 ruling 3), vc put three options: OK the push, apply the patch by hand, or leave it until after the live repair. hv: \"do it now\". vc's reading: the first option, so dc pushes 434d105 to the tap now. vc's acts the same hour: the word passed to dc live and in its inbox; once the tap's CI is green on both runners, vc lands the matching line of docs/releasing.md (b3ca1c1 on dc/tap-ci-docs).",
       "state": "live",
       "recorded_at": "2026-11-16T17:38:55.606Z"
+    },
+    {
+      "node": "hv",
+      "kind": "decision",
+      "seq": 10,
+      "text": "hv's word of 2026-11-17, relayed to vc by devbin-vc, which holds the Desk, in a live message stamped 03:54Z by devbin-vc; the wording is devbin-vc's relay, recorded by vc as mediator: \"bank, fold and hold. hv has to move. Bank anything unbanked, localfold, then hold and wait for instructions. The Desk is held (01M7KT90EE42BZ2FN273ZWNTMJ): no grants until hv's next word. A run already granted finishes to its END.\" vc's acts the same hour: vc was banked and folded already and holds; the word passed to cc and dc, live and in their inboxes. vc's reading: ISSUE:0008's live repair, which decision 8 set for first thing on 2026-11-17, waits for hv's next word, and so do vc's read of cc's unit and anything that needs a Desk slot.",
+      "state": "live",
+      "recorded_at": "2026-11-17T03:55:50.833Z"
     }
   ],
   "sent": [],

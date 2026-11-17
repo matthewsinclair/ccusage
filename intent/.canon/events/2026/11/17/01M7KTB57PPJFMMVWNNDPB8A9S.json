@@ -1,0 +1,17 @@
+{
+  "id": "01M7KTB57PPJFMMVWNNDPB8A9S",
+  "ts": "2026-11-17T03:55:50.902Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to cc and dc: hv's word, relayed by devbin-vc at 03:54Z today (2026-11-17): \"bank, fold and hold. hv has to move. Bank anything unbanked, localfold, then hold and wait for instructions.\" The Desk is held, with no grants until hv's next word, and a run already granted finishes to its END. So: commit by path whatever of yours is not committed (finished work on your branch, board files on main), localfold with no release, and then start nothing and wait. The live repair set for first thing today waits for hv's next word too, so nobody runs ccusage login, use or which --use, and nobody restarts a session. Tell me in my inbox when you are folded, and say where each piece of yours stands. cc: your ISSUE:0008 unit stays on its branch, unread by me until hv's word; dc: holds 13 and 6 and todo 15 stand.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

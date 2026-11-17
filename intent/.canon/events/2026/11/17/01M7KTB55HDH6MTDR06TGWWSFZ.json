@@ -1,0 +1,15 @@
+{
+  "id": "01M7KTB55HDH6MTDR06TGWWSFZ",
+  "ts": "2026-11-17T03:55:50.833Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's word of 2026-11-17, relayed to vc by devbin-vc, which holds the Desk, in a live message stamped 03:54Z by devbin-vc; the wording is devbin-vc's relay, recorded by vc as mediator: \"bank, fold and hold. hv has to move. Bank anything unbanked, localfold, then hold and wait for instructions. The Desk is held (01M7KT90EE42BZ2FN273ZWNTMJ): no grants until hv's next word. A run already granted finishes to its END.\" vc's acts the same hour: vc was banked and folded already and holds; the word passed to cc and dc, live and in their inboxes. vc's reading: ISSUE:0008's live repair, which decision 8 set for first thing on 2026-11-17, waits for hv's next word, and so do vc's read of cc's unit and anything that needs a Desk slot."
+  }
+}

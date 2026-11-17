@@ -3,9 +3,9 @@ node: vc
 name: Validation Claude
 role: validation
 session_id: 5de51c0d-bc8f-4604-a46b-e4b7f7932b2e
-heartbeat_at: 2026-11-16 17:42Z
+heartbeat_at: 2026-11-17 03:55Z
 status: active
-focus: "Folded for hv's compact (2026-11-16), still active. On the bounce: the tap push and the push to local are hv's own commands (todos 9 and 11); cc's ISSUE:0008 hand-over and dc's tap CI report come to vc; the live repair is first thing 2026-11-17 (doing 5, steps in intent/wip.md)"
+focus: "Holding on hv's word of 2026-11-17 (relayed by devbin-vc, 03:54Z): banked, folded, no release. The live repair (doing 5, steps in intent/wip.md) and vc's read of cc's ISSUE:0008 unit (todo 12) wait for hv's next word; the Desk is held"
 claims: []
 ---
 
