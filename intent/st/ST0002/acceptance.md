@@ -56,6 +56,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 - AC-08.1 The Herdr verb writes the mod into a Herdr home, replaces only a copy it wrote that nobody has edited, refuses anything else without `--force`, reports `herdr-app check`'s verdict, and never touches a layout or `keys.json`. -- satisfied: yes (computed)
 - AC-08.2 The TUI re-fetches an account once its data has passed the usage cache's lifetime and no sooner, and a rate-limited account is not asked again before its retry time. -- satisfied: yes (computed)
 - AC-08.3 (non-test) In hv's Herdr the mod, opened as a pane, shows each account's weekly bar, reset, state and the `next` marker from ccusage's own JSON, refreshes by itself, and passes `herdr-app check`. -- satisfied: no
+- AC-08.4 `ccusage herdr launch` opens the panel as a Herdr tab of its own (`herdr-app do tab.new` with the mod) and says so; otherwise it says why not and exits nonzero: no Herdr home, the mod not installed (pointing to `ccusage herdr install`), no `herdr-app` on PATH, or Herdr's own refusal in Herdr's words. -- satisfied: no (computed)
 
 ## Acceptance Tests
 

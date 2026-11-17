@@ -221,6 +221,14 @@
       "state": {
         "is": "unsatisfied"
       }
+    },
+    {
+      "id": "AC-08.4",
+      "text": "`ccusage herdr launch` opens the panel as a Herdr tab of its own (`herdr-app do tab.new` with the mod) and says so; otherwise it says why not and exits nonzero: no Herdr home, the mod not installed (pointing to `ccusage herdr install`), no `herdr-app` on PATH, or Herdr's own refusal in Herdr's words.",
+      "kind": "test",
+      "state": {
+        "is": "computed"
+      }
     }
   ],
   "tests": [
