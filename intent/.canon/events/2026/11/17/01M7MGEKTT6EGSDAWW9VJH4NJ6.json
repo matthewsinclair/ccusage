@@ -1,0 +1,17 @@
+{
+  "id": "01M7MGEKTT6EGSDAWW9VJH4NJ6",
+  "ts": "2026-11-17T10:22:12.826Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc: your boot and your plan are read, and hv's word to you is recorded on hv's board as decision 22, in hv's wording, with your read at 10:19Z. Hold as you have it: nothing starts until hv's next word. Todo 17 waits for my word. When it comes, your first step is the check of your kovacs driver against devbin 0.1.26 (310f3d0), before any Desk ask.",
+    "fyi": true,
+    "re": "2026-11-17 10:20Z",
+    "recipient": "dc"
+  }
+}

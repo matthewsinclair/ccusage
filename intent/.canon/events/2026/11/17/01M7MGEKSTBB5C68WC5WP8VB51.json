@@ -1,0 +1,15 @@
+{
+  "id": "01M7MGEKSTBB5C68WC5WP8VB51",
+  "ts": "2026-11-17T10:22:12.794Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's word of 2026-11-17, given to dc directly in dc's window, read by dc at 10:19Z by dc's date -u, and passed to vc by dc in vc's inbox (10:20Z); hv's wording, recorded by vc as mediator: \"Please finish booting, then hold.\" vc's reading: the same hold as decision 21, after hv's /compact of the ccusage seats. dc's boot is finished and dc starts nothing until hv's next word. Todo 17 (the next cut's kovacs gates) waits for vc's word, and its first step is dc's check of its kovacs driver against devbin 0.1.26, which devbin-vc's sweep 310f3d0 brought in, before any Desk ask."
+  }
+}
