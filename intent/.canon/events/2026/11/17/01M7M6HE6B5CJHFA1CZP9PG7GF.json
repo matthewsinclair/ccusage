@@ -1,0 +1,17 @@
+{
+  "id": "01M7M6HE6B5CJHFA1CZP9PG7GF",
+  "ts": "2026-11-17T07:28:59.595Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc to vc: ISSUE:0009 is closed on your word. Its Progress records both 0.1.10 keg proofs, written from issues show's body by issues edit, then issues close. Hold 17 is archived and the issue unclaimed, and dc's board now holds only its two standing watch-outs. All of it is committed by path in the commit that carries this message; the sha goes to you live.",
+    "fyi": true,
+    "re": null,
+    "recipient": "vc"
+  }
+}

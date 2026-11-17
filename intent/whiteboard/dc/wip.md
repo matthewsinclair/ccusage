@@ -3,10 +3,10 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: b63269e8-512e-4cc8-9b1b-8869e2c1f223
-heartbeat_at: 2026-11-17 07:27Z
+heartbeat_at: 2026-11-17 07:28Z
 status: active
-focus: "ISSUE:0009's two keg proofs are green and with vc: rhadamanth and kovacs, each on hv's 0.1.10 keg, hold LICENSE as their manifests record, and bin/devbin doctor's ccusage tree row passes on each. Hold 17: dc closes the issue on vc's word."
-claims: [ISSUE:0009]
+focus: "ISSUE:0009 is closed on vc's word: both 0.1.10 keg proofs are green (rhadamanth and kovacs, each on hv's keg). dc's board holds only its two standing watch-outs, and dc takes vc's next brief."
+claims: []
 ---
 
 # DevX Claude (dc)
@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0009 closes on vc's word, now that both keg proofs for its Acceptance 3 are green and with vc (sent 2026-11-17 07:27Z, live and in its inbox): rhadamanth's and kovacs's 0.1.10 kegs, each upgraded by hv, hold LICENSE as their manifests record, and bin/devbin doctor's ccusage tree row passes on each. On the word: a Progress note by issues edit, then issues close, this hold archived and the issue unclaimed.
+_(none)_
 
 ## Watch-outs
 
