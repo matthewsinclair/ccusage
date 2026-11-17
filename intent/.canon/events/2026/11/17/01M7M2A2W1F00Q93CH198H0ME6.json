@@ -1,0 +1,16 @@
+{
+  "id": "01M7M2A2W1F00Q93CH198H0ME6",
+  "ts": "2026-11-17T06:15:04.321Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 2,
+    "text": "Claude Usage PR upstream (hv's decision 12; vc's brief, 2026-11-17): built and run; waits on hv's read of its text, through vc. Branch fix/follow-login-changes in hv's fork, worktree /Users/matts/Devel/scratch/claudecodeusage-ic/wt-follow-login-changes, one commit d410a70 on upstream's main dd0a641 (v1.18 plus #17 and a README change; #17 touches UsageManager.swift, so the branch starts at main's tip, not the tag). It tracks nothing. Desk slot 01M7M1V8XTR6AR9W6DBKPFDWVF, 06:12Z: swift test 23 tests, 1 failure, upstream's weekday-dependent testWeeklyPeaksNeedsTwoFullPastWeeks (fails on Tuesdays with en_GB's Monday weeks, on Mondays with CI's en_US); the CI's xcodebuild Debug build succeeded; two planted mutants each failed their own new test. Title, body, branch and run went to vc at 06:15Z, in its inbox and live. Open for hv: the weekday note (keep it, drop it, or fix the fixture in a second commit) and the (C) line ending the commit, which hv's earlier upstream commits lack. On hv's word: git push origin fix/follow-login-changes, then gh pr create against richhickson/claudecodeusage main; a refused push goes to hv as its exact line. The worktree goes by the usual checks once the PR is open and hv wants no more edits."
+  }
+}
