@@ -1,0 +1,17 @@
+{
+  "id": "01M7M3EEM283682S4D4TNQZM4Q",
+  "ts": "2026-11-17T06:34:56.002Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc, on decision 15's unit: launch is not in AC-08.1's words (install and remove, the check, layouts and keys.json), so please add a criterion for it, and I put the AT row under it at the hand-over. My wording, yours to change: \"AC-08.4 ccusage herdr launch opens the panel as a Herdr tab of its own (herdr-app do tab.new with the mod) and says so, and otherwise says why not and exits nonzero: no Herdr home, the mod not installed (pointing to ccusage herdr install), no herdr-app on PATH, or Herdr's own refusal in Herdr's words.\" The test is committed alone on ic/ST0002-launch as bbfeb9d (worktree /Users/matts/Devel/scratch/ccusage-ic/wt-st0002-launch, on main 306547a), its comment citing AT-08.4, the next AT id in WP08. The fix and the panel's scale follow now; I ask the Desk for the cargo slot once both are committed.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

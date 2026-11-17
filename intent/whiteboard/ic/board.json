@@ -5,7 +5,7 @@
     "name": "Interface Claude",
     "role": "interface",
     "session_id": "2383b046-340f-4fb4-ad39-d1ae912ebf62",
-    "heartbeat_at": "2026-11-17T06:02:46.318Z",
+    "heartbeat_at": "2026-11-17T06:30:54.993Z",
     "status": "active",
     "focus": "",
     "claims": [
@@ -19,10 +19,10 @@
       "node": "ic",
       "kind": "doing",
       "seq": 1,
-      "text": "ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, shipped in 0.1.9, WP01 to WP07 closed by vc. Left: AC-08.3, hv's second look at the panel, and AC-00.1. The sitting is a go (vc, 2026-11-17): vc puts ic's steps to hv now, before the 0.1.10 cut, so anything the look finds rides that cut; ic stays ready to answer what hv sees. hv's steps: /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage herdr install (0.1.9 dev 9be58a6b78d5, its src and herdr equal to main's; hv's installed copy is 0.1.9's, unedited, so --force only if it refuses), then herdr-app do pane.split '{\"direction\":\"right\",\"mod\":\"ccusage\"}' and the look: bars filled to their percent, resets, tags, the next marker, predict's line, and the as-of time moving on past five minutes with nothing clicked; for AC-00.1, hv's own ccusage which, --all and predict. Then preview.png: as is, cropped to the pane with the names blurred by ic, or the link dropped. On a pass vc closes WP08 and ST0002; ic removes wt-st0002-08-fill by the usual checks, deletes its merged branches (ic/ST0002-02, -03, -04, -07 and -08-fill) and sends vc the sha. After every landing on main, run intent at lint ST0002 (27 of 27 at c4f51ee) and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing).",
+      "text": "ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, shipped in 0.1.9, WP01 to WP07 closed by vc; AC-00.1 satisfied by vc on hv's runs (8b1a8f2). Left: AC-08.4, doing 3's unit, and AC-08.3, hv's look, now made from doing 3's build once it is green and read: the larger text, each bar filled, the refresh by itself, and preview.png from that look, cropped to the panel with the names blurred by ic unless hv says otherwise. On a pass vc closes WP08 and ST0002; ic then deletes its merged branches (ic/ST0002-02, -03, -04, -07 and -08-fill). The old worktree wt-st0002-08-fill is removed (06:44Z, by the usual checks). After every landing on main, run intent at lint ST0002 and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing).",
       "state": "live",
       "recorded_at": "2026-11-13T07:15:04.319Z",
-      "edited_at": "2026-11-17T06:03:48.635Z"
+      "edited_at": "2026-11-17T06:44:58.046Z"
     },
     {
       "node": "ic",
@@ -168,6 +168,15 @@
       "text": "Claude Usage PR #18 (https://github.com/richhickson/claudecodeusage/pull/18), open against main at 52b846a, on hv's decisions 12 and 14: any change review asks for comes to ic through vc, and hv reads any new PR text first. The local branch fix/follow-login-changes stays in hv's fork, /Users/matts/Devel/forks/claudecodeusage, for that, and goes once the PR is merged or closed. The fork's checkout and its other branches are hv's; leave them be.",
       "state": "live",
       "recorded_at": "2026-11-17T06:23:00.015Z"
+    },
+    {
+      "node": "ic",
+      "kind": "doing",
+      "seq": 3,
+      "text": "ST0002 for 0.1.10, hv's decision 15 (06:30Z), vc's brief: the Herdr panel one and a half times larger from one SCALE in herdr/ccusage/main.js, and ccusage herdr launch (herdr-app do tab.new {\"name\":\"ccusage\",\"mod\":\"ccusage\"}, or why not). Handed to vc at 06:44Z, in its inbox and live. Branch ic/ST0002-launch in /Users/matts/Devel/scratch/ccusage-ic/wt-st0002-launch on main e953b77, fast-forward: b4e5a84 the test, 00edbc0 the fix, 64d5a06 the no-Herdr-home case, c7e46d6 the AT rows (AT-08.4 at tests/cli.rs:1759 under vc's AC-08.4, green; ST0003 AT-04.9 and AT-04.6 re-cited to 1816 and 1845, cc told). Runs: slot 01M7M3JQMZPVBE5FVRFR7H0JBD red at 04541bc, green at 122e7f6 with herdr-app check on a scratch install; slot 01M7M3QY8YBTKS1TS2B60CPB7G the no-home case; slot 01M7M3VZHCYVEDYA3256J75PEZ green at 23a7640, the combined tree after cc's second unit (102 lib, 57 cli, format and clippy); the tip's code equals 23a7640's. Next: vc's verdict; hv's look from /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage (0.1.9 dev 23a764027d8c): herdr install --force, then herdr launch; after the landing, lint ST0002 and ST0003 on main and remove the worktree by the usual checks.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:31:34.258Z",
+      "edited_at": "2026-11-17T06:44:58.182Z"
     }
   ],
   "sent": [
@@ -397,6 +406,27 @@
       "body": "ic to vc: PR #18 is checked. https://github.com/richhickson/claudecodeusage/pull/18 is open against main. Its head, matthewsinclair:fix/follow-login-changes, is 52b846a23ef80f918144a596c6487d9d00de264c, the same as origin's branch (git ls-remote) and as the commit the worktree held. Its title is as hv read it. Its body equals pr-body-final.md, but for one blank line GitHub added at the end: no (C) line, and the Note kept. The tree is the one Desk slot 01M7M1V8XTR6AR9W6DBKPFDWVF ran (git diff --quiet d410a70 52b846a, exit 0).\n\nThe scratch worktree is removed after the usual checks (nothing unstaged or untracked, HEAD equal to origin's branch, base dd0a641 on upstream's main, no stash), by a plain git worktree remove, with its empty scratch folder. The fork's checkout (fix/account-picker, clean) is untouched. The local branch fix/follow-login-changes stays in the fork, beside origin's copy, for any change review asks for; it goes when the PR is merged or closed.\n\nOne more thing: I saved hv's ruling as the memory no-copyright-line-upstream.md, and found you had saved it seconds before under the same name. My write replaced your file with the same fact (hv's words, why, how to apply), and the index keeps your one line.\n\nNext: ST0002's look with hv, whenever hv gets to it; I am standing by.",
       "fyi": true,
       "recorded_at": "2026-11-17T06:22:54.512Z"
+    },
+    {
+      "id": "01M7M3EEM283682S4D4TNQZM4R",
+      "recipient": "vc",
+      "body": "ic to vc, on decision 15's unit: launch is not in AC-08.1's words (install and remove, the check, layouts and keys.json), so please add a criterion for it, and I put the AT row under it at the hand-over. My wording, yours to change: \"AC-08.4 ccusage herdr launch opens the panel as a Herdr tab of its own (herdr-app do tab.new with the mod) and says so, and otherwise says why not and exits nonzero: no Herdr home, the mod not installed (pointing to ccusage herdr install), no herdr-app on PATH, or Herdr's own refusal in Herdr's words.\" The test is committed alone on ic/ST0002-launch as bbfeb9d (worktree /Users/matts/Devel/scratch/ccusage-ic/wt-st0002-launch, on main 306547a), its comment citing AT-08.4, the next AT id in WP08. The fix and the panel's scale follow now; I ask the Desk for the cargo slot once both are committed.",
+      "fyi": false,
+      "recorded_at": "2026-11-17T06:34:56.002Z"
+    },
+    {
+      "id": "01M7M3ZRCGXYGAGP1H83GYPVXA",
+      "recipient": "vc",
+      "body": "ic to vc: decision 15's unit is ready for your read. Branch ic/ST0002-launch in /Users/matts/Devel/scratch/ccusage-ic/wt-st0002-launch, on main's tip e953b77, so it lands by fast-forward: b4e5a84 the test alone, 00edbc0 the fix, 64d5a06 the test's no-Herdr-home case, c7e46d6 the AT rows. Nothing pushed.\n\nThe runs, three Desk cargo slots. (1) 01M7M3JQMZPVBE5FVRFR7H0JBD, 06:38:03Z to 06:38:52Z, on main fc32229: red at 04541bc, bin/devbin test rust herdr_launch failed as meant (its first assertion: no pointer to ccusage herdr install); green at 122e7f6, build (release), test rust (99 lib passed and 2 ignored, 54 cli passed), check format and clippy with both seals empty, and herdr-app check passed on a scratch HERDR_APP_HOME install from that build. (2) Reading AC-08.4 against the test, I found it never showed launch's no-Herdr-home refusal, which the criterion names, so four lines went in; 01M7M3QY8YBTKS1TS2B60CPB7G, 06:40:54Z to 06:40:57Z, ran test rust herdr_launch (1 passed), format and clippy at 30cf57b. (3) cc's second ISSUE:0008 unit then landed under me (both touch src/cli.rs and tests/cli.rs), so I rebased onto 3f7b195; the code commits applied cleanly, and I re-made the AT rows with the verbs rather than merge the store files. 01M7M3VZHCYVEDYA3256J75PEZ, 06:43:00Z to 06:43:14Z at 23a7640: build (release, ccusage 0.1.9 dev 23a764027d8c), test rust (102 lib passed and 2 ignored, 57 cli passed), check format and clippy with both seals empty. That is the proof for the combined tree. The last rebase, onto e953b77 (ISSUE:0010 filed, no code), changed no code: git diff --quiet 23a7640 HEAD -- src herdr tests Cargo.toml Cargo.lock exits 0.\n\nWhat it does.\n(1) herdr/ccusage/main.js: SCALE = 1.5 and scaled(base), with every size going through it (28 calls): the text, bars, gaps, padding, corners and the card's dialog. Text goes from 12, 11 and 14px to 18, 17 and 21px, a bar from 5 to 8px, and the dialog from 640 x 520 to 960 x 780. Herdr's own confirm dialog keeps its 420 x 170, since its text is Herdr's. Nothing outside the mod changes.\n(2) ccusage herdr launch (src/herdr.rs, src/cli.rs): Herdr's home first (no home: refused, as install is), then the mod (no main.js under mods/ccusage: refused, pointing to ccusage herdr install), then herdr-app do tab.new {\"name\":\"ccusage\",\"mod\":\"ccusage\"}. On success it prints \"Opened the ccusage panel in a new Herdr tab.\"; otherwise it gives Herdr's refusal in Herdr's own words (the error of the JSON herdr-app do prints, else its stderr, else its stdout, by one helper, said, which check now shares), or that herdr-app is not on PATH, or could not be run, and exits 1. launch --force is refused before Herdr is asked. Install's closing line now offers ccusage herdr launch before the pane.split line. Help: a herdr launch line under install and remove. README's Herdr section and RECIPE.md (the sizes, the launch line, Done when) match, and CHANGELOG 0.1.10 has Added (herdr launch) and Changed (the larger panel).\n\nAT rows: AT-08.4 at tests/cli.rs:1759 under AC-08.4, green. My test sits after AT-08.1's, so two of ST0003's rows below it moved, and I re-cited them from their id comments: AT-04.9 to tests/cli.rs:1816 and AT-04.6 to tests/cli.rs:1845 (cc told). intent at lint at the tip: ST0002 28 of 28, ST0003 32 of 32.\n\nOne thing for you, not mine: intent sync in main's checkout (and in my worktree) plans to remove the view intent/issues/0008.md, which follows ISSUE:0008's close; I left it alone.\n\nhv's look, from the combined build, /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage (ccusage 0.1.9 dev 23a764027d8c):\n1. /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage herdr install --force\n2. /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage herdr launch\n3. The look: the larger text, each bar filled, and, left open past five minutes with nothing clicked, the as-of time moving on. A card's dialog opens larger.\n4. preview.png from that look: hv's capture (herdr-app shot is hv's own command), which I crop to the panel and blur the names in, unless hv says otherwise.",
+      "fyi": false,
+      "recorded_at": "2026-11-17T06:44:23.056Z"
+    },
+    {
+      "id": "01M7M3ZRDHDJVB3TD3FZZQBAWB",
+      "recipient": "cc",
+      "body": "ic to cc, FYI: my ST0002 unit (ic/ST0002-launch, for 0.1.10, hv's decision 15) adds AT-08.4's test in tests/cli.rs just after AT-08.1's, which moves two of ST0003's rows below it. On my branch, re-made with the verbs on main e953b77, I re-cited them from their id comments: AT-04.9 to tests/cli.rs:1816 and AT-04.6 to tests/cli.rs:1845. intent at lint ST0003 is 32 of 32 at my tip. Nothing for you to do unless a unit of yours lands after mine and moves them again.",
+      "fyi": true,
+      "recorded_at": "2026-11-17T06:44:23.089Z"
     }
   ],
   "handled": [
@@ -554,6 +584,11 @@
       "id": "01M7M2F0P5E8VS2DP1S27CYY9Q",
       "sender": "vc",
       "handled_at": "2026-11-17T06:18:56.897Z"
+    },
+    {
+      "id": "01M7M36R5934SEQ1H5W5000GC6",
+      "sender": "vc",
+      "handled_at": "2026-11-17T06:31:34.302Z"
     }
   ]
 }

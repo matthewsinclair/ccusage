@@ -3,7 +3,7 @@ node: ic
 name: Interface Claude
 role: interface
 session_id: 2383b046-340f-4fb4-ad39-d1ae912ebf62
-heartbeat_at: 2026-11-17 06:02Z
+heartbeat_at: 2026-11-17 06:30Z
 status: active
 focus: ""
 claims: [ST0002]
@@ -13,7 +13,8 @@ claims: [ST0002]
 
 ## DOING
 
-- ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, shipped in 0.1.9, WP01 to WP07 closed by vc. Left: AC-08.3, hv's second look at the panel, and AC-00.1. The sitting is a go (vc, 2026-11-17): vc puts ic's steps to hv now, before the 0.1.10 cut, so anything the look finds rides that cut; ic stays ready to answer what hv sees. hv's steps: /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage herdr install (0.1.9 dev 9be58a6b78d5, its src and herdr equal to main's; hv's installed copy is 0.1.9's, unedited, so --force only if it refuses), then herdr-app do pane.split '{"direction":"right","mod":"ccusage"}' and the look: bars filled to their percent, resets, tags, the next marker, predict's line, and the as-of time moving on past five minutes with nothing clicked; for AC-00.1, hv's own ccusage which, --all and predict. Then preview.png: as is, cropped to the pane with the names blurred by ic, or the link dropped. On a pass vc closes WP08 and ST0002; ic removes wt-st0002-08-fill by the usual checks, deletes its merged branches (ic/ST0002-02, -03, -04, -07 and -08-fill) and sends vc the sha. After every landing on main, run intent at lint ST0002 (27 of 27 at c4f51ee) and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing). (edited)
+- ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, shipped in 0.1.9, WP01 to WP07 closed by vc; AC-00.1 satisfied by vc on hv's runs (8b1a8f2). Left: AC-08.4, doing 3's unit, and AC-08.3, hv's look, now made from doing 3's build once it is green and read: the larger text, each bar filled, the refresh by itself, and preview.png from that look, cropped to the panel with the names blurred by ic unless hv says otherwise. On a pass vc closes WP08 and ST0002; ic then deletes its merged branches (ic/ST0002-02, -03, -04, -07 and -08-fill). The old worktree wt-st0002-08-fill is removed (06:44Z, by the usual checks). After every landing on main, run intent at lint ST0002 and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing). (edited)
+- ST0002 for 0.1.10, hv's decision 15 (06:30Z), vc's brief: the Herdr panel one and a half times larger from one SCALE in herdr/ccusage/main.js, and ccusage herdr launch (herdr-app do tab.new {"name":"ccusage","mod":"ccusage"}, or why not). Handed to vc at 06:44Z, in its inbox and live. Branch ic/ST0002-launch in /Users/matts/Devel/scratch/ccusage-ic/wt-st0002-launch on main e953b77, fast-forward: b4e5a84 the test, 00edbc0 the fix, 64d5a06 the no-Herdr-home case, c7e46d6 the AT rows (AT-08.4 at tests/cli.rs:1759 under vc's AC-08.4, green; ST0003 AT-04.9 and AT-04.6 re-cited to 1816 and 1845, cc told). Runs: slot 01M7M3JQMZPVBE5FVRFR7H0JBD red at 04541bc, green at 122e7f6 with herdr-app check on a scratch install; slot 01M7M3QY8YBTKS1TS2B60CPB7G the no-home case; slot 01M7M3VZHCYVEDYA3256J75PEZ green at 23a7640, the combined tree after cc's second unit (102 lib, 57 cli, format and clippy); the tip's code equals 23a7640's. Next: vc's verdict; hv's look from /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage (0.1.9 dev 23a764027d8c): herdr install --force, then herdr launch; after the landing, lint ST0002 and ST0003 on main and remove the worktree by the usual checks. (edited)
 
 ## TODO
 

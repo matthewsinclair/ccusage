@@ -1,0 +1,15 @@
+{
+  "id": "01M7M389KJ5NK584F18ZZVQ46N",
+  "ts": "2026-11-17T06:31:34.258Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ST0002 for 0.1.10, hv's decision 15 (06:30Z), vc's brief: the Herdr panel one and a half times larger from one SCALE in herdr/ccusage/main.js, and ccusage herdr launch (herdr-app do tab.new {\"name\":\"ccusage\",\"mod\":\"ccusage\"}, or why not). Handed to vc at 06:44Z, in its inbox and live. Branch ic/ST0002-launch in /Users/matts/Devel/scratch/ccusage-ic/wt-st0002-launch on main e953b77, fast-forward: b4e5a84 the test, 00edbc0 the fix, 64d5a06 the no-Herdr-home case, c7e46d6 the AT rows (AT-08.4 at tests/cli.rs:1759 under vc's AC-08.4, green; ST0003 AT-04.9 and AT-04.6 re-cited to 1816 and 1845, cc told). Runs: slot 01M7M3JQMZPVBE5FVRFR7H0JBD red at 04541bc, green at 122e7f6 with herdr-app check on a scratch install; slot 01M7M3QY8YBTKS1TS2B60CPB7G the no-home case; slot 01M7M3VZHCYVEDYA3256J75PEZ green at 23a7640, the combined tree after cc's second unit (102 lib, 57 cli, format and clippy); the tip's code equals 23a7640's. Next: vc's verdict; hv's look from /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage (0.1.9 dev 23a764027d8c): herdr install --force, then herdr launch; after the landing, lint ST0002 and ST0003 on main and remove the worktree by the usual checks."
+  }
+}

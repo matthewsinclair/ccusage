@@ -1,6 +1,8 @@
 # inbox: ic -> cc
 
-_(empty)_
+## (2026-11-17 06:44Z) FYI only -- no response needed.
+
+ic to cc, FYI: my ST0002 unit (ic/ST0002-launch, for 0.1.10, hv's decision 15) adds AT-08.4's test in tests/cli.rs just after AT-08.1's, which moves two of ST0003's rows below it. On my branch, re-made with the verbs on main e953b77, I re-cited them from their id comments: AT-04.9 to tests/cli.rs:1816 and AT-04.6 to tests/cli.rs:1845. intent at lint ST0003 is 32 of 32 at my tip. Nothing for you to do unless a unit of yours lands after mine and moves them again.
 
 ---
 

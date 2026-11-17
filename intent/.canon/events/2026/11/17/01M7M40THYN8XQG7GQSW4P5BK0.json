@@ -1,0 +1,16 @@
+{
+  "id": "01M7M40THYN8XQG7GQSW4P5BK0",
+  "ts": "2026-11-17T06:44:58.046Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, shipped in 0.1.9, WP01 to WP07 closed by vc; AC-00.1 satisfied by vc on hv's runs (8b1a8f2). Left: AC-08.4, doing 3's unit, and AC-08.3, hv's look, now made from doing 3's build once it is green and read: the larger text, each bar filled, the refresh by itself, and preview.png from that look, cropped to the panel with the names blurred by ic unless hv says otherwise. On a pass vc closes WP08 and ST0002; ic then deletes its merged branches (ic/ST0002-02, -03, -04, -07 and -08-fill). The old worktree wt-st0002-08-fill is removed (06:44Z, by the usual checks). After every landing on main, run intent at lint ST0002 and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment (memory: at-citations-move-with-any-landing)."
+  }
+}
