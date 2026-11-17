@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: b63269e8-512e-4cc8-9b1b-8869e2c1f223
-heartbeat_at: 2026-11-17 06:49Z
+heartbeat_at: 2026-11-17 07:21Z
 status: active
-focus: "Todo 15 passed at 0.1.10's final code tip c7e46d6 (kovacs gates green but actionlint's known absence; the scratch-HOME opt tree holds LICENSE, named in its manifest), verdict with vc. Next: hold 13, ISSUE:0009's keg proof after the cut's brew upgrade, on rhadamanth and kovacs. During the cut's freeze dc writes nothing to the checkout until vc says it is published."
+focus: "0.1.10 is published (GitHub release 07:15:59Z, the tap's formula at abf7d1e) and dc's localfold is done, with no release. Now doing 16: ISSUE:0009's keg proofs, rhadamanth read-only on hv's 0.1.10 keg, then kovacs in a Desk slot; both go to vc, whose word closes the issue."
 claims: [ISSUE:0009]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0009]
 
 ## DOING
 
-_(none)_
+- ISSUE:0009's keg proofs for its Acceptance 3, on vc's word of 2026-11-17 after 0.1.10's publish (GitHub release 07:15:59Z, the tap's formula at abf7d1e). rhadamanth, read-only, now that hv's brew upgrade has its keg at 0.1.10: the keg's libexec LICENSE, its manifest .ccusage-install, and bin/devbin doctor's ccusage tree row. kovacs, in a Desk slot, announced: brew upgrade ccusage, the keg's LICENSE and its manifest, ccusage doctor, and bin/devbin doctor in a clone at v0.1.10. Both proofs go to vc, live and in its inbox; on vc's word ISSUE:0009 closes (a Progress note by issues edit, then issues close) and dc unclaims it.
 
 ## TODO
 
@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-- ISSUE:0009 closes on its Acceptance 3: after the next cut's brew upgrade ccusage, bin/devbin doctor's ccusage tree row passes on rhadamanth's brew keg, whose libexec holds LICENSE as its manifest records, and the same on kovacs for its Linux keg. Landed as 0f66154 on vc's PASS (2026-11-16), Acceptance 1 and 2 shown by Desk slot 01M7JP92CJGM29XZ64XH40NHC6. Released when the next cut is published and both kegs are upgraded to it.
+_(none)_
 
 ## Watch-outs
 

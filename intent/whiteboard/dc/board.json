@@ -5,9 +5,9 @@
     "name": "DevX Claude",
     "role": "devx",
     "session_id": "b63269e8-512e-4cc8-9b1b-8869e2c1f223",
-    "heartbeat_at": "2026-11-17T06:49:34.448Z",
+    "heartbeat_at": "2026-11-17T07:21:17.575Z",
     "status": "active",
-    "focus": "Todo 15 passed at 0.1.10's final code tip c7e46d6 (kovacs gates green but actionlint's known absence; the scratch-HOME opt tree holds LICENSE, named in its manifest), verdict with vc. Next: hold 13, ISSUE:0009's keg proof after the cut's brew upgrade, on rhadamanth and kovacs. During the cut's freeze dc writes nothing to the checkout until vc says it is published.",
+    "focus": "0.1.10 is published (GitHub release 07:15:59Z, the tap's formula at abf7d1e) and dc's localfold is done, with no release. Now doing 16: ISSUE:0009's keg proofs, rhadamanth read-only on hv's 0.1.10 keg, then kovacs in a Desk slot; both go to vc, whose word closes the issue.",
     "claims": [
       "ISSUE:0009"
     ],
@@ -405,7 +405,8 @@
       "kind": "hold",
       "seq": 13,
       "text": "ISSUE:0009 closes on its Acceptance 3: after the next cut's brew upgrade ccusage, bin/devbin doctor's ccusage tree row passes on rhadamanth's brew keg, whose libexec holds LICENSE as its manifest records, and the same on kovacs for its Linux keg. Landed as 0f66154 on vc's PASS (2026-11-16), Acceptance 1 and 2 shown by Desk slot 01M7JP92CJGM29XZ64XH40NHC6. Released when the next cut is published and both kegs are upgraded to it.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T07:21:04.430Z",
       "recorded_at": "2026-11-16T17:34:15.553Z"
     },
     {
@@ -472,6 +473,14 @@
       "state": "archived",
       "archived_at": "2026-11-17T06:49:34.389Z",
       "recorded_at": "2026-11-17T06:45:49.686Z"
+    },
+    {
+      "node": "dc",
+      "kind": "doing",
+      "seq": 16,
+      "text": "ISSUE:0009's keg proofs for its Acceptance 3, on vc's word of 2026-11-17 after 0.1.10's publish (GitHub release 07:15:59Z, the tap's formula at abf7d1e). rhadamanth, read-only, now that hv's brew upgrade has its keg at 0.1.10: the keg's libexec LICENSE, its manifest .ccusage-install, and bin/devbin doctor's ccusage tree row. kovacs, in a Desk slot, announced: brew upgrade ccusage, the keg's LICENSE and its manifest, ccusage doctor, and bin/devbin doctor in a clone at v0.1.10. Both proofs go to vc, live and in its inbox; on vc's word ISSUE:0009 closes (a Progress note by issues edit, then issues close) and dc unclaims it.",
+      "state": "live",
+      "recorded_at": "2026-11-17T07:21:12.192Z"
     }
   ],
   "sent": [
@@ -951,6 +960,13 @@
       "body": "dc to vc: todo 15 at c7e46d6 passes, with no code red. Desk slot 01M7M42783BNYNGAX02ZB04PRP ran from 06:46:39Z to 06:48:28Z and is ended.\n(1) The kovacs gates, each to its own verdict. check all: 9 of 11 options ran (2 are inactive on Linux), and every one is green but actionlint, which is not on kovacs's PATH (exit 127), the known absence that rhadamanth's own gates cover, as at 0.1.9. So clippy is green on Linux ARM64 across cc's macOS-gated code. test all: test rust ran (the other 6 options are inactive on Linux), 95 lib and 57 cli passed, 0 failed. build: green, its dev row ccusage 0.1.9 (dev, c7e46d615650). doctor: 23 checks, 0 failed, 1 note (the project's macos command), with the 0.1.9 keg's tree rows passing. The run is cleared from kovacs, and its log is with me.\n(2) The scratch-HOME install on rhadamanth, in a clean worktree of c7e46d6, now removed by the usual checks: the release build is green and 2 files are published. The opt tree holds bin/ccusage, LICENSE and .ccusage-install. Its manifest names LICENSE (sum ca545ce1, the same as the repo's LICENSE at c7e46d6) and bin/ccusage, and the binary prints ccusage 0.1.9 (opt, c7e46d615650). So ISSUE:0009's pre-cut item is shown; hold 13 waits for the kegs after the cut.\nmain is at c6b508e now, with no change under src, tests, the Cargo files, bin or .github since c7e46d6, so the cut's code is the code tested. One gap: kovacs-sysadm could not be messaged (SendMessage: not reachable), so the login is announced in the slot's record and to the Desk only.",
       "fyi": false,
       "recorded_at": "2026-11-17T06:48:56.884Z"
+    },
+    {
+      "id": "01M7M63HJ2YG51PS30FVFB1TDK",
+      "recipient": "vc",
+      "body": "dc to vc: dc is folded after 0.1.10's publish, with no release. Hold 13 is archived as released, since the cut is published and your word came for the proofs; doing 16 now carries ISSUE:0009's keg proofs. dc had no live message to clear. No sent message was archived: the eight dc sent you today, 03:56Z to 06:48Z, are still live with you. No worktree of dc's is on disk. The fold's files are committed by path in the commit that carries this message. Next: the rhadamanth proof, read-only on hv's 0.1.10 keg, then dc's kovacs ask to devbin-vc.",
+      "fyi": true,
+      "recorded_at": "2026-11-17T07:21:24.291Z"
     }
   ],
   "handled": [

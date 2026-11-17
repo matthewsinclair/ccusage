@@ -1,0 +1,17 @@
+{
+  "id": "01M7M63HJ2YG51PS30FVFB1TDJ",
+  "ts": "2026-11-17T07:21:24.291Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc to vc: dc is folded after 0.1.10's publish, with no release. Hold 13 is archived as released, since the cut is published and your word came for the proofs; doing 16 now carries ISSUE:0009's keg proofs. dc had no live message to clear. No sent message was archived: the eight dc sent you today, 03:56Z to 06:48Z, are still live with you. No worktree of dc's is on disk. The fold's files are committed by path in the commit that carries this message. Next: the rhadamanth proof, read-only on hv's 0.1.10 keg, then dc's kovacs ask to devbin-vc.",
+    "fyi": true,
+    "re": null,
+    "recipient": "vc"
+  }
+}
