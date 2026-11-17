@@ -1,0 +1,15 @@
+{
+  "id": "01M7M6F9GSVJK4SPRNMK6AFBGG",
+  "ts": "2026-11-17T07:27:49.273Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "ISSUE:0009 closes on vc's word, now that both keg proofs for its Acceptance 3 are green and with vc (sent 2026-11-17 07:27Z, live and in its inbox): rhadamanth's and kovacs's 0.1.10 kegs, each upgraded by hv, hold LICENSE as their manifests record, and bin/devbin doctor's ccusage tree row passes on each. On the word: a Progress note by issues edit, then issues close, this hold archived and the issue unclaimed."
+  }
+}

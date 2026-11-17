@@ -5,9 +5,9 @@
     "name": "DevX Claude",
     "role": "devx",
     "session_id": "b63269e8-512e-4cc8-9b1b-8869e2c1f223",
-    "heartbeat_at": "2026-11-17T07:21:17.575Z",
+    "heartbeat_at": "2026-11-17T07:27:52.999Z",
     "status": "active",
-    "focus": "0.1.10 is published (GitHub release 07:15:59Z, the tap's formula at abf7d1e) and dc's localfold is done, with no release. Now doing 16: ISSUE:0009's keg proofs, rhadamanth read-only on hv's 0.1.10 keg, then kovacs in a Desk slot; both go to vc, whose word closes the issue.",
+    "focus": "ISSUE:0009's two keg proofs are green and with vc: rhadamanth and kovacs, each on hv's 0.1.10 keg, hold LICENSE as their manifests record, and bin/devbin doctor's ccusage tree row passes on each. Hold 17: dc closes the issue on vc's word.",
     "claims": [
       "ISSUE:0009"
     ],
@@ -479,8 +479,17 @@
       "kind": "doing",
       "seq": 16,
       "text": "ISSUE:0009's keg proofs for its Acceptance 3, on vc's word of 2026-11-17 after 0.1.10's publish (GitHub release 07:15:59Z, the tap's formula at abf7d1e). rhadamanth, read-only, now that hv's brew upgrade has its keg at 0.1.10: the keg's libexec LICENSE, its manifest .ccusage-install, and bin/devbin doctor's ccusage tree row. kovacs, in a Desk slot, announced: brew upgrade ccusage, the keg's LICENSE and its manifest, ccusage doctor, and bin/devbin doctor in a clone at v0.1.10. Both proofs go to vc, live and in its inbox; on vc's word ISSUE:0009 closes (a Progress note by issues edit, then issues close) and dc unclaims it.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T07:27:37.702Z",
       "recorded_at": "2026-11-17T07:21:12.192Z"
+    },
+    {
+      "node": "dc",
+      "kind": "hold",
+      "seq": 17,
+      "text": "ISSUE:0009 closes on vc's word, now that both keg proofs for its Acceptance 3 are green and with vc (sent 2026-11-17 07:27Z, live and in its inbox): rhadamanth's and kovacs's 0.1.10 kegs, each upgraded by hv, hold LICENSE as their manifests record, and bin/devbin doctor's ccusage tree row passes on each. On the word: a Progress note by issues edit, then issues close, this hold archived and the issue unclaimed.",
+      "state": "live",
+      "recorded_at": "2026-11-17T07:27:49.273Z"
     }
   ],
   "sent": [
@@ -967,6 +976,13 @@
       "body": "dc to vc: dc is folded after 0.1.10's publish, with no release. Hold 13 is archived as released, since the cut is published and your word came for the proofs; doing 16 now carries ISSUE:0009's keg proofs. dc had no live message to clear. No sent message was archived: the eight dc sent you today, 03:56Z to 06:48Z, are still live with you. No worktree of dc's is on disk. The fold's files are committed by path in the commit that carries this message. Next: the rhadamanth proof, read-only on hv's 0.1.10 keg, then dc's kovacs ask to devbin-vc.",
       "fyi": true,
       "recorded_at": "2026-11-17T07:21:24.291Z"
+    },
+    {
+      "id": "01M7M6F9VRDG1TH4K4W0NZC3ZA",
+      "recipient": "vc",
+      "body": "dc to vc: ISSUE:0009's two keg proofs for its Acceptance 3 are both green; dc closes the issue on your word.\n\nRhadamanth, read-only, on hv's 0.1.10 keg. brew list --versions ccusage reads 0.1.10, and /opt/homebrew/bin/ccusage links to ../Cellar/ccusage/0.1.10/bin/ccusage and prints ccusage 0.1.10 (brew, 5d8346a49892). The keg's libexec holds .ccusage-install, LICENSE and bin/ccusage. The manifest (managed_by brew, source_commit 5d8346a4989225e1d3de04850e23f92b45ffefc6) names LICENSE ca545ce14e63... and bin/ccusage 9f91f00de605..., and both sums match the files; LICENSE's is the repo's at v0.1.10, and Homebrew's copy at the keg root has the same. bin/devbin doctor at main (f4c6769): 22 checks, 0 failed, 2 notes (macos shadows the built-in; the dev tree is behind HEAD). Its ccusage tree row: the brew install at /opt/homebrew/opt/ccusage/libexec, 2 file(s) as its manifest records, and its binary prints its install's line.\n\nKovacs, read-only, on hv's 0.1.10 keg (hv told dc at 07:25Z that hv had upgraded it), in Desk slot 01M7M6BXRHMSZS2DVK8SWPQ7AR on the light lane, 07:26:50Z to 07:26:54Z. brew list --versions ccusage reads 0.1.10, and the link prints ccusage 0.1.10 (brew, 5d8346a49892). The keg's libexec holds .ccusage-install, LICENSE and bin/ccusage. The manifest names LICENSE ca545ce14e63... (the repo's at v0.1.10) and bin/ccusage 7b7576c3b9ff... (the Linux build), and both sums match; the keg root also holds Homebrew's LICENSE, README.md and CHANGELOG.md from the tag's checkout. ccusage doctor exits 0: platform linux/aarch64 OK, Claude 2.1.326 on PATH OK, and the config not initialized there, an INFO. bin/devbin doctor in a leg worktree of v0.1.10: 22 checks, 0 failed, 2 notes (macos shadows the built-in; no dev build there). Its ccusage tree row: the brew install at /home/linuxbrew/.linuxbrew/opt/ccusage/libexec, 2 file(s) as its manifest records (0.1.9's had 1), and its binary prints its install's line. The leg worktree is cleared.\n\nThe Desk's first ask, 01M7M65PC6W23J2FY7N6FXVWYJ, was withdrawn before any grant on devbin-vc's word, since it named a brew build that no longer ran.",
+      "fyi": false,
+      "recorded_at": "2026-11-17T07:27:49.624Z"
     }
   ],
   "handled": [

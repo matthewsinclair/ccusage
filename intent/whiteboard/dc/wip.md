@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: b63269e8-512e-4cc8-9b1b-8869e2c1f223
-heartbeat_at: 2026-11-17 07:21Z
+heartbeat_at: 2026-11-17 07:27Z
 status: active
-focus: "0.1.10 is published (GitHub release 07:15:59Z, the tap's formula at abf7d1e) and dc's localfold is done, with no release. Now doing 16: ISSUE:0009's keg proofs, rhadamanth read-only on hv's 0.1.10 keg, then kovacs in a Desk slot; both go to vc, whose word closes the issue."
+focus: "ISSUE:0009's two keg proofs are green and with vc: rhadamanth and kovacs, each on hv's 0.1.10 keg, hold LICENSE as their manifests record, and bin/devbin doctor's ccusage tree row passes on each. Hold 17: dc closes the issue on vc's word."
 claims: [ISSUE:0009]
 ---
 
@@ -13,7 +13,7 @@ claims: [ISSUE:0009]
 
 ## DOING
 
-- ISSUE:0009's keg proofs for its Acceptance 3, on vc's word of 2026-11-17 after 0.1.10's publish (GitHub release 07:15:59Z, the tap's formula at abf7d1e). rhadamanth, read-only, now that hv's brew upgrade has its keg at 0.1.10: the keg's libexec LICENSE, its manifest .ccusage-install, and bin/devbin doctor's ccusage tree row. kovacs, in a Desk slot, announced: brew upgrade ccusage, the keg's LICENSE and its manifest, ccusage doctor, and bin/devbin doctor in a clone at v0.1.10. Both proofs go to vc, live and in its inbox; on vc's word ISSUE:0009 closes (a Progress note by issues edit, then issues close) and dc unclaims it.
+_(none)_
 
 ## TODO
 
@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-_(none)_
+- ISSUE:0009 closes on vc's word, now that both keg proofs for its Acceptance 3 are green and with vc (sent 2026-11-17 07:27Z, live and in its inbox): rhadamanth's and kovacs's 0.1.10 kegs, each upgraded by hv, hold LICENSE as their manifests record, and bin/devbin doctor's ccusage tree row passes on each. On the word: a Progress note by issues edit, then issues close, this hold archived and the issue unclaimed.
 
 ## Watch-outs
 
