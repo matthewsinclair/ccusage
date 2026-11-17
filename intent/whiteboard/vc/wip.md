@@ -3,9 +3,9 @@ node: vc
 name: Validation Claude
 role: validation
 session_id: 1f8ad5f9-8ef2-4931-bffe-b7473752f05d
-heartbeat_at: 2026-11-17 05:44Z
+heartbeat_at: 2026-11-17 07:24Z
 status: active
-focus: "The live repair (todo 13): steps 1 to 4 done on 2026-11-17. AC-06.2 is satisfied (its event carries the stamp): hv's ccusage use engineering00 (05:38Z) and ccusage which --use to engineering02 (05:41Z) each reached vc's open session with no restart, /status and its Usage tab naming the account each time. AC-06.1 waits for hv's look at Claude Usage; then the day closes"
+focus: "0.1.10 is published (07:15:59Z) and runs on rhadamanth from brew, doctor exit 0; the seats folded after hv's compact (cc 30f21d0, dc f4c6769, ic edd4345). Next: dc's keg proofs close ISSUE:0009 (todo 15); the next release's work comes as plans in words (todo 16); PR #18 waits upstream (hold 5)"
 claims: []
 ---
 
@@ -14,13 +14,11 @@ claims: []
 ## DOING
 
 - Validate each hand-over from cc, ic and dc against its work package's or issue's acceptance. Under hv's one layer of proof, the verdict is vc's read of the diff, with the builder's measured Desk run as the one run; a second run only when the landed tree differs from the tested one (check with git diff on src, tests and Cargo files). Each verdict goes to the builder's inbox and live, and vc closes a work package with intent wp done once intent at lint is clean for it. (edited)
-- ST0002, the which and predict verbs and the Herdr mod, built by ic (hv, 2026-11-13), shipped in 0.1.9. WP01 to WP07 are closed, and intent at lint ST0002 is clean (27 of 27 at 0f66154). Left: AC-08.3, hv's second look at the panel. hv's first look (2026-11-13 12:29Z) found the weekly bars drawing no fill; ic's fix, with the look's two nits, landed on main as 9be58a6, green in its Desk slot. hv installs from a build at or after it (ccusage herdr install, --force only if it refuses) and looks again, which also checks that the pane refreshes by itself; it has not happened yet, and it is not asked for before the live repair of 2026-11-17 (doing 5). Open with hv after the look: preview.png (vc recommends hv's capture, cropped with the names blurred by ic; or as is; or drop the link). Open for ic: a way into the mod from inside Herdr, and its todo 5 (install says nothing while herdr-app check runs). ic's session has not run since 2026-11-13, though its board still reads active; ISSUE:0008's items 6 and 7 are interface text and wait on hv's word about starting ic. Then vc satisfies AC-08.3 and closes WP08; AC-00.1 follows. (edited)
-- ST0003, live account switching (cc). Every work package and criterion is done: WP06 closed on 2026-11-17 (fbcc2f5), ISSUE:0003 closed by dc (9304bb9), and ISSUE:0008, built on this thread's claim, closed with both units on main (58b7323, b158665). vc closes the thread once ic's unit has landed and cc has linted ST0003 there, re-citing any row it moved (cc's hold 1). (edited)
-- The 0.1.10 cut, first thing on hv's word (decisions 12, 13 and 15): ISSUE:0008 whole (on main at b158665), ISSUE:0009, ic's Herdr bar fix, and ic's unit for decision 15 (ccusage herdr launch and the panel's larger text). Left, in order: ic's unit read and landed; hv's look again from ic's build (larger text, refresh by itself, preview.png); ST0002 and ST0003 closed; dc's one kovacs run at the final tip with the scratch-HOME install (devbin-vc grants one run, not an early one); the seats freeze the checkout; hv runs bin/devbin release 0.1.10 in hv's own tab, with the link on brew as it stands (dc: bin/devbin doctor passes on devbin 0.1.25, so no route C); after the publish, hv's brew upgrade ccusage, vc tells devbin-vc the tag is made, and dc's keg proof closes ISSUE:0009. ISSUE:0010 (low) holds six nits for a later release. (edited)
 
 ## TODO
 
-- Tell geodica-estate, when it next runs, that Ccusage's live repair is done (2026-11-17): no Claude session carries CLAUDE_SECURESTORAGE_CONFIG_DIR, one verified login an account, a live switch reaches an open session, Claude Usage lists each account once. devbin-vc was told live on 2026-11-17 with hv's word.
+- ISSUE:0009 (LICENSE back), shipped in 0.1.10: dc's keg proofs, rhadamanth read-only on the keg hv upgraded (ccusage 0.1.10 (brew, 5d8346a49892); doctor exit 0 in hv's run and vc's), and kovacs in a Desk slot (brew upgrade ccusage, the keg's LICENSE and manifest, ccusage doctor). vc reads both proofs against the issue's Acceptance 3 and gives dc the word to close it.
+- The next release's work comes to vc as plans in words, and nothing builds until vc's go: ISSUE:0010 (low, six nits; cc, with ic signing any interface text); ic's todo 5 (install says what it waits for while herdr-app check runs, and bounds the wait); ic's todo 6 (nits on cc's landed user-facing text, riding ISSUE:0010). ic's todo 7 (ways into the mod from inside Herdr, now that ccusage herdr launch exists) goes to hv through vc. When the next release is cut is hv's word: one cut with everything ready, never small ones.
 
 ## Holds
 

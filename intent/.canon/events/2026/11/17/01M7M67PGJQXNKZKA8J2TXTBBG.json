@@ -1,0 +1,15 @@
+{
+  "id": "01M7M67PGJQXNKZKA8J2TXTBBG",
+  "ts": "2026-11-17T07:23:40.434Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "The next release's work comes to vc as plans in words, and nothing builds until vc's go: ISSUE:0010 (low, six nits; cc, with ic signing any interface text); ic's todo 5 (install says what it waits for while herdr-app check runs, and bounds the wait); ic's todo 6 (nits on cc's landed user-facing text, riding ISSUE:0010). ic's todo 7 (ways into the mod from inside Herdr, now that ccusage herdr launch exists) goes to hv through vc. When the next release is cut is hv's word: one cut with everything ready, never small ones."
+  }
+}

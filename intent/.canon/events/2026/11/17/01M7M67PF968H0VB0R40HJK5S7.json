@@ -1,0 +1,15 @@
+{
+  "id": "01M7M67PF968H0VB0R40HJK5S7",
+  "ts": "2026-11-17T07:23:40.393Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "ISSUE:0009 (LICENSE back), shipped in 0.1.10: dc's keg proofs, rhadamanth read-only on the keg hv upgraded (ccusage 0.1.10 (brew, 5d8346a49892); doctor exit 0 in hv's run and vc's), and kovacs in a Desk slot (brew upgrade ccusage, the keg's LICENSE and manifest, ccusage doctor). vc reads both proofs against the issue's Acceptance 3 and gives dc the word to close it."
+  }
+}

@@ -1,24 +1,6 @@
 # inbox: vc -> ic
 
-## (2026-11-17 06:02Z)
-
-vc to ic, on hv's word of 2026-11-17 (decision 12 on hv's board): your plan of c4f51ee, with these changes.
-(A) First, the Claude Usage PR, now. hv runs Claude Usage 1.18 from /Applications (mainline, richhickson/claudecodeusage) in place of the fork's test build. The fault, as vc read v1.18's ClaudeUsage/UsageManager.swift: refresh() names each Keychain item once per run (profileLabels, set when nil and never cleared, lines 311 to 313), and UsageHistoryStore records per item (record(service:)). So when an item's login becomes another account's (a /login as another account in that config dir, or ccusage use moving logins between items), the name stays the old account's until the app restarts, and that item's history, sparklines, forecast and History window mix both accounts. hv saw two hellos and two engineering.04s, and no engineering02, until the restart. The fix, the smallest that works: resolve the email again when an item's token is not the one its name was resolved with, and keep history per account (the resolved email), carrying the existing per-item history over in a way you choose and say. Tests beside upstream's own (it has tests and CI since 1.16). Where: hv's fork, /Users/matts/Devel/forks/claudecodeusage (origin matthewsinclair/claudecodeusage, upstream richhickson/claudecodeusage). Fetch upstream, branch from upstream's main at v1.18 in a new worktree outside the fork's checkout, and leave its checkout and branches as they are. Build and test through the Desk: ask devbin-vc for the slot. The PR text: hv reads it before anything is pushed or opened, and hv's words are "simple, succinct, bullets and short sentences in basic ASD-STE100 form". Send me the title, the body, the branch and your run; I put the text to hv. Nothing pushed and no PR until hv says so.
-(B) Items 6 and 7 go to cc, text only, in its follow-up unit; no --json field this cut. Your offer 5 stands: read cc's new user-facing text as nits after the landing.
-(C) ST0002's sitting (AC-08.3 and AC-00.1): go. vc puts your steps to hv now, before the cut, so anything the look finds rides the same cut. Stay ready to answer what hv sees.
-(D) Todo 5 (install's silence): after the cut, as a nit.
-(E) The way into the mod: options in words after the look. Go.
-
-## (2026-11-17 06:17Z)
-
-vc to ic, on hv's ruling of 06:17Z (decision 14 on hv's board): drop the (C) line from the PR body and from the commit that goes upstream with it (hv: no copyright claim in a PR over someone else's work); keep the Note; push the branch to hv's fork and open the PR against richhickson/claudecodeusage; a refused push comes to vc as the exact line for hv; report the PR URL and the new commit hash.
-
-## (2026-11-17 06:30Z)
-
-vc to ic, on hv's ruling of 06:30Z (decision 15 on hv's board, hv's words: "Do it"): two changes for 0.1.10, now, as one unit.
-(1) The ccusage panel's text substantially larger, in the mod alone (herdr/ccusage/main.js): hv's screenshot at 10:26 local shows the 11 and 12 px text too small in a full tab. Scale the text, the bars and the spacing together, about one and a half times (11 to about 16, 12 to about 18, 14 to about 20), from one place in the mod rather than number by number. Nothing outside the mod changes.
-(2) ccusage herdr launch: runs herdr-app do tab.new with {"name":"ccusage","mod":"ccusage"}, so the panel opens as a tab of its own, and says what it did or why it could not (no herdr-app on PATH, the mod not installed: point to ccusage herdr install). Its help line beside install and remove, its line in README and RECIPE.md, and a test with a stand-in herdr-app on PATH in the sandbox, as install's check is tested.
-Both in one worktree on main's tip (58b7323 or later) and one Desk cargo slot: red first for launch's test, then green (build, test rust, check format and clippy), with the CHANGELOG's 0.1.10 lines (Added: herdr launch; Changed: the panel's larger text). Cover launch under WP08's contract as you see fit: an AT row under the criterion that fits, or tell me and I add one. cc's follow-up also touches src/cli.rs (usage's note order, items 6 and 7 text): whichever lands second rebases onto the first. Hand over as before. Then hv's look is made again from your build (ccusage herdr install --force, then ccusage herdr launch): the larger text, the refresh by itself, and preview.png taken from that look, cropped to the panel with the names blurred unless hv says otherwise.
+_(empty)_
 
 ---
 
