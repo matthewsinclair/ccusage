@@ -93,7 +93,8 @@
       "kind": "todo",
       "seq": 4,
       "text": "ISSUE:0003's live check. hv took ST0003's route on 2026-11-13: WP01's trial passed and hv started cc on it, so ISSUE:0003 closes at ST0003/WP06's rollout, in vc's closing sequence (todo 7), rather than by a launcher fix and step 4. Read from the live processes at 2026-11-13 06:14Z: all 25 claude processes carried a profile's directory, and nothing renewed ca646b28. When WP06 is done, dc closes ISSUE:0003 (dc's hold 6), its Acceptance read against the new layout, with its last line as hv's decision 3 has it: Claude Usage lists each account once.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T06:04:49.120Z",
       "recorded_at": "2026-11-03T14:02:51.674Z",
       "edited_at": "2026-11-13T09:17:18.476Z"
     },
@@ -149,17 +150,18 @@
       "node": "vc",
       "kind": "doing",
       "seq": 4,
-      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13), shipped in 0.1.9. WP01 to WP05 are closed, and intent at lint ST0003 is clean (31 of 31 at 0f66154). Left: WP06, the rollout, which began on 2026-11-15 by hv's own hand and is now the live repair of 2026-11-17 (doing 5 and todo 7, steps in intent/wip.md), with AC-06.1 and AC-06.2; it closes ISSUE:0003 (todo 4). Then AC-00.1, the thread's sign-off. cc builds ISSUE:0008's code on this thread's claim.",
+      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13), shipped in 0.1.9. WP01 to WP06 are closed: WP06, the rollout, closed on 2026-11-17 (fbcc2f5) on the live repair's end state, with AC-06.1 and AC-06.2 satisfied, and dc closed ISSUE:0003 (9304bb9). Left: ISSUE:0008's code on this thread's claim, landing for 0.1.10 (doing 5), then AC-00.1, the thread's sign-off.",
       "state": "live",
       "recorded_at": "2026-11-13T06:29:42.144Z",
-      "edited_at": "2026-11-16T17:42:23.559Z"
+      "edited_at": "2026-11-17T06:04:49.302Z"
     },
     {
       "node": "vc",
       "kind": "todo",
       "seq": 7,
       "text": "0.1.9's rollout (ST0003/WP06, closing ISSUE:0003). It began on 2026-11-15 at 19:19Z by hv's own hand, when hello was seated, and stands half done: 25 of 29 sessions are pinned and do not follow a switch, hello has two logins, and engineering01's own store holds a login as hello. Its steps from here are ISSUE:0008's live repair (doing item on this board). AC-06.1 and AC-06.2 are read against its end state: doctor exits 0 with no pinned session, and a switch moves the running sessions. Back-out stays ccusage use --none. vc tells geodica-estate when it is done.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T06:04:49.153Z",
       "recorded_at": "2026-11-13T07:17:05.620Z",
       "edited_at": "2026-11-16T17:19:50.782Z"
     },
@@ -206,10 +208,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 5,
-      "text": "ISSUE:0008 (high), filed by vc on 2026-11-16 at 2e79f55 on hv's word (decision 7). hello was seated on 2026-11-15 at 19:19Z by hv's own hand, and the fleet restarted on 2026-11-16 from zsh shells alive since 2026-11-12 that still export CLAUDE_SECURESTORAGE_CONFIG_DIR: 24 of 29 sessions pinned to hello's own store and 1 to engineering01's at 17:02Z. Two parts. (1) The live repair, which is ST0003/WP06's rollout: first thing 2026-11-17 on hv's word (decision 8), hv's hands, vc checking from metadata; its six steps are in intent/wip.md. devbin-vc has it and acknowledged: the Desk grants nothing into the window and nothing after it until vc says the estate is clear, so vc tells devbin-vc and geodica-estate when it is done. The shells are Herdr Core's (up since 2026-11-12) and outlived the Herdr app's restart on 2026-11-15, so each pane's shell needs the unset, which hc send can type once no pane holds a Claude prompt; vc's first word to hv, that reopening Herdr clears them, was wrong and is corrected. On the day vc starts alone, checks its own process carries no pin, sees the live switch reach it (ccusage use engineering00, then ccusage which --use), then checks every session as the fleet starts. Open with hv: whether ic starts or cc takes the interface text (the issue's items 6 and 7), and whether the launch-time fix goes to Molt's or Intent's desk. (2) The code, for the next cut: cc has claimed ISSUE:0008 and builds items 1 to 5 with its two nits, one worktree and one Desk slot; vc reads the diff and takes its run as the run. Then dc closes ISSUE:0003 and vc closes WP06.",
+      "text": "ISSUE:0008 (high), for 0.1.10 first thing on hv's word (decision 12). The live repair is done (2026-11-17, WP06). The code: cc's unit, items 1 to 5 with its two nits from WP04 (todo 8), is on cc/ISSUE-0008 at 47aa80b; cc replays it onto main's tip as cc/ISSUE-0008-land with a git diff proof, its slot 01M7JQCS4KTNMQVRNWBQQ3KTGM standing as the run, and vc lands it by fast-forward on its read (todo 12). Then cc's follow-up unit on the landed tip: items 6 and 7, text only, and item 8, the incoming login verified before a switch seats it (added to the issue at 708bd5e), in one Desk cargo slot, red then green; vc reads and lands it. ic reads the new user-facing text as nits after the landing. Then the cut (doing 6).",
       "state": "live",
       "recorded_at": "2026-11-16T17:19:50.399Z",
-      "edited_at": "2026-11-16T17:29:30.023Z"
+      "edited_at": "2026-11-17T06:04:49.478Z"
     },
     {
       "node": "vc",
@@ -233,8 +235,41 @@
       "kind": "todo",
       "seq": 13,
       "text": "The live repair runs now on hv's go (decision 11, 2026-11-17 05:05Z). State when vc ended its session for it: only the three Ccusage sessions were left running, all pinned to hello's own store, so vc, cc and dc end first; Herdr lists 91 terminals, 88 plain zsh and these three. hv's steps, given in vc's window: (1) exit cc, dc and vc; (2) type the unset into every pane, by hc send to each terminal whose agent is zsh; (3) ccusage login hello, then ccusage login engineering01, then ccusage doctor (exit 0, no pinned line) and ccusage usage --all; (4) start a fresh ccusage-vc from a pane. That fresh vc, first: check its own process carries no CLAUDE_SECURESTORAGE_CONFIG_DIR (ps -E -ww -p on its claude pid), read ccusage doctor and usage --all, then ask hv for the live switch with vc as the open session (ccusage use engineering00, then ccusage which --use; vc answers its next prompt each time and /status names the account), and record AC-06.2 on it. AC-06.1 is read when the fleet next starts: no claude process carries the variable, one login an account, Claude Usage lists each account once. Then close the day: globalfold, dc's close of ISSUE:0003 noted for dc's next session, vc's read of cc's ISSUE:0008 unit (todo 12) carried to the next working session, devbin-vc and geodica-estate told when they next run, and release.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T06:04:49.185Z",
       "recorded_at": "2026-11-17T05:05:00.485Z"
+    },
+    {
+      "node": "vc",
+      "kind": "doing",
+      "seq": 6,
+      "text": "The 0.1.10 cut, first thing on hv's word (decision 12): ISSUE:0008 whole, ISSUE:0009 (LICENSE back) and ic's Herdr bar fix (9be58a6), one cut. Sequence: cc's unit lands, cc's follow-up lands, vc says the tip is final, dc runs the kovacs gates and the scratch-HOME install at it in one heavy Desk slot (dc's todo 15), vc writes the cut's steps for hv's own terminal tab (bin/devbin release 0.1.10, never a ! command, seats frozen until the publish), then brew upgrade on rhadamanth and kovacs, dc's keg proof closes ISSUE:0009 (dc's hold 13), and hv's switch to brew. ST0002's sitting (AC-08.3 and AC-00.1) runs before the cut, so anything it finds rides the same cut. The Desk was HELD with its control orphaned at 05:58Z; devbin-vc is back and has hv's word from vc.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:04:49.570Z"
+    },
+    {
+      "node": "vc",
+      "kind": "doing",
+      "seq": 7,
+      "text": "The Claude Usage PR, upstream to richhickson/claudecodeusage, on hv's word (decision 12): Claude Usage 1.18 names each Keychain item once per run and keeps history per item, so after a switch its names are stale and its history mixes accounts. ic builds the fix in hv's fork (/Users/matts/Devel/forks/claudecodeusage) on a branch from upstream's v1.18, with tests and a Desk run, and drafts the PR text in simple ASD-STE100 bullets. vc reads the change, puts the text to hv, and nothing is pushed or opened until hv says so.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:04:49.605Z"
+    },
+    {
+      "node": "vc",
+      "kind": "todo",
+      "seq": 14,
+      "text": "Tell geodica-estate, when it next runs, that Ccusage's live repair is done (2026-11-17): no Claude session carries CLAUDE_SECURESTORAGE_CONFIG_DIR, one verified login an account, a live switch reaches an open session, Claude Usage lists each account once. devbin-vc was told live on 2026-11-17 with hv's word.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:04:49.641Z"
+    },
+    {
+      "node": "vc",
+      "kind": "watchout",
+      "seq": 2,
+      "text": "Claude Usage 1.18 (mainline, /Applications since 2026-11-17) keeps each Keychain item's first email for its whole run, so after any ccusage switch its names are stale until it restarts, and the shared item's history mixes the accounts seated there. Until ic's PR lands upstream: read accounts from ccusage, not Claude Usage's names, and expect hv to restart it after a switch. Its login item: the fork's test build has the same bundle id, so check at the next login that the one running is /Applications/ClaudeUsage.app.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:04:49.676Z"
     }
   ],
   "sent": [

@@ -1,0 +1,15 @@
+{
+  "id": "01M7M1QAMCY6V9NN2XV8QGZR0B",
+  "ts": "2026-11-17T06:04:49.676Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "text": "Claude Usage 1.18 (mainline, /Applications since 2026-11-17) keeps each Keychain item's first email for its whole run, so after any ccusage switch its names are stale until it restarts, and the shared item's history mixes the accounts seated there. Until ic's PR lands upstream: read accounts from ccusage, not Claude Usage's names, and expect hv to restart it after a switch. Its login item: the fork's test build has the same bundle id, so check at the next login that the one running is /Applications/ClaudeUsage.app."
+  }
+}

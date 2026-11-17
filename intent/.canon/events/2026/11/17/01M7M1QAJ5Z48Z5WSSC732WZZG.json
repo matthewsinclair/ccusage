@@ -1,0 +1,15 @@
+{
+  "id": "01M7M1QAJ5Z48Z5WSSC732WZZG",
+  "ts": "2026-11-17T06:04:49.605Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "The Claude Usage PR, upstream to richhickson/claudecodeusage, on hv's word (decision 12): Claude Usage 1.18 names each Keychain item once per run and keeps history per item, so after a switch its names are stale and its history mixes accounts. ic builds the fix in hv's fork (/Users/matts/Devel/forks/claudecodeusage) on a branch from upstream's v1.18, with tests and a Desk run, and drafts the PR text in simple ASD-STE100 bullets. vc reads the change, puts the text to hv, and nothing is pushed or opened until hv says so."
+  }
+}

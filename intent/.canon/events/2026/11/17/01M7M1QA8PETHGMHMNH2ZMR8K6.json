@@ -1,0 +1,16 @@
+{
+  "id": "01M7M1QA8PETHGMHMNH2ZMR8K6",
+  "ts": "2026-11-17T06:04:49.302Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching, built by cc (hv, 2026-11-13), shipped in 0.1.9. WP01 to WP06 are closed: WP06, the rollout, closed on 2026-11-17 (fbcc2f5) on the live repair's end state, with AC-06.1 and AC-06.2 satisfied, and dc closed ISSUE:0003 (9304bb9). Left: ISSUE:0008's code on this thread's claim, landing for 0.1.10 (doing 5), then AC-00.1, the thread's sign-off."
+  }
+}

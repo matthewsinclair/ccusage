@@ -1,0 +1,15 @@
+{
+  "id": "01M7M1QAH2YGXYTK76BQFFMGD4",
+  "ts": "2026-11-17T06:04:49.570Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "The 0.1.10 cut, first thing on hv's word (decision 12): ISSUE:0008 whole, ISSUE:0009 (LICENSE back) and ic's Herdr bar fix (9be58a6), one cut. Sequence: cc's unit lands, cc's follow-up lands, vc says the tip is final, dc runs the kovacs gates and the scratch-HOME install at it in one heavy Desk slot (dc's todo 15), vc writes the cut's steps for hv's own terminal tab (bin/devbin release 0.1.10, never a ! command, seats frozen until the publish), then brew upgrade on rhadamanth and kovacs, dc's keg proof closes ISSUE:0009 (dc's hold 13), and hv's switch to brew. ST0002's sitting (AC-08.3 and AC-00.1) runs before the cut, so anything it finds rides the same cut. The Desk was HELD with its control orphaned at 05:58Z; devbin-vc is back and has hv's word from vc."
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "01M7M1QAK9GTZFQ3RYS1HMWVTR",
+  "ts": "2026-11-17T06:04:49.641Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "Tell geodica-estate, when it next runs, that Ccusage's live repair is done (2026-11-17): no Claude session carries CLAUDE_SECURESTORAGE_CONFIG_DIR, one verified login an account, a live switch reaches an open session, Claude Usage lists each account once. devbin-vc was told live on 2026-11-17 with hv's word."
+  }
+}

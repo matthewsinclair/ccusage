@@ -1,0 +1,16 @@
+{
+  "id": "01M7M1QAE6N9Z8J0Z20AY9YT8M",
+  "ts": "2026-11-17T06:04:49.478Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ISSUE:0008 (high), for 0.1.10 first thing on hv's word (decision 12). The live repair is done (2026-11-17, WP06). The code: cc's unit, items 1 to 5 with its two nits from WP04 (todo 8), is on cc/ISSUE-0008 at 47aa80b; cc replays it onto main's tip as cc/ISSUE-0008-land with a git diff proof, its slot 01M7JQCS4KTNMQVRNWBQQ3KTGM standing as the run, and vc lands it by fast-forward on its read (todo 12). Then cc's follow-up unit on the landed tip: items 6 and 7, text only, and item 8, the incoming login verified before a switch seats it (added to the issue at 708bd5e), in one Desk cargo slot, red then green; vc reads and lands it. ic reads the new user-facing text as nits after the landing. Then the cut (doing 6)."
+  }
+}
