@@ -1,0 +1,14 @@
+{
+  "id": "01M7M4H91P2NSWXM3E28TSMKQB",
+  "ts": "2026-11-17T06:53:57.174Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "ac.satisfy",
+  "subject": {
+    "type": "ac",
+    "id": "ST0002/AC-08.3"
+  },
+  "payload": {
+    "evidence": "hv's look on 2026-11-17 in hv's own Herdr, the mod installed with ccusage herdr install from ic's build at 9be58a6 (herdr-app check passed) and opened as a tab of its own: hv's screenshots in vc's window show each of the five accounts' weekly bar filled to its percent, its reset, its state tags (active, next, eligible, at the 95% cap), the next marker and predict's line, from ccusage's own JSON. It refreshes by itself: with the panel open and nobody running ccusage against the real config, every account's usage was fetched every five minutes from 06:23:52Z to 06:48:53Z (ccusage's usage cache and history.jsonl, read by vc with date -u). ccusage herdr launch and the panel's larger text (hv's decision 15) are covered by AC-08.4 and by ic's run at 23a7640."
+  }
+}

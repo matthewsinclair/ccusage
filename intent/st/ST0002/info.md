@@ -1,9 +1,9 @@
 ---
 st_id: ST0002
 title: Add 'which' verb to indicate the best account to use to maximise token usage across accounts
-status: WIP
+status: Completed
 created: 2026-11-13
-completed:
+completed: 2026-11-17
 ---
 
 # ST0002: Add 'which' verb to indicate the best account to use to maximise token usage across accounts
@@ -60,7 +60,7 @@ Give hv one command that names the account to work on now, so that no weekly all
 | WP-05 | The predict verb: burn rate and projected loss                                       | M    | Done   |
 | WP-06 | The TUI marks the account which would choose                                         | S    | Done   |
 | WP-07 | Docs: README and CHANGELOG for which and predict                                     | S    | Done   |
-| WP-08 | Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy | M    | WIP    |
+| WP-08 | Herdr mod: a ccusage panel in a Herdr pane, its install verb, and one refresh policy | M    | Done   |
 
 ## Acceptance
 
