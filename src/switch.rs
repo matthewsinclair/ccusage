@@ -201,7 +201,8 @@ fn unpinned(store: &Store, name: &str, what: &str) -> Result<()> {
     eprintln!("ccusage: {}", crate::sessions::unchecked(what));
     return Ok(());
   };
-  let pinned = crate::sessions::pinned_to(&sessions, &store.profile_dir(name)?);
+  let own = crate::sessions::Named::store(&store.profile_dir(name)?);
+  let pinned = crate::sessions::pinned_to(&sessions, &own);
   if pinned.is_empty() {
     Ok(())
   } else {
@@ -345,17 +346,19 @@ fn relocate(store: &Store, request: &Move) -> Result<()> {
       },
     )
   };
-  match attempt(verify()?) {
-    Err(error)
-      if matches!(
-        error.downcast_ref::<Refusal>(),
-        Some(Refusal::Unverified(_) | Refusal::Foreign(_))
-      ) =>
-    {
-      attempt(verify()?)
-    }
+  let first = verify()?;
+  let checked = (first.0.is_some(), first.1.is_some());
+  match attempt(first) {
+    Err(error) if retries(error.downcast_ref::<Refusal>(), checked) => attempt(verify()?),
     moved => moved,
   }
+}
+
+/// Whether `relocate` tries its move again after `refusal`, given whether the outgoing
+/// and the incoming login were each verified (`checked`). Pure.
+fn retries(refusal: Option<&Refusal>, checked: (bool, bool)) -> bool {
+  let _ = checked;
+  matches!(refusal, Some(Refusal::Unverified(_) | Refusal::Foreign(_)))
 }
 
 #[cfg(test)]
@@ -386,5 +389,22 @@ mod tests {
     );
     assert!(adoption(&Standing::Dead, &[])?.contains("could no longer renew"));
     Ok(())
+  }
+
+  // ISSUE:0010 item 6: a move is tried again only after a refusal that a renewal between
+  // the check and the move's locks can explain, so a login that could not be verified at
+  // all is refused after one check, not two.
+  #[test]
+  fn a_move_is_tried_again_only_when_a_verified_login_changed_under_it() {
+    let (unverified, foreign) = (
+      Refusal::Unverified("a".into()),
+      Refusal::Foreign("b".into()),
+    );
+    assert!(retries(Some(&unverified), (true, false)));
+    assert!(retries(Some(&foreign), (false, true)));
+    assert!(!retries(Some(&foreign), (true, false)));
+    assert!(!retries(Some(&unverified), (false, true)));
+    assert!(!retries(Some(&Refusal::Changed), (true, true)));
+    assert!(!retries(None, (true, true)));
   }
 }

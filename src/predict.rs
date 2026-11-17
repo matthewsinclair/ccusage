@@ -711,7 +711,8 @@ mod tests {
       .map(|account| account.name.as_str())
       .collect();
     assert_eq!(names, ["a", "b"]);
-    // c's samples are named as left out of the rate too, with how many.
+    // c's samples are named as left out of the rate too, with how many, and its plan once
+    // (ISSUE:0010 item 9).
     let c_samples = history
       .iter()
       .filter(|sample| sample.account == "c")
@@ -721,8 +722,7 @@ mod tests {
       [(
         "c".to_owned(),
         format!(
-          "another plan's allowance ({}); the rate leaves out its {c_samples} weekly samples, on {}",
-          described(&pro),
+          "another plan's allowance ({}), with its {c_samples} weekly samples",
           described(&pro)
         )
       )]
@@ -818,17 +818,113 @@ mod tests {
         .unwrap_or_default()
     };
     assert!(!why("b").contains("weekly samples"), "{}", why("b"));
+    // ISSUE:0010 item 9: c's reason can end in a remedy, so the text gives its samples a
+    // line of their own, right after c's; the JSON keeps them in c's reason, as before.
+    assert!(!why("c").contains("weekly samples"), "{}", why("c"));
     let c_samples = history
       .iter()
       .filter(|sample| sample.account == "c")
       .count();
-    assert!(
-      why("c").ends_with(&format!(
-        "; the rate leaves out its {c_samples} weekly samples, since none records a plan and its usage now gives none"
-      )),
-      "{}",
-      why("c")
+    let note = format!(
+      "the rate leaves out its {c_samples} weekly samples, since none records a plan and its usage now gives none"
     );
+    let said = view::text(&failed, now);
+    let lines: Vec<&str> = said.lines().collect();
+    let c = lines
+      .iter()
+      .position(|line| line.starts_with("c: left out, "))
+      .ok_or("c is left out")?;
+    let c_line = format!("c: {note}");
+    assert_eq!(lines.get(c + 1).copied(), Some(c_line.as_str()), "{said}");
+    let json: serde_json::Value = serde_json::from_str(&view::json(&failed, now, cap)?)?;
+    let reason = json["left_out"]
+      .as_array()
+      .ok_or("a left_out array")?
+      .iter()
+      .find(|account| account["name"] == "c")
+      .and_then(|account| account["reason"].as_str())
+      .ok_or("c in left_out")?;
+    assert!(reason.ends_with(&format!("; {note}")), "{reason}");
+    Ok(())
+  }
+
+  // ISSUE:0010 items 9 and 10: an account the rule projects is never left out, even when
+  // the rate leaves out some of its samples, which get a line of their own after the
+  // total; an account on another plan says its samples once, after its plan. The JSON
+  // names only the accounts it leaves out.
+  #[test]
+  fn samples_the_rate_leaves_out_never_leave_a_projected_account_out() -> Result<()> {
+    let now = at("2026-11-13T05:00:00Z")?;
+    let cap = which::DEFAULT_CAP;
+    let (max, pro) = (
+      plan("max", "default_claude_max_20x"),
+      plan("pro", "default_claude_ai"),
+    );
+    let taken = |account: &str, percent: f64, sampled_at: i64, on: &Plan| {
+      sample(account, percent, now + WEEK, sampled_at).map(|kept| Sample {
+        plan: Some(on.clone()),
+        ..kept
+      })
+    };
+    // x was on pro two days ago and is on max now, as a is; c is on pro throughout.
+    let history = [
+      taken("x", 0.0, now - 2 * MIN_SPAN, &pro)?,
+      taken("x", 10.0, now - MIN_SPAN, &max)?,
+      taken("x", 20.0, now, &max)?,
+      taken("a", 0.0, now - MIN_SPAN, &max)?,
+      taken("a", 24.0, now, &max)?,
+      taken("c", 0.0, now - MIN_SPAN, &pro)?,
+      taken("c", 30.0, now, &pro)?,
+    ];
+    let on = |name: &str, plan: &Plan| -> Result<Report> {
+      let mut planned = report(name, now, 0.0, now + WEEK)?;
+      planned.plan = plan.clone();
+      Ok(planned)
+    };
+    let reports = [on("x", &max)?, on("a", &max)?, on("c", &pro)?];
+    let projection = project(&history, &reports, now, cap, None)?;
+    assert!(
+      projection
+        .accounts
+        .iter()
+        .any(|account| account.name == "x"),
+      "{:?}",
+      projection.accounts
+    );
+    assert_eq!(
+      projection.left_out,
+      [(
+        "c".to_owned(),
+        format!(
+          "another plan's allowance ({}), with its 2 weekly samples",
+          described(&pro)
+        )
+      )]
+    );
+    let said = view::text(&projection, now);
+    let lines: Vec<&str> = said.lines().collect();
+    let total = lines
+      .iter()
+      .position(|line| line.starts_with("Projected unused"))
+      .ok_or("a total")?;
+    let x_line = format!(
+      "x: the rate leaves out 1 of its 3 weekly samples, taken on another plan ({})",
+      described(&pro)
+    );
+    assert_eq!(
+      lines.get(total + 1).copied(),
+      Some(x_line.as_str()),
+      "{said}"
+    );
+    assert!(!said.contains("x: left out"), "{said}");
+    let json: serde_json::Value = serde_json::from_str(&view::json(&projection, now, cap)?)?;
+    let left: Vec<_> = json["left_out"]
+      .as_array()
+      .ok_or("a left_out array")?
+      .iter()
+      .map(|account| account["name"].clone())
+      .collect();
+    assert_eq!(left, ["c"]);
     Ok(())
   }
 
@@ -852,17 +948,24 @@ mod tests {
       sample("b", 50.0, ended, now - 20 * HOUR)?,
       sample("b", 10.0, ended, now - 10 * HOUR)?,
       sample("b", 60.0, ended, now - 5 * HOUR)?,
+      // c's current window fell.
+      sample("c", 30.0, current, now - 2 * HOUR)?,
+      sample("c", 20.0, current, now - HOUR)?,
     ];
     let reports = [
       report("a", now, 5.0, current)?,
       report("b", now, 0.0, current)?,
+      report("c", now, 20.0, current)?,
     ];
     let said = view::text(&project(&history, &reports, now, cap, None)?, now);
     let fell: Vec<&str> = said.lines().filter(|line| line.contains("fell")).collect();
+    // ISSUE:0010 item 11: in durations, as predict's other lines give times, for a window
+    // that has reset and for one that has not.
     assert_eq!(
       fell,
       [
-        "a: weekly usage fell from 38% at 2026-11-15T09:00:00Z to 9% at 2026-11-15T12:00:00Z, in the window ending 2026-11-16T02:00:00Z, as the usage endpoint reported it; the rate counts a fall as no use"
+        "a: weekly usage fell from 38% 20h00 ago to 9% 17h00 ago, in the window that reset 3h00 ago, as the usage endpoint reported it; the rate counts a fall as no use",
+        "c: weekly usage fell from 30% 2h00 ago to 20% 1h00 ago, in the window that resets in 6d21h, as the usage endpoint reported it; the rate counts a fall as no use"
       ],
       "{said}"
     );

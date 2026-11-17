@@ -4,7 +4,7 @@
 //! Linux only a claude process's environment is read.
 
 use std::{
-  path::Path,
+  path::{Path, PathBuf},
   process::{Command, Stdio},
 };
 
@@ -16,6 +16,80 @@ pub(crate) struct Session {
   pub started: Option<String>,
   pub config_dir: Option<String>,
   pub login_dir: Option<String>,
+  /// The stores its two directories name, which `named` gives it once it is listed.
+  pub stores: Stores,
+}
+
+/// The stores a session's two directories name (`Named`), for comparing with a store's;
+/// the directories as written are for showing.
+#[derive(Debug, Default, PartialEq, Eq)]
+pub(crate) struct Stores {
+  pub config: Option<Named>,
+  pub login: Option<Named>,
+}
+
+/// The ways a directory names the login store Claude Code reads from it: its path, which
+/// is how a session's directory has always been compared with a store's, and a form of
+/// it as Claude Code reaches that store on this platform (`form`). Two directories name
+/// one store when either agrees, so a match is never narrower than a path comparison: a
+/// wrong match only refuses a move, where a missed one could empty a store under a
+/// running session.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(crate) struct Named {
+  path: PathBuf,
+  form: Option<String>,
+}
+
+impl Named {
+  /// How `dir` names its store, with `cwd` giving the working directory a relative path
+  /// is read from, asked for only when one is needed.
+  pub(crate) fn of(dir: &Path, cwd: impl FnOnce() -> Option<String>) -> Self {
+    Self {
+      path: dir.to_owned(),
+      form: form(dir, cwd),
+    }
+  }
+
+  /// How a store's own directory names it: ccusage gives that one as an absolute path.
+  pub(crate) fn store(dir: &Path) -> Self {
+    Self::of(dir, || None)
+  }
+
+  /// Whether `self` and `other` name one store. Pure.
+  pub(crate) fn meets(&self, other: &Self) -> bool {
+    self.path == other.path || (self.form.is_some() && self.form == other.form)
+  }
+}
+
+/// The form `dir` names its store by on this platform, besides its path (`Named`).
+fn form(dir: &Path, cwd: impl FnOnce() -> Option<String>) -> Option<String> {
+  let _ = (dir, cwd);
+  None
+}
+
+/// The directory the filesystem reaches from `dir`, through any symlink, and from `cwd`
+/// when `dir` is relative; None when it cannot be resolved, as for a directory that does
+/// not exist, or a relative one whose working directory is not known.
+#[cfg(any(test, not(target_os = "macos")))]
+fn reached(dir: &Path, cwd: impl FnOnce() -> Option<String>) -> Option<PathBuf> {
+  let _ = (dir, cwd);
+  None
+}
+
+/// `session` with the stores its directories name (`Stores`), its working directory read
+/// for a relative one.
+fn named(mut session: Session) -> Session {
+  let pid = session.pid;
+  let name = |dir: &Option<String>| {
+    dir
+      .as_deref()
+      .map(|dir| Named::of(Path::new(dir), || cwd(pid)))
+  };
+  session.stores = Stores {
+    config: name(&session.config_dir),
+    login: name(&session.login_dir),
+  };
+  session
 }
 
 const CONFIG_DIR: &str = "CLAUDE_CONFIG_DIR";
@@ -55,6 +129,7 @@ pub(crate) fn running() -> Option<Vec<Session>> {
     String::from_utf8_lossy(&output.stdout)
       .lines()
       .filter_map(parse)
+      .map(named)
       .collect(),
   )
 }
@@ -63,7 +138,8 @@ pub(crate) fn running() -> Option<Vec<Session>> {
 /// its start time (lstart's five words) and the two variables, from the words after its
 /// program. ps prints the environment after the arguments, so each variable is its last
 /// `NAME=value`: the environment's, ahead of an argument that looks like one. A value
-/// with a space in it is cut at the space. Pure.
+/// with a space in it is cut at the space. The stores they name are left to `named`.
+/// Pure.
 fn parse(line: &str) -> Option<Session> {
   let mut words = line.split_whitespace();
   let pid = words.next()?.parse().ok()?;
@@ -78,6 +154,7 @@ fn parse(line: &str) -> Option<Session> {
     started: Some(started),
     config_dir: variable(environment(), CONFIG_DIR),
     login_dir: variable(environment(), LOGIN_DIR),
+    stores: Stores::default(),
   })
 }
 
@@ -131,12 +208,13 @@ fn from_proc() -> Option<Vec<Session>> {
       continue;
     };
     let environment = || environ.split(|byte| *byte == 0);
-    sessions.push(Session {
+    sessions.push(named(Session {
       pid,
       started: started_linux(pid),
       config_dir: variable(environment(), CONFIG_DIR),
       login_dir: variable(environment(), LOGIN_DIR),
-    });
+      stores: Stores::default(),
+    }));
   }
   Some(sessions)
 }
@@ -154,39 +232,53 @@ fn started_linux(pid: u32) -> Option<String> {
   (!started.is_empty()).then_some(started)
 }
 
+/// What holds a session to a login other than the shared config's: the variable, and the
+/// value the session was started with.
+#[derive(Debug, PartialEq, Eq)]
+pub(crate) struct Drift<'a> {
+  pub variable: &'static str,
+  pub value: &'a str,
+}
+
+impl std::fmt::Display for Drift<'_> {
+  fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    write!(formatter, "{}={}", self.variable, self.value)
+  }
+}
+
 /// What makes `session` read a login other than the shared config's: a login directory,
-/// or a config directory, other than the shared config. None when it follows a switch.
-/// Pure.
-pub(crate) fn drift(session: &Session, shared: &Path) -> Option<String> {
-  fn other<'a>(value: &'a Option<String>, shared: &Path) -> Option<&'a str> {
-    value.as_deref().filter(|value| Path::new(value) != shared)
-  }
-  match (
-    other(&session.login_dir, shared),
-    other(&session.config_dir, shared),
-  ) {
-    (Some(dir), _) => Some(format!("{LOGIN_DIR}={dir}")),
-    (None, Some(dir)) => Some(format!("{CONFIG_DIR}={dir}")),
-    (None, None) => None,
+/// or a config directory, that names a store other than `shared` names. None when it
+/// follows a switch. Pure.
+pub(crate) fn drift<'a>(session: &'a Session, shared: &Named) -> Option<Drift<'a>> {
+  let other = |named: &Option<Named>| named.as_ref().is_some_and(|named| !named.meets(shared));
+  let held = |variable: &'static str, value: &'a Option<String>| {
+    value.as_deref().map(|value| Drift { variable, value })
+  };
+  if other(&session.stores.login) {
+    held(LOGIN_DIR, &session.login_dir)
+  } else if other(&session.stores.config) {
+    held(CONFIG_DIR, &session.config_dir)
+  } else {
+    None
   }
 }
 
-/// The directory whose credential store `session` reads its login from: its login
-/// directory, else its config directory; None when it names neither. Pure.
-fn login_store(session: &Session) -> Option<&Path> {
+/// The store `session` reads its login from: its login directory's, else its config
+/// directory's; None when it names neither. Pure.
+fn login_store(session: &Session) -> Option<&Named> {
   session
-    .login_dir
-    .as_deref()
-    .or(session.config_dir.as_deref())
-    .map(Path::new)
+    .stores
+    .login
+    .as_ref()
+    .or(session.stores.config.as_ref())
 }
 
-/// The sessions that read their login from `dir`'s store, so are pinned to it: a move
-/// that takes the login out of that store leaves them none. Pure.
-pub(crate) fn pinned_to<'a>(sessions: &'a [Session], dir: &Path) -> Vec<&'a Session> {
+/// The sessions that read their login from `store`, so are pinned to it: a move that
+/// takes the login out of that store leaves them none. Pure.
+pub(crate) fn pinned_to<'a>(sessions: &'a [Session], store: &Named) -> Vec<&'a Session> {
   sessions
     .iter()
-    .filter(|session| login_store(session) == Some(dir))
+    .filter(|session| login_store(session).is_some_and(|named| named.meets(store)))
     .collect()
 }
 
@@ -234,7 +326,7 @@ pub(crate) fn unchecked(what: &str) -> String {
 /// What which, predict and the TUI say while running sessions read a login other than the
 /// shared config's (`drift`), so that a switch does not move them: how many, and that
 /// doctor names them. None when every one follows. Pure.
-pub(crate) fn unfollowing(sessions: &[Session], shared: &Path) -> Option<String> {
+pub(crate) fn unfollowing(sessions: &[Session], shared: &Named) -> Option<String> {
   match sessions
     .iter()
     .filter(|session| drift(session, shared).is_some())
@@ -254,7 +346,7 @@ pub(crate) fn unfollowing(sessions: &[Session], shared: &Path) -> Option<String>
 /// `unfollowing` for the sessions running now; None as well when they cannot be listed,
 /// which doctor reports.
 pub(crate) fn unfollowing_now(shared: &Path) -> Option<String> {
-  unfollowing(&running()?, shared)
+  unfollowing(&running()?, &Named::store(shared))
 }
 
 /// Why `what`, a move that would empty `name`'s own store, is refused while `pinned`
@@ -276,7 +368,7 @@ mod tests {
   // than the shared config.
   #[test]
   fn sessions_keep_only_their_two_variables_and_drift_off_the_shared_config() -> crate::Result<()> {
-    let shared = Path::new("/home/u/.config/claude");
+    let shared = Named::store(Path::new("/home/u/.config/claude"));
     let line = " 102 Fri Nov 13 08:00:01 2026 /opt/claude --resume CLAUDE_CONFIG_DIR=/home/u/.config/claude/ ANTHROPIC_API_KEY=SECRET CLAUDE_SECURESTORAGE_CONFIG_DIR=/p/work";
     let session = parse(line).ok_or("a claude line is a session")?;
     assert_eq!(
@@ -286,20 +378,23 @@ mod tests {
         started: Some("Fri Nov 13 08:00:01 2026".into()),
         config_dir: Some("/home/u/.config/claude/".into()),
         login_dir: Some("/p/work".into()),
+        stores: Stores::default(),
       }
     );
+    let drifted = |line: &str| -> crate::Result<Option<String>> {
+      let session = named(parse(line).ok_or("a claude line is a session")?);
+      Ok(drift(&session, &shared).map(|drift| drift.to_string()))
+    };
     assert_eq!(
-      drift(&session, shared).as_deref(),
+      drifted(line)?.as_deref(),
       Some("CLAUDE_SECURESTORAGE_CONFIG_DIR=/p/work")
     );
-    let follows =
-      parse(" 101 Fri Nov 13 08:00:00 2026 claude CLAUDE_CONFIG_DIR=/home/u/.config/claude")
-        .ok_or("a claude line is a session")?;
-    assert_eq!(drift(&follows, shared), None);
-    let elsewhere = parse(" 103 Fri Nov 13 08:00:02 2026 claude CLAUDE_CONFIG_DIR=/elsewhere")
-      .ok_or("a claude line is a session")?;
     assert_eq!(
-      drift(&elsewhere, shared).as_deref(),
+      drifted(" 101 Fri Nov 13 08:00:00 2026 claude CLAUDE_CONFIG_DIR=/home/u/.config/claude")?,
+      None
+    );
+    assert_eq!(
+      drifted(" 103 Fri Nov 13 08:00:02 2026 claude CLAUDE_CONFIG_DIR=/elsewhere")?.as_deref(),
       Some("CLAUDE_CONFIG_DIR=/elsewhere")
     );
     assert_eq!(
@@ -336,9 +431,13 @@ mod tests {
       format!(" 204 Mon Nov 16 16:30:03 2026 claude {CONFIG_DIR}={own} {LOGIN_DIR}={shared}"),
       " 205 Mon Nov 16 16:30:04 2026 claude".to_owned(),
     ];
-    let sessions: Vec<Session> = lines.iter().filter_map(|line| parse(line)).collect();
+    let sessions: Vec<Session> = lines
+      .iter()
+      .filter_map(|line| parse(line))
+      .map(named)
+      .collect();
     assert_eq!(sessions.len(), lines.len());
-    let pinned = pinned_to(&sessions, Path::new(own));
+    let pinned = pinned_to(&sessions, &Named::store(Path::new(own)));
     let pids: Vec<u32> = pinned.iter().map(|session| session.pid).collect();
     assert_eq!(pids, [201, 202]);
     let one = &pinned[..1];
@@ -362,11 +461,94 @@ mod tests {
       remedy("work", Some(&[])),
       "no running Claude session reads work's own store, so run ccusage login work"
     );
-    assert!(remedy("work", None).ends_with("and only then run ccusage login work"));
+    // ISSUE:0010 item 8(c): with the sessions unlisted, the shell to restart from comes
+    // first, so "without" cannot attach to "started", and says what to unset.
+    assert_eq!(
+      remedy("work", None),
+      "the running Claude sessions could not be listed, so first restart, from a shell without CLAUDE_SECURESTORAGE_CONFIG_DIR (unset CLAUDE_SECURESTORAGE_CONFIG_DIR), any Claude session started with it naming work's own store, and only then run ccusage login work"
+    );
     let refused = refusal("work", &pinned, "switching to work");
     assert!(
       refused.starts_with("Claude sessions 201 and 202 read work's own store, and switching to work would leave it without a login under them; nothing was moved"),
       "{refused}"
+    );
+    Ok(())
+  }
+
+  // ISSUE:0010 item 2: a session's directory names a profile's store as Claude Code
+  // reaches that store. By its path everywhere, as before; on macOS also by the Keychain
+  // item, which another Unicode spelling of the path names too, while a symlink or a
+  // relative path names another; elsewhere also through the filesystem, by a symlink or
+  // from the session's working directory, to the credentials file.
+  #[test]
+  fn a_directory_names_a_store_as_claude_code_reaches_it() -> crate::Result<()> {
+    let scratch = crate::scratch::Scratch::new()?;
+    let real = scratch.path().join("profiles").join("work");
+    std::fs::create_dir_all(&real)?;
+    let link = scratch.path().join("link");
+    std::os::unix::fs::symlink(&real, &link)?;
+    let store = Named::store(&real);
+    let macos = cfg!(target_os = "macos");
+    let from_scratch = || Some(scratch.path().display().to_string());
+    // The same path with a trailing slash, as before, everywhere.
+    let slashed = PathBuf::from(format!("{}/", real.display()));
+    assert!(Named::store(&slashed).meets(&store));
+    // A symlink, and a path relative to the session's working directory.
+    assert_eq!(Named::store(&link).meets(&store), !macos);
+    let relative = Named::of(Path::new("profiles/work"), from_scratch);
+    assert_eq!(relative.meets(&store), !macos);
+    // Another Unicode spelling of the same path.
+    let (composed, decomposed) = ("/data/caf\u{e9}", "/data/cafe\u{301}");
+    assert_eq!(
+      Named::store(Path::new(decomposed)).meets(&Named::store(Path::new(composed))),
+      macos
+    );
+    // What the filesystem reaches, which the rule off macOS rests on, on every platform.
+    let canonical = real.canonicalize()?;
+    assert_eq!(reached(&link, || None), Some(canonical.clone()));
+    assert_eq!(
+      reached(Path::new("profiles/work"), from_scratch),
+      Some(canonical)
+    );
+    assert_eq!(reached(Path::new("profiles/work"), || None), None);
+    assert_eq!(reached(&scratch.path().join("absent"), || None), None);
+    Ok(())
+  }
+
+  // ISSUE:0010 item 7: which, predict and the TUI count the running sessions that do not
+  // follow a switch in the words doctor and the remedies use, and say nothing when every
+  // one follows.
+  #[test]
+  fn the_count_of_sessions_that_do_not_follow_a_switch_is_worded_as_doctor_words_them()
+  -> crate::Result<()> {
+    let shared_dir = "/home/u/.config/claude";
+    let shared = Named::store(Path::new(shared_dir));
+    let sessions = [
+      (601, shared_dir),
+      (602, "/data/profiles/a"),
+      (603, "/data/profiles/b"),
+    ]
+    .into_iter()
+    .map(|(pid, dir)| {
+      parse(&format!(
+        " {pid} Mon Nov 16 16:30:00 2026 claude {CONFIG_DIR}={dir}"
+      ))
+      .map(named)
+      .ok_or("a claude line is a session")
+    })
+    .collect::<std::result::Result<Vec<_>, _>>()?;
+    assert_eq!(unfollowing(&sessions[..1], &shared), None);
+    assert_eq!(
+      unfollowing(&sessions[..2], &shared).as_deref(),
+      Some(
+        "1 running Claude session reads a login other than the shared config's, so it does not follow a switch; ccusage doctor names it"
+      )
+    );
+    assert_eq!(
+      unfollowing(&sessions, &shared).as_deref(),
+      Some(
+        "2 running Claude sessions read a login other than the shared config's, so they do not follow a switch; ccusage doctor names them"
+      )
     );
     Ok(())
   }

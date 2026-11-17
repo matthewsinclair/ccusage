@@ -2140,9 +2140,9 @@ fn predict_keeps_a_failed_accounts_samples_on_their_plan_and_names_those_it_leav
   Ok(())
 }
 
-// ISSUE:0008 Acceptance 5: which and predict say on stderr how many running sessions are
-// pinned away from the shared config, so that a switch does not move them, and nothing of
-// it when none is.
+// ISSUE:0008 Acceptance 5, in ISSUE:0010 item 7's words: which and predict say on stderr
+// how many running sessions read a login other than the shared config's, so do not follow
+// a switch, and nothing of it when none does.
 #[test]
 fn which_and_predict_say_how_many_running_sessions_a_switch_does_not_move() -> Result<()> {
   let sandbox = Sandbox::new()?;
@@ -2170,14 +2170,14 @@ fn which_and_predict_say_how_many_running_sessions_a_switch_does_not_move() -> R
   for args in verbs {
     let note = said(args)?;
     assert!(
-      note.contains("2 running Claude sessions are pinned"),
+      note.contains("2 running Claude sessions read a login other than the shared config's"),
       "{args:?}: {note}"
     );
   }
   fs::write(sandbox.root.join("ps.out"), following(503))?;
   for args in verbs {
     let note = said(args)?;
-    assert!(!note.contains("pinned"), "{args:?}: {note}");
+    assert!(!note.contains("running Claude session"), "{args:?}: {note}");
   }
   Ok(())
 }
@@ -2286,5 +2286,38 @@ fn herdr_install_says_on_stderr_that_it_waits_for_the_check() -> Result<()> {
   assert!(!report.contains(waiting), "{report}");
   let stderr = String::from_utf8(output.stderr)?;
   assert!(stderr.contains(waiting), "{stderr}");
+  Ok(())
+}
+
+// ISSUE:0010 item 4: ccusage login of the seated profile, with no email and no account
+// record to check a fresh login against, is refused before Claude's login runs, and says
+// to give the profile an email.
+#[test]
+fn a_login_of_a_seated_profile_with_nothing_to_check_it_against_is_refused_first() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  sandbox.ok(&["add", "home"])?;
+  // home seated by hand, its login in the shared store and none in its own, with no email
+  // configured and no account record.
+  let home = sandbox.profile("home");
+  storage::write_atomic(
+    &shared.join(".credentials.json"),
+    br#"{"claudeAiOauth":{"accessToken":"OLD_home","expiresAt":9999999999999}}"#,
+  )?;
+  storage::write_atomic(&home.join(".credentials.json"), b"{}")?;
+  let seat = sandbox.root.join("state/ccusage/seat.json");
+  storage::write_atomic(&seat, br#"{"seated":"home"}"#)?;
+  let refused = sandbox.run(&["login", "home"])?;
+  assert!(!refused.status.success());
+  let said = String::from_utf8(refused.stderr)?;
+  assert!(
+    said.contains("home has no email and no account record, so ccusage cannot check a fresh login as home's before it replaces the shared login, and did not start Claude's login; set email under [profiles.home] in config.toml (ccusage paths shows where), then run ccusage login home"),
+    "{said}"
+  );
+  // Claude's login never ran, so both stores are as they were, and nothing was journaled.
+  assert_eq!(login_of(&home)?, None);
+  assert_eq!(login_of(&shared)?.as_deref(), Some("OLD_home"));
+  assert_eq!(fs::read(&seat)?, br#"{"seated":"home"}"#);
+  assert!(!sandbox.root.join("state/ccusage/move.json").exists());
   Ok(())
 }

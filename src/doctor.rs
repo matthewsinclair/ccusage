@@ -1,7 +1,7 @@
 use crate::{
   Result, clean,
   config::{self, Store},
-  sessions::Session,
+  sessions::{Drift, Named, Session},
   shared, storage,
   usage::Whose,
 };
@@ -276,7 +276,7 @@ fn shared_checks(store: &Store, shared: &Path, failed: &mut bool) {
           let pinned = dir
             .ok()
             .zip(sessions.as_deref())
-            .map(|(dir, sessions)| crate::sessions::pinned_to(sessions, &dir));
+            .map(|(dir, sessions)| crate::sessions::pinned_to(sessions, &Named::store(&dir)));
           Own {
             name: name.clone(),
             holds,
@@ -350,18 +350,11 @@ fn shared_checks(store: &Store, shared: &Path, failed: &mut bool) {
       ),
     ),
     Some(sessions) => {
+      let shared = Named::store(shared);
       for session in sessions {
-        if let Some(cause) = crate::sessions::drift(session, shared) {
+        if let Some(drift) = crate::sessions::drift(session, &shared) {
           let cwd = crate::sessions::cwd(session.pid);
-          report(
-            "WARN",
-            format!(
-              "Claude session {} (started {}, in {}) runs with {cause}, so it does not follow a switch; restart it from a shell without it",
-              session.pid,
-              session.started.as_deref().unwrap_or("at an unknown time"),
-              cwd.as_deref().unwrap_or("an unknown directory")
-            ),
-          );
+          report("WARN", unfollowed(session, &drift, cwd.as_deref()));
         }
       }
     }
@@ -565,6 +558,18 @@ pub fn run(path: &Path) -> Result<()> {
   }
 }
 
+/// Doctor's warning for `session`, which `drift` holds to a login other than the shared
+/// config's, so it does not follow a switch: which session, since when and in what
+/// directory (`cwd`), what holds it, and the restart that ends it. Pure.
+fn unfollowed(session: &Session, drift: &Drift, cwd: Option<&str>) -> String {
+  format!(
+    "Claude session {} (started {}, in {}) runs with {drift}, so it does not follow a switch; restart it from a shell without it",
+    session.pid,
+    session.started.as_deref().unwrap_or("at an unknown time"),
+    cwd.unwrap_or("an unknown directory")
+  )
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -637,6 +642,7 @@ mod tests {
       started: None,
       config_dir: None,
       login_dir: Some("/data/profiles/b".into()),
+      stores: Default::default(),
     };
     let pinned = [&pinned];
     let findings = where_logins_are(
@@ -674,6 +680,33 @@ mod tests {
     assert_eq!(
       findings[3].1,
       "c's own login was not checked against c's account: its token is expired"
+    );
+    // ISSUE:0010 item 8(a): after a remedy that names a session, the finding says whose
+    // single login is left, by name.
+    assert!(
+      findings[0]
+        .1
+        .ends_with("and only then run ccusage login a, which leaves a one login"),
+      "{}",
+      findings[0].1
+    );
+  }
+
+  // ISSUE:0010 item 8(b): the warning for a session that does not follow a switch names
+  // the variable to leave out of the shell it restarts from, as the remedies do.
+  #[test]
+  fn a_session_that_does_not_follow_a_switch_is_told_which_variable_to_unset() {
+    let (variable, value) = ("CLAUDE_SECURESTORAGE_CONFIG_DIR", "/data/profiles/b");
+    let session = Session {
+      pid: 402,
+      started: Some("Mon Nov 16 16:30:00 2026".into()),
+      config_dir: None,
+      login_dir: Some(value.into()),
+      stores: Default::default(),
+    };
+    assert_eq!(
+      unfollowed(&session, &Drift { variable, value }, Some("/work")),
+      "Claude session 402 (started Mon Nov 16 16:30:00 2026, in /work) runs with CLAUDE_SECURESTORAGE_CONFIG_DIR=/data/profiles/b, so it does not follow a switch; restart it from a shell without CLAUDE_SECURESTORAGE_CONFIG_DIR (unset CLAUDE_SECURESTORAGE_CONFIG_DIR)"
     );
   }
 }

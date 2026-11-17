@@ -506,6 +506,13 @@ impl std::fmt::Display for Mismatch {
 
 impl std::error::Error for Mismatch {}
 
+/// What usage says when a renewed login's identity could not be checked as its
+/// profile's, given `failure`, the check's own error. Pure.
+fn renewal_unverified(failure: Option<crate::Error>) -> crate::Error {
+  let _ = failure;
+  "could not verify the renewed login matches this profile; usage withheld".into()
+}
+
 fn check_identity(value: &serde_json::Value, expected: &str) -> Result<()> {
   let actual = value
     .pointer("/account/email")
@@ -770,11 +777,14 @@ impl Client {
       // pinned to the profile's own store, where a /login would put it back, restart.
       Err(error) if error.is::<Mismatch>() => {
         let sessions = crate::sessions::running();
-        let pinned = store
-          .profile_dir(name)
-          .ok()
-          .zip(sessions.as_deref())
-          .map(|(dir, sessions)| crate::sessions::pinned_to(sessions, &dir));
+        let pinned =
+          store
+            .profile_dir(name)
+            .ok()
+            .zip(sessions.as_deref())
+            .map(|(dir, sessions)| {
+              crate::sessions::pinned_to(sessions, &crate::sessions::Named::store(&dir))
+            });
         Report::failed(
           name,
           format!(
@@ -842,9 +852,7 @@ impl Client {
         Ok(current)
       });
       if identity_failed {
-        return Err(
-          "could not verify the renewed login matches this profile; usage withheld".into(),
-        );
+        return Err(renewal_unverified(result.err()));
       }
       cache.credential_id = verified_id;
       match result {
@@ -1000,6 +1008,24 @@ mod tests {
       credential_id(&token, Some("work@example.com"))
     );
     Ok(())
+  }
+
+  // ISSUE:0010 item 1: a renewed login that is another account's is refused as the
+  // mismatch it is, so its report gives the remedy; any other failure of the check, such
+  // as the network's, still withholds usage with the generic line.
+  #[test]
+  fn a_renewed_login_of_another_account_is_refused_as_a_mismatch() {
+    let generic = "could not verify the renewed login matches this profile; usage withheld";
+    assert!(renewal_unverified(Some(Mismatch.into())).is::<Mismatch>());
+    let failures: [Option<crate::Error>; 2] = [
+      Some("could not verify Claude account identity (network or TLS)".into()),
+      None,
+    ];
+    for failure in failures {
+      let said = renewal_unverified(failure);
+      assert!(!said.is::<Mismatch>(), "{said}");
+      assert_eq!(said.to_string(), generic);
+    }
   }
 
   #[test]
