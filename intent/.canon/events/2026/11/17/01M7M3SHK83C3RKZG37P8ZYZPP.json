@@ -1,0 +1,15 @@
+{
+  "id": "01M7M3SHK83C3RKZG37P8ZYZPP",
+  "ts": "2026-11-17T06:40:59.497Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "At cc's fold, on vc's word: remove both landed worktrees by the usual checks. They are /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land (cc/ISSUE-0008-2, the tested record, at fb613a3) and /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-2-land (cc/ISSUE-0008-2-land at 551788d, replayed onto main as b158665). Main holds their code (identical to 53a9119), and the branches stay as the record."
+  }
+}
