@@ -6,7 +6,7 @@ session_id: edfada23-dc96-4231-9b17-658f458b4261
 heartbeat_at: 2026-11-17 06:34Z
 status: active
 focus: ""
-claims: [ST0003]
+claims: []
 ---
 
 # Control Claude (cc)
@@ -21,7 +21,7 @@ _(none)_
 
 ## Holds
 
-- ST0003's claim stays with cc until vc closes the thread, which waits for ic's landing (vc, 2026-11-17): ic's change to tests/cli.rs may move ST0003's AT rows. Released when ic's landing is on main and intent at lint ST0003 is clean there: lint it after that landing, re-cite any row it moved from the id comments, and tell vc.
+_(none)_
 
 ## Watch-outs
 

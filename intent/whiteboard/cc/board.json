@@ -8,9 +8,7 @@
     "heartbeat_at": "2026-11-17T06:34:57.493Z",
     "status": "active",
     "focus": "",
-    "claims": [
-      "ST0003"
-    ],
+    "claims": [],
     "recorded_at": "2026-11-11T17:55:10.738Z",
     "migrated_at": "2026-11-11T17:55:10.738Z"
   },
@@ -166,7 +164,8 @@
       "kind": "hold",
       "seq": 1,
       "text": "ST0003's claim stays with cc until vc closes the thread, which waits for ic's landing (vc, 2026-11-17): ic's change to tests/cli.rs may move ST0003's AT rows. Released when ic's landing is on main and intent at lint ST0003 is clean there: lint it after that landing, re-cite any row it moved from the id comments, and tell vc.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T06:49:40.007Z",
       "recorded_at": "2026-11-17T06:40:59.464Z"
     },
     {
