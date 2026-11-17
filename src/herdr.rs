@@ -4,14 +4,16 @@
 //! carries the mod that matches it. The verb writes only `mods/ccusage/` under Herdr's
 //! home, and never a layout or `keys.json`.
 
-use crate::{Result, usage};
+use crate::{Result, display, usage};
 use sha2::{Digest, Sha256};
 use std::{
   collections::BTreeMap,
-  fs, io,
+  fs,
+  io::{self, Read},
   path::{Path, PathBuf},
   process::{Child, Command, Output, Stdio},
-  time::Duration,
+  thread,
+  time::{Duration, Instant},
 };
 
 /// The mod's folder under Herdr's mods.
@@ -25,6 +27,8 @@ const LAUNCH: [&str; 3] = ["do", "tab.new", r#"{"name":"ccusage","mod":"ccusage"
 /// How long install waits for herdr-app check, which Herdr runs as a background job: well
 /// past the two minutes one took under heavy load, so it stops only a check that hangs.
 const CHECK_BOUND: Duration = Duration::from_secs(5 * 60);
+/// How often the bounded wait looks to see whether the check has ended.
+const CHECK_POLL: Duration = Duration::from_millis(50);
 
 /// The mod's files as install writes them: its source, embedded at build time, and its
 /// lifetime.js, written from the usage cache's lifetime, which the panel's timer never
@@ -197,7 +201,7 @@ pub fn remove(force: bool) -> Result<String> {
 
 /// herdr-app check's verdict on `dir`, and whether it passed or was not made: when
 /// herdr-app is not on PATH, cannot be run, or is still running at `CHECK_BOUND`, each
-/// said with its cause.
+/// said with its cause. While the check runs, install says on stderr what it waits for.
 fn check(dir: &Path) -> (String, bool) {
   let spawned = Command::new("herdr-app")
     .arg("check")
@@ -207,7 +211,10 @@ fn check(dir: &Path) -> (String, bool) {
     .stderr(Stdio::piped())
     .spawn();
   match spawned {
-    Ok(child) => verdict(wait_within(child, CHECK_BOUND), dir, CHECK_BOUND),
+    Ok(child) => {
+      eprintln!("ccusage: {}", waiting(CHECK_BOUND));
+      verdict(wait_within(child, CHECK_BOUND), dir, CHECK_BOUND)
+    }
     Err(error) if error.kind() == io::ErrorKind::NotFound => (
       "herdr-app is not on PATH, so the mod was not checked.".into(),
       true,
@@ -219,10 +226,65 @@ fn check(dir: &Path) -> (String, bool) {
   }
 }
 
-/// `child`'s output once it exits, or None when it is still running at `bound`. The
-/// caller gives it piped stdout and stderr.
-fn wait_within(child: Child, _bound: Duration) -> io::Result<Option<Output>> {
-  child.wait_with_output().map(Some)
+/// What a thread that reads one of a child's pipes to its end gives back.
+type Drain = thread::JoinHandle<io::Result<Vec<u8>>>;
+
+/// `child`'s output once it exits, or None when it is still running at `bound`, when it is
+/// killed and reaped. Each pipe the caller gave it is read on a thread of its own
+/// meanwhile, so a child that writes more than a pipe holds is not stalled; a stopped
+/// child's readers are left to end with its pipes.
+fn wait_within(mut child: Child, bound: Duration) -> io::Result<Option<Output>> {
+  let (stdout, stderr) = (drain(child.stdout.take()), drain(child.stderr.take()));
+  let deadline = Instant::now() + bound;
+  loop {
+    if let Some(status) = child.try_wait()? {
+      return Ok(Some(Output {
+        status,
+        stdout: drained(stdout)?,
+        stderr: drained(stderr)?,
+      }));
+    }
+    if Instant::now() >= deadline {
+      child.kill()?;
+      child.wait()?;
+      return Ok(None);
+    }
+    thread::sleep(CHECK_POLL);
+  }
+}
+
+/// A thread that reads `pipe` to its end, or None for a pipe the child was not given.
+fn drain(pipe: Option<impl Read + Send + 'static>) -> Option<Drain> {
+  pipe.map(|mut pipe| {
+    thread::spawn(move || {
+      let mut bytes = Vec::new();
+      pipe.read_to_end(&mut bytes).map(|_| bytes)
+    })
+  })
+}
+
+/// What `drain`'s thread read, or nothing for a pipe the child was not given.
+fn drained(reader: Option<Drain>) -> io::Result<Vec<u8>> {
+  match reader {
+    Some(reader) => reader
+      .join()
+      .map_err(|_| io::Error::other("a thread reading a child's output panicked"))?,
+    None => Ok(Vec::new()),
+  }
+}
+
+/// What install says on stderr while herdr-app check runs, which `bound` stops. Pure.
+fn waiting(bound: Duration) -> String {
+  format!(
+    "waiting for herdr-app check, which Herdr runs as a background job and can take a minute or two; ccusage waits up to {}",
+    shown(bound)
+  )
+}
+
+/// `span` as ccusage shows a span of time, such as 5m; saturating, for a span past what
+/// the seconds of an i64 hold. Pure.
+fn shown(span: Duration) -> String {
+  display::duration(i64::try_from(span.as_secs()).unwrap_or(i64::MAX))
 }
 
 /// herdr-app check's verdict on `dir` from its run, which is None when `bound` stopped it,
@@ -233,10 +295,11 @@ fn verdict(run: io::Result<Option<Output>>, dir: &Path, bound: Duration) -> (Str
     Ok(Some(output)) => (format!("herdr-app check failed: {}", said(&output)), false),
     Ok(None) => (
       format!(
-        "herdr-app check did not finish within {bound:?} on {}",
+        "herdr-app check had not finished after {}, so ccusage stopped waiting and the mod was not checked; check it with herdr-app check {}",
+        shown(bound),
         dir.display()
       ),
-      false,
+      true,
     ),
     Err(error) => (
       format!("herdr-app check could not be waited for, so the mod was not checked: {error}"),
@@ -264,7 +327,6 @@ fn said(output: &Output) -> String {
 #[cfg(test)]
 mod tests {
   use super::*;
-  use std::time::Instant;
 
   // ISSUE:0011 Acceptance 4: the bounded wait stops a child still running at its bound, so
   // it ends long before the child would have, and no test waits for the check's bound.

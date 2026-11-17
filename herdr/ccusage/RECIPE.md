@@ -34,7 +34,7 @@ A panel of your Claude accounts' weekly plan use: each account's bar and reset, 
 - `nextCommand` carries a name and no arguments, so the dialog keeps the account it may switch to and acts on `use` only when it has one; every other open copy ignores it.
 - Herdr keeps a hidden copy's timers running, so the period bounds those too.
 - `h_flex` centers its children on the cross axis, so a child with no content takes no height unless given one: the bar's fill and the rest of its track take the track's height through `h_full()`. `herdr-app check` renders the mod once but shows nothing of its layout, so look at the pane.
-- Install it with `ccusage herdr install`, which replaces only its own unedited copy and runs `herdr-app check`; an edited copy takes `--force`. `ccusage herdr launch` then opens it as a tab of its own, or says why it could not: no Herdr home, the mod not installed, no `herdr-app` on `PATH`, or Herdr's own refusal.
+- Install it with `ccusage herdr install`, which replaces only its own unedited copy and runs `herdr-app check`; an edited copy takes `--force`. Herdr runs the check as a background job, which can take a minute or two under load, so install says on stderr that it is waiting, and after five minutes it stops waiting and reports the mod as not checked, with the command to check it by hand. `ccusage herdr launch` then opens it as a tab of its own, or says why it could not: no Herdr home, the mod not installed, no `herdr-app` on `PATH`, or Herdr's own refusal.
 
 ## Done when
 

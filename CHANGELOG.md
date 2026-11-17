@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.11] - unreleased
+
+### Changed
+
+- `ccusage herdr install` says on stderr that it is waiting while `herdr-app check` runs, which Herdr does as a background job that can take a minute or two, and stops waiting after five minutes, reporting the mod as not checked, with the command to check it by hand. Before, it said nothing until the check returned, and waited with no bound (ISSUE:0011).
+
 ## [0.1.10] - 2026-11-17
 
 ### Added
