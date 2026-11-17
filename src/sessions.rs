@@ -206,6 +206,13 @@ mod tests {
       parse(" 104 Fri Nov 13 08:00:03 2026 vim CLAUDE_CONFIG_DIR=/elsewhere"),
       None
     );
+    // ps prints the environment after the arguments, so an argument that looks like one
+    // of the variables gives way to the environment's own.
+    let argued = parse(
+      " 105 Fri Nov 13 08:00:04 2026 claude --add-dir CLAUDE_CONFIG_DIR=/argument CLAUDE_CONFIG_DIR=/environment",
+    )
+    .ok_or("a claude line is a session")?;
+    assert_eq!(argued.config_dir.as_deref(), Some("/environment"));
     // An environment as /proc holds it, entries split at nul bytes; a longer name that
     // starts with a variable's name is not that variable.
     let environ = b"CLAUDE_CONFIG_DIRS=/no\0CLAUDE_CONFIG_DIR=/yes\0".as_slice();

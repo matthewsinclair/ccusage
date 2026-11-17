@@ -1784,3 +1784,274 @@ fn usage_notes_an_account_with_no_limits_and_succeeds() -> Result<()> {
   assert!(report[0]["error"].is_null(), "{report}");
   Ok(())
 }
+
+/// A ps line for Claude session `pid`, launched into the shared config by a shell that
+/// still exports a profile's own directory as its login directory, as one started before
+/// a switch keeps Molt's export.
+fn pinned_session(pid: u32, shared: &Path, pinned: &Path) -> String {
+  format!(
+    " {pid} Mon Nov 16 16:30:00 2026 claude CLAUDE_CONFIG_DIR={} CLAUDE_SECURESTORAGE_CONFIG_DIR={}\n",
+    shared.display(),
+    pinned.display()
+  )
+}
+
+// ISSUE:0008 Acceptance 3: login and a switch that would empty a store a running session
+// is pinned to are refused before any login moves, and name the sessions.
+#[test]
+fn a_move_that_would_empty_a_pinned_store_is_refused_before_any_login_moves() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  let work = sandbox.profile("work");
+  fs::write(
+    sandbox.root.join("ps.out"),
+    pinned_session(301, &shared, &work),
+  )?;
+  let refused = sandbox.run(&["use", "work"])?;
+  assert!(!refused.status.success());
+  let said = String::from_utf8(refused.stderr)?;
+  assert!(
+    said.contains("Claude session 301 reads work's own store"),
+    "{said}"
+  );
+  assert_eq!(login_of(&work)?.as_deref(), Some("TEST_TOKEN_work"));
+  assert_eq!(login_of(&shared)?, None);
+  assert!(!sandbox.root.join("state/ccusage/active.json").exists());
+  assert!(sandbox.launchctl()?.is_empty());
+  // With no session pinned there, the switch goes ahead.
+  fs::remove_file(sandbox.root.join("ps.out"))?;
+  sandbox.ok(&["use", "work"])?;
+  assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_work"));
+  // A login of the seated profile puts its fresh login in its own store and then seats
+  // it, which empties that store, so it is refused before Claude's login runs.
+  fs::write(
+    sandbox.root.join("ps.out"),
+    pinned_session(302, &shared, &work),
+  )?;
+  let refused = sandbox.run(&["login", "work"])?;
+  assert!(!refused.status.success());
+  let said = String::from_utf8(refused.stderr)?;
+  assert!(
+    said.contains("Claude session 302 reads work's own store"),
+    "{said}"
+  );
+  assert_eq!(login_of(&work)?, None);
+  assert_eq!(login_of(&shared)?.as_deref(), Some("TEST_TOKEN_work"));
+  Ok(())
+}
+
+// ISSUE:0008 Acceptance 2: with the seated profile holding a second login in its own
+// store, doctor's remedy puts the restart of the sessions pinned to that store before
+// ccusage login NAME, and with none pinned it is ccusage login NAME alone.
+#[test]
+fn doctor_puts_the_restart_of_pinned_sessions_before_the_login_that_ends_two_logins() -> Result<()>
+{
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  sandbox.ok(&["use", "work"])?;
+  // A usage fetch verified the seated login, so doctor checks it with no network.
+  sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
+  // A /login typed in a session pinned to work's own store puts a second login there.
+  let work = sandbox.profile("work");
+  storage::write_atomic(
+    &work.join(".credentials.json"),
+    br#"{"claudeAiOauth":{"accessToken":"SECOND","expiresAt":9999999999999}}"#,
+  )?;
+  let finding = |output: Output| -> Result<String> {
+    assert!(!output.status.success());
+    let said = String::from_utf8(output.stdout)?;
+    Ok(
+      said
+        .lines()
+        .find(|line| line.contains("work has two logins"))
+        .ok_or_else(|| format!("a two-logins finding: {said}"))?
+        .to_owned(),
+    )
+  };
+  let alone = finding(sandbox.run(&["doctor"])?)?;
+  assert!(
+    alone.contains("no running Claude session reads work's own store, so run ccusage login work"),
+    "{alone}"
+  );
+  fs::write(
+    sandbox.root.join("ps.out"),
+    pinned_session(401, &shared, &work),
+  )?;
+  let ordered = finding(sandbox.run(&["doctor"])?)?;
+  let restart = ordered
+    .find("Claude session 401 reads work's own store, so first restart it")
+    .ok_or_else(|| format!("the restart: {ordered}"))?;
+  let login = ordered
+    .find("ccusage login work")
+    .ok_or_else(|| format!("the login: {ordered}"))?;
+  assert!(restart < login, "{ordered}");
+  Ok(())
+}
+
+// ISSUE:0008 Acceptance 1: doctor checks whose login each profile's own store holds, as
+// it checks the shared one, renewing nothing, and says when it could not.
+#[test]
+fn doctor_checks_whose_login_each_own_store_holds_without_renewing_it() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  sandbox.ok(&["add", "home", "--email", "test@example.com"])?;
+  sandbox.login_with_record("home", "u-home", "test@example.com")?;
+  sandbox.ok(&["use", "work"])?;
+  sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
+  // home's own login has expired, and doctor renews no login, so it cannot ask whose.
+  let home = sandbox.profile("home");
+  let login = |expires_at: i64| {
+    storage::write_atomic(
+      &home.join(".credentials.json"),
+      format!(
+        r#"{{"claudeAiOauth":{{"accessToken":"TEST_TOKEN_home","expiresAt":{expires_at}}}}}"#
+      )
+      .as_bytes(),
+    )
+  };
+  login(0)?;
+  let said = sandbox.ok(&["doctor"])?;
+  assert!(said.contains("home's login is in its own store"), "{said}");
+  assert!(
+    said.contains(
+      "INFO home's own login was not checked against home's account: its token is expired"
+    ),
+    "{said}"
+  );
+  // A usage fetch verified it while it lived there, which doctor reads with no network.
+  login(9_999_999_999_999)?;
+  sandbox.verified("home", &home, "TEST_TOKEN_home")?;
+  let said = sandbox.ok(&["doctor"])?;
+  assert!(said.contains("home's login is in its own store"), "{said}");
+  assert!(!said.contains("home's own login was not checked"), "{said}");
+  Ok(())
+}
+
+// ISSUE:0008, its fix outline's item 4: usage, which and predict say on stderr when their
+// own shell exports a login directory while a profile is seated, with the one command
+// that clears it, and leave what they print on stdout as it was.
+#[test]
+fn reporting_verbs_say_when_their_shell_pins_claude_while_a_profile_is_seated() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let shared = sandbox.shared()?;
+  let note = "CLAUDE_SECURESTORAGE_CONFIG_DIR=/nowhere is set in this shell";
+  let pinned = |args: &[&str]| -> Result<(String, String)> {
+    let output = sandbox
+      .command()
+      .args(args)
+      .env("CLAUDE_SECURESTORAGE_CONFIG_DIR", "/nowhere")
+      .output()?;
+    Ok((
+      String::from_utf8(output.stdout)?,
+      String::from_utf8(output.stderr)?,
+    ))
+  };
+  // Nothing is seated yet, and the variable is how 0.1.8's layout reaches a login.
+  sandbox.verified("work", &sandbox.profile("work"), "TEST_TOKEN_work")?;
+  let (_, said) = pinned(&["usage", "work", "--json"])?;
+  assert!(!said.contains(note), "{said}");
+  sandbox.ok(&["use", "work"])?;
+  sandbox.verified("work", &shared, "TEST_TOKEN_work")?;
+  for args in [
+    &["usage", "work", "--json"][..],
+    &["which", "--json"],
+    &["predict", "--json"],
+  ] {
+    let (printed, said) = pinned(args)?;
+    assert!(
+      said.contains(note) && said.contains("unset CLAUDE_SECURESTORAGE_CONFIG_DIR"),
+      "{args:?}: {said}"
+    );
+    let _: serde_json::Value = serde_json::from_str(&printed)?;
+  }
+  let unpinned = sandbox.run(&["usage", "work", "--json"])?;
+  assert!(unpinned.status.success());
+  assert!(
+    !String::from_utf8(unpinned.stderr)?.contains("is set in this shell"),
+    "the note without the variable"
+  );
+  Ok(())
+}
+
+// ISSUE:0008 Acceptance 4: predict gives the same rate whether or not an account's fetch
+// fails now, when its samples were taken on the counted plan, and names any account
+// whose samples it leaves out, with how many.
+#[test]
+fn predict_keeps_a_failed_accounts_samples_on_their_plan_and_names_those_it_leaves_out()
+-> Result<()> {
+  let sandbox = Sandbox::new()?;
+  sandbox.which_accounts()?;
+  sandbox.ok(&["add", "lapsed"])?;
+  let (subscription_type, rate_limit_tier) = ("max", "default_claude_max_20x");
+  for name in ["work", "personal"] {
+    let path = sandbox.profile(name).join(".credentials.json");
+    let mut login: serde_json::Value = serde_json::from_slice(&fs::read(&path)?)?;
+    login["claudeAiOauth"]["subscriptionType"] = subscription_type.into();
+    login["claudeAiOauth"]["rateLimitTier"] = rate_limit_tier.into();
+    storage::write_atomic(&path, login.to_string().as_bytes())?;
+  }
+  // A day of history: work's rise and broken's, each sample on the plan its login
+  // recorded, and two of lapsed's, which record none, as an older ccusage wrote them.
+  // broken and lapsed have no login now, so their usage fails.
+  let (now, reset) = (ccusage::now(), reset_in(3 * DAY)?);
+  let plan =
+    serde_json::json!({"subscription_type": subscription_type, "rate_limit_tier": rate_limit_tier});
+  let (work_risen, broken_risen) = (12.0, 24.0);
+  let history = [
+    ("work", 10.0, now - DAY, Some(&plan)),
+    ("broken", 20.0, now - DAY + 60, Some(&plan)),
+    ("lapsed", 5.0, now - DAY + 120, None),
+    ("lapsed", 9.0, now - 120, None),
+    ("broken", 20.0 + broken_risen, now - 60, Some(&plan)),
+    ("work", 10.0 + work_risen, now, Some(&plan)),
+  ];
+  let mut lines = String::new();
+  for (account, percent, sampled_at, plan) in &history {
+    let mut line = serde_json::json!({"account": account, "kind": "weekly_all",
+      "percent": percent, "resets_at": reset, "sampled_at": sampled_at});
+    if let Some(plan) = plan {
+      line["plan"] = (*plan).clone();
+    }
+    lines.push_str(&format!("{line}\n"));
+  }
+  storage::write_atomic(
+    &sandbox
+      .root
+      .join("state/ccusage")
+      .join(ccusage::history::FILE),
+    lines.as_bytes(),
+  )?;
+  let samples_of = |name: &str| history.iter().filter(|line| line.0 == name).count();
+  let json: serde_json::Value = serde_json::from_str(&sandbox.ok(&["predict", "--json"])?)?;
+  let per_hour = (work_risen + broken_risen) / ccusage::predict::hours(DAY);
+  assert_eq!(
+    json["rate"]["percent_per_hour"],
+    ccusage::display::tenth(per_hour),
+    "{json}"
+  );
+  assert_eq!(
+    json["rate"]["samples"],
+    samples_of("work") + samples_of("broken"),
+    "{json}"
+  );
+  let reason = |name: &str| -> Result<String> {
+    Ok(
+      json["left_out"]
+        .as_array()
+        .ok_or("a left_out array")?
+        .iter()
+        .find(|account| account["name"] == name)
+        .and_then(|account| account["reason"].as_str())
+        .ok_or_else(|| format!("{name} left out: {json}"))?
+        .to_owned(),
+    )
+  };
+  let lapsed = reason("lapsed")?;
+  assert!(
+    lapsed.contains(&format!("{} weekly samples", samples_of("lapsed"))),
+    "{lapsed}"
+  );
+  let broken = reason("broken")?;
+  assert!(!broken.contains("weekly samples"), "{broken}");
+  Ok(())
+}

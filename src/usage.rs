@@ -1624,4 +1624,47 @@ mod tests {
     assert!(storage::read_optional(&cache_path)?.is_some());
     Ok(())
   }
+
+  // ST0003 AT-02.11: an outgoing profile with neither an email nor an account record to
+  // check its login against is refused as unverified before the login is renewed or the
+  // profile endpoint is asked whose it is.
+  #[test]
+  fn a_profile_with_nothing_to_check_against_is_refused_before_any_renewal() -> Result<()> {
+    use crate::config::{Config, Profile};
+    let scratch = crate::scratch::Scratch::new()?;
+    let dir = scratch.path().join("shared");
+    storage::private_dir(&dir)?;
+    let mut config = Config::default();
+    config.profiles.insert(
+      "bare".into(),
+      Profile {
+        email: None,
+        config_dir: None,
+      },
+    );
+    let store = Store {
+      path: scratch.path().join("config.toml"),
+      root: scratch.path().to_path_buf(),
+      data: scratch.path().join("data"),
+      state: scratch.path().join("state"),
+      cache: scratch.path().join("cache"),
+      config,
+    };
+    // A login an hour from expiry, in Claude Code's milliseconds, so nothing renews it.
+    let login = serde_json::json!({"claudeAiOauth": {
+      "accessToken": "SHARED", "refreshToken": "REFRESH", "expiresAt": (crate::now() + 3600) * 1000
+    }});
+    storage::write_atomic(&dir.join(".credentials.json"), login.to_string().as_bytes())?;
+    // Nothing answers here, so a check that reached the endpoint would end in an error.
+    let nowhere = "http://127.0.0.1:9/profile";
+    let refused = verified_token_at(&Client::default().agent, nowhere, &store, "bare", &dir)
+      .err()
+      .ok_or("a profile with nothing to check against is refused")?;
+    assert_eq!(
+      refused.downcast_ref::<crate::seat::Refusal>(),
+      Some(&crate::seat::Refusal::Unverified("bare".into())),
+      "{refused}"
+    );
+    Ok(())
+  }
 }
