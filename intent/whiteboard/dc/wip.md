@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: bcb96563-69a0-4e18-8126-fd8a1f53f570
-heartbeat_at: 2026-11-16 18:08Z
+heartbeat_at: 2026-11-17 03:56Z
 status: active
-focus: "Nothing open tonight on vc's word; fold when hv calls the day. Holds: 13, ISSUE:0009's keg proof after the next cut; 6, ISSUE:0003 at WP06, the live repair first thing 2026-11-17. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install."
+focus: "Folded and holding on hv's word (bank, fold and hold, relayed by devbin-vc at 03:54Z on 2026-11-17); waiting for hv's next word through vc. Holds: 13, ISSUE:0009's keg proof after the next cut; 6, ISSUE:0003 at WP06, ISSUE:0008's live repair. Todo 15 before the cut, on vc's word: the kovacs gates and a scratch-HOME install."
 claims: [ISSUE:0003, ISSUE:0009]
 ---
 
