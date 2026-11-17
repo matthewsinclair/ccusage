@@ -1,0 +1,16 @@
+{
+  "id": "01M7M1MN45H6TWZHWHFMEGDW60",
+  "ts": "2026-11-17T06:03:22.117Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "seq": 2,
+    "text": "hv alone runs ccusage use, ccusage login and ccusage which --use, on vc's steps; no seat runs any of them, on any Mac (hv's decision 7, 2026-11-16). bin/devbin use dev, opt and brew are devbin's verbs and no part of it."
+  }
+}

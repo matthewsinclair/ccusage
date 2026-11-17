@@ -3,10 +3,10 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: b63269e8-512e-4cc8-9b1b-8869e2c1f223
-heartbeat_at: 2026-11-17 05:55Z
+heartbeat_at: 2026-11-17 06:03Z
 status: active
-focus: "Released at 05:05Z on 2026-11-17 on vc's word, so hv can run the live repair with no session running. Next session: start from a shell without the pin; ISSUE:0003 closes after the repair, on vc's word (hold 6); hold 13, ISSUE:0009's keg proof after the next cut; todo 15 before the cut, on vc's word."
-claims: [ISSUE:0003, ISSUE:0009]
+focus: "ISSUE:0003 closed on vc's go after the live repair (ST0003/WP06 done at fbcc2f5). Next: todo 15, the kovacs gates and the scratch-HOME install at 0.1.10's final tip in one heavy slot, on vc's word that the tip is final; hold 13, ISSUE:0009's keg proof after the cut."
+claims: [ISSUE:0009]
 ---
 
 # DevX Claude (dc)
@@ -17,17 +17,16 @@ _(none)_
 
 ## TODO
 
-- Before the next cut, on vc's word: the kovacs gates (check all, test all, build and doctor at main's tip, in a heavy slot, announced to kovacs-sysadm), and with them, not before, a scratch-HOME bin/devbin install at main's tip with a listing of the opt tree and its manifest, showing LICENSE in the tree and named in the manifest (vc, 2026-11-16, for ISSUE:0009: no run has yet laid out an installed tree with the files entry back). The cut carries ISSUE:0008's fix, cc's two nits and ISSUE:0009.
+- Before the 0.1.10 cut, on vc's word that the tip is final: the kovacs gates (check all, test all, build and doctor) and, in the same heavy slot, a scratch-HOME bin/devbin install with a listing of the opt tree and its manifest, showing LICENSE in the tree and named in the manifest (ISSUE:0009: no run has yet laid out an installed tree with the files entry back). The final tip is cc's ISSUE:0008 unit plus cc's follow-up unit (the incoming-login check and items 6 and 7). When vc says it is final, dc asks devbin-vc for the slot (the Desk's hold is devbin-vc's and hv's to lift) and announces the run to kovacs-sysadm. The cut carries ISSUE:0008 whole, ISSUE:0009 and ic's Herdr fix, and ships first thing (hv's decision 12, through vc). (edited)
 
 ## Holds
 
-- ISSUE:0003 closes at ST0003/WP06's rollout, with its Acceptance 1 and 5 read against ST0003's layout. hv took ST0003's route on 2026-11-13, as vc's todo 4 records: the rollout keeps the shared config's own login as the live one, so the launcher fix is not taken and ISSUE:0003's step 4, retiring ca646b28, must not run. The record says so in its section "From 0.1.9: one live login (ST0003)", written for ST0003's AC-05.1 on vc's brief, which points to ST0003 and to its decision record in intent/llm/ARCHITECTURE.md ("Shared mode keeps one live login, which a switch moves", which cc lands with WP05). Released when ST0003/WP06 is done and vc's live check (its todo 4) passes; then dc closes ISSUE:0003, its last Acceptance line changed to read each account once in Claude Usage, not exactly five accounts (hv, 2026-11-13, through vc: engineering04 stays a profile, and ccusage works for any Claude account, showing what it can for that account's type). WP06 is now the live repair in ISSUE:0008 (vc, 2026-11-16). (edited)
 - ISSUE:0009 closes on its Acceptance 3: after the next cut's brew upgrade ccusage, bin/devbin doctor's ccusage tree row passes on rhadamanth's brew keg, whose libexec holds LICENSE as its manifest records, and the same on kovacs for its Linux keg. Landed as 0f66154 on vc's PASS (2026-11-16), Acceptance 1 and 2 shown by Desk slot 01M7JP92CJGM29XZ64XH40NHC6. Released when the next cut is published and both kegs are upgraded to it.
 
 ## Watch-outs
 
 - Standing safety on rhadamanth (hv via vc, 2026-11-03): Keychain inspection is metadata only, and no real login-keychain item is decrypted outside the code under test; no claude auth login or logout, and no ccusage login, logout or use, against real profiles; no local build runs against the real XDG config until hv OKs the live check, because a renewal spends real tokens; a write to a disposable keychain names a file that exists and keeps its security -i line to 4097 bytes, newline included, because security adds to the default keychain when the named one is missing or when a split line loses its keychain argument; no push and no PR edit without hv's OK. hv's ccusage config and launchd are hv's to change: vc's session was refused permission, so dc does not do it either. (edited)
-- hv alone runs ccusage use, ccusage login and ccusage which --use, on vc's steps; no seat runs any of them, on any Mac (vc, 2026-11-16: the rollout began by hv's hand on 2026-11-15 and stands half done, diagnosed as ISSUE:0008). Until the live repair, which waits on hv's word (bank, fold and hold, 2026-11-17 03:54Z), nobody runs them, hv included, since each would take the login from under the pinned sessions, and nobody restarts a session. bin/devbin use dev, opt and brew are devbin's verbs and no part of it. (edited)
+- hv alone runs ccusage use, ccusage login and ccusage which --use, on vc's steps; no seat runs any of them, on any Mac (hv's decision 7, 2026-11-16). bin/devbin use dev, opt and brew are devbin's verbs and no part of it. (edited)
 
 ## Decisions
 

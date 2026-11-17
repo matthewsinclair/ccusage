@@ -1,0 +1,16 @@
+{
+  "id": "01M7M1MN9QBP1KEZ8V2JBEFQRD",
+  "ts": "2026-11-17T06:03:22.296Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 15,
+    "text": "Before the 0.1.10 cut, on vc's word that the tip is final: the kovacs gates (check all, test all, build and doctor) and, in the same heavy slot, a scratch-HOME bin/devbin install with a listing of the opt tree and its manifest, showing LICENSE in the tree and named in the manifest (ISSUE:0009: no run has yet laid out an installed tree with the files entry back). The final tip is cc's ISSUE:0008 unit plus cc's follow-up unit (the incoming-login check and items 6 and 7). When vc says it is final, dc asks devbin-vc for the slot (the Desk's hold is devbin-vc's and hv's to lift) and announces the run to kovacs-sysadm. The cut carries ISSUE:0008 whole, ISSUE:0009 and ic's Herdr fix, and ships first thing (hv's decision 12, through vc)."
+  }
+}
