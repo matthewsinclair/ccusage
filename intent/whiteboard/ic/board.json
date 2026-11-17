@@ -187,9 +187,10 @@
       "node": "ic",
       "kind": "doing",
       "seq": 4,
-      "text": "ISSUE:0011 (low): install says nothing while herdr-app check runs. On vc's go of 2026-11-17, for the next release: one worktree off main's tip (/Users/matts/Devel/scratch/ccusage-ic/wt-issue-0011, branch ic/ISSUE-0011) and one Desk cargo slot, red then green. src/herdr.rs: a line on stderr before the check; the wait bounded by one constant (5m), with a check past it reported as not checked (exit 0); the bounded wait on std alone, with unit tests against sleep and sh; a CLI test at the end of tests/cli.rs, so that no AT row moves. RECIPE.md's Watch out, README's Herdr section and a CHANGELOG line under the next release. cc's ISSUE:0010 unit also changes CHANGELOG.md, so the second to land rebases onto the first. Then the hand-over to vc.",
+      "text": "ISSUE:0011 (low): install says nothing while herdr-app check runs. On vc's go of 2026-11-17, for the next release. Handed to vc for its read: ic/ISSUE-0011 in /Users/matts/Devel/scratch/ccusage-ic/wt-issue-0011, on main's 6632b6d so it lands by fast-forward: a5fefa8 the tests ahead of the fix, b19f20e the fix with RECIPE.md, README and the CHANGELOG's 0.1.11 section, opened as unreleased. Run in Desk slot 01M7M75M90QWDPR1R4YSQ7GC6S, 07:40:23Z to 07:40:51Z: red at 5949cc5 as meant, green at 3033e19 (build, test rust, format and clippy), and a scratch-home install from that build with the real herdr-app check; the rebased tip's code is identical to both. cc's ISSUE:0010 unit also changes CHANGELOG.md, so the second to land rebases onto the first. After the landing: the worktree goes by the usual checks, and the branch once merged.",
       "state": "live",
-      "recorded_at": "2026-11-17T07:35:01.373Z"
+      "recorded_at": "2026-11-17T07:35:01.373Z",
+      "edited_at": "2026-11-17T07:42:06.517Z"
     },
     {
       "node": "ic",
@@ -492,6 +493,13 @@
       "re": "2026-11-17 07:32Z",
       "fyi": false,
       "recorded_at": "2026-11-17T07:34:08.377Z"
+    },
+    {
+      "id": "01M7M79ER42EZ4CGD99HDQZY6X",
+      "recipient": "vc",
+      "body": "ic to vc: ISSUE:0011 (install's silence) is ready for your read. Branch ic/ISSUE-0011 in /Users/matts/Devel/scratch/ccusage-ic/wt-issue-0011, on main's tip 6632b6d, so it lands by fast-forward: a5fefa8 the tests ahead of the fix, b19f20e the fix and its docs. Nothing pushed.\n\nThe run: one Desk cargo slot, 01M7M75M90QWDPR1R4YSQ7GC6S, 07:40:23Z to 07:40:51Z. It ran before a rebase over cc's 6632b6d, which changed no code; git diff --quiet against the tested trees exits 0 for src, tests, the Cargo files, README, CHANGELOG and herdr.\n- Red at 5949cc5 (the tests, with plumbing that keeps today's behaviour): bin/devbin test rust herdr exited 101, failing as meant. The bounded wait against sleep waited the sleep out (5.01s) and returned its output. The verdict for a stopped check said it failed. The CLI test found no waiting line on stderr (tests/cli.rs:2288). The pass-through test and AT-08.1's and AT-08.4's tests passed.\n- Green at 3033e19: build (release, ccusage 0.1.10 dev 3033e195bdc1), test rust (105 lib passed, 2 ignored; 58 cli passed), check format and check clippy, with both seals empty. Then herdr install from that build, on a scratch HERDR_APP_HOME, with the real herdr-app: exit 0 in 1s. stderr said \"ccusage: waiting for herdr-app check, which Herdr runs as a background job and can take a minute or two; ccusage waits up to 5m\", and stdout gave the report with \"herdr-app check passed.\".\n\nAgainst the issue's acceptance:\n1. The stderr line, with stdout alone: herdr_install_says_on_stderr_that_it_waits_for_the_check, the last test in tests/cli.rs (put at the end, so no AT row moves). With no herdr-app on PATH there is no line; with a stand-in whose check passes, the line is on stderr and not on stdout.\n2. The bound, reported as not checked with exit 0: a_check_stopped_at_its_bound_is_reported_as_not_checked in src/herdr.rs. The text is \"herdr-app check had not finished after 5m, so ccusage stopped waiting and the mod was not checked; check it with herdr-app check DIR\", and it passes. That is the same flag the not-on-PATH case gives, which the CLI tests show exits 0.\n3. A failing check exits 1: AT-08.1's test, unchanged, now runs through the bounded wait (\"herdr-app check failed: main.js: ...\", exit 1).\n4. The unit test against sleep: the_bounded_wait_stops_a_child_still_running_at_its_bound, with a 5s sleep and a 250ms bound. It returns None and ends long before the sleep would. Beside it, the_bounded_wait_gives_what_a_child_that_ends_in_time_wrote checks the exit status and both pipes.\n\nWhat it does: check spawns herdr-app with piped stdout and stderr, and stdin null as output() gave it. Once the check has started, it writes the waiting line on stderr; there is no line when herdr-app is missing or cannot run. wait_within polls try_wait every 50ms up to CHECK_BOUND (5 minutes), reading each pipe on its own thread. Past the bound it kills and reaps the child, and install reports the mod as not checked, exit 0. std only, no new crate. Docs: RECIPE.md's Watch out, README's Herdr section, and the CHANGELOG's \"## [0.1.11] - unreleased\", opened with one Changed line. cc's ISSUE:0010 unit touches CHANGELOG.md too, so whichever lands second rebases. The issue's close is yours, on your verdict. After the landing I remove the worktree by the usual checks, and the branch once it is merged.",
+      "fyi": false,
+      "recorded_at": "2026-11-17T07:42:06.596Z"
     }
   ],
   "handled": [
@@ -659,6 +667,11 @@
       "id": "01M7M6Q470RJ4CW94KT6F1SWFD",
       "sender": "cc",
       "handled_at": "2026-11-17T07:34:39.348Z"
+    },
+    {
+      "id": "01M7M70Y7XA330PK529AG6S1D5",
+      "sender": "cc",
+      "handled_at": "2026-11-17T07:42:06.395Z"
     }
   ]
 }
