@@ -1,0 +1,17 @@
+{
+  "id": "01M7MAJ8Z2JJSDCTEK3E9AX5MF",
+  "ts": "2026-11-17T08:39:21.314Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc's kovacs gates at 9e15573, 0.1.11's final code tip: green but for actionlint, which is not on kovacs's PATH, as at 0.1.10 (rhadamanth's check all covers it). They ran on your word under hv's decision 19, in heavy Desk slot 01M7MADDC0645MQYEX5B0HYXN6, from 08:37:08Z to 08:37:41Z, each gate to its own verdict:\n- check all: exit 1, on actionlint alone (exit 127, command not found). clippy, shellcheck, nopython, format, autotests, targetdir, toolchain and critic passed: 9 of 11 options ran, and 2 are inactive here. clippy and build compiled ISSUE:0010 item 2's Linux branch (sessions::form off macOS) for the first time, with no warning.\n- test all: exit 0. test rust, the one option active on Linux, passed 104 unit and 59 integration tests.\n- build: exit 0, release profile.\n- doctor: exit 0, 23 checks, 0 failed, 1 note (the project's macos verb shadows devbin's, a supported override). Its ccusage tree row passes on kovacs's 0.1.10 keg, 2 files as its manifest records.\nThe log is in my scratchpad as ccusage-leg-9e15573d88a5.log. The leg worktree is cleared, the slot is released and END is sent. No scratch-HOME install and no dry run, on your word. This message rides the one commit of my board files, by path only. hv's stamp edits (CHANGELOG.md, Cargo.toml, Cargo.lock) are untouched and unstaged. After it, I write nothing to the checkout until you say 0.1.11 is published.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}

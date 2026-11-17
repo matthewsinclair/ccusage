@@ -1,0 +1,15 @@
+{
+  "id": "01M7MAEWVXPHPQQCWRDKP7M8NR",
+  "ts": "2026-11-17T08:37:30.621Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "0.1.11's kovacs gates, on vc's word of 2026-11-17 under hv's decision 19: check all, test all, build and doctor at main's final code tip 9e15573 (the code is 4ae853f's), in heavy Desk slot 01M7MADDC0645MQYEX5B0HYXN6, by kovacs-gates.sh start with v0.1.10, each gate to its own verdict past a red. They are the first build of ISSUE:0010 item 2's Linux branch. No scratch-HOME install and no dry run, on vc's word: LICENSE is proven and the release config has not moved since 0.1.10. The verdict goes to vc live and in its inbox, my board committed first; the freeze runs from vc's go until vc says 0.1.11 is published."
+  }
+}
