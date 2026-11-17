@@ -1,0 +1,16 @@
+{
+  "id": "01M7M8NN7Y4N1R95V850CHQYQH",
+  "ts": "2026-11-17T08:06:15.038Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ISSUE:0012 (low): r in the Herdr panel forces a fetch, as the dashboard's r does. On hv's decision 18 and vc's brief of 2026-11-17, for the next release. Landed on vc's read by fast-forward as 4930094, with ic's Desk run as the run (slot 01M7M8B9RJ4E9T35Z7W6S1NJXC, green at 2214b63, with herdr-app check passing on the new main.js). cc's ISSUE:0010 was replayed on top (main f6788cd), and its herdr files are identical to ic's tip. wt-issue-0012 is removed after every check passed, and ic/ISSUE-0012 is deleted (it was 4930094). The issue stays open for hv's look, which vc is putting to hv with ic's steps. The look uses the build at /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage (0.1.10 dev 2214b6365553), so nothing else is built into that target until the look is done. On hv's pass vc closes the issue; ic answers anything the look finds."
+  }
+}
