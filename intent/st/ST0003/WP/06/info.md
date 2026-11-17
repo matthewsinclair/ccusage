@@ -2,7 +2,7 @@
 wp_id: WP-06
 title: Rollout on rhadamanth, closing ISSUE:0003
 scope: S
-status: Not Started
+status: Done
 ---
 
 # WP-06: Rollout on rhadamanth, closing ISSUE:0003

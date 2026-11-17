@@ -41,9 +41,9 @@ title: Live account switching: ccusage use moves the active login into the share
 
 - AC-05.1 (non-test) README, ARCHITECTURE.md, RULES.md and the CHANGELOG describe the one live login as built, and ISSUE:0003's record points to this thread. -- evidence: vc's read of README, intent/llm/ARCHITECTURE.md, intent/llm/RULES.md and CHANGELOG as landed at 31ee7ab (identical to the 9f3f2ab vc passed), against the code landed through b08623d; ISSUE:0003's record names ST0003 in its section From 0.1.9: one live login (ST0003), written by dc, 2026-11-13 -- satisfied: yes
 
-### WP-06 -- Rollout on rhadamanth, closing ISSUE:0003 (status: Not Started)
+### WP-06 -- Rollout on rhadamanth, closing ISSUE:0003 (status: Done)
 
-- AC-06.1 (non-test) After the rollout on rhadamanth no Claude session carries `CLAUDE_SECURESTORAGE_CONFIG_DIR`, each account has exactly one login, and Claude Usage lists each account once with nothing prompting. -- satisfied: no
+- AC-06.1 (non-test) After the rollout on rhadamanth no Claude session carries `CLAUDE_SECURESTORAGE_CONFIG_DIR`, each account has exactly one login, and Claude Usage lists each account once with nothing prompting. -- evidence: The live repair of 2026-11-17 (ISSUE:0008, by hv's hands, from hv's runbook): Herdr Core was stopped and started again, so every pane's shell is new, and ccusage dir now refuses to name a directory in shared mode, so Molt's env.sh leaves the variable unset in every new shell; launchd and vc's own claude process, the one session running, carry no CLAUDE_SECURESTORAGE_CONFIG_DIR. ccusage doctor exits 0 with each account's login in exactly one store, and ccusage's last usage fetch verified each login against its own profile's email (engineering00, engineering01, engineering02, engineering04 and hello). Claude Usage 1.18, the mainline release hv installed today in place of a fork build that had run since 2026-11-11, lists engineering.02, engineering.04, engineering@geodica.com, engineering.01 and hello once each, with nothing prompting (hv's screenshots in vc's window; hv: LGTM). Caveat found on the way: Claude Usage, fork and mainline alike, names each Keychain item once per run and keeps its history per item, so after a later switch its names are stale until it restarts. -- satisfied: yes
 - AC-06.2 (non-test) With sessions running, `ccusage use` and `ccusage which --use` each reach a session that was already open at its next request, with no restart. -- evidence: hv's live switch with ccusage-vc open, 2026-11-17, on Claude Code 2.1.326 and ccusage 0.1.9 (brew), after the live repair: session 1f8ad5f9 (pid 53646), started at 05:30Z while engineering02 was seated and carrying no CLAUDE_SECURESTORAGE_CONFIG_DIR, followed ccusage use engineering00 (05:38:38Z) and then ccusage which --use, which chose engineering02 (05:41:45Z), with no restart and no prompt. After each, hv's /status in that session named the account (engineering@geodica.com, then engineering.02@geodica.com), and its Usage tab, which asks with the session's own login, showed that account's weekly reset (2026-11-20 04:00Z, then 2026-11-19 21:00Z); ccusage doctor exited 0 with the shared login verified as that account's; the session's prompt cache counted two misses, one replay per switch. hv's screenshots are in vc's window. -- satisfied: yes
 
 ## Acceptance Tests
@@ -96,7 +96,7 @@ _(no tests in this group)_
 
 _(no tests in this group)_
 
-### WP-06 -- Rollout on rhadamanth, closing ISSUE:0003 (status: Not Started)
+### WP-06 -- Rollout on rhadamanth, closing ISSUE:0003 (status: Done)
 
 _(no tests in this group)_
 
