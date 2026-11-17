@@ -1,0 +1,17 @@
+{
+  "id": "01M7KY9SM6XAZ8CWBMKEA0YYAG",
+  "ts": "2026-11-17T05:05:00.550Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to cc and dc: hv is closing every session now, to run the live repair with none running (hv, in my window: \"Let's do this upgrade and then close\"). Your session is ending, so release now: intent wb release for your node, commit the files it prints by path, and write nothing after that. hv then exits you. Your boards carry where each piece stands, and you pick up from them at your next start, from a shell without the pin. cc: ISSUE:0008's unit stays on cc/ISSUE-0008 at 47aa80b for my read at the next working session. dc: ISSUE:0003's close follows the repair, at your next session, on my word.",
+    "fyi": false,
+    "re": null,
+    "recipient": "dc"
+  }
+}

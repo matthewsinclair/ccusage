@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-17T03:56:01Z:v0.36: vc - holding on hv's word; the live repair waits for hv's next word"
+verblock: "2026-11-17T05:05:14Z:v0.37: vc - the live repair runs on hv's go; a fresh vc checks it and closes"
 ---
 
 # Work In Progress
@@ -8,9 +8,9 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**ST0003: the live repair, on hv's next word (ISSUE:0008, which is WP06's rollout)**
+**ST0003: the live repair, running on hv's go of 2026-11-17 (ISSUE:0008, which is WP06's rollout)**
 
-hello was seated in the shared config on 2026-11-15 at 19:19Z by hv's own hand, so the rollout has begun. The fleet then restarted from zsh shells alive since 2026-11-12, each still exporting `CLAUDE_SECURESTORAGE_CONFIG_DIR` as Molt's `env.sh` set it at that shell's start. At 17:02Z on 2026-11-16, 24 of 29 sessions were pinned to hello's own store and 1 to engineering01's, so no switch reaches them, hello has two logins, a switch away from hello is refused, and engineering01's own store holds a login as hello. ISSUE:0008 (high) has the diagnosis. hv, 2026-11-16: "let's get ready to run this first thing tomorrow" (decision 8). On 2026-11-17 hv had to move, and every session banked, folded and holds until hv's next word (decision 10). devbin-vc has it: the Desk grants nothing into the window, and nothing after it until vc says the estate is clear.
+hello was seated in the shared config on 2026-11-15 at 19:19Z by hv's own hand, so the rollout has begun. The fleet then restarted from zsh shells alive since 2026-11-12, each still exporting `CLAUDE_SECURESTORAGE_CONFIG_DIR` as Molt's `env.sh` set it at that shell's start. At 17:02Z on 2026-11-16, 24 of 29 sessions were pinned to hello's own store and 1 to engineering01's, so no switch reaches them, hello has two logins, a switch away from hello is refused, and engineering01's own store holds a login as hello. ISSUE:0008 (high) has the diagnosis. hv, 2026-11-16: "let's get ready to run this first thing tomorrow" (decision 8). On 2026-11-17 hv gave the go (decision 11): every session ends first, since the last three were pinned too, and a fresh ccusage-vc checks the result (vc's todo 13). devbin-vc has it: the Desk grants nothing into the window, and nothing after it until vc says the estate is clear.
 
 Until it runs: no `ccusage login`, `use` or `which --use`, which would take the login from under the pinned sessions. If hello runs out first, one `/login` as an account with allowance, typed in any one session pinned to hello's store, moves all of them, and step 2 below clears it up.
 

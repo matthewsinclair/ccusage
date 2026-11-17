@@ -1,0 +1,15 @@
+{
+  "id": "01M7KY9SJ5T6WC7VJDS2TTPMP0",
+  "ts": "2026-11-17T05:05:00.485Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "The live repair runs now on hv's go (decision 11, 2026-11-17 05:05Z). State when vc ended its session for it: only the three Ccusage sessions were left running, all pinned to hello's own store, so vc, cc and dc end first; Herdr lists 91 terminals, 88 plain zsh and these three. hv's steps, given in vc's window: (1) exit cc, dc and vc; (2) type the unset into every pane, by hc send to each terminal whose agent is zsh; (3) ccusage login hello, then ccusage login engineering01, then ccusage doctor (exit 0, no pinned line) and ccusage usage --all; (4) start a fresh ccusage-vc from a pane. That fresh vc, first: check its own process carries no CLAUDE_SECURESTORAGE_CONFIG_DIR (ps -E -ww -p on its claude pid), read ccusage doctor and usage --all, then ask hv for the live switch with vc as the open session (ccusage use engineering00, then ccusage which --use; vc answers its next prompt each time and /status names the account), and record AC-06.2 on it. AC-06.1 is read when the fleet next starts: no claude process carries the variable, one login an account, Claude Usage lists each account once. Then close the day: globalfold, dc's close of ISSUE:0003 noted for dc's next session, vc's read of cc's ISSUE:0008 unit (todo 12) carried to the next working session, devbin-vc and geodica-estate told when they next run, and release."
+  }
+}

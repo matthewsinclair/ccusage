@@ -91,6 +91,14 @@
       "text": "hv's word of 2026-11-17, relayed to vc by devbin-vc, which holds the Desk, in a live message stamped 03:54Z by devbin-vc; the wording is devbin-vc's relay, recorded by vc as mediator: \"bank, fold and hold. hv has to move. Bank anything unbanked, localfold, then hold and wait for instructions. The Desk is held (01M7KT90EE42BZ2FN273ZWNTMJ): no grants until hv's next word. A run already granted finishes to its END.\" vc's acts the same hour: vc was banked and folded already and holds; the word passed to cc and dc, live and in their inboxes. vc's reading: ISSUE:0008's live repair, which decision 8 set for first thing on 2026-11-17, waits for hv's next word, and so do vc's read of cc's unit and anything that needs a Desk slot.",
       "state": "live",
       "recorded_at": "2026-11-17T03:55:50.833Z"
+    },
+    {
+      "node": "hv",
+      "kind": "decision",
+      "seq": 11,
+      "text": "hv's ruling of 2026-11-17, given to vc in the live channel (vc's window, about 2026-11-17 05:05Z by vc's date -u), in hv's wording, recorded by vc as mediator: \"Ok, I've shut down all of the other Claudes now. Let's do this upgrade and then close. What do I need to do?\" vc's reading: the hold of decision 10 is lifted for ISSUE:0008's live repair, which runs now by hv's hands, and the day closes after it. vc's acts the same hour: vc found the three Ccusage sessions still running and pinned to hello's own store (vc, cc and dc; every other session had quit), so all three end before any login is re-made; cc and dc told to release; the steps given to hv; a fresh ccusage-vc, started from a shell without the pin, checks the result, sees the live switch reach it, and closes the day.",
+      "state": "live",
+      "recorded_at": "2026-11-17T05:05:00.450Z"
     }
   ],
   "sent": [],
