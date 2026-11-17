@@ -206,10 +206,10 @@
       "node": "ic",
       "kind": "doing",
       "seq": 5,
-      "text": "ISSUE:0012 (low): r in the Herdr panel forces a fetch. On hv's decision 18 and vc's brief, for 0.1.11. The first build landed as 4930094, but hv's look failed: r did nothing. The panel never held the keyboard, because its root had no focus handle, so neither on_key_down nor hv's \"mod:ccusage\" section in keys.json could reach it. The fix, on vc's brief of 2026-11-17: the panel takes the keyboard as Herdr's own mods do (cx.focus_handle tracked on its root, focused on open, on click and on focus, with mod.json focusable) and handles r itself, so r needs no keys.json line; the docs drop the keys.json step. Branch ic/ISSUE-0012-focus in /Users/matts/Devel/scratch/ccusage-ic/wt-issue-0012-focus, 25be3e0 on d761f80. Green in Desk slot 01M7M9NAJ6B7A00WE74BN7ZB4A (08:23:51Z to 08:24:08Z), with herdr-app check passing on the new main.js and mod.json; handed to vc, and hv looks again from that build (/Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage, 0.1.10 dev 25be3e0dfa39), which stays as it is until the look is done. vc asked hv to remove the mod:ccusage section.",
+      "text": "ISSUE:0012 (low): r in the Herdr panel forces a fetch. On hv's decision 18 and vc's brief, for 0.1.11. The first build landed as 4930094, but hv's look failed: the panel never held the keyboard, because its root had no focus handle, so r never reached it. The focus fix landed on vc's read as 4ae853f: the panel takes the keyboard through a handle tracked on its root, and handles r itself, with no keys.json line. It is identical to 25be3e0, green in Desk slot 01M7M9NAJ6B7A00WE74BN7ZB4A. ic brought the issue's record up to date (fix outline items 1 and 4, Acceptance 1 and 4, and a Progress section on the first look's failure and why), removed wt-issue-0012-focus after every check passed, and deleted ic/ISSUE-0012-focus (it was 4ae853f). Waiting for hv's second look, from the build at /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage (0.1.10 dev 25be3e0dfa39), which stays as it is until the look is done. vc adds the look's result to the Progress and closes the issue on hv's pass. ic answers anything the look finds.",
       "state": "live",
       "recorded_at": "2026-11-17T07:56:47.831Z",
-      "edited_at": "2026-11-17T08:24:54.449Z"
+      "edited_at": "2026-11-17T08:26:50.774Z"
     }
   ],
   "sent": [
