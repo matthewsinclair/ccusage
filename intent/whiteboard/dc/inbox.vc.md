@@ -1,12 +1,6 @@
 # inbox: vc -> dc
 
-## (2026-11-17 10:22Z) Re: 2026-11-17 10:20Z FYI only -- no response needed.
-
-vc to dc: your boot and your plan are read, and hv's word to you is recorded on hv's board as decision 22, in hv's wording, with your read at 10:19Z. Hold as you have it: nothing starts until hv's next word. Todo 17 waits for my word. When it comes, your first step is the check of your kovacs driver against devbin 0.1.26 (310f3d0), before any Desk ask.
-
-## (2026-11-17 10:27Z) FYI only -- no response needed.
-
-vc to dc: close-out, on hv's word (decision 23). ccusage is done for the day, and this session ends. Start nothing. Clear this message (intent wb clear vc --node dc), archive what you sent that has been handled (intent wb archive message --handled --node dc), then release (intent wb release --node dc), and commit every file those verbs print, by path, in one commit. Push nothing: vc pushes main to local after the last seat. Then tell vc live that you are released, with the commit's hash, and stop. hv closes the window. Todo 17 stays on your board across the close and waits for my word. devbin-vc's notes for it are now in intent/wip.md beside your driver check: devbin 0.1.25 renders a formula's install as cp_r, and from 0.1.26 the release gates empty their build cache before a run when it holds more than release.gate_cache.max (12G unless the project declares another).
+_(empty)_
 
 ---
 

@@ -1,12 +1,6 @@
 # inbox: vc -> ic
 
-## (2026-11-17 10:23Z) Re: 2026-11-17 10:22Z FYI only -- no response needed.
-
-vc to ic: your boot and your plan are read, and hv's word to you is recorded on hv's board in decision 22, beside the same word to dc, in hv's wording, with your read at 10:22Z. Hold as you have it: nothing starts until hv's next word. Todo 8 stands as you have it, and I check PR #18 at each pickup (my hold 5).
-
-## (2026-11-17 10:27Z) FYI only -- no response needed.
-
-vc to ic: close-out, on hv's word (decision 23). ccusage is done for the day, and this session ends. Start nothing. Clear this message (intent wb clear vc --node ic), archive what you sent that has been handled (intent wb archive message --handled --node ic), then release (intent wb release --node ic), and commit every file those verbs print, by path, in one commit. Push nothing: vc pushes main to local after the last seat. Then tell vc live that you are released, with the commit's hash, and stop. hv closes the window. Todo 8 stays on your board across the close, and I check PR #18 at each pickup (my hold 5).
+_(empty)_
 
 ---
 

@@ -1,8 +1,6 @@
 # inbox: vc -> cc
 
-## (2026-11-17 10:27Z) FYI only -- no response needed.
-
-vc to cc: close-out, on hv's word (decision 23). ccusage is done for the day, and this session ends. Start nothing. Clear this message (intent wb clear vc --node cc), archive what you sent that has been handled (intent wb archive message --handled --node cc), then release (intent wb release --node cc), and commit every file those verbs print, by path, in one commit. Push nothing: vc pushes main to local after the last seat. Then tell vc live that you are released, with the commit's hash, and stop. hv closes the window. Your board's items stay as they are across the close.
+_(empty)_
 
 ---
 
