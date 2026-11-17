@@ -1,0 +1,15 @@
+{
+  "id": "01M7MCH0HWNXA7WXQKTBVCQ8JZ",
+  "ts": "2026-11-17T09:13:37.084Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's word of 2026-11-17, given to cc directly in cc's window, read by cc at 09:13Z by cc's date -u, and passed to vc by cc live and in vc's inbox; hv's wording, recorded by vc as mediator: \"Ok, context is high here on ccusage-*, so lets finish what is currently running as a live task, then bank the bankable, and then localfold+compact. Then we can continue on the bounce with the plan. Once that's done, I think we're done with ccusage for the day, and ccusage-* claudes can localfold+compact, and then hold.\" vc's reading: nothing was running at the word; every ccusage seat has banked and folded since 0.1.11's publish (cc ee11706, ic b863da5, dc 11394cb, vc 7bfd8d2); each takes hv's /compact and then holds for hv's next word, with no work started. Open while they hold: PR #18 upstream (vc's hold 5) and cc's lint finding with intent-vc (decision 20)."
+  }
+}

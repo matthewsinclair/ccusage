@@ -3,9 +3,9 @@ node: vc
 name: Validation Claude
 role: validation
 session_id: 1f8ad5f9-8ef2-4931-bffe-b7473752f05d
-heartbeat_at: 2026-11-17 09:09Z
+heartbeat_at: 2026-11-17 09:13Z
 status: active
-focus: "0.1.11 is published and runs from brew on rhadamanth, kovacs and gyges. Nothing in flight; every seat folded. cc's lint finding is with intent-vc (decision 20). PR #18 waits upstream (hold 5)"
+focus: "Holding on hv's word (decision 21): ccusage is done for the day. 0.1.11 is published and runs from brew on rhadamanth, kovacs and gyges; every seat has folded and holds after hv's /compact, with nothing in flight. Open while holding: PR #18 upstream (hold 5); cc's lint finding with intent-vc (decision 20)"
 claims: []
 ---
 
