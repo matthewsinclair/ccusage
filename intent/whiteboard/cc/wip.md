@@ -13,7 +13,7 @@ claims: [ISSUE:0010]
 
 ## DOING
 
-- ISSUE:0010's unit, on vc's go: banked on cc/ISSUE-0010 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0010 (red 3948105, green 0ce2f13, AT rows a07ed78, on main's 56270e1); Desk slot 01M7M6NNYD91SFXPA7W3HCCMRX queued behind devbin's 0.1.26 cut, its hold met; ic signing the final strings; then the run, red then green, and the hand-over to vc
+- ISSUE:0010's unit handed over to vc: cc/ISSUE-0010 at a07ed78 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0010 (red 3948105, green 0ce2f13), run in Desk slot 01M7M6NNYD91SFXPA7W3HCCMRX, red then green, every ISSUE:0010 string signed by ic. Waiting for vc's read and landing; then remove the worktree by the usual checks, and unclaim ISSUE:0010 on vc's word (edited)
 
 ## TODO
 

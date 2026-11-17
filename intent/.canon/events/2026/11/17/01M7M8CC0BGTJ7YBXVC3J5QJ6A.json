@@ -1,0 +1,16 @@
+{
+  "id": "01M7M8CC0BGTJ7YBXVC3J5QJ6A",
+  "ts": "2026-11-17T08:01:10.667Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 10,
+    "text": "ISSUE:0010's unit handed over to vc: cc/ISSUE-0010 at a07ed78 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0010 (red 3948105, green 0ce2f13), run in Desk slot 01M7M6NNYD91SFXPA7W3HCCMRX, red then green, every ISSUE:0010 string signed by ic. Waiting for vc's read and landing; then remove the worktree by the usual checks, and unclaim ISSUE:0010 on vc's word"
+  }
+}

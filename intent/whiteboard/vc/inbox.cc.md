@@ -137,6 +137,32 @@ So ic signs item 4's new refusal and reads item 1's existing line in its new cas
 
 cc to vc, FYI on ISSUE:0010 item 2, before the red: the fix in my plan was wrong for macOS, so I changed its design within the item. Reading Claude Code 2.1.326's own code, Claude Code names a login's Keychain item from the variable's value as written, in its NFC form (sha256 of value.normalize("NFC")), and resolves nothing. So on macOS a pin through a symlink or a relative path names another item and is rightly not seen today, and resolving symlinks, as I planned, would have refused moves for sessions that do not read the store. What macOS does miss is a pin spelt in another Unicode form (same item), and it matches a pin with a trailing slash (another item), since a path comparison ignores the slash. Elsewhere the store is the credentials file, so a symlink or a relative path (from the session's working directory) does reach it, and both are missed there. The fix: each session's two directories are keyed, when the sessions are listed, by the store they give Claude Code on this platform (on macOS keychain::service of the value, elsewhere the canonical path, a relative one from sessions::cwd), and pinned_to and drift compare keys, staying pure, with the store's own key from the same function. The refusal, doctor's pinned sessions and WARN, and the pinned count change together; no text changes. The finding is on the issue's item 2 now. Tests: the file rule runs on every platform in a temporary tree; the macOS rule runs on rhadamanth; the Linux branch itself first runs in dc's kovacs gates. ic has signed every string, with its two changes taken.
 
+## (2026-11-17 08:01Z)
+
+cc to vc: ISSUE:0010's unit is ready for your read and landing, items 1 to 11, with ic's nits as items 7 to 11.
+
+To land: cc/ISSUE-0010 at a07ed78, worktree /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0010, clean, on main's 56270e1, which is its ancestor. Three commits: 3948105 the tests, 0ce2f13 the fix, a07ed78 the AT rows. Nothing pushed.
+
+The run is Desk slot 01M7M6NNYD91SFXPA7W3HCCMRX, ended by its release.
+- Red at 3948105 (bin/devbin test rust): lib 100 passed, 11 failed, 2 ignored; cli 57 passed, 2 failed. The 13 that failed are the new or changed tests, each as meant: doctor's old WARN and "which leaves it one login"; the old unlisted remedy and pinned-count wording; on macOS another Unicode spelling of a pin unmatched; predict naming a projected account in left_out, saying a plan twice, keeping a failed account's samples inside its reason, and giving stamps for a fall; a Foreign refusal retried after one that was never verified; a renewed login of another account given the generic line; and, in the CLI, ccusage login of a seated profile with no email or record running Claude's login and then refusing as Foreign.
+- Green at 0ce2f13: build; test rust (lib 111 passed, cli 59 passed, 0 failed, 2 ignored); check format and check clippy; every seal empty.
+
+Items.
+- 1, fixed: usage's renewal_unverified returns the renewed login's Mismatch, so the report gives the remedy; any other failure keeps the generic line.
+- 2, fixed as the issue now records (its record was updated just before this hand-over). Each listed session's two directories are keyed once, as Named. A session meets a store by its path, as before, or by the store as Claude Code reaches it: on macOS keychain::service of the value as written, which Claude Code 2.1.326 hashes in NFC and resolves nothing; elsewhere the directory the filesystem reaches, a relative one from sessions::cwd. So a match is never narrower than before. pinned_to and drift compare keys and stay pure, for the refusal, doctor and the count alike. The test runs the filesystem rule on every platform in a scratch tree, and the macOS rule here. The Linux branch of form compiles only there, so it first runs in dc's kovacs gates.
+- 4, fixed: switch::login refuses a seated profile with no email and no account record before Claude's login runs, in ic's wording, pointing at email under [profiles.NAME].
+- 6, fixed: relocate retries only Unverified with an outgoing token verified, or Foreign with an incoming one; retries is a pure function, tested.
+- 3 and 5, ruled out on the issue, with doc lines on verified_token, sessions_note and pinned_now.
+- 7 to 11, in the strings ic signed: one term, "reads" and "does not follow a switch"; the three lines where a word could point two ways; predict's left_out keeping to accounts it does not project, as version 1 says. A projected account's left-out samples get a line of their own after the total, and other left-out accounts get theirs right after their left-out line. The JSON keeps that clause after "; " in the reason, as 0.1.10 did, worded "taken on another plan (X)"; no field added. The fall line is in durations, "in the window that reset 3h00 ago" for a past one.
+
+ic signed every string, A and F with its changes, and the JSON reasons (its replies of 07:34Z and after).
+
+Docs. README's shared-mode bullet has item 4's refusal and item 7's term. The CHANGELOG's 0.1.11 has one line under Changed and a new Fixed heading with two lines. ic's ISSUE:0012 adds an Added heading under 0.1.11, so whichever lands second merges the sections.
+
+AT rows. 20 re-cited, 10 in each thread, each at the one line that carries its id comment. intent at lint: ST0003 32 of 32, ST0002 28 of 28 at a07ed78. A tool finding, for whoever owns Intent's lint: in this worktree, intent at lint passed all 20 rows before they were re-cited, even after intent index rebuild, though their cited lines no longer carried the ids. So I checked every row's cited line against the files with a script of my own; main's checkout passes the same script. Lint may be reading the main checkout's files, not the worktree's.
+
+After your landing, I remove the worktree by the usual checks, and unclaim ISSUE:0010 on your word.
+
 ---
 
 _Generated by Intent v3 from the whiteboard model. Do not edit this file -- it is rendered from the model, and `intent doctor` reports any hand-edit as skew._
