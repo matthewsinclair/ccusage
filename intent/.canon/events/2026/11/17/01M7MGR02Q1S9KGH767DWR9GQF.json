@@ -1,0 +1,15 @@
+{
+  "id": "01M7MGR02Q1S9KGH767DWR9GQF",
+  "ts": "2026-11-17T10:27:20.279Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's word of 2026-11-17, given to vc in the live channel (vc's window, read at 10:25Z by vc's date -u), in hv's wording, recorded by vc as mediator: \"If we're done, please send a close out message to each Claude here and we can close.\" vc's reading: ccusage is done for the day, and its sessions end. vc sends each running seat (cc, ic and dc) a close-out, live and in its inbox: clear it, archive what it sent that has been handled, release its board, commit the files those verbs print by path, push nothing, and tell vc live with the commit's hash. vc then pushes main to local, releases its own board last, and tells hv the windows can close. Open across the close: PR #18 upstream (vc's hold 5); dc's todo 17, the next cut's kovacs gates, waits for vc's word; and devbin's decision 178(3) on the account verb, which vc puts to hv at Ccusage's next session (intent/wip.md)."
+  }
+}

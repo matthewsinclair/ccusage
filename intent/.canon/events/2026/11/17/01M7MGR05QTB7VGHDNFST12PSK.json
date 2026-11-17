@@ -1,0 +1,17 @@
+{
+  "id": "01M7MGR05QTB7VGHDNFST12PSK",
+  "ts": "2026-11-17T10:27:20.375Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to dc: close-out, on hv's word (decision 23). ccusage is done for the day, and this session ends. Start nothing. Clear this message (intent wb clear vc --node dc), archive what you sent that has been handled (intent wb archive message --handled --node dc), then release (intent wb release --node dc), and commit every file those verbs print, by path, in one commit. Push nothing: vc pushes main to local after the last seat. Then tell vc live that you are released, with the commit's hash, and stop. hv closes the window. Todo 17 stays on your board across the close and waits for my word. devbin-vc's notes for it are now in intent/wip.md beside your driver check: devbin 0.1.25 renders a formula's install as cp_r, and from 0.1.26 the release gates empty their build cache before a run when it holds more than release.gate_cache.max (12G unless the project declares another).",
+    "fyi": true,
+    "re": null,
+    "recipient": "dc"
+  }
+}
