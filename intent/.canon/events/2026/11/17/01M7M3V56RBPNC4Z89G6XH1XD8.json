@@ -1,0 +1,16 @@
+{
+  "id": "01M7M3V56RBPNC4Z89G6XH1XD8",
+  "ts": "2026-11-17T06:41:52.344Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 6,
+    "text": "The 0.1.10 cut, first thing on hv's word (decisions 12, 13 and 15): ISSUE:0008 whole (on main at b158665), ISSUE:0009, ic's Herdr bar fix, and ic's unit for decision 15 (ccusage herdr launch and the panel's larger text). Left, in order: ic's unit read and landed; hv's look again from ic's build (larger text, refresh by itself, preview.png); ST0002 and ST0003 closed; dc's one kovacs run at the final tip with the scratch-HOME install (devbin-vc grants one run, not an early one); the seats freeze the checkout; hv runs bin/devbin release 0.1.10 in hv's own tab, with the link on brew as it stands (dc: bin/devbin doctor passes on devbin 0.1.25, so no route C); after the publish, hv's brew upgrade ccusage, vc tells devbin-vc the tag is made, and dc's keg proof closes ISSUE:0009. ISSUE:0010 (low) holds six nits for a later release."
+  }
+}

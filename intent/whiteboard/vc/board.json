@@ -150,10 +150,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 4,
-      "text": "ST0003, live account switching, built by cc (hv, 2026-11-13), shipped in 0.1.9. WP01 to WP06 are closed: WP06, the rollout, closed on 2026-11-17 (fbcc2f5) on the live repair's end state, with AC-06.1 and AC-06.2 satisfied, and dc closed ISSUE:0003 (9304bb9). Left: ISSUE:0008's code on this thread's claim, landing for 0.1.10 (doing 5), then AC-00.1, the thread's sign-off.",
+      "text": "ST0003, live account switching (cc). Every work package and criterion is done: WP06 closed on 2026-11-17 (fbcc2f5), ISSUE:0003 closed by dc (9304bb9), and ISSUE:0008, built on this thread's claim, closed with both units on main (58b7323, b158665). vc closes the thread once ic's unit has landed and cc has linted ST0003 there, re-citing any row it moved (cc's hold 1).",
       "state": "live",
       "recorded_at": "2026-11-13T06:29:42.144Z",
-      "edited_at": "2026-11-17T06:04:49.302Z"
+      "edited_at": "2026-11-17T06:41:52.165Z"
     },
     {
       "node": "vc",
@@ -210,7 +210,8 @@
       "kind": "doing",
       "seq": 5,
       "text": "ISSUE:0008 (high), for 0.1.10 first thing on hv's word (decision 12). The live repair is done (2026-11-17, WP06). The code: cc's unit, items 1 to 5 with its two nits from WP04 (todo 8), is on cc/ISSUE-0008 at 47aa80b; cc replays it onto main's tip as cc/ISSUE-0008-land with a git diff proof, its slot 01M7JQCS4KTNMQVRNWBQQ3KTGM standing as the run, and vc lands it by fast-forward on its read (todo 12). Then cc's follow-up unit on the landed tip: items 6 and 7, text only, and item 8, the incoming login verified before a switch seats it (added to the issue at 708bd5e), in one Desk cargo slot, red then green; vc reads and lands it. ic reads the new user-facing text as nits after the landing. Then the cut (doing 6).",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T06:41:52.040Z",
       "recorded_at": "2026-11-16T17:19:50.399Z",
       "edited_at": "2026-11-17T06:04:49.478Z"
     },
@@ -245,9 +246,10 @@
       "node": "vc",
       "kind": "doing",
       "seq": 6,
-      "text": "The 0.1.10 cut, first thing on hv's word (decision 12): ISSUE:0008 whole, ISSUE:0009 (LICENSE back) and ic's Herdr bar fix (9be58a6), one cut. Sequence: cc's unit lands, cc's follow-up lands, vc says the tip is final, dc runs the kovacs gates and the scratch-HOME install at it in one heavy Desk slot (dc's todo 15), vc writes the cut's steps for hv's own terminal tab (bin/devbin release 0.1.10, never a ! command, seats frozen until the publish), then brew upgrade on rhadamanth and kovacs, dc's keg proof closes ISSUE:0009 (dc's hold 13), and hv's switch to brew. ST0002's sitting (AC-08.3 and AC-00.1) runs before the cut, so anything it finds rides the same cut. The Desk was HELD with its control orphaned at 05:58Z; devbin-vc is back and has hv's word from vc.",
+      "text": "The 0.1.10 cut, first thing on hv's word (decisions 12, 13 and 15): ISSUE:0008 whole (on main at b158665), ISSUE:0009, ic's Herdr bar fix, and ic's unit for decision 15 (ccusage herdr launch and the panel's larger text). Left, in order: ic's unit read and landed; hv's look again from ic's build (larger text, refresh by itself, preview.png); ST0002 and ST0003 closed; dc's one kovacs run at the final tip with the scratch-HOME install (devbin-vc grants one run, not an early one); the seats freeze the checkout; hv runs bin/devbin release 0.1.10 in hv's own tab, with the link on brew as it stands (dc: bin/devbin doctor passes on devbin 0.1.25, so no route C); after the publish, hv's brew upgrade ccusage, vc tells devbin-vc the tag is made, and dc's keg proof closes ISSUE:0009. ISSUE:0010 (low) holds six nits for a later release.",
       "state": "live",
-      "recorded_at": "2026-11-17T06:04:49.570Z"
+      "recorded_at": "2026-11-17T06:04:49.570Z",
+      "edited_at": "2026-11-17T06:41:52.344Z"
     },
     {
       "node": "vc",

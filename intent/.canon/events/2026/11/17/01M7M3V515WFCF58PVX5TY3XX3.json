@@ -1,0 +1,16 @@
+{
+  "id": "01M7M3V515WFCF58PVX5TY3XX3",
+  "ts": "2026-11-17T06:41:52.165Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ST0003, live account switching (cc). Every work package and criterion is done: WP06 closed on 2026-11-17 (fbcc2f5), ISSUE:0003 closed by dc (9304bb9), and ISSUE:0008, built on this thread's claim, closed with both units on main (58b7323, b158665). vc closes the thread once ic's unit has landed and cc has linted ST0003 there, re-citing any row it moved (cc's hold 1)."
+  }
+}
