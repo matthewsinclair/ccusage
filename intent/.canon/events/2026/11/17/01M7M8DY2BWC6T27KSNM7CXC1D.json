@@ -1,0 +1,16 @@
+{
+  "id": "01M7M8DY2BWC6T27KSNM7CXC1D",
+  "ts": "2026-11-17T08:02:01.931Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ISSUE:0012 (low): r in the Herdr panel forces a fetch, as the dashboard's r does. On hv's decision 18 and vc's brief of 2026-11-17, for the next release. Handed to vc for its read and for hv's look: ic/ISSUE-0012 in /Users/matts/Devel/scratch/ccusage-ic/wt-issue-0012, one commit (2214b63, the mod and its docs), rebased onto main's tip for a fast-forward. Run in Desk slot 01M7M8B9RJ4E9T35Z7W6S1NJXC, 08:01:01Z to 08:01:17Z: green at 2214b63, and a scratch-home install with the real herdr-app check passed on the new main.js. Nothing could go red first, because no harness runs the mod outside Herdr. hv's look, from ic's build, follows the keys.json line that hv adds in Molt: \"mod:ccusage\": {\"r\": \"ccusage.refresh\"}. cc's ISSUE:0010 also changes the CHANGELOG's 0.1.11 section, so the second to land merges the two. After the landing: the worktree goes by the usual checks, and the branch once merged."
+  }
+}
