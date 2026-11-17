@@ -1,0 +1,16 @@
+{
+  "id": "01M7M8Y515N423NYT4TV7P8FT4",
+  "ts": "2026-11-17T08:10:53.349Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 16,
+    "text": "0.1.11's content is on main (af386e0): ISSUE:0010 and ISSUE:0011 closed, ISSUE:0012 landed. Left: hv's look at r in the panel, from ic's build at 2214b63, closes ISSUE:0012 (ic keeps its claim and that build until then). Then, on hv's word to cut: dc's kovacs gates at the final tip, which first build ISSUE:0010 item 2's Linux branch; the seats freeze; hv runs bin/devbin release 0.1.11 in hv's own tab. Open with hv: whether cc's finding goes to Intent (intent at lint run in a git worktree passed AT rows whose cited lines had moved)."
+  }
+}

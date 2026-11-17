@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-17T07:34:18Z:v0.39: vc - the next release builds: ISSUE:0010, install's silence"
+verblock: "2026-11-17T08:10:16Z:v0.40: vc - 0.1.11's content on main; hv's look closes ISSUE:0012"
 ---
 
 # Work In Progress
@@ -8,20 +8,13 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**ISSUE:0010: the next release's fixes, building on vc's go (cc, with ic signing the text)**
+**ISSUE:0012: hv's look at r in the Herdr panel, then the 0.1.11 cut**
 
-cc's one unit fixes the issue's items 1, 2, 4 and 6 and rules out 3 and 5 with their reasons. It also takes in ic's nits from its read of ISSUE:0008's landed text, added to the issue's record as further items:
-- one term for a session a switch leaves behind;
-- three lines where a word can point two ways;
-- predict's left-out lines, where `left_out` keeps to the accounts that are not projected, as README's version 1 says;
-- the fall line in durations.
-ic signs every changed string before the hand-over. One worktree, one Desk cargo slot; vc reads the diff and takes cc's run as the run.
+0.1.11's content is on main, under the CHANGELOG's 0.1.11 (unreleased): ISSUE:0010, ISSUE:0011 and ISSUE:0012. What is left:
+- hv's look closes ISSUE:0012. From ic's build at 2214b63 (`/Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage herdr install`), click the panel and press r: it says `Refreshing accounts`, then `as of` moves to the current minute; a second quick r says `Refresh already in progress`. ic keeps its claim, and that build, until then.
+- Then, on hv's word to cut: dc's kovacs gates at the final tip, which first build ISSUE:0010 item 2's Linux branch; the seats freeze; hv runs `bin/devbin release 0.1.11` in hv's own tab.
 
-**install's silence: the next release's Herdr fix (ic)**
-
-While `herdr-app check` runs, `ccusage herdr install` says on stderr what it waits for, and one named constant bounds the wait. Past the bound, install reports the mod as not checked and exits 0. ic files it as an issue and builds it in one worktree and one Desk cargo slot, beside cc's unit; CHANGELOG.md is the one file both change.
-
-When the next release is cut is hv's word: one cut with everything ready, never small ones.
+When the release is cut is hv's word: one cut with everything ready, never small ones.
 
 ## Active Steel Threads
 
@@ -34,7 +27,7 @@ None open. `intent outstanding` shows what is.
 ## Notes
 
 - hv's standing rulings are the decisions on hv's board. Among them: ccusage works for any Claude account type and shows whatever it can for that type; a login a switch drops lapses and is not revoked; engineering04 stays a profile until its allowance is exhausted; Herdr's verbs are `ccusage herdr install`, `remove` and `launch`; hv alone runs `ccusage use`, `login` and `which --use`, on vc's steps; Claude Usage comes from its mainline release, not hv's fork; a PR or commit to someone else's repository carries no (C) line; everything ready goes into one cut, never small releases.
-- hv opens the ccusage panel with cmd-shift-u, a `tab.new` line hv keeps in Molt-matts' `config/herdr-app/keys.json` (decision 17), which Herdr reads live. ccusage never writes keys.json.
+- hv opens the ccusage panel with cmd-shift-u, a `tab.new` line hv keeps in Molt-matts' `config/herdr-app/keys.json` (decision 17), and refreshes it with r, from that file's `"mod:ccusage": {"r": "ccusage.refresh"}` (decision 18). Herdr reads the file live; ccusage never writes it.
 - A Claude session started from a shell that exports `CLAUDE_SECURESTORAGE_CONFIG_DIR` reads that profile's own store, and no switch reaches it. `ccusage doctor` names such sessions, and a switch is refused while one reads the target's store.
 - A `/login` typed inside a Claude session writes into whichever store that session reads, with no check of whose login it is. `ccusage login NAME` checks the email after, and a switch verifies the incoming login before it seats it.
 - Before a cut, dc runs the project's gates on kovacs (Linux ARM64): Linux clippy sees code that only a macOS arm uses, which rhadamanth's runs miss, and the release config names no legs.

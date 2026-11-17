@@ -3,9 +3,9 @@ node: vc
 name: Validation Claude
 role: validation
 session_id: 1f8ad5f9-8ef2-4931-bffe-b7473752f05d
-heartbeat_at: 2026-11-17 07:45Z
+heartbeat_at: 2026-11-17 08:10Z
 status: active
-focus: "0.1.10 is published and runs from brew on rhadamanth, kovacs and gyges; ISSUE:0009 is closed (e880eef). Building for the next release on vc's go: cc's ISSUE:0010 unit with ic's text nits, and ic's install-silence unit; vc reads each hand-over (todo 16). hv adds the cmd-shift-u key (decision 17). PR #18 waits upstream (hold 5)"
+focus: "0.1.11's content is on main (af386e0): ISSUE:0010 and 0011 closed, 0012 landed. Waiting on hv: the look that closes ISSUE:0012, the word to cut (dc's kovacs gates first), and whether cc's lint finding goes to Intent (todo 16). PR #18 waits upstream (hold 5)"
 claims: []
 ---
 
@@ -17,7 +17,7 @@ claims: []
 
 ## TODO
 
-- The next release's work builds on vc's go: cc's one ISSUE:0010 unit, with ic's text nits added to the issue as items 7 to 11 (ic signs every changed string before the hand-over), and ic's unit for hv's decision 18 (r in the Herdr panel forces a fetch, as the TUI's r does), which ic files as an issue. Each is one worktree and one Desk cargo slot; vc reads each hand-over against its issue and lands it. ISSUE:0011 (install's silence) is on main already. When the next release is cut is hv's word: one cut with everything ready, never small ones. (edited)
+- 0.1.11's content is on main (af386e0): ISSUE:0010 and ISSUE:0011 closed, ISSUE:0012 landed. Left: hv's look at r in the panel, from ic's build at 2214b63, closes ISSUE:0012 (ic keeps its claim and that build until then). Then, on hv's word to cut: dc's kovacs gates at the final tip, which first build ISSUE:0010 item 2's Linux branch; the seats freeze; hv runs bin/devbin release 0.1.11 in hv's own tab. Open with hv: whether cc's finding goes to Intent (intent at lint run in a git worktree passed AT rows whose cited lines had moved). (edited)
 
 ## Holds
 
