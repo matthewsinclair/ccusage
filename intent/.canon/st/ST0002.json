@@ -265,7 +265,7 @@
     {
       "id": "AT-01.4",
       "kind": "test",
-      "file": "src/display.rs:939",
+      "file": "src/display.rs:1007",
       "covers": [
         "AC-01.1"
       ],
@@ -305,7 +305,7 @@
     {
       "id": "AT-02.4",
       "kind": "test",
-      "file": "tests/cli.rs:323",
+      "file": "tests/cli.rs:330",
       "covers": [
         "AC-02.3"
       ],
@@ -325,7 +325,7 @@
     {
       "id": "AT-03.1",
       "kind": "test",
-      "file": "tests/cli.rs:1280",
+      "file": "tests/cli.rs:1292",
       "covers": [
         "AC-03.1"
       ],
@@ -335,7 +335,7 @@
     {
       "id": "AT-03.2",
       "kind": "test",
-      "file": "tests/cli.rs:1318",
+      "file": "tests/cli.rs:1330",
       "covers": [
         "AC-03.2"
       ],
@@ -345,7 +345,7 @@
     {
       "id": "AT-03.3",
       "kind": "test",
-      "file": "tests/cli.rs:1421",
+      "file": "tests/cli.rs:1433",
       "covers": [
         "AC-03.3"
       ],
@@ -355,7 +355,7 @@
     {
       "id": "AT-03.4",
       "kind": "test",
-      "file": "tests/cli.rs:1456",
+      "file": "tests/cli.rs:1468",
       "covers": [
         "AC-03.4"
       ],
@@ -395,7 +395,7 @@
     {
       "id": "AT-04.4",
       "kind": "test",
-      "file": "tests/cli.rs:416",
+      "file": "tests/cli.rs:423",
       "covers": [
         "AC-04.1"
       ],
@@ -415,7 +415,7 @@
     {
       "id": "AT-05.1",
       "kind": "test",
-      "file": "src/predict.rs:489",
+      "file": "src/predict.rs:550",
       "covers": [
         "AC-05.1"
       ],
@@ -425,7 +425,7 @@
     {
       "id": "AT-05.2",
       "kind": "test",
-      "file": "src/predict.rs:538",
+      "file": "src/predict.rs:599",
       "covers": [
         "AC-05.1"
       ],
@@ -435,7 +435,7 @@
     {
       "id": "AT-05.3",
       "kind": "test",
-      "file": "tests/cli.rs:1525",
+      "file": "tests/cli.rs:1537",
       "covers": [
         "AC-05.1"
       ],
@@ -445,7 +445,7 @@
     {
       "id": "AT-05.4",
       "kind": "test",
-      "file": "src/predict.rs:614",
+      "file": "src/predict.rs:675",
       "covers": [
         "AC-05.1"
       ],
@@ -455,7 +455,7 @@
     {
       "id": "AT-06.1",
       "kind": "test",
-      "file": "src/display.rs:1046",
+      "file": "src/display.rs:1114",
       "covers": [
         "AC-06.1"
       ],
@@ -465,7 +465,7 @@
     {
       "id": "AT-06.2",
       "kind": "test",
-      "file": "tests/cli.rs:1633",
+      "file": "tests/cli.rs:1645",
       "covers": [
         "AC-06.1"
       ],
@@ -475,7 +475,7 @@
     {
       "id": "AT-08.1",
       "kind": "test",
-      "file": "tests/cli.rs:1649",
+      "file": "tests/cli.rs:1661",
       "covers": [
         "AC-08.1"
       ],
@@ -485,7 +485,7 @@
     {
       "id": "AT-08.2",
       "kind": "test",
-      "file": "src/display.rs:1136",
+      "file": "src/display.rs:1204",
       "covers": [
         "AC-08.2"
       ],
@@ -495,7 +495,7 @@
     {
       "id": "AT-08.3",
       "kind": "test",
-      "file": "tests/cli.rs:396",
+      "file": "tests/cli.rs:403",
       "covers": [
         "AC-08.2"
       ],

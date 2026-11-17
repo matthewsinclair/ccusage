@@ -195,7 +195,7 @@
     {
       "id": "AT-02.1",
       "kind": "test",
-      "file": "src/seat.rs:732",
+      "file": "src/seat.rs:785",
       "covers": [
         "AC-02.1"
       ],
@@ -205,7 +205,7 @@
     {
       "id": "AT-02.2",
       "kind": "test",
-      "file": "src/seat.rs:763",
+      "file": "src/seat.rs:816",
       "covers": [
         "AC-02.1"
       ],
@@ -215,7 +215,7 @@
     {
       "id": "AT-02.3",
       "kind": "test",
-      "file": "src/seat.rs:781",
+      "file": "src/seat.rs:834",
       "covers": [
         "AC-02.1"
       ],
@@ -225,7 +225,7 @@
     {
       "id": "AT-02.4",
       "kind": "test",
-      "file": "src/seat.rs:800",
+      "file": "src/seat.rs:853",
       "covers": [
         "AC-02.2"
       ],
@@ -235,7 +235,7 @@
     {
       "id": "AT-02.5",
       "kind": "test",
-      "file": "src/seat.rs:848",
+      "file": "src/seat.rs:901",
       "covers": [
         "AC-02.2"
       ],
@@ -245,7 +245,7 @@
     {
       "id": "AT-02.6",
       "kind": "test",
-      "file": "src/seat.rs:896",
+      "file": "src/seat.rs:949",
       "covers": [
         "AC-02.3"
       ],
@@ -255,7 +255,7 @@
     {
       "id": "AT-02.7",
       "kind": "test",
-      "file": "src/seat.rs:965",
+      "file": "src/seat.rs:1101",
       "covers": [
         "AC-02.3"
       ],
@@ -265,7 +265,7 @@
     {
       "id": "AT-02.8",
       "kind": "test",
-      "file": "src/seat.rs:1046",
+      "file": "src/seat.rs:1182",
       "covers": [
         "AC-02.4"
       ],
@@ -275,7 +275,7 @@
     {
       "id": "AT-02.9",
       "kind": "test",
-      "file": "src/seat.rs:1081",
+      "file": "src/seat.rs:1217",
       "covers": [
         "AC-02.4",
         "AC-02.3"
@@ -286,7 +286,7 @@
     {
       "id": "AT-02.10",
       "kind": "test",
-      "file": "src/seat.rs:871",
+      "file": "src/seat.rs:924",
       "covers": [
         "AC-02.2"
       ],
@@ -306,7 +306,7 @@
     {
       "id": "AT-03.1",
       "kind": "test",
-      "file": "src/seat.rs:1007",
+      "file": "src/seat.rs:1143",
       "covers": [
         "AC-03.2"
       ],
@@ -316,7 +316,7 @@
     {
       "id": "AT-03.2",
       "kind": "test",
-      "file": "tests/cli.rs:913",
+      "file": "tests/cli.rs:920",
       "covers": [
         "AC-03.1"
       ],
@@ -326,7 +326,7 @@
     {
       "id": "AT-03.3",
       "kind": "test",
-      "file": "tests/cli.rs:949",
+      "file": "tests/cli.rs:956",
       "covers": [
         "AC-03.1",
         "AC-03.2"
@@ -337,17 +337,17 @@
     {
       "id": "AT-03.4",
       "kind": "test",
-      "file": "tests/cli.rs:992",
+      "file": "tests/cli.rs:999",
       "covers": [
         "AC-03.4"
       ],
       "status": "green",
-      "note": "use --none returns every login to its profile and leaves the shared store with none, the layout an older ccusage reads, with launchd pointed at the active profile on macOS, and use seats it again; refused beside a name and with shared mode off; red under the mutant whose none moves nothing, in WP03's mutant run at 350e689, and under the mutant whose none clears launchd, in the follow-up's mutant run at 46295e6; green in the follow-up's measured run at 46295e6, Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8, landed as 2019b93"
+      "note": "use --none returns every login to its profile and leaves the shared store with none, the layout an older ccusage reads, with launchd pointed at the active profile on macOS, and use seats it again; refused beside a name and with shared mode off; red under the mutant whose none moves nothing, in WP03's mutant run at 350e689, and under the mutant whose none clears launchd, in the follow-up's mutant run at 46295e6; green in the follow-up's measured run at 46295e6, Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8, landed as 2019b93; with ISSUE:0008's incoming check, its test verifies work's own login where it lives before the switch back, as a usage fetch would, so it stays offline, green at 53a9119 in cc's second ISSUE:0008 run in Desk slot 01M7M1TTN0ZZ8XEYCZEQGC1DAF"
     },
     {
       "id": "AT-03.5",
       "kind": "test",
-      "file": "tests/cli.rs:883",
+      "file": "tests/cli.rs:890",
       "covers": [
         "AC-03.3"
       ],
@@ -357,7 +357,7 @@
     {
       "id": "AT-03.6",
       "kind": "test",
-      "file": "tests/cli.rs:1038",
+      "file": "tests/cli.rs:1048",
       "covers": [
         "AC-03.3"
       ],
@@ -367,12 +367,12 @@
     {
       "id": "AT-03.7",
       "kind": "test",
-      "file": "tests/cli.rs:1079",
+      "file": "tests/cli.rs:1089",
       "covers": [
         "AC-03.3"
       ],
       "status": "green",
-      "note": "run gives Claude the shared config and no login directory, whatever the shell exported, and switches first to a profile that is not active; red under the mutant that does not switch, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea"
+      "note": "run gives Claude the shared config and no login directory, whatever the shell exported, and switches first to a profile that is not active; red under the mutant that does not switch, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea; with ISSUE:0008's incoming check, home has the fixture's email and its own login is verified where it lives before the switch to it, as a usage fetch would, so the test stays offline, green at 53a9119 in cc's second ISSUE:0008 run in Desk slot 01M7M1TTN0ZZ8XEYCZEQGC1DAF"
     },
     {
       "id": "AT-03.8",
@@ -387,7 +387,7 @@
     {
       "id": "AT-03.9",
       "kind": "test",
-      "file": "src/switch.rs:275",
+      "file": "src/switch.rs:366",
       "covers": [
         "AC-03.4"
       ],
@@ -407,7 +407,7 @@
     {
       "id": "AT-04.1",
       "kind": "test",
-      "file": "src/doctor.rs:570",
+      "file": "src/doctor.rs:572",
       "covers": [
         "AC-04.1"
       ],
@@ -417,7 +417,7 @@
     {
       "id": "AT-04.2",
       "kind": "test",
-      "file": "src/doctor.rs:604",
+      "file": "src/doctor.rs:606",
       "covers": [
         "AC-04.1"
       ],
@@ -427,7 +427,7 @@
     {
       "id": "AT-04.3",
       "kind": "test",
-      "file": "src/sessions.rs:240",
+      "file": "src/sessions.rs:274",
       "covers": [
         "AC-04.2"
       ],
@@ -437,7 +437,7 @@
     {
       "id": "AT-04.4",
       "kind": "test",
-      "file": "tests/cli.rs:1174",
+      "file": "tests/cli.rs:1186",
       "covers": [
         "AC-04.2"
       ],
@@ -457,7 +457,7 @@
     {
       "id": "AT-04.6",
       "kind": "test",
-      "file": "tests/cli.rs:1776",
+      "file": "tests/cli.rs:1788",
       "covers": [
         "AC-04.3"
       ],
@@ -477,7 +477,7 @@
     {
       "id": "AT-04.8",
       "kind": "test",
-      "file": "src/display.rs:1106",
+      "file": "src/display.rs:1174",
       "covers": [
         "AC-04.3"
       ],
@@ -487,7 +487,7 @@
     {
       "id": "AT-04.9",
       "kind": "test",
-      "file": "tests/cli.rs:1747",
+      "file": "tests/cli.rs:1759",
       "covers": [
         "AC-04.3"
       ],
@@ -507,7 +507,7 @@
     {
       "id": "AT-04.11",
       "kind": "test",
-      "file": "tests/cli.rs:1210",
+      "file": "tests/cli.rs:1222",
       "covers": [
         "AC-04.1"
       ],
