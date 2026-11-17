@@ -3,9 +3,9 @@ node: ic
 name: Interface Claude
 role: interface
 session_id: 2383b046-340f-4fb4-ad39-d1ae912ebf62
-heartbeat_at: 2026-11-17 10:19Z
+heartbeat_at: 2026-11-17 10:22Z
 status: active
-focus: ""
+focus: "Holding on hv's word (decision 21, and hv's word to ic after its /compact: finish booting, then hold): nothing in flight, no claims, no worktree. Open while holding: todo 8, PR #18 upstream (vc's hold 5)."
 claims: []
 ---
 
