@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 
 - `ccusage herdr install` says on stderr that it is waiting while `herdr-app check` runs, which Herdr does as a background job that can take a minute or two, and stops waiting after five minutes, reporting the mod as not checked, with the command to check it by hand. Before, it said nothing until the check returned, and waited with no bound (ISSUE:0011).
-- `which`, `predict` and the dashboard say how many running Claude sessions read a login other than the shared config's, so do not follow a switch, in the words `doctor` and the remedies use. `doctor`'s warning for such a session names the variable to unset, and its finding of two logins names the profile it leaves with one. `predict` says what the rate leaves out of an account's samples once, after another plan's allowance or on a line of its own, and gives a fall in usage in durations, as its other lines give times (ISSUE:0010).
+- `which`, `predict` and the dashboard say how many running Claude sessions read a login other than the shared config's, and so do not follow a switch, in the words `doctor` and the remedies use. `doctor`'s warning for such a session names the variable to unset, and its finding of two logins names the profile it leaves with one. `predict` says what the rate leaves out of an account's samples once, after another plan's allowance or on a line of its own, and gives a fall in usage in durations, as its other lines give times (ISSUE:0010).
 
 ### Fixed
 

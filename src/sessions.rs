@@ -539,32 +539,35 @@ mod tests {
   -> crate::Result<()> {
     let shared_dir = "/home/u/.config/claude";
     let shared = Named::store(Path::new(shared_dir));
-    let sessions = [
-      (601, shared_dir),
-      (602, "/data/profiles/a"),
-      (603, "/data/profiles/b"),
-    ]
-    .into_iter()
-    .map(|(pid, dir)| {
-      parse(&format!(
-        " {pid} Mon Nov 16 16:30:00 2026 claude {CONFIG_DIR}={dir}"
-      ))
-      .map(named)
-      .ok_or("a claude line is a session")
-    })
-    .collect::<std::result::Result<Vec<_>, _>>()?;
+    // The first session follows the shared config, and each after it reads another login.
+    let dirs = [shared_dir, "/data/profiles/a", "/data/profiles/b"];
+    let sessions = dirs
+      .iter()
+      .zip(601..)
+      .map(|(dir, pid)| {
+        parse(&format!(
+          " {pid} Mon Nov 16 16:30:00 2026 claude {CONFIG_DIR}={dir}"
+        ))
+        .map(named)
+        .ok_or("a claude line is a session")
+      })
+      .collect::<std::result::Result<Vec<_>, _>>()?;
+    // How many of the first `n` sessions read a login other than the shared config's.
+    let drifting = |n: usize| dirs[..n].iter().filter(|dir| **dir != shared_dir).count();
     assert_eq!(unfollowing(&sessions[..1], &shared), None);
     assert_eq!(
-      unfollowing(&sessions[..2], &shared).as_deref(),
-      Some(
-        "1 running Claude session reads a login other than the shared config's, so it does not follow a switch; ccusage doctor names it"
-      )
+      unfollowing(&sessions[..2], &shared),
+      Some(format!(
+        "{} running Claude session reads a login other than the shared config's, so it does not follow a switch; ccusage doctor names it",
+        drifting(2)
+      ))
     );
     assert_eq!(
-      unfollowing(&sessions, &shared).as_deref(),
-      Some(
-        "2 running Claude sessions read a login other than the shared config's, so they do not follow a switch; ccusage doctor names them"
-      )
+      unfollowing(&sessions, &shared),
+      Some(format!(
+        "{} running Claude sessions read a login other than the shared config's, so they do not follow a switch; ccusage doctor names them",
+        drifting(sessions.len())
+      ))
     );
     Ok(())
   }

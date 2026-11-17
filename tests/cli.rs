@@ -2157,22 +2157,21 @@ fn which_and_predict_say_how_many_running_sessions_a_switch_does_not_move() -> R
   let said =
     |args: &[&str]| -> Result<String> { Ok(String::from_utf8(sandbox.run(args)?.stderr)?) };
   let verbs = [&["which", "--json"][..], &["predict", "--json"]];
-  // Two sessions pinned to work's own store, and one that follows the shared config.
-  fs::write(
-    sandbox.root.join("ps.out"),
-    format!(
-      "{}{}{}",
-      pinned_session(501, &shared, &work),
-      pinned_session(502, &shared, &work),
-      following(503)
-    ),
-  )?;
+  // Sessions pinned to work's own store, and one that follows the shared config.
+  let pinned = [501, 502];
+  let listed: String = pinned
+    .iter()
+    .map(|pid| pinned_session(*pid, &shared, &work))
+    .chain([following(503)])
+    .collect();
+  fs::write(sandbox.root.join("ps.out"), listed)?;
+  let counted = format!(
+    "{} running Claude sessions read a login other than the shared config's",
+    pinned.len()
+  );
   for args in verbs {
     let note = said(args)?;
-    assert!(
-      note.contains("2 running Claude sessions read a login other than the shared config's"),
-      "{args:?}: {note}"
-    );
+    assert!(note.contains(&counted), "{args:?}: {note}");
   }
   fs::write(sandbox.root.join("ps.out"), following(503))?;
   for args in verbs {

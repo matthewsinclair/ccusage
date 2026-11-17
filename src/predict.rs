@@ -916,6 +916,16 @@ mod tests {
     };
     let reports = [on("x", &max)?, on("a", &max)?, on("c", &pro)?];
     let projection = project(&history, &reports, now, cap, None)?;
+    // How many of `name`'s samples the history holds, all of them or those taken `on` a
+    // plan.
+    let count = |name: &str, on: Option<&Plan>| {
+      history
+        .iter()
+        .filter(|sample| {
+          sample.account == name && on.is_none_or(|on| sample.plan.as_ref() == Some(on))
+        })
+        .count()
+    };
     assert!(
       projection
         .accounts
@@ -929,8 +939,9 @@ mod tests {
       [(
         "c".to_owned(),
         format!(
-          "another plan's allowance ({}), with its 2 weekly samples",
-          described(&pro)
+          "another plan's allowance ({}), with its {} weekly samples",
+          described(&pro),
+          count("c", None)
         )
       )]
     );
@@ -941,7 +952,9 @@ mod tests {
       .position(|line| line.starts_with("Projected unused"))
       .ok_or("a total")?;
     let x_line = format!(
-      "x: the rate leaves out 1 of its 3 weekly samples, taken on another plan ({})",
+      "x: the rate leaves out {} of its {} weekly samples, taken on another plan ({})",
+      count("x", Some(&pro)),
+      count("x", None),
       described(&pro)
     );
     assert_eq!(
