@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-17T09:09:22Z:v0.43: vc - after the 0.1.11 cut: nothing in flight"
+verblock: "2026-11-17T09:15:55Z:v0.44: vc - ccusage done for the day; seats hold (decision 21)"
 ---
 
 # Work In Progress
@@ -8,10 +8,9 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**No thread or issue open: the next work waits on hv's word**
+**No thread or issue open: every seat holds for hv's next word (decision 21)**
 
 - When the next release is cut is hv's word: one cut with everything ready, never small ones. Before it, dc runs the kovacs gates at its final code tip.
-- cc's finding that `intent at lint`, run in a git worktree, passed AT rows whose cited lines had moved, is with intent-vc (hv's decision 20). Nothing in Ccusage waits on it.
 
 ## Active Steel Threads
 
@@ -31,7 +30,7 @@ None open. `intent outstanding` shows what is.
 - A cut runs in hv's own terminal tab (`bin/devbin release X.Y.Z`), never as a `!` command. From vc's go until vc says it is published, the seats write nothing to the checkout, whiteboard verbs included, even when a first attempt stopped.
 - All work lands on `main` in the one checkout; cc and ic build in their own worktrees and land by fast-forward. Every commit passes the pre-commit gate (guards, the rust and shell critics, intent doctor). main goes to `local` once committed (hv's decision 4); nothing goes upstream but a release.
 - Validation is hv's one layer of proof: vc reads the diff, and the builder's one measured run, in a Desk cargo slot, is the run. devbin-vc holds the Desk. Test only what changed; the full suite runs once, in the cut's gates.
-- A landing that moves lines under another thread's acceptance-test rows breaks that thread's `intent at lint` until they are re-cited; whoever sees it re-cites and tells the other seat.
+- A landing that moves lines under another thread's acceptance-test rows leaves its citations wrong until they are re-cited; whoever sees it re-cites and tells the other seat. For an open thread `intent at lint` finds them; for a Completed one it skips the cited-line check (Intent issues 0665 and 0698), so run `intent doctor --scope all`, whose closed-contract-drift advisory names each row.
 - Never run a local ccusage build against the real XDG config without hv's OK: a renewal spends real tokens. Test in a throwaway HOME and XDG tree.
 - What a running Claude session launched with is in its process (`ps -E -ww -p <pid> -o command=`), not in a Bash tool's shell, which re-runs Molt's startup for each command.
 - How Claude Code reads its login is in ST0003's Context (`intent st show ST0003`), with the command that reads it from the installed binary again. How a Herdr mod is built is in `~/.config/herdr-app/AGENTS.md`, which the Herdr app rewrites at each start.
