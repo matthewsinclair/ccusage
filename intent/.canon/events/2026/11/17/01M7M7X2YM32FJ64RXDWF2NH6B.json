@@ -1,0 +1,15 @@
+{
+  "id": "01M7M7X2YM32FJ64RXDWF2NH6B",
+  "ts": "2026-11-17T07:52:49.876Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's ruling of 2026-11-17, given to vc in the live channel (vc's window, read at 07:52Z by vc's date -u), in hv's wording, recorded by vc as mediator. vc told hv that the Herdr panel refreshes itself every five minutes, that r reaches it only through a line hv adds to keys.json (\"mod:ccusage\": {\"r\": \"ccusage.refresh\"}), and that the panel's refresh, unlike the TUI's r, does not force a fetch; vc asked: should the panel's r force a fresh fetch the way the TUI's does? If yes, it is a small change for ic in the same next release. hv: \"yes\". vc's reading: in the next release, the command a key sends to the panel, ccusage.refresh, fetches every account at once, as the TUI's r does, within any rate-limit cooldown; the five-minute timer stays as it is; the command keeps its name, so hv's keys.json line works unchanged."
+  }
+}

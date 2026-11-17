@@ -17,7 +17,7 @@ claims: []
 
 ## TODO
 
-- The next release's work builds on vc's go of 2026-11-17: cc's one ISSUE:0010 unit, with ic's text nits added to the issue as further items (ic signs every changed string before the hand-over), and ic's install-silence unit, which ic files as an issue. Each is one worktree and one Desk cargo slot; vc reads each hand-over against its issue and lands it. When the next release is cut is hv's word: one cut with everything ready, never small ones. (edited)
+- The next release's work builds on vc's go: cc's one ISSUE:0010 unit, with ic's text nits added to the issue as items 7 to 11 (ic signs every changed string before the hand-over), and ic's unit for hv's decision 18 (r in the Herdr panel forces a fetch, as the TUI's r does), which ic files as an issue. Each is one worktree and one Desk cargo slot; vc reads each hand-over against its issue and lands it. ISSUE:0011 (install's silence) is on main already. When the next release is cut is hv's word: one cut with everything ready, never small ones. (edited)
 
 ## Holds
 
