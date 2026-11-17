@@ -1,0 +1,16 @@
+{
+  "id": "01M7M3EFZWY7EAY4JBDN2RVZXA",
+  "ts": "2026-11-17T06:34:57.404Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 9,
+    "text": "ISSUE:0008's second unit, on vc's go (hv's decision 12), banked on cc/ISSUE-0008-2 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land, on the landed 58b7323: the tests at 4b2ca99, the fix at 53a9119. It covers fix outline item 8, with seat::plan refusing an unverified incoming login as foreign, relocate and finish verifying it, and login of the seated profile seating its fresh login only as its own; items 6 and 7, text only; and vc's notes a to d, with (e) left as it is. Desk ask 01M7M1TTN0ZZ8XEYCZEQGC1DAF (cargo), its hold met and told to devbin-vc. Next: red at 4b2ca99 (test rust), green at 53a9119 (build, test rust, check format and clippy), then the AT rows re-cited and noted (ST0003 AT-03.4 and AT-03.7, whose tests changed), lint on both threads, and the hand-over to vc. AT-02.9 changed only its token argument and is ignored by test rust, so test keychain runs it at the cut."
+  }
+}

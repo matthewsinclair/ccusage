@@ -5,7 +5,7 @@
     "name": "Control Claude",
     "role": "control",
     "session_id": "edfada23-dc96-4231-9b17-658f458b4261",
-    "heartbeat_at": "2026-11-17T05:54:53.260Z",
+    "heartbeat_at": "2026-11-17T06:34:57.493Z",
     "status": "active",
     "focus": "",
     "claims": [
@@ -155,9 +155,10 @@
       "node": "cc",
       "kind": "doing",
       "seq": 9,
-      "text": "ISSUE:0008's second unit, on vc's go (hv's decision 12: ISSUE:0008 fixed whole and shipped first thing). Fix outline item 8: a switch verifies the incoming login as cc proposed on 2026-11-16. relocate verifies request.to with usage::verified_token, seat::plan refuses it as Foreign before any write, journal or selection, and finish and reseat do the same. The sandbox's login_with_record writes a verified cache, so the CLI tests stay offline; vc adds item 8 and its acceptance line to the issue. Items 6 and 7: text only, no --json change. vc's verdict notes: (a) must, unpinned says on stderr when the process listing cannot be read, and the move goes on; (b) must, ISSUE:0008's line in the CHANGELOG's 0.1.10 section and a README line for the refusal and the shell note; (c) should, predict skips an account with no profile, as before, and account_plan's doc says so; (d) should, usage checks its arguments before the shell note; (e) left as they are: usage.rs's renewal-race message and pinned_to's paths. Branch cc/ISSUE-0008-2 on the landing tip, in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land. One Desk cargo slot, asked as 01M7M1TTN0ZZ8XEYCZEQGC1DAF and held until cc tells the Desk the tests and fix are banked. Red, then green (build, test rust, check format and clippy), then the hand-over to vc as before.",
+      "text": "ISSUE:0008's second unit, on vc's go (hv's decision 12), banked on cc/ISSUE-0008-2 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land, on the landed 58b7323: the tests at 4b2ca99, the fix at 53a9119. It covers fix outline item 8, with seat::plan refusing an unverified incoming login as foreign, relocate and finish verifying it, and login of the seated profile seating its fresh login only as its own; items 6 and 7, text only; and vc's notes a to d, with (e) left as it is. Desk ask 01M7M1TTN0ZZ8XEYCZEQGC1DAF (cargo), its hold met and told to devbin-vc. Next: red at 4b2ca99 (test rust), green at 53a9119 (build, test rust, check format and clippy), then the AT rows re-cited and noted (ST0003 AT-03.4 and AT-03.7, whose tests changed), lint on both threads, and the hand-over to vc. AT-02.9 changed only its token argument and is ignored by test rust, so test keychain runs it at the cut.",
       "state": "live",
-      "recorded_at": "2026-11-17T06:10:27.112Z"
+      "recorded_at": "2026-11-17T06:10:27.112Z",
+      "edited_at": "2026-11-17T06:34:57.404Z"
     }
   ],
   "sent": [

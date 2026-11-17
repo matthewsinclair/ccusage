@@ -3,7 +3,7 @@ node: cc
 name: Control Claude
 role: control
 session_id: edfada23-dc96-4231-9b17-658f458b4261
-heartbeat_at: 2026-11-17 05:54Z
+heartbeat_at: 2026-11-17 06:34Z
 status: active
 focus: ""
 claims: [ST0003, ISSUE:0008]
@@ -14,7 +14,7 @@ claims: [ST0003, ISSUE:0008]
 ## DOING
 
 - ISSUE:0008 (high), first unit, items 1 to 5 with vc's two WP04 nits: vc's verdict (2026-11-17 06:07Z) is land as is, with Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM as the run. Reported for vc's fast-forward: cc/ISSUE-0008-land at 58b7323 on main's 6fe69a2 (42b4942 replays 6f077cd, c7d4183 replays 23b177f, 58b7323 holds the AT rows re-minted), worktree /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land. Its code is identical to the tested commits by git diff, every AT row is identical to 47aa80b's, and lint gives ST0003 32 of 32 and ST0002 27 of 27. cc/ISSUE-0008 stays at 47aa80b as the tested record. Next, once main has it: lint both threads on main and re-cite anything moved, then remove the old worktree /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008 by the usual checks. (edited)
-- ISSUE:0008's second unit, on vc's go (hv's decision 12: ISSUE:0008 fixed whole and shipped first thing). Fix outline item 8: a switch verifies the incoming login as cc proposed on 2026-11-16. relocate verifies request.to with usage::verified_token, seat::plan refuses it as Foreign before any write, journal or selection, and finish and reseat do the same. The sandbox's login_with_record writes a verified cache, so the CLI tests stay offline; vc adds item 8 and its acceptance line to the issue. Items 6 and 7: text only, no --json change. vc's verdict notes: (a) must, unpinned says on stderr when the process listing cannot be read, and the move goes on; (b) must, ISSUE:0008's line in the CHANGELOG's 0.1.10 section and a README line for the refusal and the shell note; (c) should, predict skips an account with no profile, as before, and account_plan's doc says so; (d) should, usage checks its arguments before the shell note; (e) left as they are: usage.rs's renewal-race message and pinned_to's paths. Branch cc/ISSUE-0008-2 on the landing tip, in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land. One Desk cargo slot, asked as 01M7M1TTN0ZZ8XEYCZEQGC1DAF and held until cc tells the Desk the tests and fix are banked. Red, then green (build, test rust, check format and clippy), then the hand-over to vc as before.
+- ISSUE:0008's second unit, on vc's go (hv's decision 12), banked on cc/ISSUE-0008-2 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land, on the landed 58b7323: the tests at 4b2ca99, the fix at 53a9119. It covers fix outline item 8, with seat::plan refusing an unverified incoming login as foreign, relocate and finish verifying it, and login of the seated profile seating its fresh login only as its own; items 6 and 7, text only; and vc's notes a to d, with (e) left as it is. Desk ask 01M7M1TTN0ZZ8XEYCZEQGC1DAF (cargo), its hold met and told to devbin-vc. Next: red at 4b2ca99 (test rust), green at 53a9119 (build, test rust, check format and clippy), then the AT rows re-cited and noted (ST0003 AT-03.4 and AT-03.7, whose tests changed), lint on both threads, and the hand-over to vc. AT-02.9 changed only its token argument and is ignored by test rust, so test keychain runs it at the cut. (edited)
 
 ## TODO
 
