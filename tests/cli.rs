@@ -2251,3 +2251,40 @@ fn a_login_of_the_seated_profile_as_another_account_is_refused_before_any_move()
   assert!(!sandbox.root.join("state/ccusage/move.json").exists());
   Ok(())
 }
+
+// ISSUE:0011 Acceptance 1: while herdr-app check runs, herdr install says on stderr that it
+// is waiting for it, and stdout carries install's report alone; with no check to run, it
+// says nothing of waiting.
+#[test]
+fn herdr_install_says_on_stderr_that_it_waits_for_the_check() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let home = sandbox.root.join("herdr");
+  fs::create_dir_all(&home)?;
+  let install = || -> Result<Output> {
+    Ok(
+      sandbox
+        .command()
+        .env("HERDR_APP_HOME", &home)
+        .args(["herdr", "install"])
+        .output()?,
+    )
+  };
+  let waiting = "waiting for herdr-app check";
+  // With no herdr-app on PATH there is no check to wait for.
+  let output = install()?;
+  assert!(output.status.success());
+  assert!(String::from_utf8(output.stdout)?.contains("herdr-app is not on PATH"));
+  assert!(!String::from_utf8(output.stderr)?.contains(waiting));
+  // A stand-in herdr-app whose check passes at once: no test reaches the real Herdr.
+  let stand_in = sandbox.root.join("bin/herdr-app");
+  fs::write(&stand_in, "#!/bin/sh\nexit 0\n")?;
+  fs::set_permissions(&stand_in, fs::Permissions::from_mode(0o700))?;
+  let output = install()?;
+  assert!(output.status.success());
+  let report = String::from_utf8(output.stdout)?;
+  assert!(report.contains("herdr-app check passed."), "{report}");
+  assert!(!report.contains(waiting), "{report}");
+  let stderr = String::from_utf8(output.stderr)?;
+  assert!(stderr.contains(waiting), "{stderr}");
+  Ok(())
+}

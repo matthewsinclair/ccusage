@@ -8,9 +8,10 @@ use crate::{Result, usage};
 use sha2::{Digest, Sha256};
 use std::{
   collections::BTreeMap,
-  fs,
+  fs, io,
   path::{Path, PathBuf},
-  process::{Command, Output},
+  process::{Child, Command, Output, Stdio},
+  time::Duration,
 };
 
 /// The mod's folder under Herdr's mods.
@@ -21,6 +22,9 @@ const RECORD: &str = ".ccusage-install.json";
 pub const OPEN: &str = r#"herdr-app do pane.split '{"direction":"right","mod":"ccusage"}'"#;
 /// What launch asks herdr-app for: a tab named ccusage whose only pane is the mod.
 const LAUNCH: [&str; 3] = ["do", "tab.new", r#"{"name":"ccusage","mod":"ccusage"}"#];
+/// How long install waits for herdr-app check, which Herdr runs as a background job: well
+/// past the two minutes one took under heavy load, so it stops only a check that hangs.
+const CHECK_BOUND: Duration = Duration::from_secs(5 * 60);
 
 /// The mod's files as install writes them: its source, embedded at build time, and its
 /// lifetime.js, written from the usage cache's lifetime, which the panel's timer never
@@ -192,17 +196,50 @@ pub fn remove(force: bool) -> Result<String> {
 }
 
 /// herdr-app check's verdict on `dir`, and whether it passed or was not made: when
-/// herdr-app is not on PATH, or cannot be run, which is said with its cause.
+/// herdr-app is not on PATH, cannot be run, or is still running at `CHECK_BOUND`, each
+/// said with its cause.
 fn check(dir: &Path) -> (String, bool) {
-  match Command::new("herdr-app").arg("check").arg(dir).output() {
-    Ok(output) if output.status.success() => ("herdr-app check passed.".into(), true),
-    Ok(output) => (format!("herdr-app check failed: {}", said(&output)), false),
-    Err(error) if error.kind() == std::io::ErrorKind::NotFound => (
+  let spawned = Command::new("herdr-app")
+    .arg("check")
+    .arg(dir)
+    .stdin(Stdio::null())
+    .stdout(Stdio::piped())
+    .stderr(Stdio::piped())
+    .spawn();
+  match spawned {
+    Ok(child) => verdict(wait_within(child, CHECK_BOUND), dir, CHECK_BOUND),
+    Err(error) if error.kind() == io::ErrorKind::NotFound => (
       "herdr-app is not on PATH, so the mod was not checked.".into(),
       true,
     ),
     Err(error) => (
       format!("herdr-app could not be run, so the mod was not checked: {error}"),
+      true,
+    ),
+  }
+}
+
+/// `child`'s output once it exits, or None when it is still running at `bound`. The
+/// caller gives it piped stdout and stderr.
+fn wait_within(child: Child, _bound: Duration) -> io::Result<Option<Output>> {
+  child.wait_with_output().map(Some)
+}
+
+/// herdr-app check's verdict on `dir` from its run, which is None when `bound` stopped it,
+/// and whether it passed or was not made. Pure.
+fn verdict(run: io::Result<Option<Output>>, dir: &Path, bound: Duration) -> (String, bool) {
+  match run {
+    Ok(Some(output)) if output.status.success() => ("herdr-app check passed.".into(), true),
+    Ok(Some(output)) => (format!("herdr-app check failed: {}", said(&output)), false),
+    Ok(None) => (
+      format!(
+        "herdr-app check did not finish within {bound:?} on {}",
+        dir.display()
+      ),
+      false,
+    ),
+    Err(error) => (
+      format!("herdr-app check could not be waited for, so the mod was not checked: {error}"),
       true,
     ),
   }
@@ -222,4 +259,58 @@ fn said(output: &Output) -> String {
     None => stderr.into_owned(),
   };
   crate::clean(said.trim())
+}
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+  use std::time::Instant;
+
+  // ISSUE:0011 Acceptance 4: the bounded wait stops a child still running at its bound, so
+  // it ends long before the child would have, and no test waits for the check's bound.
+  #[test]
+  fn the_bounded_wait_stops_a_child_still_running_at_its_bound() -> Result<()> {
+    let sleep = Duration::from_secs(5);
+    let child = Command::new("sleep")
+      .arg(sleep.as_secs().to_string())
+      .spawn()?;
+    let started = Instant::now();
+    assert!(wait_within(child, sleep / 20)?.is_none());
+    assert!(started.elapsed() < sleep);
+    Ok(())
+  }
+
+  // ISSUE:0011: a child that ends within its bound gives its exit status and what it wrote
+  // to each pipe, as Command::output gave them.
+  #[test]
+  fn the_bounded_wait_gives_what_a_child_that_ends_in_time_wrote() -> Result<()> {
+    let code = 3;
+    let child = Command::new("sh")
+      .args(["-c", &format!("printf out; printf err >&2; exit {code}")])
+      .stdout(Stdio::piped())
+      .stderr(Stdio::piped())
+      .spawn()?;
+    let output =
+      wait_within(child, Duration::from_secs(60))?.ok_or("the child ended within its bound")?;
+    assert_eq!(output.status.code(), Some(code));
+    assert_eq!(output.stdout, b"out");
+    assert_eq!(output.stderr, b"err");
+    Ok(())
+  }
+
+  // ISSUE:0011 Acceptance 2: a check stopped at its bound is said as not made, with how
+  // long install waited and the command that makes it by hand, and it passes, so install
+  // exits 0.
+  #[test]
+  fn a_check_stopped_at_its_bound_is_reported_as_not_checked() -> Result<()> {
+    let dir = Path::new("/home/u/.config/herdr-app/mods/ccusage");
+    let bound = Duration::from_secs(120);
+    let (said, passed) = verdict(Ok(None), dir, bound);
+    assert!(passed);
+    let waited = crate::display::duration(i64::try_from(bound.as_secs())?);
+    assert!(said.contains(&format!("had not finished after {waited}")));
+    assert!(said.contains("the mod was not checked"));
+    assert!(said.ends_with(&format!("herdr-app check {}", dir.display())));
+    Ok(())
+  }
 }
