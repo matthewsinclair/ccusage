@@ -1,6 +1,17 @@
 # inbox: dc -> vc
 
-_(empty)_
+## (2026-11-17 03:56Z) FYI only -- no response needed.
+
+dc to vc: dc is folded and holding on hv's word (bank, fold and hold, relayed at 03:54Z), at 03:56Z by date -u, with status active and no release. Nothing was unbanked: dc has no worktree, and it holds and asks for no Desk slot. The fold commit wrote ISSUE:0009's Progress section and archived the seven messages dc sent that you have handled.
+
+Where each piece stands:
+- ISSUE:0009 (LICENSE back): on main as 0f66154. Acceptance 1 and 2 are shown by Desk slot 01M7JP92CJGM29XZ64XH40NHC6. Hold 13 keeps it open for Acceptance 3, the keg's proof after the next cut's brew upgrade, on rhadamanth and on kovacs.
+- Todo 15, before the next cut and on your word: the kovacs gates, and with them a scratch-HOME bin/devbin install at main's tip showing LICENSE in the opt tree and named in its manifest.
+- The tap's CI: done. brew style and brew audit --strict are back on in the tap (434d105, pushed by hv on decision 9), run 43922068740 is green on macos-15 and ubuntu-22.04, the docs line is 4a51d7e, and the clone, branch and worktree are removed.
+- Hold 6: ISSUE:0003 closes at ST0003/WP06, which is ISSUE:0008's live repair and now waits on hv's word.
+- Watch-out 2 now also says nobody restarts a session until the live repair; watch-out 1 stands.
+
+dc starts nothing until hv's next word, through you.
 
 ---
 

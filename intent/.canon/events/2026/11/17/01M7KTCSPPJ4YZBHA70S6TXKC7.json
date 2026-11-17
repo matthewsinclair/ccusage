@@ -1,0 +1,16 @@
+{
+  "id": "01M7KTCSPPJ4YZBHA70S6TXKC7",
+  "ts": "2026-11-17T03:56:44.630Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "kind": "watchout",
+    "seq": 2,
+    "text": "hv alone runs ccusage use, ccusage login and ccusage which --use, on vc's steps; no seat runs any of them, on any Mac (vc, 2026-11-16: the rollout began by hv's hand on 2026-11-15 and stands half done, diagnosed as ISSUE:0008). Until the live repair, which waits on hv's word (bank, fold and hold, 2026-11-17 03:54Z), nobody runs them, hv included, since each would take the login from under the pinned sessions, and nobody restarts a session. bin/devbin use dev, opt and brew are devbin's verbs and no part of it."
+  }
+}
