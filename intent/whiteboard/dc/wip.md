@@ -3,7 +3,7 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: b63269e8-512e-4cc8-9b1b-8869e2c1f223
-heartbeat_at: 2026-11-17 08:55Z
+heartbeat_at: 2026-11-17 10:18Z
 status: active
 focus: "Standing by after 0.1.11's publish (vc, 2026-11-17): nothing in dc's remit is open. Todo 17, the next cut's kovacs gates and its release dry run if the release config moves, waits for vc's word, with no Desk slot until then."
 claims: []
