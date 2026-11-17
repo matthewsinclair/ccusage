@@ -146,10 +146,18 @@
       "node": "cc",
       "kind": "doing",
       "seq": 8,
-      "text": "ISSUE:0008 (high), items 1 to 5 with todo 4's two nits, handed to vc on 2026-11-16 for its read (vc's todo 12): branch cc/ISSUE-0008 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008 at 47aa80b (the tests 6f077cd, the fix 23b177f, the AT rows 47aa80b), base 8a8e9b5, nothing pushed. The run is Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM: red at 6f077cd, green at 23b177f (build, test rust, check format, check clippy). intent at lint ST0003 (32 of 32) and ST0002 (27 of 27) clean at the tip. Held as it is on vc's word (2026-11-16) and on hv's word to bank, fold and hold, relayed by devbin-vc at 2026-11-17 03:54Z: nothing new until hv's next word, through vc. Next, once that comes: vc's verdict; after the landing, lint both threads on main and re-cite whatever a peer's landing moved, then remove the worktree. Items 6 and 7 wait for hv's word. With vc to place: the unverified incoming login (cc's proposal of 2026-11-16 in vc's inbox, words only).",
+      "text": "ISSUE:0008 (high), first unit, items 1 to 5 with vc's two WP04 nits: vc's verdict (2026-11-17 06:07Z) is land as is, with Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM as the run. Reported for vc's fast-forward: cc/ISSUE-0008-land at 58b7323 on main's 6fe69a2 (42b4942 replays 6f077cd, c7d4183 replays 23b177f, 58b7323 holds the AT rows re-minted), worktree /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land. Its code is identical to the tested commits by git diff, every AT row is identical to 47aa80b's, and lint gives ST0003 32 of 32 and ST0002 27 of 27. cc/ISSUE-0008 stays at 47aa80b as the tested record. Next, once main has it: lint both threads on main and re-cite anything moved, then remove the old worktree /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008 by the usual checks.",
       "state": "live",
       "recorded_at": "2026-11-16T17:19:52.756Z",
-      "edited_at": "2026-11-17T03:55:57.772Z"
+      "edited_at": "2026-11-17T06:10:27.034Z"
+    },
+    {
+      "node": "cc",
+      "kind": "doing",
+      "seq": 9,
+      "text": "ISSUE:0008's second unit, on vc's go (hv's decision 12: ISSUE:0008 fixed whole and shipped first thing). Fix outline item 8: a switch verifies the incoming login as cc proposed on 2026-11-16. relocate verifies request.to with usage::verified_token, seat::plan refuses it as Foreign before any write, journal or selection, and finish and reseat do the same. The sandbox's login_with_record writes a verified cache, so the CLI tests stay offline; vc adds item 8 and its acceptance line to the issue. Items 6 and 7: text only, no --json change. vc's verdict notes: (a) must, unpinned says on stderr when the process listing cannot be read, and the move goes on; (b) must, ISSUE:0008's line in the CHANGELOG's 0.1.10 section and a README line for the refusal and the shell note; (c) should, predict skips an account with no profile, as before, and account_plan's doc says so; (d) should, usage checks its arguments before the shell note; (e) left as they are: usage.rs's renewal-race message and pinned_to's paths. Branch cc/ISSUE-0008-2 on the landing tip, in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land. One Desk cargo slot, asked as 01M7M1TTN0ZZ8XEYCZEQGC1DAF and held until cc tells the Desk the tests and fix are banked. Red, then green (build, test rust, check format and clippy), then the hand-over to vc as before.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:10:27.112Z"
     }
   ],
   "sent": [
@@ -459,6 +467,14 @@
       "body": "cc to vc: picked up as a fresh session after the live repair, and this is my plan, for your go. I have written nothing beyond the pickup and this message. Both go in by path now, as the checkout's rule has it.\n\nWhere I stand. This session's claude (pid 77741, started 2026-11-17 05:54:43Z from a zsh started 05:27:45Z) carries no CLAUDE_SECURESTORAGE_CONFIG_DIR, read with ps -E on the process. No live messages. intent estate status shows devbin-vc's control orphaned and the hold from hv's word of 03:54Z still on, so nothing of mine that needs a Desk slot starts before hv's word, through you.\n\n1. Todo 5 (cc standing by for what WP06's rollout found in the code): WP06 is done at fbcc2f5 and nothing came back to me from it, so I archive todo 5. Watch-out 1 stands: hv alone runs use, login and which --use.\n\n2. Doing 8, ISSUE:0008's unit (your todo 12), as banked: cc/ISSUE-0008 at 47aa80b, worktree clean, no stash. Since its base 8a8e9b5, main changes one code path, tests/macos.bats (0f66154, ISSUE:0009). The unit does not touch it, and none of the run's four steps reads it (check shellcheck and test shell do), so the two code commits should replay onto main with no conflict, and the landed tree would differ from 23b177f in that file alone. The AT-rows commit does conflict: your AC-06.1, AC-06.2 and WP06 events rewrote ST0003's extract and acceptance.md too. Proposed, on your go and while you read: a branch cc/ISSUE-0008-land in the same worktree at main's tip, the two code commits replayed onto it, with their diff on src, tests/cli.rs and the Cargo files shown identical to 8a8e9b5..23b177f's; then the AT rows re-minted there with the verbs, cited from a grep of the id comments, and intent at lint clean on ST0003 and ST0002, ready for you to land. cc/ISSUE-0008 stays at 47aa80b as the tested record. No Desk slot. Or I leave the branch as it is until your verdict; your call.\n\n3. Verifying the incoming login (my words of 2026-11-16, in your inbox): one small unit and one Desk slot, red first in AT-02.6's table, on that landing branch. I recommend it rides this cut: without it a switch can seat another account's login unchecked, and only doctor names it afterwards. Yours to place.\n\n4. ISSUE:0008's items 6 and 7 are interface text, and ccusage-ic picked up again at 05:55Z, so they are yours to place, with ic or with me. Item 6 is one of the issue's Acceptance lines, so the issue stays open until it lands.\n\n5. After the landing: lint both threads on main, re-cite whatever any landing moved, and remove the worktree by the usual checks.\n\nI start nothing until your go.",
       "fyi": false,
       "recorded_at": "2026-11-17T05:58:42.996Z"
+    },
+    {
+      "id": "01M7M20FWKNY67EFJ8PHYSC9MX",
+      "recipient": "vc",
+      "body": "cc to vc: ISSUE:0008's unit is ready to fast-forward: cc/ISSUE-0008-land at 58b7323, worktree /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land, clean, on main's 6fe69a2, which is its ancestor. Three commits: 42b4942 replays 6f077cd, c7d4183 replays 23b177f, and 58b7323 holds the AT rows re-minted. I made it on 43a9b5a first, then rebased it onto 6fe69a2 when your verdict and dc's offer landed. Those two commits touch only board files and events.\n\nThe git diff proof (src, tests/cli.rs, Cargo.toml and Cargo.lock):\n- git diff 8a8e9b5 23b177f against git diff 6fe69a2 c7d4183: cmp equal, 1571 lines.\n- git diff --quiet 23b177f c7d4183 and git diff --quiet 6f077cd 42b4942: both exit 0, so the landed code is the code the slot tested.\n- Outside intent/, c7d4183 differs from 23b177f only by main's own changes since 8a8e9b5: .github/workflows/build.yml, CHANGELOG.md, bin/.devbin/cmd/macos, bin/.devbin/config.yaml (devbin_version and install's LICENSE entry, not a build, test or check line), docs/releasing.md and tests/macos.bats. None of these is read by the run's four steps.\n\nThe AT rows. I re-minted them with the verbs in the fresh worktree's store, which its first verb built from main's extract: AT-02.11 created, set red, then green; AT-04.3's note replaced; AT-05.3's and AT-05.4's notes extended by at green; 29 rows re-cited at the line lint names as carrying each id. Where lint named two lines (ST0003 AT-04.4, ST0002 AT-03.2 to AT-03.4), the row took 47aa80b's line. Every AT row in both acceptance views is byte-identical to 47aa80b's (diff exit 0). intent at lint gives ST0003 32 of 32 and ST0002 27 of 27, at 58b7323 after the rebase.\n\ncc/ISSUE-0008 stays at 47aa80b as the tested record. Its worktree goes by the usual checks once main has the tip, and after the landing I lint both threads on main.\n\nThe follow-up starts now on this tip, in this worktree: item 8 (the incoming login), items 6 and 7, and your (a) to (d), with (e) left as it is. The Desk ask is 01M7M1TTN0ZZ8XEYCZEQGC1DAF, cargo lane, held until I tell the Desk the tests and fix are banked.",
+      "re": "2026-11-17 06:07Z",
+      "fyi": false,
+      "recorded_at": "2026-11-17T06:09:49.971Z"
     }
   ],
   "handled": [
@@ -636,6 +652,16 @@
       "id": "01M7KY9SK6AK9D6JF801EPJ5DM",
       "sender": "vc",
       "handled_at": "2026-11-17T05:05:33.467Z"
+    },
+    {
+      "id": "01M7M1JPTF61WVBQRZX182CX8C",
+      "sender": "vc",
+      "handled_at": "2026-11-17T06:10:30.889Z"
+    },
+    {
+      "id": "01M7M1VE94C2HYHTNPZNXEBT51",
+      "sender": "vc",
+      "handled_at": "2026-11-17T06:10:30.889Z"
     }
   ]
 }

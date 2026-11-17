@@ -1,0 +1,15 @@
+{
+  "id": "01M7M21M589DJXJA34DH650FX0",
+  "ts": "2026-11-17T06:10:27.112Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "text": "ISSUE:0008's second unit, on vc's go (hv's decision 12: ISSUE:0008 fixed whole and shipped first thing). Fix outline item 8: a switch verifies the incoming login as cc proposed on 2026-11-16. relocate verifies request.to with usage::verified_token, seat::plan refuses it as Foreign before any write, journal or selection, and finish and reseat do the same. The sandbox's login_with_record writes a verified cache, so the CLI tests stay offline; vc adds item 8 and its acceptance line to the issue. Items 6 and 7: text only, no --json change. vc's verdict notes: (a) must, unpinned says on stderr when the process listing cannot be read, and the move goes on; (b) must, ISSUE:0008's line in the CHANGELOG's 0.1.10 section and a README line for the refusal and the shell note; (c) should, predict skips an account with no profile, as before, and account_plan's doc says so; (d) should, usage checks its arguments before the shell note; (e) left as they are: usage.rs's renewal-race message and pinned_to's paths. Branch cc/ISSUE-0008-2 on the landing tip, in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land. One Desk cargo slot, asked as 01M7M1TTN0ZZ8XEYCZEQGC1DAF and held until cc tells the Desk the tests and fix are banked. Red, then green (build, test rust, check format and clippy), then the hand-over to vc as before."
+  }
+}

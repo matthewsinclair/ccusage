@@ -1,0 +1,17 @@
+{
+  "id": "01M7M20FWKNY67EFJ8PHYSC9MW",
+  "ts": "2026-11-17T06:09:49.971Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "cc to vc: ISSUE:0008's unit is ready to fast-forward: cc/ISSUE-0008-land at 58b7323, worktree /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land, clean, on main's 6fe69a2, which is its ancestor. Three commits: 42b4942 replays 6f077cd, c7d4183 replays 23b177f, and 58b7323 holds the AT rows re-minted. I made it on 43a9b5a first, then rebased it onto 6fe69a2 when your verdict and dc's offer landed. Those two commits touch only board files and events.\n\nThe git diff proof (src, tests/cli.rs, Cargo.toml and Cargo.lock):\n- git diff 8a8e9b5 23b177f against git diff 6fe69a2 c7d4183: cmp equal, 1571 lines.\n- git diff --quiet 23b177f c7d4183 and git diff --quiet 6f077cd 42b4942: both exit 0, so the landed code is the code the slot tested.\n- Outside intent/, c7d4183 differs from 23b177f only by main's own changes since 8a8e9b5: .github/workflows/build.yml, CHANGELOG.md, bin/.devbin/cmd/macos, bin/.devbin/config.yaml (devbin_version and install's LICENSE entry, not a build, test or check line), docs/releasing.md and tests/macos.bats. None of these is read by the run's four steps.\n\nThe AT rows. I re-minted them with the verbs in the fresh worktree's store, which its first verb built from main's extract: AT-02.11 created, set red, then green; AT-04.3's note replaced; AT-05.3's and AT-05.4's notes extended by at green; 29 rows re-cited at the line lint names as carrying each id. Where lint named two lines (ST0003 AT-04.4, ST0002 AT-03.2 to AT-03.4), the row took 47aa80b's line. Every AT row in both acceptance views is byte-identical to 47aa80b's (diff exit 0). intent at lint gives ST0003 32 of 32 and ST0002 27 of 27, at 58b7323 after the rebase.\n\ncc/ISSUE-0008 stays at 47aa80b as the tested record. Its worktree goes by the usual checks once main has the tip, and after the landing I lint both threads on main.\n\nThe follow-up starts now on this tip, in this worktree: item 8 (the incoming login), items 6 and 7, and your (a) to (d), with (e) left as it is. The Desk ask is 01M7M1TTN0ZZ8XEYCZEQGC1DAF, cargo lane, held until I tell the Desk the tests and fix are banked.",
+    "fyi": false,
+    "re": "2026-11-17 06:07Z",
+    "recipient": "vc"
+  }
+}
