@@ -17,7 +17,7 @@ claims: [ST0003, ISSUE:0008]
 
 ## TODO
 
-- ST0003/WP06, the rollout of the one live login on rhadamanth, later and on hv's word (hv's decision 5), now that 0.1.9 is published. hv runs every step, vc writes the commands and checks from metadata, and dc closes ISSUE:0003 at its end. cc stands by for anything the rollout finds in the code: doctor's report of the layout before the rollout, use's adoption of 0.1.8's shared login, launchd's variable, and the live switch under running sessions. AC-06.1 and AC-06.2 stay open until its record satisfies them.
+_(none)_
 
 ## Holds
 
