@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 
 - The Herdr panel draws each weekly bar filled to its percent; in 0.1.9 every bar showed an empty track. The panel also leaves its name to Herdr's pane header, and an unknown account whose reason is its report's own error says it once, on the error's line (ST0002).
+- In shared mode, a Claude session started with `CLAUDE_SECURESTORAGE_CONFIG_DIR` naming a profile's own store no longer defeats a switch unnoticed. A switch (`use`, `which --use`, `run NAME` and the dashboard's `a`) and `ccusage login NAME` of the active profile refuse, before any login moves, a move that would empty a store a running session reads, and name the sessions. A switch seats a login only once it is verified as the incoming profile's, and `ccusage login` of the active profile seats a fresh login only as that profile's own. `doctor` checks whose login each profile's own store holds, and its remedy restarts the pinned sessions before `ccusage login NAME`. `usage`, `which` and `predict` say on stderr when their own shell exports `CLAUDE_SECURESTORAGE_CONFIG_DIR` while a profile is active, and `which`, `predict` and the dashboard say how many running sessions a switch does not move (ISSUE:0008).
+- `ccusage predict` counts each sample on the plan it was taken on, so an account whose usage fails now keeps its history in the burn rate. It names each account whose samples the rate leaves out, with how many, and says when a weekly window's newest percent is below an earlier one, as the usage endpoint reported it (ISSUE:0008).
 
 ## [0.1.9] - 2026-11-13
 

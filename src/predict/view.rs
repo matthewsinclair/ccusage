@@ -1,7 +1,7 @@
 //! The predict verb's two faces of one `Projection`: the text hv reads, and the JSON the
 //! Herdr panel reads, versioned as which's is. Both are pure.
 
-use super::{Projected, Projection, described, hours};
+use super::{Fall, Projected, Projection, described, hours};
 use crate::{
   Result,
   display::{self, stamp_unix, tenth, whole},
@@ -15,7 +15,8 @@ pub const VERSION: u32 = 1;
 
 /// The text: what the rate rests on, then each account's percent now, at its reset and
 /// unused there, then the total and the plan it is counted on; or, with too little
-/// history, a line saying so. The accounts left out follow, each with why.
+/// history, a line saying so. The accounts left out follow, each with why, and then each
+/// weekly window whose usage fell. The JSON gives no falls: its shape is ic's to change.
 pub fn text(projection: &Projection, now: i64) -> String {
   let rate = &projection.rate;
   let history = format!(
@@ -59,7 +60,26 @@ pub fn text(projection: &Projection, now: i64) -> String {
       .iter()
       .map(|(name, why)| format!("{}: left out, {why}", crate::clean(name))),
   );
+  lines.extend(projection.falls.iter().map(fell));
   lines.join("\n")
+}
+
+/// A weekly window whose usage fell, in words: from what to what, when, in which window,
+/// and that the figures are the usage endpoint's own.
+fn fell(fall: &Fall) -> String {
+  let at = |seconds: i64| stamp_unix(seconds).unwrap_or_else(|_| seconds.to_string());
+  let window = fall
+    .resets_at
+    .map(|reset| format!(", in the window ending {}", at(reset)))
+    .unwrap_or_default();
+  format!(
+    "{}: weekly usage fell from {}% at {} to {}% at {}{window}, as the usage endpoint reported it; the rate counts a fall as no use",
+    crate::clean(&fall.account),
+    whole(fall.earlier.0),
+    at(fall.earlier.1),
+    whole(fall.newest.0),
+    at(fall.newest.1)
+  )
 }
 
 /// The JSON, version 1: the plan counted, the rate and what it rests on, each account's

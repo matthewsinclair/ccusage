@@ -380,7 +380,6 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       let all = flag(&mut args, "--all");
       let json = flag(&mut args, "--json");
       let refresh = flag(&mut args, "--refresh");
-      shell_note(&store);
       let names = if all {
         empty(&args)?;
         store.config.profiles.keys().cloned().collect::<Vec<_>>()
@@ -390,6 +389,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
         }
         vec![store.select(args.first().map(String::as_str))?]
       };
+      shell_note(&store);
       let reports = reports(&store, &names, refresh)?;
       if json {
         println!("{}", serde_json::to_string_pretty(&reports)?);
@@ -418,6 +418,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       let model = argument(&mut args, "--model")?;
       empty(&args)?;
       shell_note(&store);
+      sessions_note(&store);
       let names: Vec<_> = store.config.profiles.keys().cloned().collect();
       let reports = reports(&store, &names, refresh)?;
       let model = model
@@ -468,6 +469,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       let json = flag(&mut args, "--json");
       empty(&args)?;
       shell_note(&store);
+      sessions_note(&store);
       let names: Vec<_> = store.config.profiles.keys().cloned().collect();
       let reports = reports(&store, &names, false)?;
       let samples = crate::history::samples(&store.state)?;
@@ -504,6 +506,17 @@ fn shell_note(store: &Store) {
       std::env::var_os(crate::shared::LOGIN_DIR).as_deref(),
       &shared,
     )
+  {
+    eprintln!("ccusage: {note}");
+  }
+}
+
+/// Says on stderr, for which and predict, how many running Claude sessions read a login
+/// other than the shared config's, so that a switch does not move them; nothing when
+/// none does, and nothing outside shared mode, where no switch moves a running session.
+fn sessions_note(store: &Store) {
+  if let Ok(Some(shared)) = store.shared_dir()
+    && let Some(note) = crate::sessions::unfollowing_now(&shared)
   {
     eprintln!("ccusage: {note}");
   }

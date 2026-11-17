@@ -284,6 +284,13 @@ pub(crate) fn plan(
           Refusal::OnlyLogin
         });
       }
+      // The incoming login is seated only as the login verified as its profile's, so one
+      // a /login in a pinned session put there, or a renewal since the check, is not.
+      if let (Some(side), Some(entering)) = (to, incoming)
+        && (verified.incoming.is_none() || verified.incoming != access_token(entering))
+      {
+        return Err(Refusal::Foreign(side.name.to_owned()));
+      }
       writes.push(Write {
         role: Role::Shared,
         document: match incoming {

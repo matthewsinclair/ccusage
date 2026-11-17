@@ -506,10 +506,20 @@ fn page_lines(
 }
 
 /// The TUI's page with `pinned`, how many running sessions a switch does not move, said
-/// under the overview's title. Pure.
-fn noted(frame: Vec<Line>, _detail: bool, _pinned: Option<&str>) -> Vec<Line> {
+/// under the overview's title, since it qualifies the account the next marker names; the
+/// details page leaves it out. Pure.
+fn noted(mut frame: Vec<Line>, detail: bool, pinned: Option<&str>) -> Vec<Line> {
+  if let Some(note) = pinned.filter(|_| !detail) {
+    frame.insert(
+      PINNED_AT.min(frame.len()),
+      colored(format!("  {}", crate::clean(note)), Color::Yellow),
+    );
+  }
   frame
 }
+
+/// Where `noted` says it: the overview's second line, under its title.
+const PINNED_AT: usize = 1;
 
 fn write_line(output: &mut impl Write, line: &Line, width: usize, color: bool) -> io::Result<()> {
   let mut remaining = width;
@@ -636,6 +646,14 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
   };
   let color = !no_color && std::env::var_os("NO_COLOR").is_none();
   let cap = store.map_or(crate::which::DEFAULT_CAP, |store| store.config.cap());
+  // How many running sessions a switch does not move, in shared mode: read again when a
+  // fetch ends and after a switch, not at every paint, since it lists every process.
+  let pinned_now = || {
+    store
+      .and_then(|store| store.shared_dir().ok().flatten())
+      .and_then(|shared| crate::sessions::unfollowing_now(&shared))
+  };
+  let mut pinned = if demo { None } else { pinned_now() };
   let old_hook = std::panic::take_hook();
   std::panic::set_hook(Box::new(|info| {
     let _ = terminal::disable_raw_mode();
@@ -672,6 +690,9 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
       }
       if finished {
         receiver = None;
+        if !demo {
+          pinned = pinned_now();
+        }
       }
       // With no fetch running, ask again for each account whose usage has passed the
       // cache's lifetime, at most once a lifetime, so the next marker stays on screen.
@@ -692,14 +713,18 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
         // Asked again at every paint, so the marker moves as reports arrive, and goes
         // once their usage is older than the cache's lifetime.
         let now = crate::now();
-        let frame = page_lines(
-          &reports,
-          active.as_deref(),
-          selected,
+        let frame = noted(
+          page_lines(
+            &reports,
+            active.as_deref(),
+            selected,
+            detail,
+            &next(&reports, now, cap),
+            width,
+            now,
+          ),
           detail,
-          &next(&reports, now, cap),
-          width,
-          now,
+          pinned.as_deref(),
         );
         scroll = scroll.min(frame.len().saturating_sub(content_height));
         let mut out = io::stdout().lock();
@@ -769,7 +794,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
                 scroll = scroll.saturating_add(1);
               } else {
                 selected = (selected + 1).min(reports.len().saturating_sub(1));
-                scroll_to(&reports, selected, cap, false, &mut scroll);
+                scroll_to(&reports, selected, cap, pinned.is_some(), &mut scroll);
               }
             }
             KeyCode::Up | KeyCode::Char('k') => {
@@ -777,7 +802,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
                 scroll = scroll.saturating_sub(1);
               } else {
                 selected = selected.saturating_sub(1);
-                scroll_to(&reports, selected, cap, false, &mut scroll);
+                scroll_to(&reports, selected, cap, pinned.is_some(), &mut scroll);
               }
             }
             KeyCode::PageDown => {
@@ -804,6 +829,7 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
                     notice = crate::clean(&error.to_string());
                   }
                 }
+                pinned = pinned_now();
               }
             }
             KeyCode::Char('r') if !demo => {
@@ -842,9 +868,10 @@ pub fn tui(store: Option<&Store>, demo: bool, no_color: bool) -> Result<()> {
   result
 }
 
-fn scroll_to(reports: &[Report], selected: usize, cap: f64, _pinned: bool, scroll: &mut usize) {
+fn scroll_to(reports: &[Report], selected: usize, cap: f64, pinned: bool, scroll: &mut usize) {
   // Keep the selected account header visible even with a small terminal. The lines
-  // above it count the next marker's notice as the frame does, so it reads all reports.
+  // above it count the next marker's notice as the frame does, so it reads all reports,
+  // and the line `noted` adds when sessions are pinned.
   let now = crate::now();
   let next = next(reports, now, cap);
   let preceding = lines(
@@ -857,7 +884,7 @@ fn scroll_to(reports: &[Report], selected: usize, cap: f64, _pinned: bool, scrol
     false,
   )
   .len();
-  *scroll = preceding;
+  *scroll = preceding + usize::from(pinned);
 }
 
 #[cfg(test)]

@@ -22,6 +22,8 @@ const CONFIG_DIR: &str = "CLAUDE_CONFIG_DIR";
 const LOGIN_DIR: &str = crate::shared::LOGIN_DIR;
 /// The program a Claude Code session runs as.
 const CLAUDE: &str = "claude";
+/// Why the running sessions were not checked, as doctor and a move say it.
+pub(crate) const UNLISTED: &str = "this system's process listing could not be read";
 
 /// ps, which shows each process's environment on macOS. CCUSAGE_PS names a stand-in,
 /// which the CLI tests always set, as CCUSAGE_LAUNCHCTL does for launchctl, so no test
@@ -221,6 +223,38 @@ pub(crate) fn remedy(name: &str, pinned: Option<&[&Session]>) -> String {
       if pinned.len() == 1 { "it" } else { "each" }
     ),
   }
+}
+
+/// What `what`, a move that would empty a profile's own store, says on stderr when it
+/// goes ahead with no running session checked, since none could be listed. Pure.
+pub(crate) fn unchecked(what: &str) -> String {
+  format!("running Claude sessions were not checked before {what}: {UNLISTED}")
+}
+
+/// What which, predict and the TUI say while running sessions read a login other than the
+/// shared config's (`drift`), so that a switch does not move them: how many, and that
+/// doctor names them. None when every one follows. Pure.
+pub(crate) fn unfollowing(sessions: &[Session], shared: &Path) -> Option<String> {
+  match sessions
+    .iter()
+    .filter(|session| drift(session, shared).is_some())
+    .count()
+  {
+    0 => None,
+    1 => Some(
+      "1 running Claude session is pinned to a login other than the shared config's, so a switch does not move it; ccusage doctor names it"
+        .to_owned(),
+    ),
+    count => Some(format!(
+      "{count} running Claude sessions are pinned to logins other than the shared config's, so a switch does not move them; ccusage doctor names them"
+    )),
+  }
+}
+
+/// `unfollowing` for the sessions running now; None as well when they cannot be listed,
+/// which doctor reports.
+pub(crate) fn unfollowing_now(shared: &Path) -> Option<String> {
+  unfollowing(&running()?, shared)
 }
 
 /// Why `what`, a move that would empty `name`'s own store, is refused while `pinned`

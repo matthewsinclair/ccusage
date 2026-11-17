@@ -344,8 +344,10 @@ fn shared_checks(store: &Store, shared: &Path, failed: &mut bool) {
   match &sessions {
     None => report(
       "INFO",
-      "Running Claude sessions were not checked: this system's process listing could not be read"
-        .to_owned(),
+      format!(
+        "Running Claude sessions were not checked: {}",
+        crate::sessions::UNLISTED
+      ),
     ),
     Some(sessions) => {
       for session in sessions {

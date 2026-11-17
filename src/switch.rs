@@ -10,6 +10,7 @@ use crate::{
   usage::{self, Standing},
 };
 use serde_json::Value;
+use std::path::Path;
 
 /// What a switch did, which decides what the verb that asked for it says.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -177,21 +178,27 @@ pub fn none(store: &Store) -> Result<Option<String>> {
 /// `ccusage login NAME`: Claude's login in `name`'s own store, and, for the profile
 /// seated in shared mode, that fresh login seated in place of the old one, which empties
 /// its own store again. So for the seated profile it is refused before Claude's login
-/// runs while running sessions read their login from that store.
+/// runs while running sessions read their login from that store, and the account its
+/// own record names is read first, since Claude's login rewrites that record.
 pub fn login(store: &Store, name: &str) -> Result<()> {
-  if store.shared_dir()?.is_some() && seat::seated(store)?.as_deref() == Some(name) {
+  let before = if store.shared_dir()?.is_some() && seat::seated(store)?.as_deref() == Some(name) {
     unpinned(store, name, &format!("ccusage login {name}"))?;
-  }
+    shared::profile_account(store, name)?
+  } else {
+    None
+  };
   auth::login(store, name)?;
-  reseat(store, name)
+  reseat(store, name, before.as_ref())
 }
 
 /// Refuses, before anything moves, `what`, a move that would take `name`'s login out of
 /// its own store while running Claude sessions read it there: they would be left with
 /// none, and a /login typed in one of them would put a second login back. A process
-/// listing that cannot be read refuses nothing, and doctor says it was not checked.
+/// listing that cannot be read refuses nothing, and the move says on stderr that no
+/// session was checked, as doctor does.
 fn unpinned(store: &Store, name: &str, what: &str) -> Result<()> {
   let Some(sessions) = crate::sessions::running() else {
+    eprintln!("ccusage: {}", crate::sessions::unchecked(what));
     return Ok(());
   };
   let pinned = crate::sessions::pinned_to(&sessions, &store.profile_dir(name)?);
@@ -203,9 +210,12 @@ fn unpinned(store: &Store, name: &str, what: &str) -> Result<()> {
 }
 
 /// Seat `name`'s fresh login, which `ccusage login` has just put in its profile's own
-/// store, in place of the one the shared store holds for it. Only the seated profile's
-/// own login is replaced, so no account is left without one.
-fn reseat(store: &Store, name: &str) -> Result<()> {
+/// store, in place of the one the shared store holds for it. It is seated only as
+/// `name`'s own (`own_login`, with `before` the account record from before the login);
+/// otherwise the move refuses it as foreign before any write, and it stays in the
+/// profile's own store. Only the seated profile's own login is replaced, so no account
+/// is left without one.
+fn reseat(store: &Store, name: &str, before: Option<&Value>) -> Result<()> {
   let Some(shared) = store.shared_dir()? else {
     return Ok(());
   };
@@ -217,17 +227,65 @@ fn reseat(store: &Store, name: &str) -> Result<()> {
     replace: true,
     ..Move::default()
   };
+  let places = seat::places(store, &request)?;
+  let fresh = auth::read(&store.profile_dir(name)?)?.access_token;
+  let own = own_login(
+    store.profile(name)?.email.as_deref(),
+    before,
+    shared::profile_account(store, name)?.as_ref(),
+  );
   seat::run(
     store,
     &request,
-    &seat::places(store, &request)?,
-    Verified::default(),
+    &places,
+    Verified {
+      incoming: own.then_some(fresh.as_str()),
+      ..Verified::default()
+    },
   )?;
   shared::record(store, &shared, name)
 }
 
+/// Whether the fresh login `ccusage login` made for the seated profile is that profile's
+/// own, so that `reseat` may seat it. With an email configured, `auth::login` has checked
+/// the login against it already. With none, the account record Claude's login wrote,
+/// `after`, must name the account the profile's record named before the login, `before`:
+/// Claude writes the record of whichever account signed in. Pure.
+fn own_login(email: Option<&str>, before: Option<&Value>, after: Option<&Value>) -> bool {
+  email.is_some()
+    || matches!((before, after), (Some(before), Some(after)) if shared::same_account(before, after))
+}
+
+/// The incoming login's access token, verified as `to`'s where it lives, in its own
+/// store, as the outgoing one is verified in the shared store; None when it is another
+/// account's or there is nothing to check it against, which the move then refuses as
+/// foreign before any write. None too when the store holds no login, which the move
+/// refuses as nothing to seat, or as changed when it was interrupted.
+fn admitted(store: &Store, to: &str, dir: &Path) -> Result<Option<String>> {
+  let holds = match auth::load(dir)? {
+    Some((_, bytes)) => seat::holds_login(&bytes)?,
+    None => false,
+  };
+  if !holds {
+    return Ok(None);
+  }
+  match usage::verified_token(store, to, dir) {
+    Ok(token) => Ok(Some(token)),
+    Err(error)
+      if matches!(
+        error.downcast_ref::<Refusal>(),
+        Some(Refusal::Unverified(_))
+      ) =>
+    {
+      Ok(None)
+    }
+    Err(error) => Err(error),
+  }
+}
+
 /// Finish the move an interrupted run left, verifying the outgoing login again when the
-/// journal stopped before its park was confirmed.
+/// journal stopped before its park was confirmed, and the incoming one until its seat
+/// is.
 fn finish(store: &Store) -> Result<()> {
   let Some(journal) = seat::pending(store)? else {
     return Ok(());
@@ -239,8 +297,12 @@ fn finish(store: &Store) -> Result<()> {
     unpinned(store, to, &format!("finishing the switch to {to}"))?;
   }
   let places = seat::places(store, &journal.request)?;
-  let verified = match (&journal.request.from, journal.step) {
+  let outgoing = match (&journal.request.from, journal.step) {
     (Some(from), Step::Begun) => Some(usage::verified_token(store, from, &places.shared.dir)?),
+    _ => None,
+  };
+  let incoming = match (journal.request.to.as_deref(), &places.to) {
+    (Some(to), Some(place)) if journal.step <= Step::Parked => admitted(store, to, &place.dir)?,
     _ => None,
   };
   seat::run(
@@ -248,42 +310,47 @@ fn finish(store: &Store) -> Result<()> {
     &journal.request,
     &places,
     Verified {
-      outgoing: verified.as_deref(),
-      ..Verified::default()
+      outgoing: outgoing.as_deref(),
+      incoming: incoming.as_deref(),
     },
   )
 }
 
-/// Make `request`, with its outgoing login verified first. Claude Code may renew that
-/// login between the check and the move's locks, which the move refuses as unverified,
-/// so the login is verified once more and the move tried again.
+/// Make `request`, with its outgoing login verified first, and then its incoming one.
+/// Claude Code may renew either login between the check and the move's locks, which the
+/// move refuses as unverified or foreign, so both are verified once more and the move
+/// tried again.
 fn relocate(store: &Store, request: &Move) -> Result<()> {
   let places = seat::places(store, request)?;
-  let verify = || {
-    request
+  let verify = || -> Result<(Option<String>, Option<String>)> {
+    let outgoing = request
       .from
       .as_deref()
       .map(|from| usage::verified_token(store, from, &places.shared.dir))
-      .transpose()
+      .transpose()?;
+    let incoming = match (request.to.as_deref(), &places.to) {
+      (Some(to), Some(place)) => admitted(store, to, &place.dir)?,
+      _ => None,
+    };
+    Ok((outgoing, incoming))
   };
-  let attempt = |outgoing: Option<String>| {
+  let attempt = |(outgoing, incoming): (Option<String>, Option<String>)| {
     seat::run(
       store,
       request,
       &places,
       Verified {
         outgoing: outgoing.as_deref(),
-        ..Verified::default()
+        incoming: incoming.as_deref(),
       },
     )
   };
   match attempt(verify()?) {
     Err(error)
-      if request.from.is_some()
-        && matches!(
-          error.downcast_ref::<Refusal>(),
-          Some(Refusal::Unverified(_))
-        ) =>
+      if matches!(
+        error.downcast_ref::<Refusal>(),
+        Some(Refusal::Unverified(_) | Refusal::Foreign(_))
+      ) =>
     {
       attempt(verify()?)
     }

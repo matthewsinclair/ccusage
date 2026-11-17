@@ -102,6 +102,53 @@ pub struct Projection {
   /// those the rule cannot use now, so any whose usage gives no weekly window, as a free
   /// plan's does.
   pub left_out: Vec<(String, String)>,
+  /// Each weekly window whose newest sample is below an earlier one (`falls`).
+  pub falls: Vec<Fall>,
+}
+
+/// A weekly window whose newest sample is below an earlier one in the same window, as the
+/// usage endpoint reported them: a fall no use explains, which the rate counts as none.
+#[derive(Clone, Debug, PartialEq)]
+pub struct Fall {
+  pub account: String,
+  /// The window's reset, in seconds from the epoch, when its samples give one.
+  pub resets_at: Option<i64>,
+  /// The highest earlier sample's percent, and when it was taken.
+  pub earlier: (f64, i64),
+  /// The newest sample's percent, and when it was taken.
+  pub newest: (f64, i64),
+}
+
+/// Every weekly window in `samples` whose newest sample is below the highest earlier one
+/// in the same window, by account and then by reset. Pure.
+pub fn falls(samples: &[Sample]) -> Vec<Fall> {
+  let mut windows: BTreeMap<(&str, Option<i128>), Vec<&Sample>> = BTreeMap::new();
+  for sample in samples
+    .iter()
+    .filter(|sample| sample.window.kind == Kind::WeeklyAll)
+  {
+    windows
+      .entry((sample.account.as_str(), sample.window.reset_minute()))
+      .or_default()
+      .push(sample);
+  }
+  windows
+    .into_values()
+    .filter_map(|mut window| {
+      window.sort_by_key(|sample| sample.sampled_at);
+      let (newest, earlier) = window.split_last()?;
+      let peak = earlier
+        .iter()
+        .copied()
+        .max_by(|one, other| one.window.utilization.total_cmp(&other.window.utilization))?;
+      (newest.window.utilization < peak.window.utilization).then(|| Fall {
+        account: newest.account.clone(),
+        resets_at: newest.window.resets_at.map(OffsetDateTime::unix_timestamp),
+        earlier: (peak.window.utilization, peak.sampled_at),
+        newest: (newest.window.utilization, newest.sampled_at),
+      })
+    })
+    .collect()
 }
 
 impl Projection {
@@ -206,22 +253,25 @@ fn plan_of<'a>(reports: &'a [Report], name: &str) -> Option<&'a Plan> {
 /// The plan an `account`'s samples that record none are counted on, as an older ccusage
 /// wrote them: the plan its report gives, unless that is the empty plan of a report that
 /// could not read its login, when the plan its latest sample recorded stands in. None
-/// for an account with no report, which is no longer a profile. Pure.
+/// for an account with no report, which is no longer a profile, and whose samples
+/// `project` neither counts nor names. Pure.
 fn account_plan<'a>(
   reports: &'a [Report],
   samples: &'a [Sample],
   account: &str,
 ) -> Option<&'a Plan> {
-  plan_of(reports, account)
-    .filter(|plan| **plan != Plan::default())
-    .or_else(|| {
-      samples
-        .iter()
-        .filter(|sample| sample.account == account && sample.plan.is_some())
-        .max_by_key(|sample| sample.sampled_at)
-        .and_then(|sample| sample.plan.as_ref())
-    })
-    .or_else(|| plan_of(reports, account))
+  let reported = plan_of(reports, account)?;
+  if *reported != Plan::default() {
+    return Some(reported);
+  }
+  Some(
+    samples
+      .iter()
+      .filter(|sample| sample.account == account && sample.plan.is_some())
+      .max_by_key(|sample| sample.sampled_at)
+      .and_then(|sample| sample.plan.as_ref())
+      .unwrap_or(reported),
+  )
 }
 
 /// The plan `sample` is counted on: the one it was taken on, else its account's, which
@@ -286,6 +336,15 @@ pub fn project(
   cap: f64,
   active: Option<&str>,
 ) -> Result<Projection> {
+  // An account with no report is no longer a profile: its samples are neither counted
+  // nor named, whatever plan they record.
+  let samples: Vec<Sample> = samples
+    .iter()
+    .filter(|sample| plan_of(reports, &sample.account).is_some())
+    .cloned()
+    .collect();
+  let samples = samples.as_slice();
+  let falls = falls(samples);
   let choice = which::choose(reports, now, cap, None, usage::TTL);
   let active_plan = active.and_then(|name| plan_of(reports, name));
   let plan = plan_counted(
@@ -386,6 +445,7 @@ pub fn project(
       rate,
       accounts: Vec::new(),
       left_out,
+      falls,
     });
   };
   if let Some(horizon) = accounts.iter().map(|account| account.resets_now).max() {
@@ -443,6 +503,7 @@ pub fn project(
       })
       .collect(),
     left_out,
+    falls,
   })
 }
 
