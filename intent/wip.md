@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-17T08:34:33Z:v0.41: vc - the 0.1.11 cut, on hv's word (decision 19)"
+verblock: "2026-11-17T08:54:35Z:v0.42: vc - after the 0.1.11 cut: nothing in flight"
 ---
 
 # Work In Progress
@@ -8,13 +8,11 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**0.1.11: the cut, on hv's word (decision 19)**
+**No thread or issue open: the next work waits on hv's word**
 
-0.1.11's content is on main, under the CHANGELOG's 0.1.11 (unreleased): ISSUE:0010, ISSUE:0011 and ISSUE:0012, all closed. In order:
-- dc's kovacs gates at the final code tip, which first build ISSUE:0010 item 2's Linux branch.
-- The Desk's slot for the cut, then vc's go. From the go until vc says it is published, the seats write nothing to the checkout.
-- hv runs `bin/devbin release 0.1.11` in hv's own tab.
-- After the publish: vc tells devbin-vc, hv runs `brew upgrade ccusage`, and the seats fold.
+Open with hv:
+- Whether cc's finding goes to Intent: `intent at lint`, run in a git worktree, passed AT rows whose cited lines had moved; on main it reads right, so it may read the main checkout's files.
+- When the next release is cut: one cut with everything ready, never small ones. Before it, dc runs the kovacs gates at its final code tip.
 
 ## Active Steel Threads
 

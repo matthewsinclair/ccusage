@@ -1,0 +1,15 @@
+{
+  "id": "01M7MBEY5HKQWB43ZZYTCARA6R",
+  "ts": "2026-11-17T08:55:00.529Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "Open with hv: whether cc's finding goes to Intent (intent at lint, run in a git worktree, passed AT rows whose cited lines had moved; on main it reads right, so it may read the main checkout's files). Put it to hv with the evidence, and pass it to Intent's seat only on hv's word."
+  }
+}
