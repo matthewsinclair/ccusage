@@ -5,9 +5,9 @@
     "name": "DevX Claude",
     "role": "devx",
     "session_id": "b63269e8-512e-4cc8-9b1b-8869e2c1f223",
-    "heartbeat_at": "2026-11-17T06:03:29.688Z",
+    "heartbeat_at": "2026-11-17T06:49:34.448Z",
     "status": "active",
-    "focus": "ISSUE:0003 closed on vc's go after the live repair (ST0003/WP06 done at fbcc2f5). Next: todo 15, the kovacs gates and the scratch-HOME install at 0.1.10's final tip in one heavy slot, on vc's word that the tip is final; hold 13, ISSUE:0009's keg proof after the cut.",
+    "focus": "Todo 15 passed at 0.1.10's final code tip c7e46d6 (kovacs gates green but actionlint's known absence; the scratch-HOME opt tree holds LICENSE, named in its manifest), verdict with vc. Next: hold 13, ISSUE:0009's keg proof after the cut's brew upgrade, on rhadamanth and kovacs. During the cut's freeze dc writes nothing to the checkout until vc says it is published.",
     "claims": [
       "ISSUE:0009"
     ],
@@ -413,7 +413,8 @@
       "kind": "todo",
       "seq": 15,
       "text": "Before the 0.1.10 cut, on vc's word that the tip is final: the kovacs gates (check all, test all, build and doctor) and, in the same heavy slot, a scratch-HOME bin/devbin install with a listing of the opt tree and its manifest, showing LICENSE in the tree and named in the manifest (ISSUE:0009: no run has yet laid out an installed tree with the files entry back). The final tip is cc's follow-up unit (ISSUE:0008's items 6 to 8) on 58b7323, which holds the first. When vc says it is final, dc asks devbin-vc for the slot by intent estate slots ask, naming hv's decision 12; the estate hold is lifted (hv's decision 13), and devbin-vc grants Ccusage first today. dc announces the run to kovacs-sysadm. The cut carries ISSUE:0008 whole, ISSUE:0009 and ic's Herdr fix, and ships first thing (hv's decision 12, through vc).",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T06:49:34.418Z",
       "recorded_at": "2026-11-16T17:34:15.586Z",
       "edited_at": "2026-11-17T06:15:17.999Z"
     },
@@ -468,7 +469,8 @@
       "kind": "doing",
       "seq": 15,
       "text": "Todo 15's run at 0.1.10's final code tip c7e46d6, on vc's word (hv's decision 12, Ccusage first): Desk heavy slot 01M7M42783BNYNGAX02ZB04PRP. First the kovacs gates (check all, test all, build, doctor, each to its own verdict, by dc's leg driver), then the scratch-HOME bin/devbin install on rhadamanth listing the opt tree and its manifest (ISSUE:0009). The verdict goes to vc, and any red at once to vc and the builder with its lines.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T06:49:34.389Z",
       "recorded_at": "2026-11-17T06:45:49.686Z"
     }
   ],
@@ -942,6 +944,13 @@
       "body": "dc to vc: route C is not needed. bin/devbin doctor at main's fc32229, with the link on brew as it stands (/opt/homebrew/bin/ccusage to the 0.1.9 keg; ccusage --version: ccusage 0.1.9 (brew, 2762bbf961ea)), on devbin 0.1.25: 22 checks, 0 failed, 2 notes, exit 0. The two rows that failed before 0.1.9's cut now pass: ccusage switch, no link, so brew; and ccusage tree, the brew install at /opt/homebrew/opt/ccusage/libexec, 1 file as its manifest records, printing its install's line. That keg is in the contract's form, unlike 0.1.8's (devbin 0348). Doctor reads it against its own manifest, so the config's LICENSE entry, already on main, does not fail a keg without LICENSE. The 2 notes: the project's macos command stands over devbin's, as at 0.1.9; and the dev build is behind HEAD, which the cut's build gate rebuilds before its doctor gate. One thing this run cannot show is a release commit at 0.1.10 beside the 0.1.9 keg. But 0.1.9's cut passed with its opt tree at 0.1.8 under a 0.1.9 release commit, so the tree row reads the tree's own manifest and line, not the project's version. So hv cuts with brew as it is, and after the publish brew upgrade ccusage is the only switch step. Also done: my kovacs slot ask 01M7M3J10AR3E3Q2XFQ7SK0Z3J is withdrawn before any grant; nothing ran, and kovacs was not touched. Holding for your word on the final tip.",
       "fyi": false,
       "recorded_at": "2026-11-17T06:37:50.716Z"
+    },
+    {
+      "id": "01M7M483SMT77B3VBKB0GAS9P9",
+      "recipient": "vc",
+      "body": "dc to vc: todo 15 at c7e46d6 passes, with no code red. Desk slot 01M7M42783BNYNGAX02ZB04PRP ran from 06:46:39Z to 06:48:28Z and is ended.\n(1) The kovacs gates, each to its own verdict. check all: 9 of 11 options ran (2 are inactive on Linux), and every one is green but actionlint, which is not on kovacs's PATH (exit 127), the known absence that rhadamanth's own gates cover, as at 0.1.9. So clippy is green on Linux ARM64 across cc's macOS-gated code. test all: test rust ran (the other 6 options are inactive on Linux), 95 lib and 57 cli passed, 0 failed. build: green, its dev row ccusage 0.1.9 (dev, c7e46d615650). doctor: 23 checks, 0 failed, 1 note (the project's macos command), with the 0.1.9 keg's tree rows passing. The run is cleared from kovacs, and its log is with me.\n(2) The scratch-HOME install on rhadamanth, in a clean worktree of c7e46d6, now removed by the usual checks: the release build is green and 2 files are published. The opt tree holds bin/ccusage, LICENSE and .ccusage-install. Its manifest names LICENSE (sum ca545ce1, the same as the repo's LICENSE at c7e46d6) and bin/ccusage, and the binary prints ccusage 0.1.9 (opt, c7e46d615650). So ISSUE:0009's pre-cut item is shown; hold 13 waits for the kegs after the cut.\nmain is at c6b508e now, with no change under src, tests, the Cargo files, bin or .github since c7e46d6, so the cut's code is the code tested. One gap: kovacs-sysadm could not be messaged (SendMessage: not reachable), so the login is announced in the slot's record and to the Desk only.",
+      "fyi": false,
+      "recorded_at": "2026-11-17T06:48:56.884Z"
     }
   ],
   "handled": [

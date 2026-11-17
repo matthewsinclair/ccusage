@@ -3,9 +3,9 @@ node: dc
 name: DevX Claude
 role: devx
 session_id: b63269e8-512e-4cc8-9b1b-8869e2c1f223
-heartbeat_at: 2026-11-17 06:03Z
+heartbeat_at: 2026-11-17 06:49Z
 status: active
-focus: "ISSUE:0003 closed on vc's go after the live repair (ST0003/WP06 done at fbcc2f5). Next: todo 15, the kovacs gates and the scratch-HOME install at 0.1.10's final tip in one heavy slot, on vc's word that the tip is final; hold 13, ISSUE:0009's keg proof after the cut."
+focus: "Todo 15 passed at 0.1.10's final code tip c7e46d6 (kovacs gates green but actionlint's known absence; the scratch-HOME opt tree holds LICENSE, named in its manifest), verdict with vc. Next: hold 13, ISSUE:0009's keg proof after the cut's brew upgrade, on rhadamanth and kovacs. During the cut's freeze dc writes nothing to the checkout until vc says it is published."
 claims: [ISSUE:0009]
 ---
 
@@ -13,11 +13,11 @@ claims: [ISSUE:0009]
 
 ## DOING
 
-- Todo 15's run at 0.1.10's final code tip c7e46d6, on vc's word (hv's decision 12, Ccusage first): Desk heavy slot 01M7M42783BNYNGAX02ZB04PRP. First the kovacs gates (check all, test all, build, doctor, each to its own verdict, by dc's leg driver), then the scratch-HOME bin/devbin install on rhadamanth listing the opt tree and its manifest (ISSUE:0009). The verdict goes to vc, and any red at once to vc and the builder with its lines.
+_(none)_
 
 ## TODO
 
-- Before the 0.1.10 cut, on vc's word that the tip is final: the kovacs gates (check all, test all, build and doctor) and, in the same heavy slot, a scratch-HOME bin/devbin install with a listing of the opt tree and its manifest, showing LICENSE in the tree and named in the manifest (ISSUE:0009: no run has yet laid out an installed tree with the files entry back). The final tip is cc's follow-up unit (ISSUE:0008's items 6 to 8) on 58b7323, which holds the first. When vc says it is final, dc asks devbin-vc for the slot by intent estate slots ask, naming hv's decision 12; the estate hold is lifted (hv's decision 13), and devbin-vc grants Ccusage first today. dc announces the run to kovacs-sysadm. The cut carries ISSUE:0008 whole, ISSUE:0009 and ic's Herdr fix, and ships first thing (hv's decision 12, through vc). (edited)
+_(none)_
 
 ## Holds
 
