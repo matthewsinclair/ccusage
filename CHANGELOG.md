@@ -6,8 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [0.1.10] - unreleased
 
+### Added
+
+- `ccusage herdr launch` opens the Herdr panel as a tab of its own, through `herdr-app do tab.new`, and says why when it cannot: no Herdr home, the mod not installed (it points to `ccusage herdr install`), no `herdr-app` on `PATH`, or Herdr's own refusal in Herdr's words (ST0002).
+
 ### Changed
 
+- The Herdr panel's text, bars and spacing are one and a half times larger, from one scale in the mod, so the panel reads in a full tab: its text is 17 to 21px where it was 11 to 14px, and a card's dialog grows with it (ST0002).
 - Each release archive, and the tree each install lays out (the opt install and the Homebrew keg's `libexec`), holds `LICENSE` beside `bin/ccusage` again. devbin 0.1.24's formula install body copies a Mac archive into `libexec`, so Homebrew no longer moves `LICENSE` out of it, and the keg's manifest names only files the keg holds (ISSUE:0009).
 
 ### Fixed

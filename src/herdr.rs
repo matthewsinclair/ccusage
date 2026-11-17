@@ -1,7 +1,8 @@
 //! The Herdr mod ccusage ships, and `ccusage herdr install` and `remove`, which put it
-//! into a local Herdr's mods and take it out. The mod's files are embedded at build
-//! time, so every install of ccusage carries the mod that matches it. The verb writes
-//! only `mods/ccusage/` under Herdr's home, and never a layout or `keys.json`.
+//! into a local Herdr's mods and take it out, and `launch`, which opens it as a tab of
+//! its own. The mod's files are embedded at build time, so every install of ccusage
+//! carries the mod that matches it. The verb writes only `mods/ccusage/` under Herdr's
+//! home, and never a layout or `keys.json`.
 
 use crate::{Result, usage};
 use sha2::{Digest, Sha256};
@@ -9,7 +10,7 @@ use std::{
   collections::BTreeMap,
   fs,
   path::{Path, PathBuf},
-  process::Command,
+  process::{Command, Output},
 };
 
 /// The mod's folder under Herdr's mods.
@@ -18,6 +19,8 @@ pub const MOD: &str = "ccusage";
 const RECORD: &str = ".ccusage-install.json";
 /// How Herdr opens the mod as a pane.
 pub const OPEN: &str = r#"herdr-app do pane.split '{"direction":"right","mod":"ccusage"}'"#;
+/// What launch asks herdr-app for: a tab named ccusage whose only pane is the mod.
+const LAUNCH: [&str; 3] = ["do", "tab.new", r#"{"name":"ccusage","mod":"ccusage"}"#];
 
 /// The mod's files as install writes them: its source, embedded at build time, and its
 /// lifetime.js, written from the usage cache's lifetime, which the panel's timer never
@@ -137,11 +140,38 @@ pub fn install(force: bool) -> Result<Installed> {
   let (verdict, passed) = check(&dir);
   Ok(Installed {
     said: format!(
-      "Wrote the ccusage mod to {}.\n{verdict}\nThe mod runs ccusage and nothing else. Open it as a pane with:\n  {OPEN}",
+      "Wrote the ccusage mod to {}.\n{verdict}\nThe mod runs ccusage and nothing else. Open it as a tab of its own with ccusage herdr launch, or as a pane with:\n  {OPEN}",
       dir.display()
     ),
     passed,
   })
+}
+
+/// Opens the panel as a Herdr tab of its own, by asking herdr-app for one, once install
+/// has put the mod into Herdr's mods; refused, with the reason, when it cannot.
+pub fn launch() -> Result<String> {
+  let dir = home()?.join("mods").join(MOD);
+  if !dir.join("main.js").is_file() {
+    return Err(
+      format!(
+        "no ccusage mod at {}, so the panel was not opened; run ccusage herdr install first",
+        dir.display()
+      )
+      .into(),
+    );
+  }
+  match Command::new("herdr-app").args(LAUNCH).output() {
+    Ok(output) if output.status.success() => {
+      Ok("Opened the ccusage panel in a new Herdr tab.".into())
+    }
+    Ok(output) => Err(format!("herdr-app could not open the panel: {}", said(&output)).into()),
+    Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+      Err("herdr-app is not on PATH, so the panel was not opened".into())
+    }
+    Err(error) => {
+      Err(format!("herdr-app could not be run, so the panel was not opened: {error}").into())
+    }
+  }
 }
 
 /// Takes the mod out of Herdr's mods, on install's terms: only a copy install wrote that
@@ -166,18 +196,7 @@ pub fn remove(force: bool) -> Result<String> {
 fn check(dir: &Path) -> (String, bool) {
   match Command::new("herdr-app").arg("check").arg(dir).output() {
     Ok(output) if output.status.success() => ("herdr-app check passed.".into(), true),
-    Ok(output) => {
-      let said = String::from_utf8_lossy(&output.stderr);
-      let said = if said.trim().is_empty() {
-        String::from_utf8_lossy(&output.stdout)
-      } else {
-        said
-      };
-      (
-        format!("herdr-app check failed: {}", crate::clean(said.trim())),
-        false,
-      )
-    }
+    Ok(output) => (format!("herdr-app check failed: {}", said(&output)), false),
     Err(error) if error.kind() == std::io::ErrorKind::NotFound => (
       "herdr-app is not on PATH, so the mod was not checked.".into(),
       true,
@@ -187,4 +206,20 @@ fn check(dir: &Path) -> (String, bool) {
       true,
     ),
   }
+}
+
+/// What herdr-app said when it refused: the text of the `{ "error": ... }` that
+/// `herdr-app do` prints, else its stderr, else its stdout, made safe for a terminal.
+fn said(output: &Output) -> String {
+  let stdout = String::from_utf8_lossy(&output.stdout);
+  let error = serde_json::from_str::<serde_json::Value>(&stdout)
+    .ok()
+    .and_then(|reply| reply["error"].as_str().map(str::to_owned));
+  let stderr = String::from_utf8_lossy(&output.stderr);
+  let said = match error {
+    Some(error) => error,
+    None if stderr.trim().is_empty() => stdout.into_owned(),
+    None => stderr.into_owned(),
+  };
+  crate::clean(said.trim())
 }

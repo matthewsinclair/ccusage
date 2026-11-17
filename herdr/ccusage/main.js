@@ -9,7 +9,8 @@
 // open, ccusage asks Claude's usage endpoint no more often than its cache allows.
 // Countdowns tick from the clock and ask nothing.
 //
-// Opened as a pane: herdr-app do pane.split '{"direction":"right","mod":"ccusage"}'.
+// Opened as a tab of its own by `ccusage herdr launch`, or as a pane:
+// herdr-app do pane.split '{"direction":"right","mod":"ccusage"}'.
 // props.every sets the refresh in seconds, longer than the lifetime but never shorter.
 
 import { View, div } from "gpui-kit";
@@ -19,6 +20,16 @@ import { LIFETIME } from "./lifetime.js";
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
+
+/**
+ * The panel's one scale. Every text size, bar, space, corner and the card's dialog below
+ * is a base size times SCALE, so they grow together: 1.5 takes the base 11, 12 and 14px
+ * text to 17, 18 and 21px, and a bar's 5px to 8px.
+ */
+const SCALE = 1.5;
+
+/** A base size in pixels, at the panel's scale, to the whole pixel. */
+const scaled = (base) => Math.round(base * SCALE);
 
 /** A countdown to the RFC 3339 time `at`, in ccusage's form: <1m, 45m, 3h05, 2d04h. */
 function countdown(at) {
@@ -45,8 +56,8 @@ function bar(id, percent, color, t) {
   const used = Math.min(100, Math.max(0, percent));
   return h_flex()
     .id(id)
-    .h(5)
-    .rounded(3)
+    .h(scaled(5))
+    .rounded(scaled(3))
     .overflow_hidden()
     .bg(t.raised)
     .child(div().h_full().flex_grow(used).bg(color))
@@ -56,10 +67,10 @@ function bar(id, percent, color, t) {
 function button(id, label, t, onClick) {
   return h_flex()
     .id(id)
-    .h(26)
-    .px(10)
+    .h(scaled(26))
+    .px(scaled(10))
     .items_center()
-    .rounded(6)
+    .rounded(scaled(6))
     .border_1()
     .border_color(t.input)
     .bg(t.raised)
@@ -158,9 +169,9 @@ export default class Ccusage extends View {
       .id("ccusage")
       .size_full()
       .bg(t.surface)
-      .p(10)
-      .gap(8)
-      .text_size(12)
+      .p(scaled(10))
+      .gap(scaled(8))
+      .text_size(scaled(12))
       .text_color(t.foreground)
       .overflow_y_scrollbar();
     if (!which) {
@@ -175,7 +186,7 @@ export default class Ccusage extends View {
           .child(div().flex_1())
           .child(
             div()
-              .text_size(11)
+              .text_size(scaled(11))
               .text_color(t.dim)
               .child(`as of ${pad(stamp.getHours())}:${pad(stamp.getMinutes())}`),
           ),
@@ -183,14 +194,14 @@ export default class Ccusage extends View {
       .when(!which.choice, (el) => el.child(this.nothingEligible(which, t)))
       .children(which.accounts.map((account) => this.account(account, t)))
       .when(this.predict, (el) => el.child(this.forecast(t)))
-      .when(this.problem, (el) => el.child(div().text_size(11).text_color(t.blocked).child(this.problem)));
+      .when(this.problem, (el) => el.child(div().text_size(scaled(11)).text_color(t.blocked).child(this.problem)));
   }
 
   nothingEligible(which, t) {
     const soonest = which.soonest
       ? `; the soonest weekly reset is ${which.soonest.name}'s, in ${countdown(which.soonest.resets_at)}`
       : "";
-    return div().text_size(11).text_color(t.blocked).child(`Nothing eligible${soonest}`);
+    return div().text_size(scaled(11)).text_color(t.blocked).child(`Nothing eligible${soonest}`);
   }
 
   account(account, t) {
@@ -214,26 +225,26 @@ export default class Ccusage extends View {
     else if (reason) parts.push(reason);
     return v_flex()
       .id(`account-${account.name}`)
-      .gap(3)
-      .p(6)
-      .rounded(6)
+      .gap(scaled(3))
+      .p(scaled(6))
+      .rounded(scaled(6))
       .cursor_pointer()
       .hover((s) => s.bg(t.raised))
       .on_click(() =>
         openOverlay({
           mod: "ccusage",
           kind: "dialog",
-          width: 640,
-          height: 520,
+          width: scaled(640),
+          height: scaled(520),
           props: { account: account.name },
         }),
       )
       .child(
         h_flex()
-          .gap(6)
+          .gap(scaled(6))
           .items_center()
           .child(div().font_semibold().truncate().child(account.name))
-          .children(tags.map(([tag, tint]) => div().text_size(11).text_color(tint).child(tag)))
+          .children(tags.map(([tag, tint]) => div().text_size(scaled(11)).text_color(tint).child(tag)))
           .child(div().flex_1())
           .when(account.percent !== null, (el) =>
             el.child(div().text_color(t.muted).child(whole(account.percent))),
@@ -242,9 +253,9 @@ export default class Ccusage extends View {
       .when(account.percent !== null, (el) =>
         el.child(bar(`bar-${account.name}`, account.percent, color, t)),
       )
-      .child(div().text_size(11).text_color(t.muted).truncate().child(parts.join(" · ")))
+      .child(div().text_size(scaled(11)).text_color(t.muted).truncate().child(parts.join(" · ")))
       .when(account.error, (el) =>
-        el.child(div().text_size(11).text_color(t.blocked).truncate().child(account.error)),
+        el.child(div().text_size(scaled(11)).text_color(t.blocked).truncate().child(account.error)),
       );
   }
 
@@ -257,7 +268,7 @@ export default class Ccusage extends View {
         ? `Too little history to project yet: ${rests}.`
         : `Burn rate ${rate.percent_per_hour}% of a weekly allowance an hour, from ${rests}. ` +
           `Projected unused at the current resets: ${whole(predict.unused)} of one weekly allowance.`;
-    return div().text_size(11).text_color(t.muted).child(text);
+    return div().text_size(scaled(11)).text_color(t.muted).child(text);
   }
 
   renderDetail(t) {
@@ -266,20 +277,21 @@ export default class Ccusage extends View {
     return v_flex()
       .id("ccusage-detail")
       .size_full()
-      .p(14)
-      .gap(10)
-      .rounded(8)
+      .p(scaled(14))
+      .gap(scaled(10))
+      .rounded(scaled(8))
       .bg(t.popover)
-      .text_size(12)
+      .text_size(scaled(12))
       .text_color(t.foreground)
       .child(
         h_flex()
           .items_center()
-          .gap(8)
-          .child(div().flex_1().text_size(14).font_semibold().truncate().child(account))
+          .gap(scaled(8))
+          .child(div().flex_1().text_size(scaled(14)).font_semibold().truncate().child(account))
           .child(
             button("use", `Use ${account}`, t, () => {
               this.pending = account;
+              // Herdr's own confirm dialog draws its text at its own size, so its box keeps its own.
               openOverlay({
                 mod: "confirm",
                 kind: "dialog",
@@ -303,7 +315,7 @@ export default class Ccusage extends View {
           .min_h(0)
           .overflow_y_scrollbar()
           .font_family(settings().font_family ?? "JetBrains Mono")
-          .text_size(11)
+          .text_size(scaled(11))
           .children(lines.map((line, index) => div().id(`line-${index}`).whitespace_nowrap().child(line || " "))),
       );
   }

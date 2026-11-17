@@ -40,6 +40,7 @@ Usage: ccusage [--config PATH] [--no-color] [--verbose] [COMMAND]
   herdr install|remove [--force]
                                Put the ccusage panel into Herdr's mods, or take it out;
                                --force replaces or removes a copy ccusage did not write
+  herdr launch                 Open the ccusage panel as a Herdr tab of its own
   shell zsh|bash               Print an optional wrapper for plain claude
   paths                        Show resolved XDG directories
   doctor                       Check Claude, configuration, and private-file permissions
@@ -171,8 +172,12 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
         }
       }
       ["remove"] => println!("{}", crate::herdr::remove(force)?),
+      ["launch"] if !force => println!("{}", crate::herdr::launch()?),
       _ => {
-        return Err("herdr takes install or remove, and --force; see ccusage help".into());
+        return Err(
+          "herdr takes install or remove, with --force if need be, or launch; see ccusage help"
+            .into(),
+        );
       }
     }
     return Ok(());

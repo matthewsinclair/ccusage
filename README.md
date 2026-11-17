@@ -210,11 +210,12 @@ Ccusage carries a [Herdr](https://herdr.dev) mod: a panel that shows each accoun
 
 ```sh
 ccusage herdr install
+ccusage herdr launch
 herdr-app do pane.split '{"direction":"right","mod":"ccusage"}'
 ccusage herdr remove
 ```
 
-`ccusage herdr install` puts the mod into Herdr's home, `$HERDR_APP_HOME` or else `~/.config/herdr-app`, and refuses when there is none. It writes `mods/ccusage/` and a record of what it wrote, replaces only a copy it wrote that nobody has edited, refuses anything else without `--force`, then runs `herdr-app check` on it when that is on `PATH` and reports the verdict, or why it could not run it, exiting nonzero when the check fails. It never touches a layout or `keys.json`. `ccusage herdr remove` takes the copy out on the same terms. The mod's files are built into ccusage, so each install carries the mod that matches it.
+`ccusage herdr install` puts the mod into Herdr's home, `$HERDR_APP_HOME` or else `~/.config/herdr-app`, and refuses when there is none. It writes `mods/ccusage/` and a record of what it wrote, replaces only a copy it wrote that nobody has edited, refuses anything else without `--force`, then runs `herdr-app check` on it when that is on `PATH` and reports the verdict, or why it could not run it, exiting nonzero when the check fails. It never touches a layout or `keys.json`. `ccusage herdr remove` takes the copy out on the same terms. `ccusage herdr launch` opens the panel as a Herdr tab of its own, through `herdr-app do tab.new`, or says why it could not and exits nonzero: no Herdr home, the mod not installed, no `herdr-app` on `PATH`, or Herdr's own refusal; the `pane.split` line opens it as a pane instead. The panel's text, bars and spacing come from one scale in the mod, sized to read in a full tab. The mod's files are built into ccusage, so each install carries the mod that matches it.
 
 ## Refresh policy
 
