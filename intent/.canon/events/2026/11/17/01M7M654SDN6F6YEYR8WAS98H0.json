@@ -1,0 +1,16 @@
+{
+  "id": "01M7M654SDN6F6YEYR8WAS98H0",
+  "ts": "2026-11-17T07:22:16.750Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 1,
+    "text": "ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, shipped in 0.1.9, WP01 to WP07 closed by vc; AC-00.1 satisfied by vc on hv's runs (8b1a8f2). For 0.1.10, hv's decision 15 landed on main at c7e46d6 on vc's verdict (the panel one and a half times larger from one SCALE, and ccusage herdr launch; AT-08.4 green under AC-08.4; the combined tree green in Desk slot 01M7M3VZHCYVEDYA3256J75PEZ at 23a7640). hv's look from ic's build passed, so vc satisfied AC-08.3 and closed WP08 and ST0002 (da7b355, intent at lint ST0002 28 of 28), and 0.1.10 shipped it. preview.png, ic's crop of hv's look with the names blurred, is on main at f38e2c1, put back by vc after the publish. At ic's fold after the publish: ST0002 unclaimed, and ic's merged branches ic/ST0002-02, -03, -04, -07, -08-fill and -launch deleted with git branch -d. Done."
+  }
+}

@@ -3,17 +3,17 @@ node: ic
 name: Interface Claude
 role: interface
 session_id: 2383b046-340f-4fb4-ad39-d1ae912ebf62
-heartbeat_at: 2026-11-17 06:30Z
+heartbeat_at: 2026-11-17 07:21Z
 status: active
 focus: ""
-claims: [ST0002]
+claims: []
 ---
 
 # Interface Claude (ic)
 
 ## DOING
 
-- ST0002 on vc's brief (hv's go of 2026-11-13): which, predict, the TUI's next marker and the Herdr mod, shipped in 0.1.9, WP01 to WP07 closed by vc; AC-00.1 satisfied by vc on hv's runs (8b1a8f2). For 0.1.10, hv's decision 15 landed on main at c7e46d6 on vc's verdict (the panel one and a half times larger from one SCALE, and ccusage herdr launch; AT-08.4 green under AC-08.4; the combined tree green in Desk slot 01M7M3VZHCYVEDYA3256J75PEZ at 23a7640; worktree removed). Left: AC-08.3, hv's look, made from ic's build /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage (0.1.9 dev 23a764027d8c): herdr install --force, then herdr launch; the larger text, each bar filled, the refresh by itself. Then preview.png from that look, cropped to the panel with the names blurred by ic unless hv says otherwise, landed as a doc-only change on main (vc). On a pass vc closes WP08 and ST0002; ic then deletes its merged branches (ic/ST0002-02, -03, -04, -07, -08-fill and -launch). After every landing on main, run intent at lint ST0002 (28 of 28 at c7e46d6) and re-cite each moved row from a grep of its // ST0002 AT-x.y: comment. (edited)
+_(none)_
 
 ## TODO
 

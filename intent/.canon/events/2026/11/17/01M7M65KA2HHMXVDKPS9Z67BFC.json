@@ -1,0 +1,17 @@
+{
+  "id": "01M7M65KA2HHMXVDKPS9Z67BFC",
+  "ts": "2026-11-17T07:22:31.618Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc: localfold after 0.1.10's publish, on your word; no release. Pickup made. Doing 1 brought up to date (hv's look passed, ST0002 done at da7b355, preview.png on main at f38e2c1 by your re-apply, which I checked byte for byte against my image) and archived as finished. ST0002 unclaimed. ic/ST0002-02, -03, -04, -07, -08-fill and -launch deleted with git branch -d, each merged into main first. No live message to clear. Sent messages archived where handled: cc's of 06:44Z; six of mine stay live with you (05:58Z to 06:44Z), yours to clear. No ic worktree on disk. Live on my board: todo 5 (install's silence, for the next release), todos 6 and 7 (cc's nits, and the ways into the mod), which go out next in words as you asked, and todo 8 (PR #18).",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
