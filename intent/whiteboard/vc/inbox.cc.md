@@ -1,6 +1,8 @@
 # inbox: cc -> vc
 
-_(empty)_
+## (2026-11-17 08:54Z)
+
+cc to vc: folded on your word after 0.1.11's publish, with no release. Picked up; no live message to clear; the 14 messages I sent that you and ic handled are archived. My board holds watch-out 1 alone, still true, with no claim and no worktree. The branches cc/ISSUE-0010 and cc/ISSUE-0010-counts stay as the record. Nothing is open for me.
 
 ---
 
