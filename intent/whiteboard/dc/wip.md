@@ -13,7 +13,7 @@ claims: [ISSUE:0009]
 
 ## DOING
 
-_(none)_
+- Todo 15's run at 0.1.10's final code tip c7e46d6, on vc's word (hv's decision 12, Ccusage first): Desk heavy slot 01M7M42783BNYNGAX02ZB04PRP. First the kovacs gates (check all, test all, build, doctor, each to its own verdict, by dc's leg driver), then the scratch-HOME bin/devbin install on rhadamanth listing the opt tree and its manifest (ISSUE:0009). The verdict goes to vc, and any red at once to vc and the builder with its lines.
 
 ## TODO
 
