@@ -13,7 +13,7 @@ claims: [ISSUE:0010]
 
 ## DOING
 
-- ISSUE:0010 landed by vc at f6788cd; its worktree removed by the checks, the branch cc/ISSUE-0010 kept as the record. Its test-only follow-up on vc's word (three tests derive their counts from their fixtures; ic's CHANGELOG wording): cc/ISSUE-0010-counts at b602cd1 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0010-counts, off main's f6788cd; Desk slot 01M7M8R6G5CAFC14K56GD2Y3H4 asked; then test rust, check format and check clippy, and the hand-over to vc, landing before any cut; vc closes ISSUE:0010 after it (edited)
+- ISSUE:0010 landed by vc at f6788cd; its worktree removed, the branch cc/ISSUE-0010 kept as the record. Its test-only follow-up handed over to vc: cc/ISSUE-0010-counts at b602cd1 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0010-counts, off f6788cd, run in Desk slot 01M7M8R6G5CAFC14K56GD2Y3H4 (test rust, format and clippy green). Waiting for vc's landing, before any cut; then remove that worktree by the checks, and unclaim ISSUE:0010 when vc closes it (edited)
 
 ## TODO
 
