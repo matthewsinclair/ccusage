@@ -15,7 +15,7 @@ title: Add 'which' verb to indicate the best account to use to maximise token us
 
 ### ST-level
 
-- AC-00.1 (non-test) On hv's five accounts, hv's own `ccusage which` names the account the rule picks from `ccusage --all`, and `ccusage predict` runs without error. -- satisfied: no
+- AC-00.1 (non-test) On hv's five accounts, hv's own `ccusage which` names the account the rule picks from `ccusage --all`, and `ccusage predict` runs without error. -- evidence: hv's own runs on hv's five accounts, 2026-11-17, ccusage 0.1.9 (brew): ccusage which, in hv's terminal log beside a ccusage usage --all whose readings are as of 05:24Z, named engineering02 (0% used, soonest reset with headroom), the account the rule picks from that --all: of the accounts below the 95% cap, the one whose weekly window resets soonest; ccusage predict, run by hv in vc's window, ran without error (burn rate 2.1% of one weekly allowance an hour from 86 samples over 3d18h, a line for each of the five accounts, 63% of one weekly allowance projected unused on plan max), as the Herdr panel's predict line did in hv's look. -- satisfied: yes
 
 ### WP-01 -- Typed usage windows: each window carries its kind and model (status: Done)
 
