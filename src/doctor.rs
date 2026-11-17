@@ -1,7 +1,9 @@
 use crate::{
   Result, clean,
   config::{self, Store},
+  sessions::Session,
   shared, storage,
+  usage::Whose,
 };
 use std::{fs, path::Path, process::Command};
 
@@ -80,13 +82,25 @@ fn holds(dir: &Path) -> Holds {
   }
 }
 
-/// Where each profile's login is, from what each store holds and which profile is
-/// seated: one finding for each profile, failing when it has no login or two, and one
-/// for a shared login that belongs to no profile. Pure.
+/// One profile's own store, as doctor found it: what it holds; whose login that is, for
+/// a profile that is not seated and holds one; and the running sessions pinned to it,
+/// None when they could not be listed.
+struct Own<'a> {
+  name: String,
+  holds: Holds,
+  whose: Option<Whose>,
+  pinned: Option<Vec<&'a Session>>,
+}
+
+/// Where each profile's login is, from what each store holds, whose its own login is
+/// and which profile is seated: one finding for each profile, failing when it has no
+/// login or two, or its own store holds another account's, with a remedy that restarts
+/// the sessions pinned to that store before the login that ends it; and one for a shared
+/// login that belongs to no profile. Pure.
 fn where_logins_are(
   shared: &Holds,
   seated: Option<&str>,
-  profiles: &[(String, Holds)],
+  profiles: &[Own],
 ) -> Vec<(&'static str, String)> {
   let mut findings = Vec::new();
   match (shared, seated) {
@@ -100,9 +114,11 @@ fn where_logins_are(
     )),
     _ => {}
   }
-  for (name, own) in profiles {
-    let active = seated == Some(name.as_str());
-    let finding = match (active, shared, own) {
+  for own in profiles {
+    let name = own.name.as_str();
+    let remedy = || crate::sessions::remedy(name, own.pinned.as_deref());
+    let active = seated == Some(name);
+    let finding = match (active, shared, &own.holds) {
       (_, _, Holds::Unreadable(error)) => (
         "FAIL",
         format!("{name}'s own store could not be read: {error}"),
@@ -110,7 +126,8 @@ fn where_logins_are(
       (true, Holds::Login, Holds::Login) => (
         "FAIL",
         format!(
-          "{name} has two logins, the shared config's and another in its own store, so a switch away from {name} is refused; run ccusage login {name}, which leaves it one login"
+          "{name} has two logins, the shared config's and another in its own store, so a switch away from {name} is refused; {}, which leaves it one login",
+          remedy()
         ),
       ),
       (true, Holds::Login, _) => (
@@ -121,9 +138,28 @@ fn where_logins_are(
       (true, Holds::Unreadable(_), _) => continue,
       (true, _, _) => (
         "FAIL",
-        format!("{name} is active, but the shared config holds no login; run ccusage login {name}"),
+        format!(
+          "{name} is active, but the shared config holds no login; {}",
+          remedy()
+        ),
       ),
-      (false, _, Holds::Login) => ("OK", format!("{name}'s login is in its own store")),
+      (false, _, Holds::Login) => match &own.whose {
+        Some(Whose::Another) => (
+          "FAIL",
+          format!(
+            "{name}'s own store holds another account's login, so {name}'s usage is refused and a switch to {name} would seat that login; {}",
+            remedy()
+          ),
+        ),
+        Some(Whose::Unchecked(why)) => {
+          findings.push(("OK", format!("{name}'s login is in its own store")));
+          (
+            "INFO",
+            format!("{name}'s own login was not checked against {name}'s account: {why}"),
+          )
+        }
+        Some(Whose::Profile) | None => ("OK", format!("{name}'s login is in its own store")),
+      },
       (false, _, _) => (
         "FAIL",
         format!("{name} has no login; run ccusage login {name}"),
@@ -214,18 +250,39 @@ fn shared_checks(store: &Store, shared: &Path, failed: &mut bool) {
     Ok(None) => {}
     Err(error) => report("FAIL", error.to_string()),
   }
+  // The running sessions, each read from its own process's environment, once: None when
+  // this system's process listing cannot be read.
+  let sessions = crate::sessions::running();
   match crate::seat::seated(store) {
     Ok(seated) => {
-      let profiles: Vec<(String, Holds)> = store
+      let profiles: Vec<Own> = store
         .config
         .profiles
         .keys()
         .map(|name| {
-          let own = store.profile_dir(name).map_or_else(
+          let dir = store.profile_dir(name);
+          let holds = dir.as_ref().map_or_else(
             |error| Holds::Unreadable(error.to_string()),
-            |dir| holds(&dir),
+            |dir| holds(dir),
           );
-          (name.clone(), own)
+          // Whose login a profile that is not seated holds, checked as the shared
+          // login is, so a /login of another account in a session pinned there shows.
+          let whose = match (&dir, &holds) {
+            (Ok(dir), Holds::Login) if seated.as_deref() != Some(name.as_str()) => {
+              Some(crate::usage::whose(store, name, dir))
+            }
+            _ => None,
+          };
+          let pinned = dir
+            .ok()
+            .zip(sessions.as_deref())
+            .map(|(dir, sessions)| crate::sessions::pinned_to(sessions, &dir));
+          Own {
+            name: name.clone(),
+            holds,
+            whose,
+            pinned,
+          }
         })
         .collect();
       let shared_holds = holds(shared);
@@ -238,16 +295,21 @@ fn shared_checks(store: &Store, shared: &Path, failed: &mut bool) {
         && shared_holds == Holds::Login
       {
         match crate::usage::whose(store, name, shared) {
-          crate::usage::Whose::Profile => {
-            report("OK", format!("The shared login is verified as {name}'s"))
+          Whose::Profile => report("OK", format!("The shared login is verified as {name}'s")),
+          Whose::Another => {
+            let pinned = profiles
+              .iter()
+              .find(|own| own.name == name)
+              .and_then(|own| own.pinned.as_deref());
+            report(
+              "FAIL",
+              format!(
+                "The shared login is not {name}'s: another account's login is in the shared config; {}",
+                crate::sessions::remedy(name, pinned)
+              ),
+            )
           }
-          crate::usage::Whose::Another => report(
-            "FAIL",
-            format!(
-              "The shared login is not {name}'s: another account's login is in the shared config; run ccusage login {name}"
-            ),
-          ),
-          crate::usage::Whose::Unchecked(why) => report(
+          Whose::Unchecked(why) => report(
             "INFO",
             format!("The shared login was not checked against {name}'s account: {why}"),
           ),
@@ -278,15 +340,15 @@ fn shared_checks(store: &Store, shared: &Path, failed: &mut bool) {
   if let Some((status, message)) = line_room(shared) {
     report(status, message);
   }
-  // Sessions that will not follow a switch, read from each process's own environment.
-  match crate::sessions::running() {
+  // Sessions that will not follow a switch.
+  match &sessions {
     None => report(
       "INFO",
       "Running Claude sessions were not checked: this system's process listing could not be read"
         .to_owned(),
     ),
     Some(sessions) => {
-      for session in &sessions {
+      for session in sessions {
         if let Some(cause) = crate::sessions::drift(session, shared) {
           let cwd = crate::sessions::cwd(session.pid);
           report(
@@ -332,15 +394,8 @@ fn shared_checks(store: &Store, shared: &Path, failed: &mut bool) {
     .keys()
     .filter_map(|name| store.profile_dir(name).ok())
     .collect();
-  if let Some(value) = std::env::var_os(shared::LOGIN_DIR) {
-    line(
-      "WARN",
-      format!(
-        "{}={} is set in this shell, so Claude started from it reads that directory's login instead of the shared config's; unset it",
-        shared::LOGIN_DIR,
-        Path::new(&value).display()
-      ),
-    );
+  if let Some(warning) = shared::shell_pin(std::env::var_os(shared::LOGIN_DIR).as_deref(), shared) {
+    line("WARN", warning);
   }
   if let Ok(entries) = fs::read_dir(store.data.join("profiles")) {
     for path in entries.flatten().map(|entry| entry.path()) {
@@ -516,7 +571,7 @@ mod tests {
   // no login or two; a shared login that belongs to no profile only warns.
   #[test]
   fn each_login_is_found_once_and_a_missing_or_doubled_one_fails() {
-    let profiles = |a: Holds, b: Holds| vec![("a".to_owned(), a), ("b".to_owned(), b)];
+    let profiles = |a: Holds, b: Holds| vec![own("a", a, None, &[]), own("b", b, None, &[])];
     let statuses = |findings: Vec<(&'static str, String)>| -> Vec<&'static str> {
       findings.into_iter().map(|(status, _)| status).collect()
     };
@@ -557,5 +612,66 @@ mod tests {
     let legacy =
       r#"{"cachedGrowthBookFeatures":null,"cachedFeatureFlags":{"tengu_streamed_thimble":true}}"#;
     assert_eq!(switch_flags(legacy), (None, Some(true)));
+  }
+
+  /// One profile's own store as doctor finds it, with `pinned` the sessions reading it.
+  fn own<'a>(name: &str, holds: Holds, whose: Option<Whose>, pinned: &[&'a Session]) -> Own<'a> {
+    Own {
+      name: name.to_owned(),
+      holds,
+      whose,
+      pinned: Some(pinned.to_vec()),
+    }
+  }
+
+  // ISSUE:0008 Acceptance 1 and 2: a parked profile whose own store holds another
+  // account's login fails, and one whose login could not be checked says so beside its
+  // OK; each remedy restarts the sessions pinned to the store before the login that ends
+  // the fault, as the seated profile's second login has it too.
+  #[test]
+  fn another_accounts_login_fails_and_each_remedy_restarts_the_pinned_sessions_first() {
+    let pinned = Session {
+      pid: 401,
+      started: None,
+      config_dir: None,
+      login_dir: Some("/data/profiles/b".into()),
+    };
+    let pinned = [&pinned];
+    let findings = where_logins_are(
+      &Holds::Login,
+      Some("a"),
+      &[
+        own("a", Holds::Login, None, &pinned),
+        own("b", Holds::Login, Some(Whose::Another), &pinned),
+        own(
+          "c",
+          Holds::Login,
+          Some(Whose::Unchecked("its token is expired".into())),
+          &[],
+        ),
+        own("d", Holds::Login, Some(Whose::Profile), &[]),
+      ],
+    );
+    let statuses: Vec<&str> = findings.iter().map(|(status, _)| *status).collect();
+    assert_eq!(statuses, ["FAIL", "FAIL", "OK", "INFO", "OK"]);
+    for (index, name, fault) in [
+      (0, "a", "a has two logins"),
+      (1, "b", "b's own store holds another account's login"),
+    ] {
+      let said = &findings[index].1;
+      assert!(said.starts_with(fault), "{said}");
+      let restart = said.find(&format!(
+        "Claude session 401 reads {name}'s own store, so first restart it"
+      ));
+      let login = said.find(&format!("ccusage login {name}"));
+      assert!(
+        restart.is_some() && login.is_some() && restart < login,
+        "{said}"
+      );
+    }
+    assert_eq!(
+      findings[3].1,
+      "c's own login was not checked against c's account: its token is expired"
+    );
   }
 }

@@ -59,7 +59,9 @@ pub(crate) fn running() -> Option<Vec<Session>> {
 
 /// One line of `ps -E -o pid=,lstart=,args=` as a Claude session, if it is one: its pid,
 /// its start time (lstart's five words) and the two variables, from the words after its
-/// arguments. A value with a space in it is cut at the space. Pure.
+/// program. ps prints the environment after the arguments, so each variable is its last
+/// `NAME=value`: the environment's, ahead of an argument that looks like one. A value
+/// with a space in it is cut at the space. Pure.
 fn parse(line: &str) -> Option<Session> {
   let mut words = line.split_whitespace();
   let pid = words.next()?.parse().ok()?;
@@ -68,7 +70,7 @@ fn parse(line: &str) -> Option<Session> {
   if Path::new(rest.first()?).file_name()? != CLAUDE {
     return None;
   }
-  let environment = || rest.iter().map(|word| word.as_bytes());
+  let environment = || rest.iter().rev().map(|word| word.as_bytes());
   Some(Session {
     pid,
     started: Some(started),
@@ -167,6 +169,70 @@ pub(crate) fn drift(session: &Session, shared: &Path) -> Option<String> {
   }
 }
 
+/// The directory whose credential store `session` reads its login from: its login
+/// directory, else its config directory; None when it names neither. Pure.
+fn login_store(session: &Session) -> Option<&Path> {
+  session
+    .login_dir
+    .as_deref()
+    .or(session.config_dir.as_deref())
+    .map(Path::new)
+}
+
+/// The sessions that read their login from `dir`'s store, so are pinned to it: a move
+/// that takes the login out of that store leaves them none. Pure.
+pub(crate) fn pinned_to<'a>(sessions: &'a [Session], dir: &Path) -> Vec<&'a Session> {
+  sessions
+    .iter()
+    .filter(|session| login_store(session) == Some(dir))
+    .collect()
+}
+
+/// The sessions pinned to `name`'s own store, named by pid, or that there is none. Pure.
+fn reading(name: &str, pinned: &[&Session]) -> String {
+  let pids: Vec<String> = pinned
+    .iter()
+    .map(|session| session.pid.to_string())
+    .collect();
+  match pids.as_slice() {
+    [] => format!("no running Claude session reads {name}'s own store"),
+    [one] => format!("Claude session {one} reads {name}'s own store"),
+    [rest @ .., last] => format!(
+      "Claude sessions {} and {last} read {name}'s own store",
+      rest.join(", ")
+    ),
+  }
+}
+
+/// The remedy that `ccusage login NAME` ends, in the order that works: while sessions
+/// are pinned to `name`'s own store they restart first, from a shell without the login
+/// directory, since the login would empty that store under them and a /login typed in
+/// one of them puts the fault back; with none pinned, the login alone. `pinned` is None
+/// when the running sessions could not be listed. Pure.
+pub(crate) fn remedy(name: &str, pinned: Option<&[&Session]>) -> String {
+  match pinned {
+    None => format!(
+      "the running Claude sessions could not be listed, so first restart any started with {LOGIN_DIR} naming {name}'s own store from a shell without it, and only then run ccusage login {name}"
+    ),
+    Some([]) => format!("{}, so run ccusage login {name}", reading(name, &[])),
+    Some(pinned) => format!(
+      "{}, so first restart {} from a shell without {LOGIN_DIR} (unset {LOGIN_DIR}), and only then run ccusage login {name}",
+      reading(name, pinned),
+      if pinned.len() == 1 { "it" } else { "each" }
+    ),
+  }
+}
+
+/// Why `what`, a move that would empty `name`'s own store, is refused while `pinned`
+/// sessions read their login there. Pure.
+pub(crate) fn refusal(name: &str, pinned: &[&Session], what: &str) -> String {
+  let them = if pinned.len() == 1 { "it" } else { "them" };
+  format!(
+    "{}, and {what} would leave it without a login under {them}; nothing was moved; restart {them} from a shell without {LOGIN_DIR} (unset {LOGIN_DIR}), then try again",
+    reading(name, pinned)
+  )
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -219,6 +285,54 @@ mod tests {
     assert_eq!(
       variable(environ.split(|byte| *byte == 0), CONFIG_DIR).as_deref(),
       Some("/yes")
+    );
+    Ok(())
+  }
+
+  // ISSUE:0008 Acceptance 2 and 3: a session is pinned to the store it reads its login
+  // from, its login directory's, else its config directory's; a remedy puts the restart
+  // of the pinned sessions before ccusage login NAME, and a refusal names them.
+  #[test]
+  fn a_session_is_pinned_to_the_store_it_reads_its_login_from() -> crate::Result<()> {
+    let (shared, own) = ("/home/u/.config/claude", "/data/profiles/work");
+    let lines = [
+      format!(" 201 Mon Nov 16 16:30:00 2026 claude {CONFIG_DIR}={shared} {LOGIN_DIR}={own}"),
+      format!(" 202 Mon Nov 16 16:30:01 2026 claude {CONFIG_DIR}={own}/"),
+      format!(" 203 Mon Nov 16 16:30:02 2026 claude {CONFIG_DIR}={shared}"),
+      format!(" 204 Mon Nov 16 16:30:03 2026 claude {CONFIG_DIR}={own} {LOGIN_DIR}={shared}"),
+      " 205 Mon Nov 16 16:30:04 2026 claude".to_owned(),
+    ];
+    let sessions: Vec<Session> = lines.iter().filter_map(|line| parse(line)).collect();
+    assert_eq!(sessions.len(), lines.len());
+    let pinned = pinned_to(&sessions, Path::new(own));
+    let pids: Vec<u32> = pinned.iter().map(|session| session.pid).collect();
+    assert_eq!(pids, [201, 202]);
+    let one = &pinned[..1];
+    for (remedy, restart) in [
+      (
+        remedy("work", Some(&pinned)),
+        "Claude sessions 201 and 202 read work's own store, so first restart each from a shell without CLAUDE_SECURESTORAGE_CONFIG_DIR",
+      ),
+      (
+        remedy("work", Some(one)),
+        "Claude session 201 reads work's own store, so first restart it from a shell without CLAUDE_SECURESTORAGE_CONFIG_DIR",
+      ),
+    ] {
+      assert!(remedy.starts_with(restart), "{remedy}");
+      assert!(
+        remedy.ends_with("and only then run ccusage login work"),
+        "{remedy}"
+      );
+    }
+    assert_eq!(
+      remedy("work", Some(&[])),
+      "no running Claude session reads work's own store, so run ccusage login work"
+    );
+    assert!(remedy("work", None).ends_with("and only then run ccusage login work"));
+    let refused = refusal("work", &pinned, "switching to work");
+    assert!(
+      refused.starts_with("Claude sessions 201 and 202 read work's own store, and switching to work would leave it without a login under them; nothing was moved"),
+      "{refused}"
     );
     Ok(())
   }

@@ -114,6 +114,10 @@ pub fn to(store: &Store, name: &str) -> Result<Switched> {
     store.activate(name)?;
     return Ok(Switched::Selected);
   };
+  // Seating `name` takes its login out of its own store.
+  if seat::seated(store)?.as_deref() != Some(name) {
+    unpinned(store, name, &format!("switching to {name}"))?;
+  }
   finish(store)?;
   auth::read(&seat::home(store, name)?)?;
   shared::account_of(store, name)?;
@@ -170,10 +174,38 @@ pub fn none(store: &Store) -> Result<Option<String>> {
   Ok(active)
 }
 
+/// `ccusage login NAME`: Claude's login in `name`'s own store, and, for the profile
+/// seated in shared mode, that fresh login seated in place of the old one, which empties
+/// its own store again. So for the seated profile it is refused before Claude's login
+/// runs while running sessions read their login from that store.
+pub fn login(store: &Store, name: &str) -> Result<()> {
+  if store.shared_dir()?.is_some() && seat::seated(store)?.as_deref() == Some(name) {
+    unpinned(store, name, &format!("ccusage login {name}"))?;
+  }
+  auth::login(store, name)?;
+  reseat(store, name)
+}
+
+/// Refuses, before anything moves, `what`, a move that would take `name`'s login out of
+/// its own store while running Claude sessions read it there: they would be left with
+/// none, and a /login typed in one of them would put a second login back. A process
+/// listing that cannot be read refuses nothing, and doctor says it was not checked.
+fn unpinned(store: &Store, name: &str, what: &str) -> Result<()> {
+  let Some(sessions) = crate::sessions::running() else {
+    return Ok(());
+  };
+  let pinned = crate::sessions::pinned_to(&sessions, &store.profile_dir(name)?);
+  if pinned.is_empty() {
+    Ok(())
+  } else {
+    Err(crate::sessions::refusal(name, &pinned, what).into())
+  }
+}
+
 /// Seat `name`'s fresh login, which `ccusage login` has just put in its profile's own
 /// store, in place of the one the shared store holds for it. Only the seated profile's
 /// own login is replaced, so no account is left without one.
-pub fn reseat(store: &Store, name: &str) -> Result<()> {
+fn reseat(store: &Store, name: &str) -> Result<()> {
   let Some(shared) = store.shared_dir()? else {
     return Ok(());
   };
@@ -195,6 +227,12 @@ fn finish(store: &Store) -> Result<()> {
   let Some(journal) = seat::pending(store)? else {
     return Ok(());
   };
+  // Until its incoming profile's store is cleared, finishing the move empties it.
+  if journal.step < Step::Cleared
+    && let Some(to) = &journal.request.to
+  {
+    unpinned(store, to, &format!("finishing the switch to {to}"))?;
+  }
   let places = seat::places(store, &journal.request)?;
   let verified = match (&journal.request.from, journal.step) {
     (Some(from), Step::Begun) => Some(usage::verified_token(store, from, &places.shared.dir)?),

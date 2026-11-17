@@ -4,7 +4,7 @@
 
 use crate::{
   Result, storage,
-  usage::{Kind, Snapshot, WEEK, Window},
+  usage::{Kind, Plan, Snapshot, WEEK, Window},
 };
 use serde::{Deserialize, Serialize};
 use std::{
@@ -31,10 +31,13 @@ pub struct Sample {
   pub account: String,
   pub window: Window,
   pub sampled_at: i64,
+  /// The plan the account's login recorded when it was sampled, which predict counts it
+  /// on; None for a sample an older ccusage wrote, which recorded none.
+  pub plan: Option<Plan>,
 }
 
-/// A sample as the file holds it: the window's numbers, and nothing else from the
-/// response. A reader passes over a field it does not know.
+/// A sample as the file holds it: the window's numbers and the plan its login recorded,
+/// and nothing else from the response. A reader passes over a field it does not know.
 #[derive(Deserialize, Serialize)]
 struct Line {
   account: String,
@@ -47,10 +50,12 @@ struct Line {
   #[serde(default, skip_serializing_if = "Option::is_none")]
   resets_at: Option<String>,
   sampled_at: i64,
+  #[serde(default, skip_serializing_if = "Option::is_none")]
+  plan: Option<Plan>,
 }
 
 impl Line {
-  fn of(account: &str, window: &Window, sampled_at: i64) -> Result<Self> {
+  fn of(account: &str, window: &Window, plan: &Plan, sampled_at: i64) -> Result<Self> {
     Ok(Self {
       account: account.into(),
       kind: window.kind.name().into(),
@@ -62,6 +67,7 @@ impl Line {
         .map(|reset| reset.format(&time::format_description::well_known::Rfc3339))
         .transpose()?,
       sampled_at,
+      plan: Some(plan.clone()),
     })
   }
 }
@@ -73,12 +79,19 @@ struct Kept {
   window: Option<Window>,
 }
 
-/// Records `account`'s sample of each of `snapshot`'s windows at `sampled_at`: a
-/// window's first, then one each time its percent differs from the last one kept. A
-/// window is the same window while its kind, and its reset to the minute, are unchanged.
-/// Samples go by age alone, once older than one weekly window, and never at a reset:
-/// what was used on a window that has since reset still counts toward the burn rate.
-pub fn record(state: &Path, account: &str, snapshot: &Snapshot, sampled_at: i64) -> Result<()> {
+/// Records `account`'s sample of each of `snapshot`'s windows at `sampled_at`, on `plan`,
+/// the plan its login records: a window's first, then one each time its percent differs
+/// from the last one kept. A window is the same window while its kind, and its reset to
+/// the minute, are unchanged. Samples go by age alone, once older than one weekly
+/// window, and never at a reset: what was used on a window that has since reset still
+/// counts toward the burn rate.
+pub fn record(
+  state: &Path,
+  account: &str,
+  snapshot: &Snapshot,
+  plan: &Plan,
+  sampled_at: i64,
+) -> Result<()> {
   let windows = snapshot.windows()?;
   storage::private_dir(state)?;
   let _lock = lock(&state.join(LOCK))?;
@@ -95,7 +108,7 @@ pub fn record(state: &Path, account: &str, snapshot: &Snapshot, sampled_at: i64)
     });
     if last.is_none_or(|last| last.line.percent != window.utilization) {
       kept.push(Kept {
-        line: Line::of(account, &window, sampled_at)?,
+        line: Line::of(account, &window, plan, sampled_at)?,
         window: Some(window),
       });
       changed = true;
@@ -121,6 +134,7 @@ pub fn samples(state: &Path) -> Result<Vec<Sample>> {
           account: kept.line.account,
           window,
           sampled_at: kept.line.sampled_at,
+          plan: kept.line.plan,
         })
       })
       .collect(),
@@ -218,6 +232,12 @@ mod tests {
       time::OffsetDateTime::parse(text, &time::format_description::well_known::Rfc3339)?
         .unix_timestamp(),
     )
+  }
+
+  /// `record` on the plan of a login that records none, for the tests of how windows are
+  /// sampled, which do not read the plan back.
+  fn record(state: &Path, account: &str, snapshot: &Snapshot, sampled_at: i64) -> Result<()> {
+    super::record(state, account, snapshot, &Plan::default(), sampled_at)
   }
 
   /// Usage whose limits hold a weekly window at `weekly` resetting at `reset`, and a
@@ -391,6 +411,7 @@ mod tests {
       serde_json::from_str(include_str!("../tests/fixtures/usage-with-breakdown.json"))?;
     record(state, "work", &snapshot, at("2026-11-13T05:27:00Z")?)?;
     let text = fs::read_to_string(state.join(FILE))?;
+    // The plan is the login's, which no usage response names.
     let fields = [
       "account",
       "kind",
@@ -399,6 +420,7 @@ mod tests {
       "share",
       "resets_at",
       "sampled_at",
+      "plan",
     ];
     for line in text.lines() {
       let value: serde_json::Value = serde_json::from_str(line)?;
@@ -406,6 +428,39 @@ mod tests {
       assert!(object.keys().all(|key| fields.contains(&key.as_str())));
     }
     assert_eq!(text.lines().count(), snapshot.windows()?.len());
+    Ok(())
+  }
+
+  // ISSUE:0008 Acceptance 4: each sample keeps the plan its login recorded when it was
+  // taken, for predict to count it on whatever the account's usage gives later; a sample
+  // an older ccusage wrote records none.
+  #[test]
+  fn a_sample_keeps_the_plan_its_login_recorded() -> Result<()> {
+    let scratch = Scratch::new()?;
+    let state = scratch.path();
+    let start = at("2026-11-13T05:27:00Z")?;
+    let older = serde_json::json!({"account": "lapsed", "kind": "weekly_all", "percent": 5,
+      "resets_at": "2026-11-16T10:00:00Z", "sampled_at": start});
+    storage::write_atomic(&state.join(FILE), format!("{older}\n").as_bytes())?;
+    let plan = Plan {
+      subscription_type: Some("max".into()),
+      rate_limit_tier: Some("default_claude_max_20x".into()),
+    };
+    super::record(
+      state,
+      "work",
+      &usage(20.0, "2026-11-16T10:00:00Z", None)?,
+      &plan,
+      start + 60,
+    )?;
+    let plans: Vec<_> = samples(state)?
+      .into_iter()
+      .map(|sample| (sample.account, sample.plan))
+      .collect();
+    assert_eq!(
+      plans,
+      [("lapsed".to_owned(), None), ("work".to_owned(), Some(plan))]
+    );
     Ok(())
   }
 

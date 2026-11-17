@@ -337,7 +337,7 @@ fn paid(plan: &Plan) -> bool {
 /// The plan a login records, exactly as Claude Code wrote it, so that accounts are
 /// compared by whole values and a tier's name is never parsed. Both are None when the
 /// login was not read or records none.
-#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Eq, Serialize)]
 pub struct Plan {
   pub subscription_type: Option<String>,
   pub rate_limit_tier: Option<String>,
@@ -493,13 +493,26 @@ fn credential_id(token: &auth::Token, expected: Option<&str>) -> String {
   format!("{:x}", digest.finalize())
 }
 
+/// A stored login the profile endpoint names as an account other than the profile's
+/// email gives: usage refuses it, and the report says how to put it right.
+#[derive(Debug)]
+pub(crate) struct Mismatch;
+
+impl std::fmt::Display for Mismatch {
+  fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    formatter.write_str("stored Claude login does not match this profile's email")
+  }
+}
+
+impl std::error::Error for Mismatch {}
+
 fn check_identity(value: &serde_json::Value, expected: &str) -> Result<()> {
   let actual = value
     .pointer("/account/email")
     .and_then(serde_json::Value::as_str);
   if !actual.is_some_and(|email| email.eq_ignore_ascii_case(expected)) {
     // Do not quote a response body or account fields in diagnostics.
-    return Err("stored Claude login does not match this profile's email; authenticate the intended account in its dedicated directory".into());
+    return Err(Mismatch.into());
   }
   Ok(())
 }
@@ -536,17 +549,20 @@ fn verified_token_at(
   name: &str,
   dir: &Path,
 ) -> Result<String> {
+  let unverified = || -> crate::Error { crate::seat::Refusal::Unverified(name.to_owned()).into() };
   let expected = Expected::of(store, name)?;
   let token = auth::read(dir)?;
-  if let Some(expected) = &expected
-    && expected.cached(store, name, dir, &token)?
-  {
+  // With nothing to check the login against it cannot verify, so it is refused before
+  // a renewal is spent on it.
+  let Some(expected) = expected else {
+    return Err(unverified());
+  };
+  if expected.cached(store, name, dir, &token)? {
     return Ok(token.access_token);
   }
   let token = auth::fresh(agent, dir, None)?;
-  let profile = profile_at(agent, endpoint, &token)?;
-  if !expected.is_some_and(|expected| expected.named_by(&profile)) {
-    return Err(crate::seat::Refusal::Unverified(name.to_owned()).into());
+  if !expected.named_by(&profile_at(agent, endpoint, &token)?) {
+    return Err(unverified());
   }
   Ok(token.access_token)
 }
@@ -750,6 +766,23 @@ impl Client {
   pub fn report(&self, store: &Store, name: &str, refresh: bool) -> Report {
     match self.load(store, name, refresh) {
       Ok(report) => report,
+      // Another account's login is put right by ccusage login NAME, once the sessions
+      // pinned to the profile's own store, where a /login would put it back, restart.
+      Err(error) if error.is::<Mismatch>() => {
+        let sessions = crate::sessions::running();
+        let pinned = store
+          .profile_dir(name)
+          .ok()
+          .zip(sessions.as_deref())
+          .map(|(dir, sessions)| crate::sessions::pinned_to(sessions, &dir));
+        Report::failed(
+          name,
+          format!(
+            "{error}; {}",
+            crate::sessions::remedy(name, pinned.as_deref())
+          ),
+        )
+      }
       Err(error) => Report::failed(name, error),
     }
   }
@@ -820,7 +853,7 @@ impl Client {
           cache.fetched_at = now;
           cache.retry_at = 0;
           cached = false;
-          error = keep(&path, &store.state, name, &cache)?;
+          error = keep(&path, &store.state, name, &plan, &cache)?;
         }
         Ok(Fetch::Limited(retry_at)) => {
           cache.retry_at = retry_at;
@@ -868,16 +901,25 @@ impl Client {
 }
 
 /// Keeps a fetch that succeeded: saves `cache` at `cache_path`, and records each of its
-/// windows whose percent changed in the usage history under `state`. Neither failure
-/// discards the usage: each comes back in the error the report carries.
-fn keep(cache_path: &Path, state: &Path, name: &str, cache: &Cache) -> Result<Option<String>> {
+/// windows whose percent changed in the usage history under `state`, on `plan`, the plan
+/// the login it was fetched with records. Neither failure discards the usage: each
+/// comes back in the error the report carries.
+fn keep(
+  cache_path: &Path,
+  state: &Path,
+  name: &str,
+  plan: &Plan,
+  cache: &Cache,
+) -> Result<Option<String>> {
   let saved = storage::write_atomic(cache_path, &serde_json::to_vec(cache)?)
     .err()
     .map(|failure| format!("could not save cache: {failure}"));
   let recorded = cache
     .snapshot
     .as_ref()
-    .and_then(|snapshot| crate::history::record(state, name, snapshot, cache.fetched_at).err())
+    .and_then(|snapshot| {
+      crate::history::record(state, name, snapshot, plan, cache.fetched_at).err()
+    })
     .map(|failure| format!("could not record history: {failure}"));
   let failures: Vec<_> = saved.into_iter().chain(recorded).collect();
   Ok((!failures.is_empty()).then(|| format!("usage fetched, but {}", failures.join("; "))))
@@ -940,6 +982,8 @@ mod tests {
         .err()
         .ok_or("must reject mismatch")?;
       assert!(!error.to_string().contains("PRIVATE_OTHER_ACCOUNT"));
+      // ISSUE:0008 Acceptance 2: a mismatch is told apart, so its report adds the remedy.
+      assert!(error.is::<Mismatch>(), "{error}");
     }
     let token: auth::Token = serde_json::from_value(serde_json::json!({"accessToken":"ONE"}))?;
     let other: auth::Token = serde_json::from_value(serde_json::json!({"accessToken":"TWO"}))?;
@@ -1605,7 +1649,10 @@ mod tests {
       snapshot: Some(snapshot.clone()),
       ..Cache::default()
     };
-    assert_eq!(keep(&cache_path, &state, "work", &cache)?, None);
+    assert_eq!(
+      keep(&cache_path, &state, "work", &Plan::default(), &cache)?,
+      None
+    );
     assert!(storage::read_optional(&cache_path)?.is_some());
     let samples = crate::history::samples(&state)?;
     assert_eq!(samples.len(), snapshot.windows()?.len());
@@ -1619,7 +1666,8 @@ mod tests {
     std::fs::remove_file(&cache_path)?;
     let blocked = scratch.path().join("blocked");
     std::fs::write(&blocked, "")?;
-    let error = keep(&cache_path, &blocked, "work", &cache)?.ok_or("the report says so")?;
+    let error =
+      keep(&cache_path, &blocked, "work", &Plan::default(), &cache)?.ok_or("the report says so")?;
     assert!(error.starts_with("usage fetched, but could not record history"));
     assert!(storage::read_optional(&cache_path)?.is_some());
     Ok(())

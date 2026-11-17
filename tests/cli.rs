@@ -1164,6 +1164,8 @@ fn shared_mode_doctor_warns_of_each_way_sessions_can_drift() -> Result<()> {
     &sandbox.profile("work").join(".credentials.json"),
     br#"{"claudeAiOauth":{"accessToken":"TEST_TOKEN_work","expiresAt":9999999999999}}"#,
   )?;
+  // A usage fetch verified work's own login, so doctor checks whose it is with no network.
+  sandbox.verified("work", &sandbox.profile("work"), "TEST_TOKEN_work")?;
   fs::create_dir_all(sandbox.root.join("data/ccusage/profiles/engineering03"))?;
   fs::write(
     sandbox.root.join("launchd-CLAUDE_SECURESTORAGE_CONFIG_DIR"),
@@ -1548,6 +1550,11 @@ fn predict_projects_each_accounts_unused_share_from_the_history_and_says_when_it
   let (now, reset) = (ccusage::now(), reset_in(3 * DAY)?);
   let (from, risen) = (10.0, 12.0);
   let history = [(from, now - DAY), (from + risen, now)];
+  // Each sample is on the plan work's login recorded when it was taken.
+  let on = ccusage::usage::Plan {
+    subscription_type: Some(max.0.into()),
+    rate_limit_tier: Some(max.1.into()),
+  };
   for (percent, sampled_at) in history {
     let snapshot: ccusage::usage::Snapshot =
       serde_json::from_value(resetting(percent, &reset, None))?;
@@ -1555,6 +1562,7 @@ fn predict_projects_each_accounts_unused_share_from_the_history_and_says_when_it
       &sandbox.root.join("state/ccusage"),
       "work",
       &snapshot,
+      &on,
       sampled_at,
     )?;
   }

@@ -14,7 +14,7 @@ use crate::{
   usage::{self, Kind, Plan, Report, Snapshot, WEEK},
   which,
 };
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use time::{OffsetDateTime, format_description::well_known::Rfc3339};
 
 /// The least span of history a rate is drawn from: one day, so that it takes in a day's
@@ -203,6 +203,68 @@ fn plan_of<'a>(reports: &'a [Report], name: &str) -> Option<&'a Plan> {
     .map(|report| &report.plan)
 }
 
+/// The plan an `account`'s samples that record none are counted on, as an older ccusage
+/// wrote them: the plan its report gives, unless that is the empty plan of a report that
+/// could not read its login, when the plan its latest sample recorded stands in. None
+/// for an account with no report, which is no longer a profile. Pure.
+fn account_plan<'a>(
+  reports: &'a [Report],
+  samples: &'a [Sample],
+  account: &str,
+) -> Option<&'a Plan> {
+  plan_of(reports, account)
+    .filter(|plan| **plan != Plan::default())
+    .or_else(|| {
+      samples
+        .iter()
+        .filter(|sample| sample.account == account && sample.plan.is_some())
+        .max_by_key(|sample| sample.sampled_at)
+        .and_then(|sample| sample.plan.as_ref())
+    })
+    .or_else(|| plan_of(reports, account))
+}
+
+/// The plan `sample` is counted on: the one it was taken on, else its account's, which
+/// `fallback` holds (`account_plan`). Pure.
+fn taken_on<'a>(
+  sample: &'a Sample,
+  fallback: &BTreeMap<&str, Option<&'a Plan>>,
+) -> Option<&'a Plan> {
+  sample
+    .plan
+    .as_ref()
+    .or_else(|| fallback.get(sample.account.as_str()).copied().flatten())
+}
+
+/// One account's weekly samples, as the rate counts them: how many there are, how many
+/// it leaves out, and when the latest of those was taken and on what plan.
+#[derive(Default)]
+struct Counted<'a> {
+  weekly: usize,
+  left: usize,
+  latest: Option<(i64, Option<&'a Plan>)>,
+}
+
+/// What predict says of an account's weekly samples that the rate leaves out: how many,
+/// and the plan the latest of them was taken on, or that none can be told. Pure.
+fn samples_left_out(counted: &Counted) -> String {
+  let which = if counted.left == counted.weekly {
+    format!("its {} weekly samples", counted.left)
+  } else {
+    format!("{} of its {} weekly samples", counted.left, counted.weekly)
+  };
+  match counted
+    .latest
+    .and_then(|(_, plan)| plan)
+    .filter(|plan| **plan != Plan::default())
+  {
+    Some(plan) => format!("the rate leaves out {which}, on {}", described(plan)),
+    None => {
+      format!("the rate leaves out {which}, since none records a plan and its usage now gives none")
+    }
+  }
+}
+
 /// When `account`'s weekly window resets, when the rule read one.
 fn weekly_reset(account: &which::Account) -> Option<OffsetDateTime> {
   account.weekly.as_ref().and_then(|weekly| weekly.resets_at)
@@ -244,12 +306,40 @@ pub fn project(
       .as_ref()
       .is_some_and(|counted| plan_of(reports, name) == Some(counted))
   };
+  // A sample counts on the plan it was taken on, so an account whose usage fails now
+  // keeps its history; one an older ccusage wrote counts on its account's plan.
+  let fallback: BTreeMap<&str, Option<&Plan>> = samples
+    .iter()
+    .map(|sample| sample.account.as_str())
+    .collect::<BTreeSet<_>>()
+    .into_iter()
+    .map(|account| (account, account_plan(reports, samples, account)))
+    .collect();
+  let counts = |sample: &Sample| {
+    plan
+      .as_ref()
+      .is_some_and(|counted| taken_on(sample, &fallback) == Some(counted))
+  };
   let counted: Vec<Sample> = samples
     .iter()
-    .filter(|sample| on_plan(sample.account.as_str()))
+    .filter(|sample| counts(sample))
     .cloned()
     .collect();
   let rate = rate(&counted);
+  let mut by_account: BTreeMap<&str, Counted> = BTreeMap::new();
+  for sample in samples
+    .iter()
+    .filter(|sample| sample.window.kind == Kind::WeeklyAll)
+  {
+    let account = by_account.entry(sample.account.as_str()).or_default();
+    account.weekly += 1;
+    if !counts(sample) {
+      account.left += 1;
+      if account.latest.is_none_or(|(at, _)| sample.sampled_at >= at) {
+        account.latest = Some((sample.sampled_at, taken_on(sample, &fallback)));
+      }
+    }
+  }
   let mut left_out = Vec::new();
   let mut accounts = Vec::new();
   for account in &choice.accounts {
@@ -279,6 +369,15 @@ pub fn project(
         left_out.push((account.name.clone(), "no weekly reset to project to".into()))
       }
       (None, _) => left_out.push((account.name.clone(), account.reason.clone())),
+    }
+  }
+  // Every account whose weekly samples the rate leaves out is named, with how many,
+  // beside any other reason it is left out.
+  for (name, counted) in by_account.iter().filter(|(_, counted)| counted.left > 0) {
+    let note = samples_left_out(counted);
+    match left_out.iter_mut().find(|(left, _)| left == name) {
+      Some((_, why)) => *why = format!("{why}; {note}"),
+      None => left_out.push(((*name).to_owned(), note)),
     }
   }
   let Some(per_hour) = rate.per_hour else {
@@ -358,7 +457,8 @@ mod tests {
     Ok(OffsetDateTime::parse(text, &Rfc3339)?.unix_timestamp())
   }
 
-  /// A weekly sample of `account` at `percent`, on the window that resets at `reset`.
+  /// A weekly sample of `account` at `percent`, on the window that resets at `reset`,
+  /// recording no plan, as an older ccusage wrote one.
   fn sample(account: &str, percent: f64, reset: i64, sampled_at: i64) -> Result<Sample> {
     Ok(Sample {
       account: account.into(),
@@ -369,6 +469,7 @@ mod tests {
         share: None,
       },
       sampled_at,
+      plan: None,
     })
   }
 
@@ -549,11 +650,20 @@ mod tests {
       .map(|account| account.name.as_str())
       .collect();
     assert_eq!(names, ["a", "b"]);
+    // c's samples are named as left out of the rate too, with how many.
+    let c_samples = history
+      .iter()
+      .filter(|sample| sample.account == "c")
+      .count();
     assert_eq!(
       projection.left_out,
       [(
         "c".to_owned(),
-        format!("another plan's allowance ({})", described(&pro))
+        format!(
+          "another plan's allowance ({}); the rate leaves out its {c_samples} weekly samples, on {}",
+          described(&pro),
+          described(&pro)
+        )
       )]
     );
     // One account on each plan: the tie goes to the active account's plan, else to the
@@ -579,6 +689,74 @@ mod tests {
     assert_eq!(projection.plan.as_ref(), Some(&pro));
     assert_eq!(projection.rate.per_hour, Some(pro_risen / hours(MIN_SPAN)));
     assert!(projection.accounts.is_empty());
+    Ok(())
+  }
+
+  // ISSUE:0008 Acceptance 4: the rate counts each sample on the plan it was taken on, so
+  // it is the same whether or not an account's usage fails now; and an account whose
+  // samples no plan can be told for is named, with how many the rate leaves out.
+  #[test]
+  fn a_failed_accounts_samples_count_on_the_plan_they_were_taken_on() -> Result<()> {
+    let now = at("2026-11-13T05:00:00Z")?;
+    let cap = which::DEFAULT_CAP;
+    let max = plan("max", "default_claude_max_20x");
+    let taken = |account: &str, percent: f64, sampled_at: i64, on: Option<&Plan>| {
+      sample(account, percent, now + WEEK, sampled_at).map(|kept| Sample {
+        plan: on.cloned(),
+        ..kept
+      })
+    };
+    let (a_risen, b_risen) = (24.0, 12.0);
+    let history = [
+      taken("a", 0.0, now - MIN_SPAN, Some(&max))?,
+      taken("a", a_risen, now, Some(&max))?,
+      taken("b", 0.0, now - MIN_SPAN, Some(&max))?,
+      taken("b", b_risen, now, Some(&max))?,
+      // As an older ccusage wrote them.
+      taken("c", 0.0, now - MIN_SPAN, None)?,
+      taken("c", 6.0, now, None)?,
+    ];
+    let reading = |name: &str| -> Result<Report> {
+      let mut planned = report(name, now, 0.0, now + WEEK)?;
+      planned.plan = max.clone();
+      Ok(planned)
+    };
+    let read = project(&history, &[reading("a")?, reading("b")?], now, cap, None)?;
+    assert_eq!(
+      read.rate.per_hour,
+      Some((a_risen + b_risen) / hours(MIN_SPAN))
+    );
+    // b's login is another account's now, and c has none, so their usage fails.
+    let failing = [
+      reading("a")?,
+      Report::failed(
+        "b",
+        "stored Claude login does not match this profile's email",
+      ),
+      Report::failed("c", "not authenticated; run ccusage login NAME"),
+    ];
+    let failed = project(&history, &failing, now, cap, None)?;
+    assert_eq!(failed.rate, read.rate);
+    let why = |name: &str| {
+      failed
+        .left_out
+        .iter()
+        .find(|(left, _)| left == name)
+        .map(|(_, why)| why.clone())
+        .unwrap_or_default()
+    };
+    assert!(!why("b").contains("weekly samples"), "{}", why("b"));
+    let c_samples = history
+      .iter()
+      .filter(|sample| sample.account == "c")
+      .count();
+    assert!(
+      why("c").ends_with(&format!(
+        "; the rate leaves out its {c_samples} weekly samples, since none records a plan and its usage now gives none"
+      )),
+      "{}",
+      why("c")
+    );
     Ok(())
   }
 }

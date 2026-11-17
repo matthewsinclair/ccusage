@@ -175,6 +175,20 @@ pub fn launchd_dir() -> Result<String> {
   )
 }
 
+/// What a verb says of the shell it runs in when that shell exports the login directory
+/// naming a directory other than the shared config: Claude started from it reads that
+/// directory's login, so does not follow a switch, and the one command that clears it.
+/// None when it is unset, empty or the shared config. Pure.
+pub(crate) fn shell_pin(value: Option<&std::ffi::OsStr>, shared: &Path) -> Option<String> {
+  let value = Path::new(value.filter(|value| !value.is_empty())?);
+  (value != shared).then(|| {
+    format!(
+      "{LOGIN_DIR}={} is set in this shell, so Claude started from it reads that directory's login instead of the shared config's, and does not follow a switch; clear it with unset {LOGIN_DIR}",
+      value.display()
+    )
+  })
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -183,6 +197,31 @@ mod tests {
     fs::{File, FileTimes},
     time::SystemTime,
   };
+
+  // ISSUE:0008, its fix outline's item 4: a shell that exports a login directory other
+  // than the shared config is named, with the one command that clears it; one that
+  // exports none, an empty one or the shared config's is not.
+  #[test]
+  fn a_shell_that_pins_claude_to_another_store_is_named_with_its_remedy() {
+    let shared = Path::new("/home/u/.config/claude");
+    for quiet in [None, Some(""), Some("/home/u/.config/claude/")] {
+      assert_eq!(
+        shell_pin(quiet.map(std::ffi::OsStr::new), shared),
+        None,
+        "{quiet:?}"
+      );
+    }
+    let said =
+      shell_pin(Some(std::ffi::OsStr::new("/data/profiles/work")), shared).unwrap_or_default();
+    assert!(
+      said.starts_with("CLAUDE_SECURESTORAGE_CONFIG_DIR=/data/profiles/work is set in this shell"),
+      "{said}"
+    );
+    assert!(
+      said.ends_with("clear it with unset CLAUDE_SECURESTORAGE_CONFIG_DIR"),
+      "{said}"
+    );
+  }
 
   #[test]
   fn the_settings_lock_is_reclaimed_past_claude_codes_stale_time_and_not_before() -> Result<()> {

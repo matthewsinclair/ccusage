@@ -254,12 +254,8 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       store.save()?;
       println!("Added {name}. Next: ccusage login {name}");
     }
-    "login" => {
-      let name = one(&args)?;
-      auth::login(&store, name)?;
-      // The active account's fresh login replaces the one every session shares.
-      crate::switch::reseat(&store, name)?;
-    }
+    // The active account's fresh login replaces the one every session shares.
+    "login" => crate::switch::login(&store, one(&args)?)?,
     "logout" => {
       let name = one(&args)?;
       if crate::seat::home(&store, name)? != store.profile_dir(name)? {
@@ -384,6 +380,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       let all = flag(&mut args, "--all");
       let json = flag(&mut args, "--json");
       let refresh = flag(&mut args, "--refresh");
+      shell_note(&store);
       let names = if all {
         empty(&args)?;
         store.config.profiles.keys().cloned().collect::<Vec<_>>()
@@ -420,6 +417,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
       let refresh = flag(&mut args, "--refresh");
       let model = argument(&mut args, "--model")?;
       empty(&args)?;
+      shell_note(&store);
       let names: Vec<_> = store.config.profiles.keys().cloned().collect();
       let reports = reports(&store, &names, refresh)?;
       let model = model
@@ -469,6 +467,7 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
     "predict" => {
       let json = flag(&mut args, "--json");
       empty(&args)?;
+      shell_note(&store);
       let names: Vec<_> = store.config.profiles.keys().cloned().collect();
       let reports = reports(&store, &names, false)?;
       let samples = crate::history::samples(&store.state)?;
@@ -492,6 +491,22 @@ pub fn run(mut args: Vec<String>, version: fn() -> String) -> Result<()> {
     }
   }
   Ok(())
+}
+
+/// Says on stderr, for a verb that reports, when the shell it runs in pins Claude to a
+/// store other than the shared config's while a profile is seated there, so Claude
+/// started from it does not follow a switch. A shared config or a seat that cannot be
+/// read is not this note's to report: each account's own report says so.
+fn shell_note(store: &Store) {
+  if let Ok(Some(shared)) = store.shared_dir()
+    && let Ok(Some(_)) = crate::seat::seated(store)
+    && let Some(note) = crate::shared::shell_pin(
+      std::env::var_os(crate::shared::LOGIN_DIR).as_deref(),
+      &shared,
+    )
+  {
+    eprintln!("ccusage: {note}");
+  }
 }
 
 /// Each named account's usage report, as usage and which read them.
