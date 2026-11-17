@@ -1770,6 +1770,10 @@ fn herdr_launch_opens_the_panel_as_a_tab_or_says_why_not() -> Result<()> {
     Ok(command.output()?)
   };
   let log = sandbox.root.join("herdr-app.log");
+  // With no Herdr home there is no Herdr to open the panel in.
+  let output = herdr(&["herdr", "launch"], false)?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stderr)?.contains("no Herdr home"));
   fs::create_dir_all(&home)?;
   // With the mod not installed, launch points to install.
   let output = herdr(&["herdr", "launch"], false)?;
