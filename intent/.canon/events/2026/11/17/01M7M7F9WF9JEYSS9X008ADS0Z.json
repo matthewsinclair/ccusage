@@ -1,0 +1,16 @@
+{
+  "id": "01M7M7F9WF9JEYSS9X008ADS0Z",
+  "ts": "2026-11-17T07:45:18.223Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 4,
+    "text": "ISSUE:0011 (low): install says nothing while herdr-app check runs. On vc's go of 2026-11-17, for the next release. Landed and closed on vc's read (5aadc2d): main fast-forwarded to 56270e1 (875be64 the tests, 56270e1 the fix with RECIPE.md, README and the CHANGELOG's 0.1.11 section, opened as unreleased), with ic's Desk run as the run (slot 01M7M75M90QWDPR1R4YSQ7GC6S, red at 5949cc5, green at 3033e19, code identical); intent at lint ST0002 28 of 28 and ST0003 32 of 32 after it. vc's note, left as it is in the issue's Progress: a background process that herdr-app left holding its output pipes would keep the final read open past the bound, as Command::output() would. Then ic removed wt-issue-0011 after every check passed, deleted ic/ISSUE-0011 with git branch -d (was 56270e1), and unclaimed the issue. Done."
+  }
+}

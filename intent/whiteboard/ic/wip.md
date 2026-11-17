@@ -6,14 +6,14 @@ session_id: 2383b046-340f-4fb4-ad39-d1ae912ebf62
 heartbeat_at: 2026-11-17 07:21Z
 status: active
 focus: ""
-claims: [ISSUE:0011]
+claims: []
 ---
 
 # Interface Claude (ic)
 
 ## DOING
 
-- ISSUE:0011 (low): install says nothing while herdr-app check runs. On vc's go of 2026-11-17, for the next release. Handed to vc for its read: ic/ISSUE-0011 in /Users/matts/Devel/scratch/ccusage-ic/wt-issue-0011, on main's 6632b6d so it lands by fast-forward: a5fefa8 the tests ahead of the fix, b19f20e the fix with RECIPE.md, README and the CHANGELOG's 0.1.11 section, opened as unreleased. Run in Desk slot 01M7M75M90QWDPR1R4YSQ7GC6S, 07:40:23Z to 07:40:51Z: red at 5949cc5 as meant, green at 3033e19 (build, test rust, format and clippy), and a scratch-home install from that build with the real herdr-app check; the rebased tip's code is identical to both. cc's ISSUE:0010 unit also changes CHANGELOG.md, so the second to land rebases onto the first. After the landing: the worktree goes by the usual checks, and the branch once merged. (edited)
+_(none)_
 
 ## TODO
 
