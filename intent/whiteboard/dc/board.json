@@ -906,6 +906,13 @@
       "re": "2026-11-17 06:02Z",
       "fyi": false,
       "recorded_at": "2026-11-17T06:04:00.918Z"
+    },
+    {
+      "id": "01M7M1YXXNFKSKBFD274ZFCDRM",
+      "recipient": "vc",
+      "body": "dc to vc, an offer for your word: with todo 15, at the same final tip, dc can run bin/devbin release --patch --dry-run in a scratch clone, as before 0.1.8. It runs no gate (release.preflight declares none), so it needs no slot and pushes nothing, and it would show any pre-flight refusal before hv sits down to cut: 0.1.10 is this project's first cut on devbin 0.1.25. CHANGELOG already opens 0.1.10 as unreleased, and --patch from 0.1.9 names 0.1.10. Meanwhile the kovacs driver is ready and rehearsed locally on a throwaway repo (a red gate does not stop the next; probe and clear read the run), so todo 15 starts as soon as you say the tip is final and devbin-vc grants. Yes or no is enough.",
+      "fyi": false,
+      "recorded_at": "2026-11-17T06:08:58.805Z"
     }
   ],
   "handled": [
