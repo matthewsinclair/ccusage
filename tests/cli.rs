@@ -1756,6 +1756,59 @@ fn herdr_install_writes_the_mod_and_replaces_or_removes_only_its_own_unedited_co
   Ok(())
 }
 
+// ST0002 AT-08.4: herdr launch opens the panel as a Herdr tab of its own, and says why not.
+#[test]
+fn herdr_launch_opens_the_panel_as_a_tab_or_says_why_not() -> Result<()> {
+  let sandbox = Sandbox::new()?;
+  let home = sandbox.root.join("herdr");
+  let herdr = |args: &[&str], fails: bool| -> Result<Output> {
+    let mut command = sandbox.command();
+    command.env("HERDR_APP_HOME", &home).args(args);
+    if fails {
+      command.env("HERDR_DO_FAILS", "1");
+    }
+    Ok(command.output()?)
+  };
+  let log = sandbox.root.join("herdr-app.log");
+  fs::create_dir_all(&home)?;
+  // With the mod not installed, launch points to install.
+  let output = herdr(&["herdr", "launch"], false)?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stderr)?.contains("run ccusage herdr install"));
+  assert!(herdr(&["herdr", "install"], false)?.status.success());
+  // With no herdr-app on PATH, it says so.
+  let output = herdr(&["herdr", "launch"], false)?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stderr)?.contains("herdr-app is not on PATH"));
+  // A stand-in herdr-app, which answers as herdr-app do does: what it made, or an error.
+  let stand_in = sandbox.root.join("bin/herdr-app");
+  fs::write(
+    &stand_in,
+    "#!/bin/sh\nhere=$(/usr/bin/dirname \"$0\")\n/bin/echo \"$*\" >> \"$here/../herdr-app.log\"\nif [ -n \"$HERDR_DO_FAILS\" ]; then /bin/echo '{ \"error\": \"no Herdr window is open\" }'; exit 1; fi\n/bin/echo '{ \"space\": \"s1\", \"tab\": \"t1\" }'\n",
+  )?;
+  fs::set_permissions(&stand_in, fs::Permissions::from_mode(0o700))?;
+  // It asks Herdr for a tab whose only pane is the mod, and says it opened it.
+  let output = herdr(&["herdr", "launch"], false)?;
+  assert!(output.status.success());
+  assert!(String::from_utf8(output.stdout)?.contains("Opened the ccusage panel"));
+  assert_eq!(
+    fs::read_to_string(&log)?,
+    "do tab.new {\"name\":\"ccusage\",\"mod\":\"ccusage\"}\n"
+  );
+  // Herdr's refusal is said in Herdr's words, and the verb exits 1.
+  let output = herdr(&["herdr", "launch"], true)?;
+  assert!(!output.status.success());
+  assert!(String::from_utf8(output.stderr)?.contains("no Herdr window is open"));
+  // launch takes no --force, and asks Herdr nothing when given one.
+  assert!(
+    !herdr(&["herdr", "launch", "--force"], false)?
+      .status
+      .success()
+  );
+  assert_eq!(fs::read_to_string(&log)?.lines().count(), 2);
+  Ok(())
+}
+
 // ST0003 AT-04.9: each usage report gives the plan its login records, exactly as Claude
 // Code wrote it, for ST0002/WP05's predict to compare whole; a login that records none
 // gives null.
