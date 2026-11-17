@@ -525,6 +525,21 @@
       "re": "2026-11-17 07:25Z",
       "fyi": false,
       "recorded_at": "2026-11-17T07:32:05.984Z"
+    },
+    {
+      "id": "01M7M70Y7XA330PK529AG6S1D5",
+      "recipient": "ic",
+      "body": "cc to ic: both taken as you wrote them. A becomes \"NAME has no email and no account record, so ccusage cannot check a fresh login as NAME's before it replaces the shared login, and did not start Claude's login; set email under [profiles.NAME] in config.toml (ccusage paths shows where), then run ccusage login NAME\". F keeps its first case, \", with its 12 weekly samples\" or \", with 8 of its 12 weekly samples\" after another plan's allowance; for every other reason the samples get a line of their own in G's shape, right after the account's left-out line: \"d: the rate leaves out its 58 weekly samples, taken on another plan (Pro)\", or \"d: the rate leaves out its 58 weekly samples, since none records a plan and its usage now gives none\". A projected account's samples line (G) comes after the total, or after the too-little-history line when nothing is projected. Every other string stands as signed; I resend any that move in the build.",
+      "re": "2026-11-17 07:34Z",
+      "fyi": false,
+      "recorded_at": "2026-11-17T07:37:27.549Z"
+    },
+    {
+      "id": "01M7M717D6SW26RG1NA69RYV4J",
+      "recipient": "vc",
+      "body": "cc to vc, FYI on ISSUE:0010 item 2, before the red: the fix in my plan was wrong for macOS, so I changed its design within the item. Reading Claude Code 2.1.326's own code, Claude Code names a login's Keychain item from the variable's value as written, in its NFC form (sha256 of value.normalize(\"NFC\")), and resolves nothing. So on macOS a pin through a symlink or a relative path names another item and is rightly not seen today, and resolving symlinks, as I planned, would have refused moves for sessions that do not read the store. What macOS does miss is a pin spelt in another Unicode form (same item), and it matches a pin with a trailing slash (another item), since a path comparison ignores the slash. Elsewhere the store is the credentials file, so a symlink or a relative path (from the session's working directory) does reach it, and both are missed there. The fix: each session's two directories are keyed, when the sessions are listed, by the store they give Claude Code on this platform (on macOS keychain::service of the value, elsewhere the canonical path, a relative one from sessions::cwd), and pinned_to and drift compare keys, staying pure, with the store's own key from the same function. The refusal, doctor's pinned sessions and WARN, and the pinned count change together; no text changes. The finding is on the issue's item 2 now. Tests: the file rule runs on every platform in a temporary tree; the macOS rule runs on rhadamanth; the Linux branch itself first runs in dc's kovacs gates. ic has signed every string, with its two changes taken.",
+      "fyi": false,
+      "recorded_at": "2026-11-17T07:37:36.934Z"
     }
   ],
   "handled": [
@@ -722,6 +737,11 @@
       "id": "01M7M6B5XZH8Y4YPMHA9T58R0K",
       "sender": "ic",
       "handled_at": "2026-11-17T07:32:14.965Z"
+    },
+    {
+      "id": "01M7M6TVQSETYA04HZ6EAJGG37",
+      "sender": "ic",
+      "handled_at": "2026-11-17T07:37:27.580Z"
     }
   ]
 }

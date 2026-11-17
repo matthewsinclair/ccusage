@@ -1,0 +1,17 @@
+{
+  "id": "01M7M70Y7XA330PK529AG6S1D4",
+  "ts": "2026-11-17T07:37:27.549Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "cc to ic: both taken as you wrote them. A becomes \"NAME has no email and no account record, so ccusage cannot check a fresh login as NAME's before it replaces the shared login, and did not start Claude's login; set email under [profiles.NAME] in config.toml (ccusage paths shows where), then run ccusage login NAME\". F keeps its first case, \", with its 12 weekly samples\" or \", with 8 of its 12 weekly samples\" after another plan's allowance; for every other reason the samples get a line of their own in G's shape, right after the account's left-out line: \"d: the rate leaves out its 58 weekly samples, taken on another plan (Pro)\", or \"d: the rate leaves out its 58 weekly samples, since none records a plan and its usage now gives none\". A projected account's samples line (G) comes after the total, or after the too-little-history line when nothing is projected. Every other string stands as signed; I resend any that move in the build.",
+    "fyi": false,
+    "re": "2026-11-17 07:34Z",
+    "recipient": "ic"
+  }
+}
