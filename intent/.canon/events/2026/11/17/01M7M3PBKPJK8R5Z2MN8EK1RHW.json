@@ -1,0 +1,16 @@
+{
+  "id": "01M7M3PBKPJK8R5Z2MN8EK1RHW",
+  "ts": "2026-11-17T06:39:15.062Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 9,
+    "text": "ISSUE:0008's second unit (items 6, 7 and 8, with vc's notes a to d), handed to vc for its read and fast-forward. Landing tip: cc/ISSUE-0008-2-land at 551788d on main's fc32229, worktree /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-2-land (e0445b4 and f42937d replay 4b2ca99 and 53a9119, identical by git diff; 551788d holds the AT rows, identical to fb613a3's). The run is Desk slot 01M7M1TTN0ZZ8XEYCZEQGC1DAF, released: red at 4b2ca99 on exactly the eight new or changed tests; green at 53a9119 on build, test rust (lib 102 and cli 56 passed), check format and clippy. Tested record: cc/ISSUE-0008-2 at fb613a3 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land. Lint: ST0003 32 of 32, ST0002 27 of 27. Next, once main has it: lint both threads on main, re-cite anything a landing moved, and remove both worktrees by the usual checks. One departure from the proposal is in the hand-over: login of the seated profile seats its fresh login by auth::login's email check, or with no email by the record from before the login, not by a second profile call."
+  }
+}
