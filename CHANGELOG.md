@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- r in the Herdr panel fetches every account at once, as the dashboard's r does, though not one in a rate-limit cooldown, once you bind it in Herdr's `keys.json` with `"mod:ccusage": {"r": "ccusage.refresh"}` (ccusage never writes that file). The panel says it is refreshing until ccusage answers, and a press while a fetch runs starts no other. Its five-minute timer, and its reload after a switch, still ask from the cache (ISSUE:0012).
+- r in the Herdr panel fetches every account at once, as the dashboard's r does, though not one in a rate-limit cooldown. The panel takes the keyboard when it opens and when it is clicked, so r needs no line in Herdr's `keys.json`. The panel says it is refreshing until ccusage answers, and a press while a fetch runs starts no other. Its five-minute timer, and its reload after a switch, still ask from the cache (ISSUE:0012).
 
 ### Changed
 

@@ -7,8 +7,8 @@
 // nothing else. It asks on a timer no shorter than ccusage's usage cache lifetime,
 // which `ccusage herdr install` writes into lifetime.js, so however many panels are
 // open, their timers ask Claude's usage endpoint no more often than its cache allows.
-// A key bound to ccusage.refresh in Herdr's keys.json, such as
-// "mod:ccusage": {"r": "ccusage.refresh"}, forces a fetch, as the dashboard's r does:
+// The panel takes the keyboard when it opens and when it is clicked, as Herdr's own mods
+// do, and r then forces a fetch, as the dashboard's r does:
 // `ccusage which --json --refresh`. Countdowns tick from the clock and ask nothing.
 //
 // Opened as a tab of its own by `ccusage herdr launch`, or as a pane:
@@ -135,6 +135,11 @@ export default class Ccusage extends View {
       this.detail(cx);
       return;
     }
+    // A key reaches the panel only while it holds the keyboard, through a handle tracked
+    // on its root, as in Herdr's own mods: taken when the panel opens, when it is
+    // clicked, and on "focus", which pane.go and a closing popup send.
+    this.handle = cx.focus_handle();
+    this.handle.focus();
     const every = Math.max(LIFETIME, Number(props()?.every) || LIFETIME) * SECOND;
     cx.timer.every(every, (cx) => this.refresh(cx));
     cx.timer.every(MINUTE, (cx) => cx.notify());
@@ -169,15 +174,25 @@ export default class Ccusage extends View {
     });
   }
 
+  /** r, while the panel holds the keyboard, forces a fetch; every other key passes on. */
+  key(event, cx) {
+    if (event.keystroke !== "r") return;
+    this.refresh(cx, true);
+    cx.stop_propagation();
+    cx.notify();
+  }
+
   /**
-   * The commands Herdr delivers to this mod's shown copies: refresh, which a key sends
-   * and which forces a fetch; reload, which a switch sends and which asks from the cache;
-   * and use, once confirmed.
+   * The commands Herdr delivers to this mod's shown copies: refresh, which forces a fetch
+   * as r does, for run() or a key binding of one's own; reload, which a switch sends and
+   * which asks from the cache; focus, which pane.go sends and Herdr sends again when a
+   * popup over the panel closes; and use, once confirmed.
    */
   async command(name, cx) {
     if ((name === "refresh" || name === "reload") && !props()?.account) {
       this.refresh(cx, name === "refresh");
     }
+    if (name === "focus") this.handle?.focus();
     if (name === "use" && this.pending) {
       const account = this.pending;
       this.pending = null;
@@ -212,6 +227,9 @@ export default class Ccusage extends View {
     const which = this.which;
     const root = v_flex()
       .id("ccusage")
+      .track_focus(this.handle)
+      .on_mouse_down("left", () => this.handle.focus())
+      .on_key_down((event, cx) => this.key(event, cx))
       .size_full()
       .bg(t.surface)
       .p(scaled(10))
