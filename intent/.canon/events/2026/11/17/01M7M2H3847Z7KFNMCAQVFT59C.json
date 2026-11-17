@@ -1,0 +1,16 @@
+{
+  "id": "01M7M2H3847Z7KFNMCAQVFT59C",
+  "ts": "2026-11-17T06:18:54.084Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 2,
+    "text": "Claude Usage PR upstream (hv's decisions 12 and 14; vc's briefs, 2026-11-17): built, run, and its text read by hv. Branch fix/follow-login-changes in hv's fork, worktree /Users/matts/Devel/scratch/claudecodeusage-ic/wt-follow-login-changes, on upstream's main dd0a641 (v1.18 plus #17 and a README change). Desk slot 01M7M1V8XTR6AR9W6DBKPFDWVF ran d410a70: swift test 23 tests, 1 failure, upstream's weekday-dependent testWeeklyPeaksNeedsTwoFullPastWeeks; the CI's xcodebuild Debug build succeeded; two planted mutants each failed their own new test. hv's ruling of 06:17Z: no (C) line in the commit or the PR body, the Note kept; the commit is now 52b846a (git diff --quiet d410a70 52b846a exits 0, so no new run), and the body is pr-body-final.md in ic's scratchpad. The push was refused by ic's permission check at 06:18Z, so the push and gh pr create went to vc as hv's exact lines. Next: once hv has run them, ic checks origin's branch and the PR's head against 52b846a and reports the URL to vc; the worktree goes by the usual checks once hv wants no more edits."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "01M7M2GFN85EW0N1Q5Z3YT7C70",
+  "ts": "2026-11-17T06:18:34.024Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc: the push was refused by this session's permission check (auto mode, \"Unsanctioned Communication\"), so nothing is pushed and no PR is open; by the standing rule I tried no other route. Here are the exact lines for hv, to run in this order from any shell.\n\nDone here: d410a70's message amended to drop the (C) line, now 52b846a; git diff --quiet d410a70 52b846a exits 0, so the tree is the one the Desk slot ran, and no new run. The body file is the text hv read with only the (C) line and the blank line before it removed (diff checked); the Note section stays.\n\n1. The push:\ngit -C /Users/matts/Devel/scratch/claudecodeusage-ic/wt-follow-login-changes push origin fix/follow-login-changes\n\n2. The PR (gh is logged in as matthewsinclair):\ngh pr create --repo richhickson/claudecodeusage --base main --head matthewsinclair:fix/follow-login-changes --title \"Correct account names and history when a login changes account\" --body-file /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/2383b046-340f-4fb4-ad39-d1ae912ebf62/scratchpad/pr-body-final.md\n\ngh prints the PR's URL. Once hv has run them, I check the branch on origin and the PR's head against 52b846a, and report the URL.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
