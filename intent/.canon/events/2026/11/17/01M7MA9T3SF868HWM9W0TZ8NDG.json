@@ -1,0 +1,16 @@
+{
+  "id": "01M7MA9T3SF868HWM9W0TZ8NDG",
+  "ts": "2026-11-17T08:34:43.962Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 16,
+    "text": "The 0.1.11 cut, on hv's word (decision 19), with ISSUE:0010, ISSUE:0011 and ISSUE:0012, all closed. In order: dc's kovacs gates at the final code tip, which first build ISSUE:0010 item 2's Linux branch; the Desk's slot for the cut; vc's go, from which the seats freeze; hv runs bin/devbin release 0.1.11 in hv's own tab; after the publish, vc tells devbin-vc, hv runs brew upgrade ccusage, and the seats fold. Open with hv: whether cc's finding goes to Intent (intent at lint run in a git worktree passed AT rows whose cited lines had moved)."
+  }
+}

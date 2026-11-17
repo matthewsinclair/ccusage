@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-17T08:10:16Z:v0.40: vc - 0.1.11's content on main; hv's look closes ISSUE:0012"
+verblock: "2026-11-17T08:34:33Z:v0.41: vc - the 0.1.11 cut, on hv's word (decision 19)"
 ---
 
 # Work In Progress
@@ -8,13 +8,13 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**ISSUE:0012: hv's look at r in the Herdr panel, then the 0.1.11 cut**
+**0.1.11: the cut, on hv's word (decision 19)**
 
-0.1.11's content is on main, under the CHANGELOG's 0.1.11 (unreleased): ISSUE:0010, ISSUE:0011 and ISSUE:0012. What is left:
-- hv's look closes ISSUE:0012. From ic's build at 2214b63 (`/Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage herdr install`), click the panel and press r: it says `Refreshing accounts`, then `as of` moves to the current minute; a second quick r says `Refresh already in progress`. ic keeps its claim, and that build, until then.
-- Then, on hv's word to cut: dc's kovacs gates at the final tip, which first build ISSUE:0010 item 2's Linux branch; the seats freeze; hv runs `bin/devbin release 0.1.11` in hv's own tab.
-
-When the release is cut is hv's word: one cut with everything ready, never small ones.
+0.1.11's content is on main, under the CHANGELOG's 0.1.11 (unreleased): ISSUE:0010, ISSUE:0011 and ISSUE:0012, all closed. In order:
+- dc's kovacs gates at the final code tip, which first build ISSUE:0010 item 2's Linux branch.
+- The Desk's slot for the cut, then vc's go. From the go until vc says it is published, the seats write nothing to the checkout.
+- hv runs `bin/devbin release 0.1.11` in hv's own tab.
+- After the publish: vc tells devbin-vc, hv runs `brew upgrade ccusage`, and the seats fold.
 
 ## Active Steel Threads
 

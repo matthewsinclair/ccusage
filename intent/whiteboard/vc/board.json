@@ -5,9 +5,9 @@
     "name": "Validation Claude",
     "role": "validation",
     "session_id": "1f8ad5f9-8ef2-4931-bffe-b7473752f05d",
-    "heartbeat_at": "2026-11-17T08:10:53.442Z",
+    "heartbeat_at": "2026-11-17T08:34:44.043Z",
     "status": "active",
-    "focus": "0.1.11's content is on main (af386e0): ISSUE:0010 and 0011 closed, 0012 landed. Waiting on hv: the look that closes ISSUE:0012, the word to cut (dc's kovacs gates first), and whether cc's lint finding goes to Intent (todo 16). PR #18 waits upstream (hold 5)",
+    "focus": "The 0.1.11 cut, on hv's word (decision 19): ISSUE:0010, 0011 and 0012 closed. dc's kovacs gates at the final code tip first, then the Desk's slot, vc's go and the freeze, and hv's bin/devbin release 0.1.11 (todo 16). PR #18 waits upstream (hold 5)",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
@@ -301,10 +301,10 @@
       "node": "vc",
       "kind": "todo",
       "seq": 16,
-      "text": "0.1.11's content is on main (af386e0): ISSUE:0010 and ISSUE:0011 closed, ISSUE:0012 landed. Left: hv's look at r in the panel, from ic's build at 2214b63, closes ISSUE:0012 (ic keeps its claim and that build until then). Then, on hv's word to cut: dc's kovacs gates at the final tip, which first build ISSUE:0010 item 2's Linux branch; the seats freeze; hv runs bin/devbin release 0.1.11 in hv's own tab. Open with hv: whether cc's finding goes to Intent (intent at lint run in a git worktree passed AT rows whose cited lines had moved).",
+      "text": "The 0.1.11 cut, on hv's word (decision 19), with ISSUE:0010, ISSUE:0011 and ISSUE:0012, all closed. In order: dc's kovacs gates at the final code tip, which first build ISSUE:0010 item 2's Linux branch; the Desk's slot for the cut; vc's go, from which the seats freeze; hv runs bin/devbin release 0.1.11 in hv's own tab; after the publish, vc tells devbin-vc, hv runs brew upgrade ccusage, and the seats fold. Open with hv: whether cc's finding goes to Intent (intent at lint run in a git worktree passed AT rows whose cited lines had moved).",
       "state": "live",
       "recorded_at": "2026-11-17T07:23:40.434Z",
-      "edited_at": "2026-11-17T08:10:53.349Z"
+      "edited_at": "2026-11-17T08:34:43.962Z"
     }
   ],
   "sent": [
