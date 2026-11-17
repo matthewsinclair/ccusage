@@ -1,0 +1,16 @@
+{
+  "id": "01M7M6W0H42C6AXGYZ6MCZKKY9",
+  "ts": "2026-11-17T07:34:46.052Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "todo",
+    "seq": 16,
+    "text": "The next release's work builds on vc's go of 2026-11-17: cc's one ISSUE:0010 unit, with ic's text nits added to the issue as further items (ic signs every changed string before the hand-over), and ic's install-silence unit, which ic files as an issue. Each is one worktree and one Desk cargo slot; vc reads each hand-over against its issue and lands it. When the next release is cut is hv's word: one cut with everything ready, never small ones."
+  }
+}

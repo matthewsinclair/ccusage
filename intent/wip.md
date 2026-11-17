@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-17T07:26:32Z:v0.38: vc - after 0.1.10: ISSUE:0009 keg proofs; next release plans"
+verblock: "2026-11-17T07:34:18Z:v0.39: vc - the next release builds: ISSUE:0010, install's silence"
 ---
 
 # Work In Progress
@@ -8,18 +8,18 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**ISSUE:0009: LICENSE in the installed tree, proven on the upgraded kegs (dc)**
+**ISSUE:0010: the next release's fixes, building on vc's go (cc, with ic signing the text)**
 
-rhadamanth's keg runs 0.1.10 from brew, and its doctor exits 0. dc reads that keg's LICENSE and its manifest (`/opt/homebrew/opt/ccusage/libexec/.ccusage-install`), read-only, and on kovacs runs `brew upgrade ccusage`, the same read and `ccusage doctor` in a Desk slot. vc reads both proofs against the issue's Acceptance 3 and gives dc the word to close it.
+cc's one unit fixes the issue's items 1, 2, 4 and 6 and rules out 3 and 5 with their reasons. It also takes in ic's nits from its read of ISSUE:0008's landed text, added to the issue's record as further items:
+- one term for a session a switch leaves behind;
+- three lines where a word can point two ways;
+- predict's left-out lines, where `left_out` keeps to the accounts that are not projected, as README's version 1 says;
+- the fall line in durations.
+ic signs every changed string before the hand-over. One worktree, one Desk cargo slot; vc reads the diff and takes cc's run as the run.
 
-**The next release's work, as plans in words (no thread open)**
+**install's silence: the next release's Herdr fix (ic)**
 
-Each plan comes to vc first, and nothing builds until vc's go:
-
-- ISSUE:0010 (low), cc: six nits from vc's reads of ISSUE:0008's units. ic signs any interface text it changes.
-- ic's todo 5: `ccusage herdr install` says what it waits for while `herdr-app check` runs, and bounds the wait.
-- ic's todo 6: ic's read of cc's landed user-facing text. Nits that need code ride ISSUE:0010.
-- ic's todo 7: ways into the mod from inside Herdr, now that `ccusage herdr launch` exists. vc puts the options to hv.
+While `herdr-app check` runs, `ccusage herdr install` says on stderr what it waits for, and one named constant bounds the wait. Past the bound, install reports the mod as not checked and exits 0. ic files it as an issue and builds it in one worktree and one Desk cargo slot, beside cc's unit; CHANGELOG.md is the one file both change.
 
 When the next release is cut is hv's word: one cut with everything ready, never small ones.
 
@@ -34,6 +34,7 @@ None open. `intent outstanding` shows what is.
 ## Notes
 
 - hv's standing rulings are the decisions on hv's board. Among them: ccusage works for any Claude account type and shows whatever it can for that type; a login a switch drops lapses and is not revoked; engineering04 stays a profile until its allowance is exhausted; Herdr's verbs are `ccusage herdr install`, `remove` and `launch`; hv alone runs `ccusage use`, `login` and `which --use`, on vc's steps; Claude Usage comes from its mainline release, not hv's fork; a PR or commit to someone else's repository carries no (C) line; everything ready goes into one cut, never small releases.
+- hv opens the ccusage panel with cmd-shift-u, a `tab.new` line hv keeps in Molt-matts' `config/herdr-app/keys.json` (decision 17), which Herdr reads live. ccusage never writes keys.json.
 - A Claude session started from a shell that exports `CLAUDE_SECURESTORAGE_CONFIG_DIR` reads that profile's own store, and no switch reaches it. `ccusage doctor` names such sessions, and a switch is refused while one reads the target's store.
 - A `/login` typed inside a Claude session writes into whichever store that session reads, with no check of whose login it is. `ccusage login NAME` checks the email after, and a switch verifies the incoming login before it seats it.
 - Before a cut, dc runs the project's gates on kovacs (Linux ARM64): Linux clippy sees code that only a macOS arm uses, which rhadamanth's runs miss, and the release config names no legs.

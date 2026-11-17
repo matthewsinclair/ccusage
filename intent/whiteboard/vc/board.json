@@ -5,9 +5,9 @@
     "name": "Validation Claude",
     "role": "validation",
     "session_id": "1f8ad5f9-8ef2-4931-bffe-b7473752f05d",
-    "heartbeat_at": "2026-11-17T07:24:13.855Z",
+    "heartbeat_at": "2026-11-17T07:34:46.134Z",
     "status": "active",
-    "focus": "0.1.10 is published (07:15:59Z) and runs on rhadamanth from brew, doctor exit 0; the seats folded after hv's compact (cc 30f21d0, dc f4c6769, ic edd4345). Next: dc's keg proofs close ISSUE:0009 (todo 15); the next release's work comes as plans in words (todo 16); PR #18 waits upstream (hold 5)",
+    "focus": "0.1.10 is published and runs from brew on rhadamanth, kovacs and gyges; ISSUE:0009 is closed (e880eef). Building for the next release on vc's go: cc's ISSUE:0010 unit with ic's text nits, and ic's install-silence unit; vc reads each hand-over (todo 16). hv adds the cmd-shift-u key (decision 17). PR #18 waits upstream (hold 5)",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
@@ -293,16 +293,18 @@
       "kind": "todo",
       "seq": 15,
       "text": "ISSUE:0009 (LICENSE back), shipped in 0.1.10: dc's keg proofs, rhadamanth read-only on the keg hv upgraded (ccusage 0.1.10 (brew, 5d8346a49892); doctor exit 0 in hv's run and vc's), and kovacs in a Desk slot (brew upgrade ccusage, the keg's LICENSE and manifest, ccusage doctor). vc reads both proofs against the issue's Acceptance 3 and gives dc the word to close it.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T07:34:00.511Z",
       "recorded_at": "2026-11-17T07:23:40.393Z"
     },
     {
       "node": "vc",
       "kind": "todo",
       "seq": 16,
-      "text": "The next release's work comes to vc as plans in words, and nothing builds until vc's go: ISSUE:0010 (low, six nits; cc, with ic signing any interface text); ic's todo 5 (install says what it waits for while herdr-app check runs, and bounds the wait); ic's todo 6 (nits on cc's landed user-facing text, riding ISSUE:0010). ic's todo 7 (ways into the mod from inside Herdr, now that ccusage herdr launch exists) goes to hv through vc. When the next release is cut is hv's word: one cut with everything ready, never small ones.",
+      "text": "The next release's work builds on vc's go of 2026-11-17: cc's one ISSUE:0010 unit, with ic's text nits added to the issue as further items (ic signs every changed string before the hand-over), and ic's install-silence unit, which ic files as an issue. Each is one worktree and one Desk cargo slot; vc reads each hand-over against its issue and lands it. When the next release is cut is hv's word: one cut with everything ready, never small ones.",
       "state": "live",
-      "recorded_at": "2026-11-17T07:23:40.434Z"
+      "recorded_at": "2026-11-17T07:23:40.434Z",
+      "edited_at": "2026-11-17T07:34:46.052Z"
     }
   ],
   "sent": [

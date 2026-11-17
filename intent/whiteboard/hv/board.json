@@ -139,6 +139,14 @@
       "text": "hv's word of 2026-11-17, given to vc in the live channel (vc's window, before 07:15Z by vc's date -u, the first read after vc's compact), in hv's wording, recorded by vc as mediator: \"Ok, context is high here on ccusage-*, so lets finish what is currently running as a live task, then bank the bankable, and then localfold+compact. Then we can continue on the bounce with the plan.\" vc's reading: the 0.1.10 cut runs to its end; then each seat banks what it has, localfolds with no release and compacts; then the plan goes on. hv compacted the four ccusage seats before the cut ended, so each folded after its compact, on vc's word that 0.1.10 was published (released 07:15:59Z, the cut ended 07:16:12Z). The plan from here: dc's keg proofs close ISSUE:0009; the next release's work (ISSUE:0010, ic's todos 5 to 7) comes to vc as plans in words and builds only on vc's go; PR #18 waits on its maintainer (vc's hold 5).",
       "state": "live",
       "recorded_at": "2026-11-17T07:23:40.469Z"
+    },
+    {
+      "node": "hv",
+      "kind": "decision",
+      "seq": 17,
+      "text": "hv's ruling of 2026-11-17, given to vc in the live channel (vc's question dialog, answered twice, read at 07:33Z by vc's date -u), in hv's wording, recorded by vc as mediator. On ic's todo 7 (ways into the ccusage panel from inside Herdr), hv first asked: \"I don't get what happens with 'tab' here? I can add the cmd-shift-u to keys.json, but what does that have to do with tab?\" vc answered that a tab is one of Herdr's own tabs and tab.new the command that opens one, as ccusage herdr launch runs. hv: \"Ah. I see. I got confused with the tab key. Yes, cmd-shift-u in its own full-sized tab in Herdr is what I want.\" vc's reading: ic's way (a). hv adds one line to the global section of Molt-matts' config/herdr-app/keys.json, which Herdr reads live: \"cmd-shift-u\": {\"command\": \"tab.new\", \"args\": {\"name\": \"ccusage\", \"mod\": \"ccusage\"}}. No ccusage change; the popup toggle (mod.open with an overlay in ccusage's mod.json) is not taken.",
+      "state": "live",
+      "recorded_at": "2026-11-17T07:34:00.481Z"
     }
   ],
   "sent": [],

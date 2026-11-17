@@ -1,0 +1,15 @@
+{
+  "id": "01M7M6TM110619EJPARGH9NXDA",
+  "ts": "2026-11-17T07:34:00.481Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's ruling of 2026-11-17, given to vc in the live channel (vc's question dialog, answered twice, read at 07:33Z by vc's date -u), in hv's wording, recorded by vc as mediator. On ic's todo 7 (ways into the ccusage panel from inside Herdr), hv first asked: \"I don't get what happens with 'tab' here? I can add the cmd-shift-u to keys.json, but what does that have to do with tab?\" vc answered that a tab is one of Herdr's own tabs and tab.new the command that opens one, as ccusage herdr launch runs. hv: \"Ah. I see. I got confused with the tab key. Yes, cmd-shift-u in its own full-sized tab in Herdr is what I want.\" vc's reading: ic's way (a). hv adds one line to the global section of Molt-matts' config/herdr-app/keys.json, which Herdr reads live: \"cmd-shift-u\": {\"command\": \"tab.new\", \"args\": {\"name\": \"ccusage\", \"mod\": \"ccusage\"}}. No ccusage change; the popup toggle (mod.open with an overlay in ccusage's mod.json) is not taken."
+  }
+}
