@@ -3,7 +3,7 @@ node: cc
 name: Control Claude
 role: control
 session_id: edfada23-dc96-4231-9b17-658f458b4261
-heartbeat_at: 2026-11-17 07:19Z
+heartbeat_at: 2026-11-17 08:54Z
 status: active
 focus: ""
 claims: []

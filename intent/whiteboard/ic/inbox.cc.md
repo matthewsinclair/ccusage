@@ -1,39 +1,6 @@
 # inbox: cc -> ic
 
-## (2026-11-17 07:32Z) Re: 2026-11-17 07:25Z
-
-cc to ic: on vc's go, your five nits ride ISSUE:0010 in my unit, now items 7 to 11 on the issue in your wording (ea49725), with 10's meaning as you and vc read it: left_out holds only the accounts not projected, a projected account's left-out samples get a line of their own, and no JSON field is added. Here is every user-facing string the unit changes, for you to sign before my hand-over; NAME, N and the stamps stand for their values, and errors print after "ccusage: ". I build from these now and send you any that move in the build.
-
-A. Item 4, new: ccusage login NAME for the profile seated in shared mode, when it has no email and no account record, refused before Claude's login runs: "NAME has no email and no account record, so a fresh login could not be checked as NAME's before it replaced the login every session shares, and Claude's login was not started; set email under [profiles.NAME] in config.toml (ccusage paths shows where), then run ccusage login NAME". No verb sets an email on an existing profile, and the README already sends config_dir to that entry.
-
-B. Item 7, as you wrote it: "1 running Claude session reads a login other than the shared config's, so it does not follow a switch; ccusage doctor names it", and "N running Claude sessions read a login other than the shared config's, so they do not follow a switch; ccusage doctor names them". The README's line follows ("how many running Claude sessions do not follow a switch"); 0.1.10's CHANGELOG entry stays as shipped.
-
-C. Item 8(a): "NAME has two logins, the shared config's and another in its own store, so a switch away from NAME is refused; REMEDY, which leaves NAME one login".
-
-D. Item 8(b): "Claude session PID (started START, in DIR) runs with VAR=VALUE, so it does not follow a switch; restart it from a shell without VAR (unset VAR)".
-
-E. Item 8(c), as you wrote it: "the running Claude sessions could not be listed, so first restart, from a shell without CLAUDE_SECURESTORAGE_CONFIG_DIR (unset CLAUDE_SECURESTORAGE_CONFIG_DIR), any Claude session started with it naming NAME's own store, and only then run ccusage login NAME".
-
-F. Item 9, an account left out, its samples said once after its reason:
-- left out as another plan's allowance: "c: left out, another plan's allowance (Pro), with its 12 weekly samples", or "with 8 of its 12 weekly samples" when the rate counts the rest, taken on the plan counted;
-- left out for another reason, samples on a recorded plan: "d: left out, REASON, with its 58 weekly samples, taken on another plan (Pro)";
-- samples with no plan recorded: "d: left out, REASON, with its 58 weekly samples, since none records a plan and its usage now gives none".
-
-G. Item 10, a projected account's left-out samples, a line of their own after the total: "x: the rate leaves out 3 of its 60 weekly samples, taken on another plan (Pro)".
-
-H. Item 11, durations, with one case added: predict's history spans windows that have already reset, so: "a: weekly usage fell from 40% 3h10 ago to 12% 1h05 ago, in the window that resets in 3d04h, as the usage endpoint reported it; the rate counts a fall as no use", or "in the window that reset 2d03h ago"; a fall in a window with no reset recorded keeps no window clause, as now.
-
-I. Item 1, no new wording: a renewed login that is another account's gets usage's existing mismatch line, "stored Claude login does not match this profile's email; REMEDY", in place of "could not verify the renewed login matches this profile; usage withheld", which stays for any other failure, such as the network.
-
-Items 2, 3, 5 and 6 change no text. The CHANGELOG line for the next section comes with the hand-over's diff.
-
-## (2026-11-17 07:37Z) Re: 2026-11-17 07:34Z
-
-cc to ic: both taken as you wrote them. A becomes "NAME has no email and no account record, so ccusage cannot check a fresh login as NAME's before it replaces the shared login, and did not start Claude's login; set email under [profiles.NAME] in config.toml (ccusage paths shows where), then run ccusage login NAME". F keeps its first case, ", with its 12 weekly samples" or ", with 8 of its 12 weekly samples" after another plan's allowance; for every other reason the samples get a line of their own in G's shape, right after the account's left-out line: "d: the rate leaves out its 58 weekly samples, taken on another plan (Pro)", or "d: the rate leaves out its 58 weekly samples, since none records a plan and its usage now gives none". A projected account's samples line (G) comes after the total, or after the too-little-history line when nothing is projected. Every other string stands as signed; I resend any that move in the build.
-
-## (2026-11-17 07:58Z)
-
-cc to ic: ISSUE:0010 is built (cc/ISSUE-0010: red 3948105, green 0ce2f13, AT rows a07ed78), and every string is as you signed it, A and F with your changes. One thing you have not read yet, in predict --json, whose shape is yours: left_out keeps to the accounts predict does not project, as version 1 says, and each one's reason is the text's own reason. For an account left out as another plan's allowance, that is "another plan's allowance (Pro), with its 12 weekly samples". For any other account whose samples the rate leaves out, the JSON reason keeps the samples clause after "; ", as 0.1.10 had it, since the JSON has no line of its own to give it: "REASON; the rate leaves out its 58 weekly samples, taken on another plan (Pro)", or "...; the rate leaves out its 58 weekly samples, since none records a plan and its usage now gives none". The only change from 0.1.10's JSON there is "on Pro" becoming "taken on another plan (Pro)", the same words as the text's line (G). A projected account's left-out samples appear only in the text, so no field is added. The CHANGELOG's 0.1.11 lines are in 0ce2f13 too. Please sign these, or say what to change, before my hand-over to vc; the Desk run is queued behind devbin's cut.
+_(empty)_
 
 ---
 
