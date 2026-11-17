@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-17T10:27:24Z:v0.46: vc - ccusage closed for the day (decision 23)"
+verblock: "2026-11-17T10:28:32Z:v0.47: vc - ccusage closed for the day (decision 23)"
 ---
 
 # Work In Progress
@@ -11,7 +11,7 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 **No thread or issue open: ccusage is closed for the day (decision 23), and every seat waits for hv's next word**
 
 - When the next release is cut is hv's word: one cut with everything ready, never small ones. Before it, dc runs the kovacs gates at its final code tip (dc's todo 17), first checking its kovacs driver against devbin 0.1.26 (310f3d0). From devbin-vc: devbin 0.1.25 renders a formula's install as `cp_r`, and from 0.1.26 the release gates empty their build cache before a run when it holds more than `release.gate_cache.max` (12G unless the project declares another), so if one Ccusage build is larger, the project declares a larger size or every gate run builds cold.
-- At the next session's start, vc puts two rulings on the account verb to hv. In Ccusage's record, hv's word of 2026-11-06 reverted the account verb's rename to `activate` (977589e), so `ccusage use NAME` stays the account verb, as 0.1.9 to 0.1.11 ship it. In devbin's record, hv's answer of 2026-11-14 08:49Z (devbin's decision 178(3)) reads: "Ccusage's use-to-activate rename is ruled work at Ccusage's next session." No seat renames anything until hv says which stands.
+- At the next session's start, vc puts two rulings on the account verb to hv. In Ccusage's record, hv's word of 2026-11-06 reverted the account verb's rename to `activate` (977589e), so `ccusage use NAME` stays the account verb, as 0.1.9 to 0.1.11 ship it. In devbin's record, hv's answer of 2026-11-14 08:49Z (devbin's decision 178(3)) reads: "Ccusage's use-to-activate rename is ruled work at Ccusage's next session." No seat renames anything until hv says which stands. devbin's record does not show whether devbin-vc's question of 2026-11-14 set the 2026-11-06 revert beside the rename, so vc puts the two to hv as they stand, then tells devbin-vc hv's answer, which devbin-vc records beside 178(3).
 
 ## Active Steel Threads
 
