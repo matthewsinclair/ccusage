@@ -6,14 +6,14 @@ session_id: 2383b046-340f-4fb4-ad39-d1ae912ebf62
 heartbeat_at: 2026-11-17 07:21Z
 status: active
 focus: ""
-claims: [ISSUE:0012]
+claims: []
 ---
 
 # Interface Claude (ic)
 
 ## DOING
 
-- ISSUE:0012 (low): r in the Herdr panel forces a fetch. On hv's decision 18 and vc's brief, for 0.1.11. The first build landed as 4930094, but hv's look failed: the panel never held the keyboard, because its root had no focus handle, so r never reached it. The focus fix landed on vc's read as 4ae853f: the panel takes the keyboard through a handle tracked on its root, and handles r itself, with no keys.json line. It is identical to 25be3e0, green in Desk slot 01M7M9NAJ6B7A00WE74BN7ZB4A. ic brought the issue's record up to date (fix outline items 1 and 4, Acceptance 1 and 4, and a Progress section on the first look's failure and why), removed wt-issue-0012-focus after every check passed, and deleted ic/ISSUE-0012-focus (it was 4ae853f). Waiting for hv's second look, from the build at /Users/matts/Devel/scratch/ccusage-ic/target/release/ccusage (0.1.10 dev 25be3e0dfa39), which stays as it is until the look is done. vc adds the look's result to the Progress and closes the issue on hv's pass. ic answers anything the look finds. (edited)
+_(none)_
 
 ## TODO
 

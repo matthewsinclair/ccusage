@@ -1,0 +1,16 @@
+{
+  "id": "01M7MAB0RBSAAR39KT0S87QKPD",
+  "ts": "2026-11-17T08:35:23.531Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.edit",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "doing",
+    "seq": 5,
+    "text": "ISSUE:0012 (low): r in the Herdr panel forces a fetch, as the dashboard's r does. On hv's decision 18 and vc's brief, for 0.1.11. The first build landed as 4930094, but hv's first look failed: the panel's root had no focus handle, so r never reached it. The focus fix landed on vc's read as 4ae853f: the panel takes the keyboard through a handle tracked on its root, and handles r itself, with no keys.json line. hv's second look passed: r forced one fetch of every account, and the panel showed \"Refreshing accounts\" and \"Refresh already in progress\". vc closed the issue (9e15573). ic brought the record up to date (0ff0268), removed both worktrees and branches after every check passed, and unclaimed the issue. It ships in 0.1.11. Done."
+  }
+}
