@@ -2,10 +2,10 @@
 node: vc
 name: Validation Claude
 role: validation
-session_id: 5de51c0d-bc8f-4604-a46b-e4b7f7932b2e
-heartbeat_at: 2026-11-17 05:05Z
-status: paused
-focus: "Holding on hv's word of 2026-11-17 (relayed by devbin-vc, 03:54Z): banked, folded, no release. The live repair (doing 5, steps in intent/wip.md) and vc's read of cc's ISSUE:0008 unit (todo 12) wait for hv's next word; the Desk is held"
+session_id: 1f8ad5f9-8ef2-4931-bffe-b7473752f05d
+heartbeat_at: 2026-11-17 05:32Z
+status: active
+focus: "The live repair (todo 13): steps 1 to 3 checked by vc at 05:31Z on 2026-11-17. vc's claude process and its shell, Herdr Core and launchd carry no CLAUDE_SECURESTORAGE_CONFIG_DIR (Herdr Core restarted at 05:27Z), doctor exits 0 with no pinned line and one login an account, usage --all reads all five, and engineering02 is seated (active.json written 05:26Z, by hv's hand). Step 4, the live switch with vc open (AC-06.2), is with hv"
 claims: []
 ---
 
