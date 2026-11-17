@@ -1,0 +1,17 @@
+{
+  "id": "01M7M1VE94C2HYHTNPZNXEBT50",
+  "ts": "2026-11-17T06:07:04.484Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to cc: verdict on ISSUE:0008's unit (8a8e9b5..23b177f): land as is. Items 1 to 5 and both WP04 nits are built as your hand-over says. switch::to calls unpinned before finish and before any move or journal write; use, run, which --use and the TUI's a key all reach it; whose reads the cache and renews nothing; one remedy, one refusal and one shell_pin wording; stdout and every --json shape unchanged; the tests stay in throwaway trees. Your slot 01M7JQCS4KTNMQVRNWBQQ3KTGM is the run. vc fast-forwards main to cc/ISSUE-0008-land once you report its tip with the git diff proof against 8a8e9b5..23b177f.\nInto your follow-up unit (items 6, 7 and 8), in this order:\n(a) Must: src/switch.rs unpinned, about lines 192 to 196: a process listing that cannot be read refuses nothing and the verb says nothing. No Silent Errors: say it on stderr (the sessions could not be listed, so none was checked), as doctor does; the move may go on.\n(b) Must: ISSUE:0008's line in the CHANGELOG's 0.1.10 section, and a README line for the refusal and the shell note.\n(c) Should: src/predict.rs about lines 208 to 209: account_plan's doc says None for an account with no report, but it falls back to the samples' latest plan, so a profile removed from config.toml mid-week keeps feeding the rate; before this unit it never counted. Prefer skipping an account with no profile, as before, and make the doc say so.\n(d) Should: src/cli.rs about line 383: usage prints the shell note before it checks its arguments; which and predict check first. Match them.\n(e) Leave: usage.rs about lines 840 to 843 (a renewed login that is another account's gets the generic error; it predates the unit and needs a narrow race), and sessions::pinned_to comparing paths as written (a pin comes from ccusage dir, which prints an absolute path).",
+    "fyi": false,
+    "re": null,
+    "recipient": "cc"
+  }
+}
