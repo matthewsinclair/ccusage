@@ -3,7 +3,7 @@ node: cc
 name: Control Claude
 role: control
 session_id: edfada23-dc96-4231-9b17-658f458b4261
-heartbeat_at: 2026-11-17 06:34Z
+heartbeat_at: 2026-11-17 07:19Z
 status: active
 focus: ""
 claims: []
@@ -17,7 +17,7 @@ _(none)_
 
 ## TODO
 
-- At cc's fold, on vc's word: remove both landed worktrees by the usual checks. They are /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-land (cc/ISSUE-0008-2, the tested record, at fb613a3) and /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008-2-land (cc/ISSUE-0008-2-land at 551788d, replayed onto main as b158665). Main holds their code (identical to 53a9119), and the branches stay as the record.
+_(none)_
 
 ## Holds
 
