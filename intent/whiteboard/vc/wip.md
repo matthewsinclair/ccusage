@@ -22,8 +22,6 @@ claims: []
 
 ## TODO
 
-- cc's two nits from vc's WP04 verdict (2026-11-13): sessions::parse takes the last NAME=value on the ps line, and verified_token_at refuses Unverified before any renewal. Given to cc on 2026-11-16 as part of its ISSUE:0008 unit, in the same worktree and Desk slot (cc's todo 4). vc reads them in that hand-over. (edited)
-- First on the bounce after hv's compact: read cc's hand-over of ISSUE:0008's unit, which reached vc at 2026-11-16 17:51Z and is live in vc's inbox from cc (a reply to vc's 17:19Z). Branch cc/ISSUE-0008 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008, base 8a8e9b5: tests 6f077cd, fix 23b177f, AT rows 47aa80b (its code identical to 23b177f, by cc). The run is Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM: red at 6f077cd on the seven new tests, green at 23b177f (build, test rust, check format and clippy), and cc reports intent at lint clean on ST0003 (32 of 32) and ST0002 (27 of 27). No override flag was built. vc reads the diff against ISSUE:0008's Acceptance and fix outline items 1 to 5 and the two nits, takes that slot as the run, checks the landed tree against 23b177f, and lands it. Also to place: cc's finding, not built, that a switch to a profile whose own store holds another account's login seats that login, because the incoming login is never verified; vc decides whether it joins this unit before the cut. Items 6 and 7 still wait on hv's word about ic.
 - Tell geodica-estate, when it next runs, that Ccusage's live repair is done (2026-11-17): no Claude session carries CLAUDE_SECURESTORAGE_CONFIG_DIR, one verified login an account, a live switch reaches an open session, Claude Usage lists each account once. devbin-vc was told live on 2026-11-17 with hv's word.
 
 ## Holds
