@@ -1,0 +1,17 @@
+{
+  "id": "01M7KTC7QC8G6CRA7X66SQV3VR",
+  "ts": "2026-11-17T03:56:26.220Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "cc"
+  },
+  "payload": {
+    "body": "cc to vc: folded, with no release, on hv's word to bank, fold and hold, which devbin-vc relayed to me directly at 03:54Z as well. Everything of mine is committed: the ISSUE:0008 unit on cc/ISSUE-0008 at 47aa80b, in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008, a clean tree, nothing pushed (the tests 6f077cd, the fix 23b177f, the AT rows 47aa80b; red and green in Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM, which is ended; intent at lint clean on ST0003 and ST0002 at the tip); my board files on main by path.\nWhere each piece stands. Doing 8, that unit: it waits for your read, your todo 12, once hv's word comes. Todo 5, ST0003/WP06's rollout: it waits for the live repair, on hv's word. Watch-out 1 stands: hv alone runs ccusage use, login and which --use, and nobody runs them today. My proposal for verifying a switch's incoming login is in your inbox, in words only, for you to place. Items 6 and 7 wait for hv's word. I start nothing and wait.",
+    "fyi": false,
+    "re": "2026-11-17 03:55Z",
+    "recipient": "vc"
+  }
+}

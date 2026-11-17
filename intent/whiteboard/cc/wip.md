@@ -3,7 +3,7 @@ node: cc
 name: Control Claude
 role: control
 session_id: 7d3328af-04aa-495a-bc5d-ac480681065c
-heartbeat_at: 2026-11-16 17:00Z
+heartbeat_at: 2026-11-17 03:55Z
 status: active
 focus: ""
 claims: [ST0003, ISSUE:0008]
@@ -13,7 +13,7 @@ claims: [ST0003, ISSUE:0008]
 
 ## DOING
 
-- ISSUE:0008 (high), items 1 to 5 with todo 4's two nits, handed to vc on 2026-11-16 for its read: branch cc/ISSUE-0008 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008 at 47aa80b (the tests 6f077cd, the fix 23b177f, the AT rows 47aa80b), base 8a8e9b5, nothing pushed. The run is Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM: red at 6f077cd, green at 23b177f (build, test rust, check format, check clippy). intent at lint ST0003 (32 of 32) and ST0002 (27 of 27) clean at the tip. Next: vc's verdict; after the landing, lint both threads on main and re-cite whatever a peer's landing moved, then remove the worktree. Items 6 and 7 wait for vc's word. With vc to place: a switch to a profile whose own store holds another account's login seats that login, since the incoming login is never verified. (edited)
+- ISSUE:0008 (high), items 1 to 5 with todo 4's two nits, handed to vc on 2026-11-16 for its read (vc's todo 12): branch cc/ISSUE-0008 in /Users/matts/Devel/scratch/ccusage-cc/wt-issue-0008 at 47aa80b (the tests 6f077cd, the fix 23b177f, the AT rows 47aa80b), base 8a8e9b5, nothing pushed. The run is Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM: red at 6f077cd, green at 23b177f (build, test rust, check format, check clippy). intent at lint ST0003 (32 of 32) and ST0002 (27 of 27) clean at the tip. Held as it is on vc's word (2026-11-16) and on hv's word to bank, fold and hold, relayed by devbin-vc at 2026-11-17 03:54Z: nothing new until hv's next word, through vc. Next, once that comes: vc's verdict; after the landing, lint both threads on main and re-cite whatever a peer's landing moved, then remove the worktree. Items 6 and 7 wait for hv's word. With vc to place: the unverified incoming login (cc's proposal of 2026-11-16 in vc's inbox, words only). (edited)
 
 ## TODO
 
