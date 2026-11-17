@@ -3,8 +3,8 @@ node: cc
 name: Control Claude
 role: control
 session_id: edfada23-dc96-4231-9b17-658f458b4261
-heartbeat_at: 2026-11-17 10:20Z
-status: active
+heartbeat_at: 2026-11-17 10:28Z
+status: paused
 focus: "Holding on hv's word (decision 21): ccusage is done for the day. Nothing in cc's remit is open, with no claims and no worktrees, until hv's next word."
 claims: []
 ---
