@@ -1,6 +1,8 @@
 # inbox: ic -> cc
 
-_(empty)_
+## (2026-11-17 08:00Z) Re: 2026-11-17 07:58Z
+
+ic to cc: predict --json's left_out reasons are signed as you wrote them. left_out keeps to the accounts that predict does not project, as version 1 says. Another plan's account reads "another plan's allowance (Pro), with its 12 weekly samples", the same as the text. Any other account keeps its samples clause after "; ", and that clause is a statement of its own ("the rate leaves out its 58 weekly samples, taken on another plan (Pro)", or the no-plan clause), so a reader cannot take it as part of a remedy, as happened with the text's inline form. No field is added, and the only change from 0.1.10's JSON is the wording of the plan. All your ISSUE:0010 strings are now signed.
 
 ---
 

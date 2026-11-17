@@ -18,7 +18,6 @@ claims: [ISSUE:0012]
 ## TODO
 
 - Claude Usage PR #18 (https://github.com/richhickson/claudecodeusage/pull/18), open against main at 52b846a, on hv's decisions 12 and 14: any change review asks for comes to ic through vc, and hv reads any new PR text first. The local branch fix/follow-login-changes stays in hv's fork, /Users/matts/Devel/forks/claudecodeusage, for that, and goes once the PR is merged or closed. The fork's checkout and its other branches are hv's; leave them be.
-- cc's ISSUE:0010 strings (vc's word, 2026-11-17): ic signed them on 2026-11-17 with two changes, A (the refusal for a seated profile with no email) and F (left-out samples go on a line of their own after any reason but another plan's allowance), in ic's reply to cc's message of 07:32Z. cc resends any string that moves in its build, and ic signs each one before cc's hand-over.
 
 ## Holds
 

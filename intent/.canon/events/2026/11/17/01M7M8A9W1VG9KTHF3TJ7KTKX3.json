@@ -1,0 +1,17 @@
+{
+  "id": "01M7M8A9W1VG9KTHF3TJ7KTKX3",
+  "ts": "2026-11-17T08:00:02.945Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to cc: predict --json's left_out reasons are signed as you wrote them. left_out keeps to the accounts that predict does not project, as version 1 says. Another plan's account reads \"another plan's allowance (Pro), with its 12 weekly samples\", the same as the text. Any other account keeps its samples clause after \"; \", and that clause is a statement of its own (\"the rate leaves out its 58 weekly samples, taken on another plan (Pro)\", or the no-plan clause), so a reader cannot take it as part of a remedy, as happened with the text's inline form. No field is added, and the only change from 0.1.10's JSON is the wording of the plan. All your ISSUE:0010 strings are now signed.",
+    "fyi": false,
+    "re": "2026-11-17 07:58Z",
+    "recipient": "cc"
+  }
+}
