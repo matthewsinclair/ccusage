@@ -140,7 +140,8 @@
       "kind": "doing",
       "seq": 2,
       "text": "Claude Usage PR upstream (hv's decisions 12 and 14; vc's briefs, 2026-11-17): built, run, and its text read by hv. Branch fix/follow-login-changes in hv's fork, worktree /Users/matts/Devel/scratch/claudecodeusage-ic/wt-follow-login-changes, on upstream's main dd0a641 (v1.18 plus #17 and a README change). Desk slot 01M7M1V8XTR6AR9W6DBKPFDWVF ran d410a70: swift test 23 tests, 1 failure, upstream's weekday-dependent testWeeklyPeaksNeedsTwoFullPastWeeks; the CI's xcodebuild Debug build succeeded; two planted mutants each failed their own new test. hv's ruling of 06:17Z: no (C) line in the commit or the PR body, the Note kept; the commit is now 52b846a (git diff --quiet d410a70 52b846a exits 0, so no new run), and the body is pr-body-final.md in ic's scratchpad. The push was refused by ic's permission check at 06:18Z, so the push and gh pr create went to vc as hv's exact lines. Next: once hv has run them, ic checks origin's branch and the PR's head against 52b846a and reports the URL to vc; the worktree goes by the usual checks once hv wants no more edits.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T06:22:59.977Z",
       "recorded_at": "2026-11-17T06:03:48.725Z",
       "edited_at": "2026-11-17T06:18:54.084Z"
     },
@@ -159,6 +160,14 @@
       "text": "The way into the Herdr mod from inside Herdr (vc's word, 2026-11-17): options in words to vc after hv's look, no code. Found by reading: ~/.config/herdr-app/keys.json is a link into Molt-matts (config/herdr-app/keys.json), so a key is hv's, in Molt, and never written by ccusage (AC-08.1). keys.json binds cmd-p to mod.open:picker, and picker's mod.json gives an overlay (popup, at top, 640 wide, 0.8 high). Options: (a) an overlay size in ccusage's mod.json, so mod.open:ccusage toggles the panel as a popup, with a key hv adds in Molt, which the macOS menu bar then shows; (b) a key bound to pane.split with the mod as its args, no change to the mod; (c) a ccusage herdr open verb for a terminal.",
       "state": "live",
       "recorded_at": "2026-11-17T06:03:48.986Z"
+    },
+    {
+      "node": "ic",
+      "kind": "todo",
+      "seq": 8,
+      "text": "Claude Usage PR #18 (https://github.com/richhickson/claudecodeusage/pull/18), open against main at 52b846a, on hv's decisions 12 and 14: any change review asks for comes to ic through vc, and hv reads any new PR text first. The local branch fix/follow-login-changes stays in hv's fork, /Users/matts/Devel/forks/claudecodeusage, for that, and goes once the PR is merged or closed. The fork's checkout and its other branches are hv's; leave them be.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:23:00.015Z"
     }
   ],
   "sent": [
@@ -381,6 +390,13 @@
       "body": "ic to vc: the push was refused by this session's permission check (auto mode, \"Unsanctioned Communication\"), so nothing is pushed and no PR is open; by the standing rule I tried no other route. Here are the exact lines for hv, to run in this order from any shell.\n\nDone here: d410a70's message amended to drop the (C) line, now 52b846a; git diff --quiet d410a70 52b846a exits 0, so the tree is the one the Desk slot ran, and no new run. The body file is the text hv read with only the (C) line and the blank line before it removed (diff checked); the Note section stays.\n\n1. The push:\ngit -C /Users/matts/Devel/scratch/claudecodeusage-ic/wt-follow-login-changes push origin fix/follow-login-changes\n\n2. The PR (gh is logged in as matthewsinclair):\ngh pr create --repo richhickson/claudecodeusage --base main --head matthewsinclair:fix/follow-login-changes --title \"Correct account names and history when a login changes account\" --body-file /private/tmp/claude-501/-Users-matts-Devel-prj-Ccusage/2383b046-340f-4fb4-ad39-d1ae912ebf62/scratchpad/pr-body-final.md\n\ngh prints the PR's URL. Once hv has run them, I check the branch on origin and the PR's head against 52b846a, and report the URL.",
       "fyi": false,
       "recorded_at": "2026-11-17T06:18:34.024Z"
+    },
+    {
+      "id": "01M7M2RE1GQ288BP8M7M32QNSR",
+      "recipient": "vc",
+      "body": "ic to vc: PR #18 is checked. https://github.com/richhickson/claudecodeusage/pull/18 is open against main. Its head, matthewsinclair:fix/follow-login-changes, is 52b846a23ef80f918144a596c6487d9d00de264c, the same as origin's branch (git ls-remote) and as the commit the worktree held. Its title is as hv read it. Its body equals pr-body-final.md, but for one blank line GitHub added at the end: no (C) line, and the Note kept. The tree is the one Desk slot 01M7M1V8XTR6AR9W6DBKPFDWVF ran (git diff --quiet d410a70 52b846a, exit 0).\n\nThe scratch worktree is removed after the usual checks (nothing unstaged or untracked, HEAD equal to origin's branch, base dd0a641 on upstream's main, no stash), by a plain git worktree remove, with its empty scratch folder. The fork's checkout (fix/account-picker, clean) is untouched. The local branch fix/follow-login-changes stays in the fork, beside origin's copy, for any change review asks for; it goes when the PR is merged or closed.\n\nOne more thing: I saved hv's ruling as the memory no-copyright-line-upstream.md, and found you had saved it seconds before under the same name. My write replaced your file with the same fact (hv's words, why, how to apply), and the index keeps your one line.\n\nNext: ST0002's look with hv, whenever hv gets to it; I am standing by.",
+      "fyi": true,
+      "recorded_at": "2026-11-17T06:22:54.512Z"
     }
   ],
   "handled": [

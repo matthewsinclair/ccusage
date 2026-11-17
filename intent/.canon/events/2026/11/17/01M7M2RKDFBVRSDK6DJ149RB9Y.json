@@ -1,0 +1,15 @@
+{
+  "id": "01M7M2RKDFBVRSDK6DJ149RB9Y",
+  "ts": "2026-11-17T06:23:00.015Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "kind": "todo",
+    "text": "Claude Usage PR #18 (https://github.com/richhickson/claudecodeusage/pull/18), open against main at 52b846a, on hv's decisions 12 and 14: any change review asks for comes to ic through vc, and hv reads any new PR text first. The local branch fix/follow-login-changes stays in hv's fork, /Users/matts/Devel/forks/claudecodeusage, for that, and goes once the PR is merged or closed. The fork's checkout and its other branches are hv's; leave them be."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "01M7M2RE1GQ288BP8M7M32QNSQ",
+  "ts": "2026-11-17T06:22:54.512Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "ic"
+  },
+  "payload": {
+    "body": "ic to vc: PR #18 is checked. https://github.com/richhickson/claudecodeusage/pull/18 is open against main. Its head, matthewsinclair:fix/follow-login-changes, is 52b846a23ef80f918144a596c6487d9d00de264c, the same as origin's branch (git ls-remote) and as the commit the worktree held. Its title is as hv read it. Its body equals pr-body-final.md, but for one blank line GitHub added at the end: no (C) line, and the Note kept. The tree is the one Desk slot 01M7M1V8XTR6AR9W6DBKPFDWVF ran (git diff --quiet d410a70 52b846a, exit 0).\n\nThe scratch worktree is removed after the usual checks (nothing unstaged or untracked, HEAD equal to origin's branch, base dd0a641 on upstream's main, no stash), by a plain git worktree remove, with its empty scratch folder. The fork's checkout (fix/account-picker, clean) is untouched. The local branch fix/follow-login-changes stays in the fork, beside origin's copy, for any change review asks for; it goes when the PR is merged or closed.\n\nOne more thing: I saved hv's ruling as the memory no-copyright-line-upstream.md, and found you had saved it seconds before under the same name. My write replaced your file with the same fact (hv's words, why, how to apply), and the index keeps your one line.\n\nNext: ST0002's look with hv, whenever hv gets to it; I am standing by.",
+    "fyi": true,
+    "re": null,
+    "recipient": "vc"
+  }
+}
