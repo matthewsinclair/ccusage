@@ -206,7 +206,7 @@ Every successful fetch records a sample of each window whose percent has changed
 
 ## Herdr panel
 
-Ccusage carries a [Herdr](https://herdr.dev) mod: a panel that shows each account's weekly bar, reset, `active` and `next` tags and the rule's reason, and below them predict's rate and projection. It runs `ccusage` and nothing else: `which --json` and `predict --json` on its timer, `usage NAME --verbose` when you click an account, and `use NAME` when you confirm a switch from there. No rule runs in the panel, so it cannot drift from the CLI.
+Ccusage carries a [Herdr](https://herdr.dev) mod: a panel that shows each account's weekly bar, reset, `active` and `next` tags and the rule's reason, and below them predict's rate and projection. It runs `ccusage` and nothing else: `which --json` and `predict --json` on its timer, `which --json --refresh` when you press r, `usage NAME --verbose` when you click an account, and `use NAME` when you confirm a switch from there. No rule runs in the panel, so it cannot drift from the CLI.
 
 ```sh
 ccusage herdr install
@@ -217,9 +217,19 @@ ccusage herdr remove
 
 `ccusage herdr install` puts the mod into Herdr's home, `$HERDR_APP_HOME` or else `~/.config/herdr-app`, and refuses when there is none. It writes `mods/ccusage/` and a record of what it wrote, replaces only a copy it wrote that nobody has edited, refuses anything else without `--force`, then runs `herdr-app check` on it when that is on `PATH` and reports the verdict, or why it could not run it, exiting nonzero when the check fails. Herdr runs the check as a background job, which can take a minute or two, so install says on stderr that it is waiting; a check still running after five minutes is stopped, and install reports the mod as not checked, with the command to check it by hand, and exits zero. It never touches a layout or `keys.json`. `ccusage herdr remove` takes the copy out on the same terms. `ccusage herdr launch` opens the panel as a Herdr tab of its own, through `herdr-app do tab.new`, or says why it could not and exits nonzero: no Herdr home, the mod not installed, no `herdr-app` on `PATH`, or Herdr's own refusal; the `pane.split` line opens it as a pane instead. The panel's text, bars and spacing come from one scale in the mod, sized to read in a full tab. The mod's files are built into ccusage, so each install carries the mod that matches it.
 
+To fetch every account at once from the panel, as the dashboard's r does, bind r to the mod's `ccusage.refresh` command in Herdr's `keys.json`; ccusage never writes that file:
+
+```json
+{
+  "mod:ccusage": { "r": "ccusage.refresh" }
+}
+```
+
+Click the panel so that it holds the keyboard, then press r. The panel says `Refreshing accounts` until ccusage answers, and a press while a fetch runs starts no other. Its timer still asks from the cache.
+
 ## Refresh policy
 
-Only ccusage asks Claude's usage endpoint, and only through its cache: an account's usage fetched within the last five minutes is reused, so each account is fetched at most once in five minutes however many dashboards, panels and scripts are open. A 429 response parks that account for at least 30 minutes for all of them at once. The dashboard asks again for each account whose usage has passed five minutes, at most once in five minutes, so `ccusage tui` left open stays current and its next marker stays on screen. The Herdr panel asks ccusage on a timer of five minutes, or longer when its `every` prop sets one in seconds, and never shorter, and Herdr keeps a hidden panel's timer under the same bound. Countdowns tick from the clock and ask nothing. With five accounts, that is at most 60 requests an hour.
+Only ccusage asks Claude's usage endpoint, and only through its cache: an account's usage fetched within the last five minutes is reused, so the timers fetch each account at most once in five minutes however many dashboards, panels and scripts are open. A key press forces a fetch of every account at once: the dashboard's r, and the panel's r once `keys.json` binds it. A 429 response parks that account for at least 30 minutes for all of them at once, a forced fetch included. The dashboard asks again for each account whose usage has passed five minutes, at most once in five minutes, so `ccusage tui` left open stays current and its next marker stays on screen. The Herdr panel asks ccusage on a timer of five minutes, or longer when its `every` prop sets one in seconds, and never shorter, and Herdr keeps a hidden panel's timer under the same bound. Countdowns tick from the clock and ask nothing. With five accounts, the timers make at most 60 requests an hour, and each key press adds at most one request for each account.
 
 ## Development
 

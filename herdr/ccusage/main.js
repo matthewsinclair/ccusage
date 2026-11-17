@@ -6,8 +6,10 @@
 // every reason are the CLI's own and cannot drift from it. It runs ccusage and
 // nothing else. It asks on a timer no shorter than ccusage's usage cache lifetime,
 // which `ccusage herdr install` writes into lifetime.js, so however many panels are
-// open, ccusage asks Claude's usage endpoint no more often than its cache allows.
-// Countdowns tick from the clock and ask nothing.
+// open, their timers ask Claude's usage endpoint no more often than its cache allows.
+// A key bound to ccusage.refresh in Herdr's keys.json, such as
+// "mod:ccusage": {"r": "ccusage.refresh"}, forces a fetch, as the dashboard's r does:
+// `ccusage which --json --refresh`. Countdowns tick from the clock and ask nothing.
 //
 // Opened as a tab of its own by `ccusage herdr launch`, or as a pane:
 // herdr-app do pane.split '{"direction":"right","mod":"ccusage"}'.
@@ -46,6 +48,38 @@ const hours = (count) => countdown(new Date(Date.now() + count * 60 * MINUTE).to
 
 /** A percent to the whole number, as ccusage shows one. */
 const whole = (percent) => `${Math.round(percent)}%`;
+
+/**
+ * Runs ccusage with `args`: `{ json }` with what it printed, or `{ problem }` with why
+ * there is none. which exits 1 when nothing is eligible, with its JSON on stdout all the
+ * same, so stdout is read whatever the exit code.
+ */
+async function ask(args) {
+  try {
+    const result = await exec("ccusage", args, { timeout: 2 * MINUTE });
+    if (result.stdout.trim()) return { json: JSON.parse(result.stdout) };
+    return { problem: result.stderr.trim() || `ccusage ${args[0]} exited ${result.code}` };
+  } catch (error) {
+    return { problem: `could not run ccusage: ${error}` };
+  }
+}
+
+/**
+ * The forced fetch in flight, if any. Copies share this module, so a press that reaches
+ * two shown panels fetches once, and each lays out the same answer.
+ */
+let forcing = null;
+
+/**
+ * which, with every account fetched at once, though not one in a rate-limit cooldown,
+ * as the dashboard's r does; the fetch in flight when there is one.
+ */
+function forced() {
+  forcing ??= ask(["which", "--json", "--refresh"]).finally(() => {
+    forcing = null;
+  });
+  return forcing;
+}
 
 /**
  * A bar `percent` full, in `color`. Its fill and the rest of its track have no content,
@@ -89,6 +123,8 @@ export default class Ccusage extends View {
     this.pending = null; // the account a confirm dialog may switch to
     this.text = null; // a detail dialog's verbose usage
     this.notice = null; // what ccusage use said
+    this.refreshing = null; // what the panel says while a forced fetch runs
+    this.again = false; // an ask from the cache that waits for the forced fetch
     cx.spawn(async (cx) => {
       for (;;) {
         await this.command(await nextCommand(), cx);
@@ -105,34 +141,42 @@ export default class Ccusage extends View {
     this.refresh(cx);
   }
 
-  /** Runs ccusage with `args`: its JSON, or null with the reason kept. */
-  async ask(args) {
-    try {
-      const result = await exec("ccusage", args, { timeout: 2 * MINUTE });
-      // which exits 1 when nothing is eligible, with its JSON on stdout all the same.
-      if (result.stdout.trim()) return JSON.parse(result.stdout);
-      this.problem = result.stderr.trim() || `ccusage ${args[0]} exited ${result.code}`;
-    } catch (error) {
-      this.problem = `could not run ccusage: ${error}`;
+  /**
+   * Asks ccusage again: from its cache, or, when `force` is set, with every account
+   * fetched first, then predict from the fresh cache. While a forced fetch runs, a second
+   * press starts no other, as in the dashboard, and an ask from the cache waits until it
+   * answers, then runs, so a switch made meanwhile still shows.
+   */
+  refresh(cx, force = false) {
+    if (this.refreshing) {
+      if (force) this.refreshing = "Refresh already in progress";
+      else this.again = true;
+      return;
     }
-    return null;
-  }
-
-  refresh(cx) {
+    if (force) this.refreshing = "Refreshing accounts";
     cx.spawn(async (cx) => {
-      this.problem = null;
-      const which = await this.ask(["which", "--json"]);
-      const predict = await this.ask(["predict", "--json"]);
-      if (which) this.which = which;
-      if (predict) this.predict = predict;
+      const which = await (force ? forced() : ask(["which", "--json"]));
+      const predict = await ask(["predict", "--json"]);
+      this.problem = which.problem ?? predict.problem ?? null;
+      if (which.json) this.which = which.json;
+      if (predict.json) this.predict = predict.json;
+      this.refreshing = null;
       cx.notify();
+      if (this.again) {
+        this.again = false;
+        this.refresh(cx);
+      }
     });
   }
 
-  /** The commands Herdr delivers to this mod: refresh, and use once confirmed. */
+  /**
+   * The commands Herdr delivers to this mod's shown copies: refresh, which a key sends
+   * and which forces a fetch; reload, which a switch sends and which asks from the cache;
+   * and use, once confirmed.
+   */
   async command(name, cx) {
-    if (name === "refresh" && !props()?.account) {
-      this.refresh(cx);
+    if ((name === "refresh" || name === "reload") && !props()?.account) {
+      this.refresh(cx, name === "refresh");
     }
     if (name === "use" && this.pending) {
       const account = this.pending;
@@ -143,7 +187,8 @@ export default class Ccusage extends View {
       } catch (error) {
         this.notice = `could not run ccusage: ${error}`;
       }
-      run("ccusage.refresh");
+      // A switch needs no fetch: every shown panel asks again from the cache.
+      run("ccusage.reload");
     }
   }
 
@@ -181,9 +226,16 @@ export default class Ccusage extends View {
     const pad = (n) => String(n).padStart(2, "0");
     return root
       .child(
-        // Herdr's pane header names the mod, so the panel gives only when ccusage answered.
+        // Herdr's pane header names the mod, so the panel gives only when ccusage answered,
+        // and on the left whether a forced fetch is running.
         h_flex()
-          .child(div().flex_1())
+          .child(
+            div()
+              .flex_1()
+              .text_size(scaled(11))
+              .text_color(t.muted)
+              .when(this.refreshing, (el) => el.child(this.refreshing)),
+          )
           .child(
             div()
               .text_size(scaled(11))

@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [0.1.11] - unreleased
 
+### Added
+
+- r in the Herdr panel fetches every account at once, as the dashboard's r does, though not one in a rate-limit cooldown, once you bind it in Herdr's `keys.json` with `"mod:ccusage": {"r": "ccusage.refresh"}` (ccusage never writes that file). The panel says it is refreshing until ccusage answers, and a press while a fetch runs starts no other. Its five-minute timer, and its reload after a switch, still ask from the cache (ISSUE:0012).
+
 ### Changed
 
 - `ccusage herdr install` says on stderr that it is waiting while `herdr-app check` runs, which Herdr does as a background job that can take a minute or two, and stops waiting after five minutes, reporting the mod as not checked, with the command to check it by hand. Before, it said nothing until the check returned, and waited with no bound (ISSUE:0011).
