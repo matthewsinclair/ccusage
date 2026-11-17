@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-17T09:15:55Z:v0.44: vc - ccusage done for the day; seats hold (decision 21)"
+verblock: "2026-11-17T10:22:39Z:v0.45: vc - the panel takes r itself; seats hold (decisions 21, 22)"
 ---
 
 # Work In Progress
@@ -23,7 +23,7 @@ None open. `intent outstanding` shows what is.
 ## Notes
 
 - hv's standing rulings are the decisions on hv's board. Among them: ccusage works for any Claude account type and shows whatever it can for that type; a login a switch drops lapses and is not revoked; engineering04 stays a profile until its allowance is exhausted; Herdr's verbs are `ccusage herdr install`, `remove` and `launch`; hv alone runs `ccusage use`, `login` and `which --use`, on vc's steps; Claude Usage comes from its mainline release, not hv's fork; a PR or commit to someone else's repository carries no (C) line; everything ready goes into one cut, never small releases.
-- hv opens the ccusage panel with cmd-shift-u, a `tab.new` line hv keeps in Molt-matts' `config/herdr-app/keys.json` (decision 17), and refreshes it with r, from that file's `"mod:ccusage": {"r": "ccusage.refresh"}` (decision 18). Herdr reads the file live; ccusage never writes it.
+- hv opens the ccusage panel with cmd-shift-u, a `tab.new` line hv keeps in Molt-matts' `config/herdr-app/keys.json` (decision 17). Herdr reads that file live, and ccusage never writes it. r in the panel forces a fetch (decision 18). The mod takes the key itself through its focus handle (4ae853f), so keys.json carries no `mod:ccusage` section.
 - A Claude session started from a shell that exports `CLAUDE_SECURESTORAGE_CONFIG_DIR` reads that profile's own store, and no switch reaches it. `ccusage doctor` names such sessions, and a switch is refused while one reads the target's store.
 - A `/login` typed inside a Claude session writes into whichever store that session reads, with no check of whose login it is. `ccusage login NAME` checks the email after, and a switch verifies the incoming login before it seats it.
 - Before a cut, dc runs the project's gates on kovacs (Linux ARM64): Linux clippy sees code that only a macOS arm uses, which rhadamanth's runs miss, and the release config names no legs.
