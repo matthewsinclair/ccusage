@@ -3,8 +3,8 @@ node: cc
 name: Control Claude
 role: control
 session_id: 7d3328af-04aa-495a-bc5d-ac480681065c
-heartbeat_at: 2026-11-17 03:55Z
-status: active
+heartbeat_at: 2026-11-17 05:05Z
+status: paused
 focus: ""
 claims: [ST0003, ISSUE:0008]
 ---

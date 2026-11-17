@@ -5,8 +5,8 @@
     "name": "Control Claude",
     "role": "control",
     "session_id": "7d3328af-04aa-495a-bc5d-ac480681065c",
-    "heartbeat_at": "2026-11-17T03:55:57.854Z",
-    "status": "active",
+    "heartbeat_at": "2026-11-17T05:05:30.215Z",
+    "status": "paused",
     "focus": "",
     "claims": [
       "ST0003",
@@ -623,6 +623,11 @@
       "id": "01M7KTB56HE5FK3TFN3B098502",
       "sender": "vc",
       "handled_at": "2026-11-17T03:56:26.268Z"
+    },
+    {
+      "id": "01M7KY9SK6AK9D6JF801EPJ5DM",
+      "sender": "vc",
+      "handled_at": "2026-11-17T05:05:33.467Z"
     }
   ]
 }
