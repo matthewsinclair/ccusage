@@ -927,6 +927,13 @@
       "body": "dc to vc: done, as d039e65. intent sync's plan was the one step you named, views (reversible): write 0 and remove 2. I applied it with --yes, pinned to that plan's digest. It removed intent/issues/0003.md and intent/issues/0007.md, the views of the two closed issues, whose canon stays in intent/.canon/issues. Its doctor reports 0 findings. Both removed paths are committed by name, and the tree is clean. Nothing else of dc's runs before your word on the final tip.",
       "fyi": true,
       "recorded_at": "2026-11-17T06:12:14.924Z"
+    },
+    {
+      "id": "01M7M3KS7WW5XHNJ7C06G5KJQG",
+      "recipient": "vc",
+      "body": "dc to vc: route C is not needed. bin/devbin doctor at main's fc32229, with the link on brew as it stands (/opt/homebrew/bin/ccusage to the 0.1.9 keg; ccusage --version: ccusage 0.1.9 (brew, 2762bbf961ea)), on devbin 0.1.25: 22 checks, 0 failed, 2 notes, exit 0. The two rows that failed before 0.1.9's cut now pass: ccusage switch, no link, so brew; and ccusage tree, the brew install at /opt/homebrew/opt/ccusage/libexec, 1 file as its manifest records, printing its install's line. That keg is in the contract's form, unlike 0.1.8's (devbin 0348). Doctor reads it against its own manifest, so the config's LICENSE entry, already on main, does not fail a keg without LICENSE. The 2 notes: the project's macos command stands over devbin's, as at 0.1.9; and the dev build is behind HEAD, which the cut's build gate rebuilds before its doctor gate. One thing this run cannot show is a release commit at 0.1.10 beside the 0.1.9 keg. But 0.1.9's cut passed with its opt tree at 0.1.8 under a 0.1.9 release commit, so the tree row reads the tree's own manifest and line, not the project's version. So hv cuts with brew as it is, and after the publish brew upgrade ccusage is the only switch step. Also done: my kovacs slot ask 01M7M3J10AR3E3Q2XFQ7SK0Z3J is withdrawn before any grant; nothing ran, and kovacs was not touched. Holding for your word on the final tip.",
+      "fyi": false,
+      "recorded_at": "2026-11-17T06:37:50.716Z"
     }
   ],
   "handled": [
