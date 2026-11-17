@@ -226,7 +226,7 @@
     {
       "id": "AT-01.1",
       "kind": "test",
-      "file": "src/usage.rs:1253",
+      "file": "src/usage.rs:1297",
       "covers": [
         "AC-01.1"
       ],
@@ -236,7 +236,7 @@
     {
       "id": "AT-01.2",
       "kind": "test",
-      "file": "src/usage.rs:1361",
+      "file": "src/usage.rs:1405",
       "covers": [
         "AC-01.1"
       ],
@@ -246,7 +246,7 @@
     {
       "id": "AT-01.3",
       "kind": "test",
-      "file": "src/usage.rs:1414",
+      "file": "src/usage.rs:1458",
       "covers": [
         "AC-01.1"
       ],
@@ -316,7 +316,7 @@
     {
       "id": "AT-03.1",
       "kind": "test",
-      "file": "tests/cli.rs:1278",
+      "file": "tests/cli.rs:1280",
       "covers": [
         "AC-03.1"
       ],
@@ -326,7 +326,7 @@
     {
       "id": "AT-03.2",
       "kind": "test",
-      "file": "tests/cli.rs:1316",
+      "file": "tests/cli.rs:1318",
       "covers": [
         "AC-03.2"
       ],
@@ -336,7 +336,7 @@
     {
       "id": "AT-03.3",
       "kind": "test",
-      "file": "tests/cli.rs:1419",
+      "file": "tests/cli.rs:1421",
       "covers": [
         "AC-03.3"
       ],
@@ -346,7 +346,7 @@
     {
       "id": "AT-03.4",
       "kind": "test",
-      "file": "tests/cli.rs:1454",
+      "file": "tests/cli.rs:1456",
       "covers": [
         "AC-03.4"
       ],
@@ -356,7 +356,7 @@
     {
       "id": "AT-04.1",
       "kind": "test",
-      "file": "src/usage.rs:1593",
+      "file": "src/usage.rs:1637",
       "covers": [
         "AC-04.1"
       ],
@@ -366,7 +366,7 @@
     {
       "id": "AT-04.2",
       "kind": "test",
-      "file": "src/history.rs:255",
+      "file": "src/history.rs:275",
       "covers": [
         "AC-04.1"
       ],
@@ -376,7 +376,7 @@
     {
       "id": "AT-04.3",
       "kind": "test",
-      "file": "src/history.rs:336",
+      "file": "src/history.rs:356",
       "covers": [
         "AC-04.1"
       ],
@@ -396,7 +396,7 @@
     {
       "id": "AT-04.5",
       "kind": "test",
-      "file": "src/history.rs:294",
+      "file": "src/history.rs:314",
       "covers": [
         "AC-04.1"
       ],
@@ -406,7 +406,7 @@
     {
       "id": "AT-05.1",
       "kind": "test",
-      "file": "src/predict.rs:388",
+      "file": "src/predict.rs:489",
       "covers": [
         "AC-05.1"
       ],
@@ -416,7 +416,7 @@
     {
       "id": "AT-05.2",
       "kind": "test",
-      "file": "src/predict.rs:437",
+      "file": "src/predict.rs:538",
       "covers": [
         "AC-05.1"
       ],
@@ -426,22 +426,22 @@
     {
       "id": "AT-05.3",
       "kind": "test",
-      "file": "tests/cli.rs:1523",
+      "file": "tests/cli.rs:1525",
       "covers": [
         "AC-05.1"
       ],
       "status": "green",
-      "note": "ccusage predict says plainly when there is too little history and exits 0, then from a fixture history gives the rate, the samples and hours it rests on, each account's unused share and the total, and the accounts left out, in text and in its versioned JSON; red under the mutant whose JSON gives no samples, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7); then its test writes plans into the logins and checks that the text and the JSON name the plan counted, with spare left out as another plan's allowance, red under the mutants whose text names no plan and whose JSON gives none, in cc's ST0003/WP04 run in Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, which carried ic's tier grouping and herdr notes; green at 7cac510 in that run (landed as 1648348..b08623d)"
+      "note": "ccusage predict says plainly when there is too little history and exits 0, then from a fixture history gives the rate, the samples and hours it rests on, each account's unused share and the total, and the accounts left out, in text and in its versioned JSON; red under the mutant whose JSON gives no samples, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7); then its test writes plans into the logins and checks that the text and the JSON name the plan counted, with spare left out as another plan's allowance, red under the mutants whose text names no plan and whose JSON gives none, in cc's ST0003/WP04 run in Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, which carried ic's tier grouping and herdr notes; green at 7cac510 in that run (landed as 1648348..b08623d); with ISSUE:0008 its history is recorded on the plan work's login records, as every sample now is, green at 23b177f in cc's ISSUE:0008 run in Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM"
     },
     {
       "id": "AT-05.4",
       "kind": "test",
-      "file": "src/predict.rs:513",
+      "file": "src/predict.rs:614",
       "covers": [
         "AC-05.1"
       ],
       "status": "green",
-      "note": "predict counts one plan's accounts: the plan most of the usable accounts record, compared whole, a tie going to the active account's plan, else to the lexically first, and with no usable account the plan most of all the accounts record; a usable account on another plan is left out as another plan's allowance, and the rate counts that plan's samples alone; red under the mutants that let a tie ignore the active account, that give it to the lexically last, that project a usable account on another plan, that count every plan's samples in the rate, that count the least common plan, and that leave no plan when no account is usable, in cc's ST0003/WP04 run in Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, which carried ic's tier grouping and herdr notes; green at 7cac510 in that run (landed as 1648348..b08623d)"
+      "note": "predict counts one plan's accounts: the plan most of the usable accounts record, compared whole, a tie going to the active account's plan, else to the lexically first, and with no usable account the plan most of all the accounts record; a usable account on another plan is left out as another plan's allowance, and the rate counts that plan's samples alone; red under the mutants that let a tie ignore the active account, that give it to the lexically last, that project a usable account on another plan, that count every plan's samples in the rate, that count the least common plan, and that leave no plan when no account is usable, in cc's ST0003/WP04 run in Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, which carried ic's tier grouping and herdr notes; green at 7cac510 in that run (landed as 1648348..b08623d); with ISSUE:0008 an account left out also says how many of its weekly samples the rate leaves out, green at 23b177f in cc's ISSUE:0008 run in Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM"
     },
     {
       "id": "AT-06.1",
@@ -456,7 +456,7 @@
     {
       "id": "AT-06.2",
       "kind": "test",
-      "file": "tests/cli.rs:1625",
+      "file": "tests/cli.rs:1633",
       "covers": [
         "AC-06.1"
       ],
@@ -466,7 +466,7 @@
     {
       "id": "AT-08.1",
       "kind": "test",
-      "file": "tests/cli.rs:1641",
+      "file": "tests/cli.rs:1649",
       "covers": [
         "AC-08.1"
       ],
