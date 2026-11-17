@@ -1,0 +1,15 @@
+{
+  "id": "01M7M841GH9QRDWDZ7GF64A97M",
+  "ts": "2026-11-17T07:56:37.777Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "issues.add",
+  "subject": {
+    "type": "issue",
+    "id": "0012"
+  },
+  "payload": {
+    "severity": "low",
+    "title": "The Herdr panel cannot force a fetch, as the dashboard's r does"
+  }
+}

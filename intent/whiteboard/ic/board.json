@@ -8,7 +8,9 @@
     "heartbeat_at": "2026-11-17T07:21:36.186Z",
     "status": "active",
     "focus": "",
-    "claims": [],
+    "claims": [
+      "ISSUE:0012"
+    ],
     "recorded_at": "2026-11-11T17:55:10.738Z",
     "migrated_at": "2026-11-11T17:55:10.738Z"
   },
@@ -198,6 +200,14 @@
       "text": "cc's ISSUE:0010 strings (vc's word, 2026-11-17): ic signed them on 2026-11-17 with two changes, A (the refusal for a seated profile with no email) and F (left-out samples go on a line of their own after any reason but another plan's allowance), in ic's reply to cc's message of 07:32Z. cc resends any string that moves in its build, and ic signs each one before cc's hand-over.",
       "state": "live",
       "recorded_at": "2026-11-17T07:35:01.408Z"
+    },
+    {
+      "node": "ic",
+      "kind": "doing",
+      "seq": 5,
+      "text": "ISSUE:0012 (low): r in the Herdr panel forces a fetch, as the dashboard's r does. On hv's decision 18 and vc's brief of 2026-11-17, for the next release. One worktree off main's tip (/Users/matts/Devel/scratch/ccusage-ic/wt-issue-0012, branch ic/ISSUE-0012) and one Desk cargo slot. herdr/ccusage/main.js: ccusage.refresh (hv's keys.json line \"mod:ccusage\": {\"r\": \"ccusage.refresh\"}) runs which --json --refresh, then predict --json; the panel says \"Refreshing accounts\" while it runs; a press while one runs starts no other (\"Refresh already in progress\"); every copy shares one forced fetch; the timer is unchanged; the reload after a Use becomes an unforced ccusage.reload. README's refresh policy and Herdr section, RECIPE.md, and a CHANGELOG line under 0.1.11. Nothing can go red first (no harness runs the mod outside Herdr): the proof is herdr-app check on the built mod plus hv's look. cc's ISSUE:0010 unit also changes CHANGELOG.md, so the second to land rebases onto the first.",
+      "state": "live",
+      "recorded_at": "2026-11-17T07:56:47.831Z"
     }
   ],
   "sent": [

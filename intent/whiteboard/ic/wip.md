@@ -6,14 +6,14 @@ session_id: 2383b046-340f-4fb4-ad39-d1ae912ebf62
 heartbeat_at: 2026-11-17 07:21Z
 status: active
 focus: ""
-claims: []
+claims: [ISSUE:0012]
 ---
 
 # Interface Claude (ic)
 
 ## DOING
 
-_(none)_
+- ISSUE:0012 (low): r in the Herdr panel forces a fetch, as the dashboard's r does. On hv's decision 18 and vc's brief of 2026-11-17, for the next release. One worktree off main's tip (/Users/matts/Devel/scratch/ccusage-ic/wt-issue-0012, branch ic/ISSUE-0012) and one Desk cargo slot. herdr/ccusage/main.js: ccusage.refresh (hv's keys.json line "mod:ccusage": {"r": "ccusage.refresh"}) runs which --json --refresh, then predict --json; the panel says "Refreshing accounts" while it runs; a press while one runs starts no other ("Refresh already in progress"); every copy shares one forced fetch; the timer is unchanged; the reload after a Use becomes an unforced ccusage.reload. README's refresh policy and Herdr section, RECIPE.md, and a CHANGELOG line under 0.1.11. Nothing can go red first (no harness runs the mod outside Herdr): the proof is herdr-app check on the built mod plus hv's look. cc's ISSUE:0010 unit also changes CHANGELOG.md, so the second to land rebases onto the first.
 
 ## TODO
 
