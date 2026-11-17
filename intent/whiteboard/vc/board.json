@@ -5,9 +5,9 @@
     "name": "Validation Claude",
     "role": "validation",
     "session_id": "1f8ad5f9-8ef2-4931-bffe-b7473752f05d",
-    "heartbeat_at": "2026-11-17T09:07:16.804Z",
+    "heartbeat_at": "2026-11-17T09:09:16.710Z",
     "status": "active",
-    "focus": "0.1.11 is published and runs on rhadamanth from brew (ccusage 0.1.11 (brew, 6015fc9c0b01); doctor all OK; the panel's mod matches the release). Nothing in flight; every seat folded. Open with hv: whether cc's lint finding goes to Intent (todo 17). PR #18 waits upstream (hold 5)",
+    "focus": "0.1.11 is published and runs from brew on rhadamanth, kovacs and gyges. Nothing in flight; every seat folded. cc's lint finding is with intent-vc (decision 20). PR #18 waits upstream (hold 5)",
     "claims": [],
     "recorded_at": "2026-11-03T07:06:28.739Z",
     "migrated_at": "2026-11-03T07:06:28.739Z"
@@ -312,7 +312,8 @@
       "kind": "todo",
       "seq": 17,
       "text": "Open with hv: whether cc's finding goes to Intent (intent at lint, run in a git worktree, passed AT rows whose cited lines had moved; on main it reads right, so it may read the main checkout's files). Put it to hv with the evidence, and pass it to Intent's seat only on hv's word.",
-      "state": "live",
+      "state": "archived",
+      "archived_at": "2026-11-17T09:09:16.680Z",
       "recorded_at": "2026-11-17T08:55:00.529Z"
     }
   ],

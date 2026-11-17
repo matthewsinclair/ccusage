@@ -163,6 +163,14 @@
       "text": "hv's ruling of 2026-11-17, given to vc in the live channel (vc's window, read at 08:33Z by vc's date -u), in hv's wording, recorded by vc as mediator, after hv's second look at ISSUE:0012 from ic's build: \"Working now. And it also said \"Refresh already in process\" when I multi-tapped 'r' in that window. So it looks like it is all working. Let's cut the release.\" vc's reading: ISSUE:0012 closes on the look, and 0.1.11 is cut now with ISSUE:0010, ISSUE:0011 and ISSUE:0012: dc's kovacs gates at the final code tip first, then the Desk's slot for the cut; the seats freeze from vc's go until vc says it is published; hv runs bin/devbin release 0.1.11 in hv's own tab.",
       "state": "live",
       "recorded_at": "2026-11-17T08:34:43.832Z"
+    },
+    {
+      "node": "hv",
+      "kind": "decision",
+      "seq": 20,
+      "text": "hv's ruling of 2026-11-17, given to vc in the live channel (vc's window, read at 09:08Z by vc's date -u), in hv's wording, recorded by vc as mediator, answering vc's question whether cc's finding goes to Intent (intent at lint, run in a git worktree, passed AT rows whose cited lines had moved): \"yes, pass the lint finding to Intent. I just started intent-vc to take it.\" vc's reading: the finding goes to intent-vc, Intent's validation seat, in cc's words with a repro in a scratch clone; nothing in Ccusage waits on it.",
+      "state": "live",
+      "recorded_at": "2026-11-17T09:09:16.648Z"
     }
   ],
   "sent": [],

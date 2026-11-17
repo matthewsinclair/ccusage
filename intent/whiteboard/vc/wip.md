@@ -3,9 +3,9 @@ node: vc
 name: Validation Claude
 role: validation
 session_id: 1f8ad5f9-8ef2-4931-bffe-b7473752f05d
-heartbeat_at: 2026-11-17 09:07Z
+heartbeat_at: 2026-11-17 09:09Z
 status: active
-focus: "0.1.11 is published and runs on rhadamanth from brew (ccusage 0.1.11 (brew, 6015fc9c0b01); doctor all OK; the panel's mod matches the release). Nothing in flight; every seat folded. Open with hv: whether cc's lint finding goes to Intent (todo 17). PR #18 waits upstream (hold 5)"
+focus: "0.1.11 is published and runs from brew on rhadamanth, kovacs and gyges. Nothing in flight; every seat folded. cc's lint finding is with intent-vc (decision 20). PR #18 waits upstream (hold 5)"
 claims: []
 ---
 
@@ -17,7 +17,7 @@ claims: []
 
 ## TODO
 
-- Open with hv: whether cc's finding goes to Intent (intent at lint, run in a git worktree, passed AT rows whose cited lines had moved; on main it reads right, so it may read the main checkout's files). Put it to hv with the evidence, and pass it to Intent's seat only on hv's word.
+_(none)_
 
 ## Holds
 

@@ -1,0 +1,15 @@
+{
+  "id": "01M7MC92784JKNNFGDGP8M43J0",
+  "ts": "2026-11-17T09:09:16.648Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's ruling of 2026-11-17, given to vc in the live channel (vc's window, read at 09:08Z by vc's date -u), in hv's wording, recorded by vc as mediator, answering vc's question whether cc's finding goes to Intent (intent at lint, run in a git worktree, passed AT rows whose cited lines had moved): \"yes, pass the lint finding to Intent. I just started intent-vc to take it.\" vc's reading: the finding goes to intent-vc, Intent's validation seat, in cc's words with a repro in a scratch clone; nothing in Ccusage waits on it."
+  }
+}
