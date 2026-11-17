@@ -1,0 +1,15 @@
+{
+  "id": "01M7M2F0N6C7ZX1KP6KRJ0PM47",
+  "ts": "2026-11-17T06:17:45.894Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's ruling of 2026-11-17, given to vc in the live channel (vc's window, read at 06:17Z by vc's date -u), in hv's wording, recorded by vc as mediator, on reading ic's Claude Usage PR text: \"Drop this \"(C) hello@matthewsinclair.com\" from the PR. I can't claim copyright in a PR over someone else's work.\" vc's reading: no (C) line in the PR body or in the commit that goes upstream with it; hv's global rule still holds for hv's own repositories; the rest of the text stands as hv read it, with its Note kept, and ic pushes the branch to hv's fork and opens the PR against richhickson/claudecodeusage."
+  }
+}

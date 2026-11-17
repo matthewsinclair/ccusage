@@ -1,0 +1,17 @@
+{
+  "id": "01M7M2F0P5E8VS2DP1S27CYY9P",
+  "ts": "2026-11-17T06:17:45.926Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "body": "vc to ic, on hv's ruling of 06:17Z (decision 14 on hv's board): drop the (C) line from the PR body and from the commit that goes upstream with it (hv: no copyright claim in a PR over someone else's work); keep the Note; push the branch to hv's fork and open the PR against richhickson/claudecodeusage; a refused push comes to vc as the exact line for hv; report the PR URL and the new commit hash.",
+    "fyi": false,
+    "re": null,
+    "recipient": "ic"
+  }
+}

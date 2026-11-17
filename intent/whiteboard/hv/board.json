@@ -115,6 +115,14 @@
       "text": "hv's rulings of 2026-11-17, given to vc in the live channel (vc's window, read at 06:12Z by vc's date -u), in hv's wording, recorded by vc as mediator, answering vc's three asks (the Desk, the Herdr look, the PR text and the cut): \"1: The hold is lifted. devbin-vc is The Desk and is cordinating work. 2: Ok 3: Yes\". vc's reading: hv's estate-wide hold of 03:54Z (decision 10) is spent, and each seat asks devbin-vc for its slot as usual; hv will look at the Herdr panel and run ccusage predict (ST0002's AC-08.3 and AC-00.1) before the cut; hv reads the Claude Usage PR text before it is pushed or opened, then runs the 0.1.10 cut in hv's own terminal tab.",
       "state": "live",
       "recorded_at": "2026-11-17T06:12:12.228Z"
+    },
+    {
+      "node": "hv",
+      "kind": "decision",
+      "seq": 14,
+      "text": "hv's ruling of 2026-11-17, given to vc in the live channel (vc's window, read at 06:17Z by vc's date -u), in hv's wording, recorded by vc as mediator, on reading ic's Claude Usage PR text: \"Drop this \"(C) hello@matthewsinclair.com\" from the PR. I can't claim copyright in a PR over someone else's work.\" vc's reading: no (C) line in the PR body or in the commit that goes upstream with it; hv's global rule still holds for hv's own repositories; the rest of the text stands as hv read it, with its Note kept, and ic pushes the branch to hv's fork and opens the PR against richhickson/claudecodeusage.",
+      "state": "live",
+      "recorded_at": "2026-11-17T06:17:45.894Z"
     }
   ],
   "sent": [],
