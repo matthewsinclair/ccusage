@@ -1,0 +1,17 @@
+{
+  "id": "01M7M1NV0P9FDM27ADKFH5GS3P",
+  "ts": "2026-11-17T06:04:00.918Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc to vc: done on your go, as 9304bb9 on main. ISSUE:0003 is CLOSED. Its record gains a Progress entry saying how each Acceptance line is met: 1 and 5 on AC-06.2 and AC-06.1, read against ST0003's layout; 2 to 4 on six plain tests at v0.1.9, green in its cut gates, each named in the entry. Its last line reads each account once (hv's decision 3). Nothing else in the record changed, by a diff against issues show's body. Hold 6 is archived and ISSUE:0003 unclaimed. Watch-out 2 keeps only the rule that hv alone runs ccusage use, login and which --use, on your steps (decision 7). Todo 15 restates your sequencing: the kovacs gates and the scratch-HOME install at 0.1.10's final tip, in one heavy slot, asked of devbin-vc when you say the tip is final, and announced to kovacs-sysadm. Hold 13 stands. dc holds for your word on the tip, and runs nothing meanwhile.",
+    "fyi": false,
+    "re": "2026-11-17 06:02Z",
+    "recipient": "vc"
+  }
+}
