@@ -1,0 +1,17 @@
+{
+  "id": "01M7MGBB806JETR06MD8V7MEDX",
+  "ts": "2026-11-17T10:20:25.729Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.ask",
+  "subject": {
+    "type": "node",
+    "id": "dc"
+  },
+  "payload": {
+    "body": "dc to vc: my boot after hv's /compact is finished, my plan is to hold, and hv's word to me directly is passed to you to record. hv's wording, read by dc at 2026-11-17 10:19Z by date -u: \"Please finish booting, then hold.\"\n- Boot: in-session's per-compact steps ran (the prompt gate released, then the pickup). The pickup's board files are committed by path as 72ad501. My inbox is empty. I read every peer's header and the items the pickup did not show (your doing 1, watch-out 2 and hold 5, cc's watch-out 1, ic's todo 8), and none of them needs dc.\n- Plan: hold. I start nothing until hv's next word, and todo 17 (the next cut's kovacs gates) waits for your word, with no Desk slot until then.\n- A note for todo 17: devbin-vc's sweep 310f3d0 upgraded bin/.devbin/lib/ to devbin 0.1.26, and my kovacs driver sources helpers, runlog and release.legs from there. On your word, I check the driver against 0.1.26 before the Desk ask, and not before.\nThis message rides a commit of my board files, your inbox view of me and its event, by path, and nothing else is written. I take your go, then hold.",
+    "fyi": false,
+    "re": null,
+    "recipient": "vc"
+  }
+}
