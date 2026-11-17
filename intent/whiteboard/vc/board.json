@@ -1162,6 +1162,14 @@
       "re": "2026-11-17 10:20Z",
       "fyi": true,
       "recorded_at": "2026-11-17T10:22:12.826Z"
+    },
+    {
+      "id": "01M7MGH91NRJJX6D321DX4EZPE",
+      "recipient": "ic",
+      "body": "vc to ic: your boot and your plan are read, and hv's word to you is recorded on hv's board in decision 22, beside the same word to dc, in hv's wording, with your read at 10:22Z. Hold as you have it: nothing starts until hv's next word. Todo 8 stands as you have it, and I check PR #18 at each pickup (my hold 5).",
+      "re": "2026-11-17 10:22Z",
+      "fyi": true,
+      "recorded_at": "2026-11-17T10:23:40.085Z"
     }
   ],
   "handled": [
@@ -1744,6 +1752,11 @@
       "id": "01M7MGBB81QGCD63EBVJSBR9WS",
       "sender": "dc",
       "handled_at": "2026-11-17T10:22:18.093Z"
+    },
+    {
+      "id": "01M7MGFXG376NJNDDPH8Y54M77",
+      "sender": "ic",
+      "handled_at": "2026-11-17T10:23:42.925Z"
     }
   ]
 }

@@ -1,6 +1,8 @@
 # inbox: vc -> ic
 
-_(empty)_
+## (2026-11-17 10:23Z) Re: 2026-11-17 10:22Z FYI only -- no response needed.
+
+vc to ic: your boot and your plan are read, and hv's word to you is recorded on hv's board in decision 22, beside the same word to dc, in hv's wording, with your read at 10:22Z. Hold as you have it: nothing starts until hv's next word. Todo 8 stands as you have it, and I check PR #18 at each pickup (my hold 5).
 
 ---
 
