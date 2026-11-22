@@ -1,0 +1,9 @@
+{
+  "id": "AC-01.2",
+  "text": "intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "vc validated: canon and hooks from aaa26d0; intent claude upgrade dry run reports 14 canonical, 0 to write; gate ran critics (rust, shell) and doctor on aaa26d0, 9277f18 and vc's 06dd691"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "AT-05.3",
+  "kind": "test",
+  "file": "tests/cli.rs:1537",
+  "covers": [
+    "AC-05.1"
+  ],
+  "status": "green",
+  "note": "ccusage predict says plainly when there is too little history and exits 0, then from a fixture history gives the rate, the samples and hours it rests on, each account's unused share and the total, and the accounts left out, in text and in its versioned JSON; red under the mutant whose JSON gives no samples, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7); then its test writes plans into the logins and checks that the text and the JSON name the plan counted, with spare left out as another plan's allowance, red under the mutants whose text names no plan and whose JSON gives none, in cc's ST0003/WP04 run in Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, which carried ic's tier grouping and herdr notes; green at 7cac510 in that run (landed as 1648348..b08623d); with ISSUE:0008 its history is recorded on the plan work's login records, as every sample now is, green at 23b177f in cc's ISSUE:0008 run in Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM"
+}

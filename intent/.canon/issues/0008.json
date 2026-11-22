@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 8,
+  "schema": "intent/issue@4.0",
+  "id": "0008",
   "slug": "pinned-sessions-defeat-a-switch-and-ccusage-does",
   "title": "Pinned sessions defeat a switch and ccusage does not say so: the remedy doctor gives loops, a login of another account reads OK, and predict drops a failed account from its burn rate",
   "status": "closed",

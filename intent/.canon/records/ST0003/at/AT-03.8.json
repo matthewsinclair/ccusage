@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.8",
+  "kind": "test",
+  "file": "src/usage.rs:1086",
+  "covers": [
+    "AC-03.1"
+  ],
+  "status": "green",
+  "note": "A usage cache verifies an outgoing login only for the exact token it checked against the profile's email, where the login lives now, and the profile endpoint's account matches a record by its uuid; red under the mutant that ignores where the login lives, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea"
+}

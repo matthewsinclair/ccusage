@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.6",
+  "kind": "test",
+  "file": "src/seat.rs:949",
+  "covers": [
+    "AC-02.3"
+  ],
+  "status": "green",
+  "note": "Each refusal on file stores (nothing to seat, an occupied park, an outgoing login that does not verify, an empty shared store, an only login) comes before any write, journal or selection, and its message carries no token; red under the mutant that drops the verification, in WP02's mutant run at ffc95a1, whose move code 90bd7ea keeps, and in WP02's first run, where its own occupied case was wrong; green in WP02's measured run at 90bd7ea, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5, landed as 9afdf86"
+}

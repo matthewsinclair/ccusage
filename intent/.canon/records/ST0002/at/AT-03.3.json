@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.3",
+  "kind": "test",
+  "file": "tests/cli.rs:1433",
+  "covers": [
+    "AC-03.3"
+  ],
+  "status": "green",
+  "note": "which --use makes the choice active through switch::to, the one use function the use verb and the TUI's a key call too; it says so when the choice is active already, reports activated only when it made the choice active, and leaves the active account as it was with nothing eligible; red under the mutant that switches when the choice is active already, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)"
+}

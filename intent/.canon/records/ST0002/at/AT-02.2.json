@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.2",
+  "kind": "test",
+  "file": "src/which.rs:508",
+  "covers": [
+    "AC-02.2"
+  ],
+  "status": "green",
+  "note": "Accounts with no usage, stale usage, a passed weekly reset or no weekly window are unknown with their reasons, unranked and never chosen, and a fresh fetch whose cache save failed stays usable; red before WP02: written against which::choose, it could not compile before it; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3"
+}

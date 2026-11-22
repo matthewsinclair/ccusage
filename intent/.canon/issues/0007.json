@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 7,
+  "schema": "intent/issue@4.0",
+  "id": "0007",
   "slug": "ccusage-has-no-dev-opt-brew-switch-no-tree-ident",
   "title": "Ccusage has no dev/opt/brew switch, no tree identity and no contract version line, and its Linux formula installs outside the brew tree; adopt devbin's one approach",
   "status": "closed",

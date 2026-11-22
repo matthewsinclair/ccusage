@@ -1,0 +1,10 @@
+{
+  "id": "AT-04.9",
+  "kind": "test",
+  "file": "tests/cli.rs:1816",
+  "covers": [
+    "AC-04.3"
+  ],
+  "status": "green",
+  "note": "Each usage report gives the plan its login records, exactly as Claude Code wrote it, and null where it records none; red under the mutant whose report carries no plan, in the follow-up's mutant run at 46295e6; green in the follow-up's measured run at 46295e6, Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8, landed as ed77832"
+}

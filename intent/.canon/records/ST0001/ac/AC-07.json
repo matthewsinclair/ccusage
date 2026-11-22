@@ -1,0 +1,10 @@
+{
+  "id": "AC-07",
+  "text": "intent doctor reports no finding and no advisory, the stale-backup advisory included",
+  "kind": "non-test",
+  "state": {
+    "is": "withdrawn",
+    "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+    "by": "vc"
+  }
+}

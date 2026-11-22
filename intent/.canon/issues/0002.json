@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 2,
+  "schema": "intent/issue@4.0",
+  "id": "0002",
   "slug": "token-renewal-strips-apple-tool-from-claude-s-ke",
   "title": "Token renewal strips apple-tool: from Claude's Keychain items, so security prompts after every renewal",
   "status": "closed",

@@ -1,0 +1,10 @@
+{
+  "id": "AT-04.1",
+  "kind": "test",
+  "file": "src/usage.rs:1671",
+  "covers": [
+    "AC-04.1"
+  ],
+  "status": "green",
+  "note": "A fetch that succeeds saves its cache and records a sample of each of its windows in the history under the state directory; a history that cannot be written joins the report error, and the cache is saved all the same; red under the mutant whose successful fetch records nothing, in the first WP04 run at 31c0482, Desk slot 01M79ZVHT2C8B2ADTBWY7YQ73W; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP"
+}

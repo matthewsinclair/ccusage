@@ -1,0 +1,10 @@
+{
+  "id": "AT-05.2",
+  "kind": "test",
+  "file": "src/predict.rs:632",
+  "covers": [
+    "AC-05.1"
+  ],
+  "status": "green",
+  "note": "Following which::choose from now at the rate, each account's projected percent at its current reset, held at the cap, its unused share as 100 less that, and the total, each computed in the test from a fixture whose climb to the cap ends part way through a second; red under the mutants that take the last account instead of the rule's choice, that climb past the cap, and that count unused from the cap instead of 100, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+}

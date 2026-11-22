@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.4",
+  "text": "The first `use` on 0.1.8's layout adopts it, replacing the shared config's login only when its account has another login parked or it can no longer be renewed; parking everything restores that layout; and with shared mode off every existing test passes unchanged.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

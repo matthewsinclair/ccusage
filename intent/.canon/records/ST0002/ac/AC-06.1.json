@@ -1,0 +1,8 @@
+{
+  "id": "AC-06.1",
+  "text": "The TUI overview marks the account `which` chooses once every account's fresh report is in, and never on partial or stale data.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

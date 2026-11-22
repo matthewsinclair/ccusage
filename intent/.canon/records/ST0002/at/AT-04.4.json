@@ -1,0 +1,10 @@
+{
+  "id": "AT-04.4",
+  "kind": "test",
+  "file": "tests/cli.rs:423",
+  "covers": [
+    "AC-04.1"
+  ],
+  "status": "green",
+  "note": "Usage read from a fresh cache, or held back by a rate-limit cooldown, records no history under XDG_STATE_HOME; red before WP04: written against history::FILE, it could not compile before it (the property is structural, as only the success arm records); green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP"
+}

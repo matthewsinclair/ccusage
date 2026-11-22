@@ -1,0 +1,8 @@
+{
+  "id": "AC-04.3",
+  "text": "A usage report says what its account type gives: the plan its login records, as written, and a note in place of figures where the type gives no usage access or no windows.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

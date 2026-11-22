@@ -1,0 +1,11 @@
+{
+  "id": "AT-02.9",
+  "kind": "test",
+  "file": "src/seat.rs:1217",
+  "covers": [
+    "AC-02.4",
+    "AC-02.3"
+  ],
+  "status": "green",
+  "note": "On a disposable keychain, a document over the security -i line is refused before any write, and a move creates no item and keeps apple-tool: and /usr/bin/security on each item it writes; red under the mutant that checks each write only as it is made, in WP02's mutant run at ffc95a1, whose move code 90bd7ea keeps; green in WP02's measured run at 90bd7ea, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5, landed as 9afdf86, and in bin/devbin test keychain at 26da10a, Desk slot 01M79ZAX3CB02ZEKV3RSC1JJ5G"
+}

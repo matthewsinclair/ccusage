@@ -1,0 +1,10 @@
+{
+  "id": "AT-05.4",
+  "kind": "test",
+  "file": "src/predict.rs:708",
+  "covers": [
+    "AC-05.1"
+  ],
+  "status": "green",
+  "note": "predict counts one plan's accounts: the plan most of the usable accounts record, compared whole, a tie going to the active account's plan, else to the lexically first, and with no usable account the plan most of all the accounts record; a usable account on another plan is left out as another plan's allowance, and the rate counts that plan's samples alone; red under the mutants that let a tie ignore the active account, that give it to the lexically last, that project a usable account on another plan, that count every plan's samples in the rate, that count the least common plan, and that leave no plan when no account is usable, in cc's ST0003/WP04 run in Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, which carried ic's tier grouping and herdr notes; green at 7cac510 in that run (landed as 1648348..b08623d); with ISSUE:0008 an account left out also says how many of its weekly samples the rate leaves out, green at 23b177f in cc's ISSUE:0008 run in Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM"
+}

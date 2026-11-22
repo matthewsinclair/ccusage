@@ -1,0 +1,10 @@
+{
+  "id": "AT-08.4",
+  "kind": "test",
+  "file": "tests/cli.rs:1759",
+  "covers": [
+    "AC-08.4"
+  ],
+  "status": "green",
+  "note": "ccusage herdr launch, in a scratch Herdr home: refuses with no Herdr home, and with a pointer to ccusage herdr install while the mod is not installed; says herdr-app is not on PATH when it is not; with a stand-in herdr-app, asks for do tab.new {\"name\":\"ccusage\",\"mod\":\"ccusage\"} and says it opened the panel; gives Herdr's own refusal in Herdr's words and exits 1; takes no --force, and then asks Herdr nothing. Red at 04541bc and green at 122e7f6 in Desk slot 01M7M3JQMZPVBE5FVRFR7H0JBD, the no-home case green at 30cf57b in slot 01M7M3QY8YBTKS1TS2B60CPB7G; rebased onto main 3f7b195 as 4b9e71f, e59912f and 23a7640, and green at 23a7640 in slot 01M7M3VZHCYVEDYA3256J75PEZ."
+}

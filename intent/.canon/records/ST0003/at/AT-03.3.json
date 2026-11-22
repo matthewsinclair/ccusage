@@ -1,0 +1,11 @@
+{
+  "id": "AT-03.3",
+  "kind": "test",
+  "file": "tests/cli.rs:956",
+  "covers": [
+    "AC-03.1",
+    "AC-03.2"
+  ],
+  "status": "green",
+  "note": "A switch parks the previous account's login and seats the next one's, and list and usage read each login where it lives, before and after; red under the mutant whose usage reads the profile's own store, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea"
+}

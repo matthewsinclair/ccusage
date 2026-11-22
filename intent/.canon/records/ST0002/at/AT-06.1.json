@@ -1,0 +1,10 @@
+{
+  "id": "AT-06.1",
+  "kind": "test",
+  "file": "src/display.rs:1116",
+  "covers": [
+    "AC-06.1"
+  ],
+  "status": "green",
+  "note": "display::next is which::choose's choice once every report is in and fresh, an account that failed counting as in; a report yet to come, or usage as old as the cache's lifetime, gives no marker and the TUI's notice to refresh; with nothing eligible the overview says so; one account's usage shows no marker; red under the mutants that ignore freshness, that mark every account but the choice, and that count a failed account as not in, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+}

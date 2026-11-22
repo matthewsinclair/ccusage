@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 5,
+  "schema": "intent/issue@4.0",
+  "id": "0005",
   "slug": "claude-usage-fork-pr-15-group-duplicate-logins-a",
   "title": "Claude Usage fork (PR #15): group duplicate logins and follow the account Claude Code is using",
   "status": "closed",

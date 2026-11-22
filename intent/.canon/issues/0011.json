@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 11,
+  "schema": "intent/issue@4.0",
+  "id": "0011",
   "slug": "ccusage-herdr-install-says-nothing-while-herdr-a",
   "title": "ccusage herdr install says nothing while herdr-app check runs, and waits for it without a bound",
   "status": "closed",

@@ -1,0 +1,10 @@
+{
+  "id": "AT-08.2",
+  "kind": "test",
+  "file": "src/display.rs:1206",
+  "covers": [
+    "AC-08.2"
+  ],
+  "status": "green",
+  "note": "display::due names the accounts whose usage is missing or older than the cache's lifetime and that the TUI last asked for a whole lifetime ago or more, or never, so no account is asked twice in a lifetime, one whose ask brought nothing fresh included; red under the mutants that ignore when an account was last asked and that take fresh usage as stale, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+}

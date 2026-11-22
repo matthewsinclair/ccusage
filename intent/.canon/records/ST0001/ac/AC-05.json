@@ -1,0 +1,10 @@
+{
+  "id": "AC-05",
+  "text": "intent/wip.md carries the current focus with a verblock, not the template (WP02)",
+  "kind": "non-test",
+  "state": {
+    "is": "withdrawn",
+    "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+    "by": "vc"
+  }
+}

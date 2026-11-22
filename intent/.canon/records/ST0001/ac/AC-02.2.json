@@ -1,0 +1,9 @@
+{
+  "id": "AC-02.2",
+  "text": "intent/wip.md carries the current focus with a verblock, not the template",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "intent/wip.md, first written in commit b79aad5"
+  }
+}

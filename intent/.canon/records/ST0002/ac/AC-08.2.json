@@ -1,0 +1,8 @@
+{
+  "id": "AC-08.2",
+  "text": "The TUI re-fetches an account once its data has passed the usage cache's lifetime and no sooner, and a rate-limited account is not asked again before its retry time.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

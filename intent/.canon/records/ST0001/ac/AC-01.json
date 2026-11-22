@@ -1,0 +1,10 @@
+{
+  "id": "AC-01",
+  "text": "intent lang declared lists rust and shell, so /in-session and the critics apply the Rust and shell rules (WP01)",
+  "kind": "non-test",
+  "state": {
+    "is": "withdrawn",
+    "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+    "by": "vc"
+  }
+}

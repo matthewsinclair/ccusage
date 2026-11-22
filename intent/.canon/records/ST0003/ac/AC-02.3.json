@@ -1,0 +1,8 @@
+{
+  "id": "AC-02.3",
+  "text": "Each refusal (no parked login, an only login in the way, an outgoing login that does not verify, a document over the `security -i` limit) happens before any write.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

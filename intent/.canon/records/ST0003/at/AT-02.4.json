@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.4",
+  "kind": "test",
+  "file": "src/seat.rs:853",
+  "covers": [
+    "AC-02.2"
+  ],
+  "status": "green",
+  "note": "A move interrupted at each point the clean run passes keeps every login somewhere, and the next run finishes it as the clean run did; red under the mutant that stops finishing a seat written from Parked, in WP02's mutant run at ffc95a1, whose move code 90bd7ea keeps; green in WP02's measured run at 90bd7ea, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5, landed as 9afdf86"
+}

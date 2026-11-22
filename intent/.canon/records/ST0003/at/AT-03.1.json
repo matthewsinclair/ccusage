@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.1",
+  "kind": "test",
+  "file": "src/seat.rs:1143",
+  "covers": [
+    "AC-03.2"
+  ],
+  "status": "green",
+  "note": "A login is read from the shared store while its profile is seated, from its own store otherwise and with shared mode off, and neither of an unfinished move's profiles is read; red under the mutant whose home ignores the seat, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea"
+}

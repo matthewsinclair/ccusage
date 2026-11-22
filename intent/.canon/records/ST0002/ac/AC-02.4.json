@@ -1,0 +1,8 @@
+{
+  "id": "AC-02.4",
+  "text": "With a model named, an account is eligible only while its scoped window for that model is below the cap too.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

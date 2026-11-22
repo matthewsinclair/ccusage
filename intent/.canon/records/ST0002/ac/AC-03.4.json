@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.4",
+  "text": "`ccusage which --model NAME` with a name no account's scoped window carries is refused, naming the models seen.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

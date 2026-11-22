@@ -1,0 +1,9 @@
+{
+  "id": "AC-07.1",
+  "text": "README and the CHANGELOG describe `which`, `predict`, the cap key, the history file, the JSON contract, the Herdr mod and the refresh policy as built.",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "vc's read of README's which, predict, usage history, Herdr panel and refresh policy sections and CHANGELOG's 0.1.9 lines, as landed at b08623d (predict's one plan and herdr's install terms included), 2026-11-13"
+  }
+}

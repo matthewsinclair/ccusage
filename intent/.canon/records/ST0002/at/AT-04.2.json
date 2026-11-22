@@ -1,0 +1,10 @@
+{
+  "id": "AT-04.2",
+  "kind": "test",
+  "file": "src/history.rs:275",
+  "covers": [
+    "AC-04.1"
+  ],
+  "status": "green",
+  "note": "A window keeps its first sample, then one each time its percent changes; an unchanged percent adds nothing, and each account keeps its own windows; red under the mutant that samples an unchanged percent, in the first WP04 run at 31c0482, Desk slot 01M79ZVHT2C8B2ADTBWY7YQ73W; green in the WP04 run at 1831d5c (landed as 68376eb..1831d5c), Desk slot 01M79ZZWCJB2Q02BHAEM58XVKP"
+}

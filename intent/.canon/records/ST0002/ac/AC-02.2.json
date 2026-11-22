@@ -1,0 +1,8 @@
+{
+  "id": "AC-02.2",
+  "text": "An account whose data is older than the usage cache's lifetime, whose weekly reset has passed, or that has no weekly window is unknown: listed with its reason and never chosen.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

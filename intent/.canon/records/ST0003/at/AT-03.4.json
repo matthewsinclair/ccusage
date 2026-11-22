@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.4",
+  "kind": "test",
+  "file": "tests/cli.rs:999",
+  "covers": [
+    "AC-03.4"
+  ],
+  "status": "green",
+  "note": "use --none returns every login to its profile and leaves the shared store with none, the layout an older ccusage reads, with launchd pointed at the active profile on macOS, and use seats it again; refused beside a name and with shared mode off; red under the mutant whose none moves nothing, in WP03's mutant run at 350e689, and under the mutant whose none clears launchd, in the follow-up's mutant run at 46295e6; green in the follow-up's measured run at 46295e6, Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8, landed as 2019b93; with ISSUE:0008's incoming check, its test verifies work's own login where it lives before the switch back, as a usage fetch would, so it stays offline, green at 53a9119 in cc's second ISSUE:0008 run in Desk slot 01M7M1TTN0ZZ8XEYCZEQGC1DAF"
+}

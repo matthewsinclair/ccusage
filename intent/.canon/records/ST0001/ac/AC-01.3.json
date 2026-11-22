@@ -1,0 +1,9 @@
+{
+  "id": "AC-01.3",
+  "text": "AGENTS.md is resynced from project state with intent agents sync; usage-rules.md, the project's own contract, names this project's real checks by pointing at README's Development section and docs/releasing.md, and says that AGENTS.md's Bats and unlocked cargo lines are Intent's generic language text, not this project's commands; README no longer says Intent integration is deferred",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "vc validated: usage-rules.md points at README's Development section and docs/releasing.md and names AGENTS.md's Bats and unlocked cargo lines as Intent's generic text (41eb982); README's deferred line gone and AGENTS.md resynced, untouched since (80179a5)"
+  }
+}

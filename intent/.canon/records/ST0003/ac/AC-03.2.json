@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.2",
+  "text": "Usage fetches, renewals and `list` read each account's login from where it lives, before and after a switch.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

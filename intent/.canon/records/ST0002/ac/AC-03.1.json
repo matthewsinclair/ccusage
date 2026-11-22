@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.1",
+  "text": "`ccusage which` prints the choice with one reason line, then the rest in rank order one line each, and exits 0; with nothing eligible it says so on stdout, names the soonest reset and exits 1.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

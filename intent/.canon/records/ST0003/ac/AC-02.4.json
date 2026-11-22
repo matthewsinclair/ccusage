@@ -1,0 +1,8 @@
+{
+  "id": "AC-02.4",
+  "text": "A move waits for a held Claude Code lock, and on a disposable keychain it creates no item and keeps `apple-tool:` on each item it writes.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

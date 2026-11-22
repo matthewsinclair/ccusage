@@ -1,0 +1,9 @@
+{
+  "id": "AC-00.1",
+  "text": "intent doctor reports no finding and no advisory, the stale-backup advisory included",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "intent doctor at 2026-11-03 10:01Z: 0 findings and no advisory, exit 0 (vc)"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.9",
+  "kind": "test",
+  "file": "src/switch.rs:389",
+  "covers": [
+    "AC-03.4"
+  ],
+  "status": "green",
+  "note": "Adoption replaces the shared config's own login only when Claude can no longer renew it, or when its account keeps another login in a profile, and otherwise refuses saying how to keep it; red under the mutant that always replaces, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea"
+}

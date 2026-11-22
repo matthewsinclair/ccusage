@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.11",
+  "kind": "test",
+  "file": "src/usage.rs:1710",
+  "covers": [
+    "AC-02.3"
+  ],
+  "status": "green",
+  "note": "An outgoing profile with neither an email nor an account record to check its login against is refused as unverified before the login is renewed or the profile endpoint is asked whose it is (vc's WP04 nit, built with ISSUE:0008); red at 6f077cd, where the profile endpoint's connection error came back in place of the refusal, and green at 23b177f in cc's ISSUE:0008 run in Desk slot 01M7JQCS4KTNMQVRNWBQQ3KTGM"
+}

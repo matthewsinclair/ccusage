@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.4",
+  "kind": "test",
+  "file": "tests/cli.rs:1468",
+  "covers": [
+    "AC-03.4"
+  ],
+  "status": "green",
+  "note": "which --model with a name no scoped window carries is refused before anything is printed, naming the models seen; any case of a model seen is that model, spelled as the usage spells it; red under the mutant that matches model names by case, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)"
+}

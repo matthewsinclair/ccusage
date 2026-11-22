@@ -1,0 +1,10 @@
+{
+  "id": "AC-02",
+  "text": "intent claude upgrade --apply has written the Claude canon and git hooks, and the pre-commit gate ran the critics and intent doctor on a real commit (WP01)",
+  "kind": "non-test",
+  "state": {
+    "is": "withdrawn",
+    "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+    "by": "vc"
+  }
+}

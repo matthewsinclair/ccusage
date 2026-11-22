@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 10,
+  "schema": "intent/issue@4.0",
+  "id": "0010",
   "slug": "nits-from-vc-s-reads-of-issue-0008-s-two-units-a",
   "title": "Nits from vc's reads of ISSUE:0008's two units and ic's read of its landed text, for a later release",
   "status": "closed",

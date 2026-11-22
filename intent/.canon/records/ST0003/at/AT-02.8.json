@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.8",
+  "kind": "test",
+  "file": "src/seat.rs:1182",
+  "covers": [
+    "AC-02.4"
+  ],
+  "status": "green",
+  "note": "A move waits while Claude Code holds the shared store's refresh or write lock, or a profile's refresh lock; red under the mutant that takes only the shared store's locks, in WP02's mutant run at ffc95a1, whose move code 90bd7ea keeps; green in WP02's measured run at 90bd7ea, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5, landed as 9afdf86"
+}

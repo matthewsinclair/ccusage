@@ -1,0 +1,8 @@
+{
+  "id": "AC-08.1",
+  "text": "The Herdr verb writes the mod into a Herdr home, replaces only a copy it wrote that nobody has edited, refuses anything else without `--force`, reports `herdr-app check`'s verdict, and never touches a layout or `keys.json`.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

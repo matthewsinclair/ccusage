@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.5",
+  "kind": "test",
+  "file": "src/which.rs:649",
+  "covers": [
+    "AC-02.4"
+  ],
+  "status": "green",
+  "note": "With a model named, an account whose scoped window for it is at the cap is at cap and not chosen, the model matched regardless of case; an account with no scoped window for the model is bounded by the weekly window alone, and the headroom is the lesser of the weekly room and the scoped room in weekly terms; red before WP02: written against which::choose, it could not compile before it; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3"
+}

@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.1",
+  "text": "In shared mode `ccusage use NAME` puts NAME's login in the shared store and its account record in the shared `.claude.json`, parks the previous account's login in its profile, and unsets launchd's variable.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

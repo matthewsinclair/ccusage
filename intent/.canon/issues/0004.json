@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 4,
+  "schema": "intent/issue@4.0",
+  "id": "0004",
   "slug": "release-tooling-ships-python-sign-macos-finalize",
   "title": "Release tooling ships Python: sign-macos, finalize-release, signing_test.py and two heredocs",
   "status": "closed",

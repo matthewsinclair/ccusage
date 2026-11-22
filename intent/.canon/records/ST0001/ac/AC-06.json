@@ -1,0 +1,10 @@
+{
+  "id": "AC-06",
+  "text": "intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule (WP03)",
+  "kind": "non-test",
+  "state": {
+    "is": "withdrawn",
+    "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+    "by": "vc"
+  }
+}

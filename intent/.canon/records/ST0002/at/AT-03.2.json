@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.2",
+  "kind": "test",
+  "file": "tests/cli.rs:1330",
+  "covers": [
+    "AC-03.2"
+  ],
+  "status": "green",
+  "note": "which --json is version 1 of the shape cc and ic agreed: the top-level and per-account fields by name and in order, the scoped entries, states, ranks and causes, headroom rounded to 0.1, and every time RFC 3339 in UTC to the second with a Z, its accounts in the text's order; cc signed its meaning at 90ca48e; red under the mutants that spell at_cap otherwise and that keep a time's fraction, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)"
+}

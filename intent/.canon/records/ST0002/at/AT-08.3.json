@@ -1,0 +1,10 @@
+{
+  "id": "AT-08.3",
+  "kind": "test",
+  "file": "tests/cli.rs:403",
+  "covers": [
+    "AC-08.2"
+  ],
+  "status": "green",
+  "note": "A rate-limited account's cooldown holds through --refresh, its last usage kept and the cooldown said, with no request made; the cache every fetch reads through, the TUI's included, fetches nothing before an account's retry time; red under the mutant that changes what the cooldown says, which the test pins, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+}

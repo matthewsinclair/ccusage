@@ -1,0 +1,10 @@
+{
+  "id": "AT-05.1",
+  "kind": "test",
+  "file": "src/predict.rs:583",
+  "covers": [
+    "AC-05.1"
+  ],
+  "status": "green",
+  "note": "The burn rate is the rises in the weekly windows across every account over the hours from the first weekly sample to the last, a rise across a reset counting from 0 and a fall as none; the test computes its expected rate from the fixture history; red under the mutants that count no rise across a reset and that count a fall, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+}

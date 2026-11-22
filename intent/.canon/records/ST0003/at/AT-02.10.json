@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.10",
+  "kind": "test",
+  "file": "src/seat.rs:924",
+  "covers": [
+    "AC-02.2"
+  ],
+  "status": "green",
+  "note": "An interrupted move whose parked login has gone from its profile's store is refused as changed and writes nothing more; red under the mutant that takes a lost park for no change, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea"
+}

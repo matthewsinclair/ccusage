@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 3,
+  "schema": "intent/issue@4.0",
+  "id": "0003",
   "slug": "engineering-01-appears-twice-in-claude-usage-the",
   "title": "engineering.01 appears twice in Claude Usage: the main Claude config holds its own login of a profile's account",
   "status": "closed",

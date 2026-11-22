@@ -1,0 +1,8 @@
+{
+  "id": "AC-01.1",
+  "text": "Every parsed usage window carries its kind, and its model when scoped, read from the `limits` array and the legacy fields alike, and the output of `usage` and of the TUI is unchanged.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

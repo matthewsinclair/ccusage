@@ -1,6 +1,6 @@
 {
-  "schema": "intent/issue@3.0",
-  "number": 6,
+  "schema": "intent/issue@4.0",
+  "id": "0006",
   "slug": "adopt-devbin-commit-hv-s-vendored-install-and-de",
   "title": "Adopt devbin: commit hv's vendored install and declare Ccusage's languages and commands",
   "status": "closed",

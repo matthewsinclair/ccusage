@@ -1,0 +1,10 @@
+{
+  "id": "AT-06.2",
+  "kind": "test",
+  "file": "tests/cli.rs:1645",
+  "covers": [
+    "AC-06.1"
+  ],
+  "status": "green",
+  "note": "ccusage usage --all marks which's choice next, as the TUI does, while ccusage usage NAME marks none; red under the mutant that leaves usage --all without the marker, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7)"
+}

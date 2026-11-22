@@ -1,0 +1,8 @@
+{
+  "id": "AC-04.1",
+  "text": "`ccusage doctor` reports where each login is, an interrupted move, a shared login that is not the active profile's, and either Claude Code flag that is off its default.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

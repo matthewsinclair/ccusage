@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.3",
+  "text": "`ccusage use`, the TUI's `a` key and `ccusage which --use` make an account active through one function, and `which --use` changes nothing when nothing is eligible.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.2",
+  "kind": "test",
+  "file": "tests/cli.rs:920",
+  "covers": [
+    "AC-03.1"
+  ],
+  "status": "green",
+  "note": "use seats the profile's login in the shared store, copies only its account record into the shared .claude.json, and clears launchd's login directory; red under the mutant that leaves launchd set, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea"
+}

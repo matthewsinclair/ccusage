@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.1",
+  "kind": "test",
+  "file": "src/which.rs:409",
+  "covers": [
+    "AC-02.1"
+  ],
+  "status": "green",
+  "note": "The worked example at 2026-11-13T05:27Z, with the resets as the endpoint gave them, jitter included, chooses hello and ranks engineering04, then engineering01 and engineering02, then engineering00; red under the raw-instant mutant (resets ranked unrounded) in the first WP02 run at fdfe1e5, Desk slot 01M79X4M2FR0A8NCRRNG412NQG; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3"
+}

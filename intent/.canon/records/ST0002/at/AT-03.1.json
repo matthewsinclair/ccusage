@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.1",
+  "kind": "test",
+  "file": "tests/cli.rs:1292",
+  "covers": [
+    "AC-03.1"
+  ],
+  "status": "green",
+  "note": "which prints the chosen account's line first, with its room before the cap, its reset and its reason, then the rest in rank order, eligible, at the cap and unknown; with nothing eligible its first line says so and names the soonest reset, the reason goes to stderr and it exits 1; help lists the verb; red under the mutants that print the text in reverse order and that exit 0 with nothing eligible, in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F; green in the WP03 run at 90ca48e, Desk slot 01M7A0HZDCG6MXWT7T6AV2VP1F (landed as 5139af2)"
+}

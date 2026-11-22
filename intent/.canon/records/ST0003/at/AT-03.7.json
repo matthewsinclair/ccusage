@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.7",
+  "kind": "test",
+  "file": "tests/cli.rs:1089",
+  "covers": [
+    "AC-03.3"
+  ],
+  "status": "green",
+  "note": "run gives Claude the shared config and no login directory, whatever the shell exported, and switches first to a profile that is not active; red under the mutant that does not switch, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea; with ISSUE:0008's incoming check, home has the fixture's email and its own login is verified where it lives before the switch to it, as a usage fetch would, so the test stays offline, green at 53a9119 in cc's second ISSUE:0008 run in Desk slot 01M7M1TTN0ZZ8XEYCZEQGC1DAF"
+}

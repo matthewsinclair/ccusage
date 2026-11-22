@@ -1,0 +1,10 @@
+{
+  "id": "AT-01.4",
+  "kind": "test",
+  "file": "src/display.rs:1009",
+  "covers": [
+    "AC-01.1"
+  ],
+  "status": "green",
+  "note": "The overview's labels are unchanged: the pin passed on the parser before WP01 and after it; red in WP01's first run at d3a24e5 (its own expectation was wrong) and under the label mutant; green in WP01's measured run at 8103e4d (landed as 0da313c), Desk slot 01M79WDS69Q5DKMVMKHDJ9AZS2"
+}

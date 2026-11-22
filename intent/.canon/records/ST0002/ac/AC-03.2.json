@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.2",
+  "text": "`ccusage which --json` emits the versioned shape cc and ic agreed, with the same choice and order as the text.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "AC-04",
+  "text": "intent/whiteboard/README.md declares hv, vc and dc with their scopes and names vc as the reader of hv/inbox.*, and hv is registered (WP02)",
+  "kind": "non-test",
+  "state": {
+    "is": "withdrawn",
+    "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+    "by": "vc"
+  }
+}

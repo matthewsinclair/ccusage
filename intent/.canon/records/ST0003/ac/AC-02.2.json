@@ -1,0 +1,8 @@
+{
+  "id": "AC-02.2",
+  "text": "A move interrupted after any step is finished by the next run, and at no point is an account without a login.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

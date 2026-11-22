@@ -1,0 +1,10 @@
+{
+  "id": "AT-08.1",
+  "kind": "test",
+  "file": "tests/cli.rs:1661",
+  "covers": [
+    "AC-08.1"
+  ],
+  "status": "green",
+  "note": "ccusage herdr install writes the mod and a record of it into a scratch Herdr home, refuses a missing home, replaces only its own unedited copy (files Herdr writes there aside), refuses an edited one until --force, reports herdr-app check's verdict and exits 1 when it fails; remove takes out an unedited copy, and an edited one only with --force; layouts and keys.json are as they were; red under the mutants that replace an edited copy, that count Herdr's jsconfig.json as an edit, and that take a failed check for a pass, in the run of WP05, WP06, WP08 and WP07 in Desk slot 01M7A1JYDSQNNHNNN55ACXCX40; green at 70adaf7 in that run (landed as d57a014..258e0a7); then its test adds a herdr-app on PATH that cannot be run, said with its cause, and a hidden .git, which install and remove refuse without --force, red under the mutants that call a herdr-app that cannot run missing and that take a hidden directory for Herdr's own, in cc's ST0003/WP04 run in Desk slot 01M7A68EK9GKKRVBEVE6G2B8MA, which carried ic's tier grouping and herdr notes; green at 7cac510 in that run (landed as 1648348..b08623d)"
+}

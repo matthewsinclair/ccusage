@@ -1,0 +1,9 @@
+{
+  "id": "AC-06.1",
+  "text": "After the rollout on rhadamanth no Claude session carries `CLAUDE_SECURESTORAGE_CONFIG_DIR`, each account has exactly one login, and Claude Usage lists each account once with nothing prompting.",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "The live repair of 2026-11-17 (ISSUE:0008, by hv's hands, from hv's runbook): Herdr Core was stopped and started again, so every pane's shell is new, and ccusage dir now refuses to name a directory in shared mode, so Molt's env.sh leaves the variable unset in every new shell; launchd and vc's own claude process, the one session running, carry no CLAUDE_SECURESTORAGE_CONFIG_DIR. ccusage doctor exits 0 with each account's login in exactly one store, and ccusage's last usage fetch verified each login against its own profile's email (engineering00, engineering01, engineering02, engineering04 and hello). Claude Usage 1.18, the mainline release hv installed today in place of a fork build that had run since 2026-11-11, lists engineering.02, engineering.04, engineering@geodica.com, engineering.01 and hello once each, with nothing prompting (hv's screenshots in vc's window; hv: LGTM). Caveat found on the way: Claude Usage, fork and mainline alike, names each Keychain item once per run and keeps its history per item, so after a later switch its names are stale until it restarts."
+  }
+}

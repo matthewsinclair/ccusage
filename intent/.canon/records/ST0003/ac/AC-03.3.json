@@ -1,0 +1,8 @@
+{
+  "id": "AC-03.3",
+  "text": "`ccusage dir` prints no directory for the active account and fails, `ccusage run` gives its child no login directory, `login` of the active profile seats the new login, and `logout` of the active profile is refused.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

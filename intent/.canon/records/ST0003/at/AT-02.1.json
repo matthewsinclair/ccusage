@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.1",
+  "kind": "test",
+  "file": "src/seat.rs:785",
+  "covers": [
+    "AC-02.1"
+  ],
+  "status": "green",
+  "note": "A move leaves each account one login, and every other key of each document, in its order, as it was; red under the swap_remove mutant in WP02's mutant run at ffc95a1, whose move code 90bd7ea keeps, once the test's rest() stopped reading through without_login; green in WP02's measured run at 90bd7ea, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5, landed as 9afdf86"
+}

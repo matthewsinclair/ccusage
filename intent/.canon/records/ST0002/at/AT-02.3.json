@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.3",
+  "kind": "test",
+  "file": "src/config.rs:297",
+  "covers": [
+    "AC-02.3"
+  ],
+  "status": "green",
+  "note": "The cap reads from the [which] table with which::DEFAULT_CAP when the key is absent, and a config that did not set it is written back without it; no test writes the cap as a literal, every one derives from DEFAULT_CAP; red before WP02: written against Config::cap and the [which] table, it could not compile before them; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3"
+}

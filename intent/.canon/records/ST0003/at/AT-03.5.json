@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.5",
+  "kind": "test",
+  "file": "tests/cli.rs:890",
+  "covers": [
+    "AC-03.3"
+  ],
+  "status": "green",
+  "note": "dir prints no directory for the active account and fails saying why, and names a parked profile's; red under the mutant that names the active one, in WP03's mutant run at 350e689; green in WP03's measured run at 350e689, Desk slot 01M7A10VT8E47A13AR5BYK4RK6, landed as eea2dea"
+}

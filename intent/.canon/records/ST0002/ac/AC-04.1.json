@@ -1,0 +1,8 @@
+{
+  "id": "AC-04.1",
+  "text": "Each successful fetch records a sample for each window whose percent changed, in a 0600 file under XDG_STATE_HOME; a cache hit records nothing; and samples are dropped by age, one weekly window, not at a reset.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

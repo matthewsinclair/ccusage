@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.4",
+  "kind": "test",
+  "file": "tests/cli.rs:330",
+  "covers": [
+    "AC-02.3"
+  ],
+  "status": "green",
+  "note": "init and add write back a config that set no cap without a [which] table, and keep the cap of one that set it; list refuses a cap of 0; every cap in the test derives from which::DEFAULT_CAP; red under the cap-of-0 mutant in the first WP02 run at fdfe1e5, Desk slot 01M79X4M2FR0A8NCRRNG412NQG; green in the WP02 landing run at b18d115 (landed as 7301020), Desk slot 01M79YVVC17G99W2CD280ZP6W3"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "AT-03.10",
+  "kind": "test",
+  "file": "src/usage.rs:1129",
+  "covers": [
+    "AC-03.4"
+  ],
+  "status": "green",
+  "note": "A login is dead only when the token endpoint refuses its refresh with invalid_grant; another 400, a 401 or a 5xx is an error, so adoption stops instead of replacing; red under the mutant that takes any failure for dead, in WP03's mutant run at 350e689, and under the mutant that takes any 400 for dead, in the follow-up's mutant run at 46295e6; green in the follow-up's measured run at 46295e6, Desk slot 01M7A1SFMQY40KBJ95VXWDZBT8, landed as 2019b93"
+}

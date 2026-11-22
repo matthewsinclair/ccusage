@@ -1,0 +1,9 @@
+{
+  "id": "AC-03.1",
+  "text": "intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the matching never-rule",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "b2a54b1: intent/llm/ARCHITECTURE.md records why ccusage reaches Claude's Keychain items only through /usr/bin/security, and intent/llm/RULES.md carries the never-rules (vc)"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "AC-01.1",
+  "text": "hv's trial on the installed Claude Code shows a running session following a login that another process changed, with no restart, and the record names the version, the delay and any prompt.",
+  "kind": "non-test",
+  "state": {
+    "is": "satisfied",
+    "evidence": "ST0003/WP01's record of hv's trial, 2026-11-13 on Claude Code 2.1.323: session A held the login B stored 73 s earlier, with no restart and no prompt, and answered its next request after one automatic thread replay"
+  }
+}

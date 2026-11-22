@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.3",
+  "kind": "test",
+  "file": "src/seat.rs:834",
+  "covers": [
+    "AC-02.1"
+  ],
+  "status": "green",
+  "note": "A parked login is seated in a shared store that holds none; red before WP02: written against seat::run, it could not compile before it; green in WP02's measured run at 90bd7ea, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5, landed as 9afdf86"
+}

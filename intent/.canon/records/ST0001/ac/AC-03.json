@@ -1,0 +1,10 @@
+{
+  "id": "AC-03",
+  "text": "AGENTS.md is resynced from project state, and README no longer says Intent integration is deferred (WP01)",
+  "kind": "non-test",
+  "state": {
+    "is": "withdrawn",
+    "reason": "renumbered to the AC-<wp>.<n> scheme: doctor reads AC-<gg> as WP <gg>, so AC-04 to AC-07 named work packages ST0001 lacks",
+    "by": "vc"
+  }
+}

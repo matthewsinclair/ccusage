@@ -1,0 +1,8 @@
+{
+  "id": "AC-02.3",
+  "text": "The cap comes from config.toml, with one default when the key is absent; a config that does not set the key is written back without it; and no test writes the cap as a literal.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

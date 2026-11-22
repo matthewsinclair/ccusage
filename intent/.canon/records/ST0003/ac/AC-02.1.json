@@ -1,0 +1,8 @@
+{
+  "id": "AC-02.1",
+  "text": "A move leaves each account with exactly one login, moves only `claudeAiOauth`, and leaves every other key of each document unchanged.",
+  "kind": "test",
+  "state": {
+    "is": "computed"
+  }
+}

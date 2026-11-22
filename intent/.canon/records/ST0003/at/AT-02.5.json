@@ -1,0 +1,10 @@
+{
+  "id": "AT-02.5",
+  "kind": "test",
+  "file": "src/seat.rs:901",
+  "covers": [
+    "AC-02.2"
+  ],
+  "status": "green",
+  "note": "Another move is refused, before any write, while an interrupted one is unfinished; red under the mutant that lets any journal resume, in WP02's mutant run at ffc95a1, whose move code 90bd7ea keeps; green in WP02's measured run at 90bd7ea, Desk slot 01M79YXEJ5ZXWANGXNGA1BTBV5, landed as 9afdf86"
+}
