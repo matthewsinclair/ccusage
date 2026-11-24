@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-24T05:23:54Z:v0.48: vc - account verb ruled (25); gardening only (24, 26)"
+verblock: "2026-11-24T10:47:02Z:v0.49: vc - closed on hv's word (27); usage-rules line 18 deleted"
 ---
 
 # Work In Progress
@@ -8,9 +8,10 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**No thread or issue open: no new development (decision 26); vc gardens its memory on geodica-estate's advice (decision 24), and every other seat holds**
+**No thread or issue open: every seat holds until hv's next word (decision 27 closed the 2026-11-24 session)**
 
-- When the next release is cut is hv's word: one cut with everything ready, never small ones. Before it, dc runs the kovacs gates at its final code tip (dc's todo 17), first checking its kovacs driver against the devbin the tree then carries (0.1.29 since d7bc738). From devbin-vc: devbin 0.1.25 renders a formula's install as `cp_r`, and from 0.1.26 the release gates empty their build cache before a run when it holds more than `release.gate_cache.max` (12G unless the project declares another), so if one Ccusage build is larger, the project declares a larger size or every gate run builds cold.
+- The next release waits for hv's word to cut. Before it, dc runs the kovacs gates at its final code tip (dc's todo 17). Its first step checks dc's kovacs driver against the devbin that the tree then carries (0.1.30 since 73b6eb9).
+- From devbin-vc, for that cut: devbin 0.1.25 renders a formula's install as `cp_r`. From 0.1.26, the release gates empty their build cache before a run when it holds more than `release.gate_cache.max` (12G unless the project declares another). If one Ccusage build is larger, the project declares a larger size, or every gate run builds cold.
 
 ## Active Steel Threads
 
@@ -18,19 +19,11 @@ None open. `intent outstanding` shows what is.
 
 ## Holds
 
-- Claude Usage: `richhickson/claudecodeusage` PR #18 (opened 2026-11-17, head 52b846a) makes Claude Usage name an item's account again when its login changes, and keep history per account. Until it is merged and released, and hv updates Claude Usage from that release, Claude Usage 1.18 keeps each Keychain item's first account name for its whole run: read accounts from ccusage, not from Claude Usage, and restart Claude Usage after a switch. vc checks the PR's state at each pickup (vc's hold 5).
+- Claude Usage: `richhickson/claudecodeusage` PR #18 (opened 2026-11-17, head 52b846a) makes Claude Usage name an item's account again when its login changes, and keep history per account. Until it is merged and released, and hv updates Claude Usage from that release, read accounts from ccusage, not from Claude Usage, and restart Claude Usage after a switch. vc checks the PR's state at each pickup (vc's hold 5).
+- The push of main to `local`: decision 4 sends main there once committed, and nothing goes upstream but a release. The permission check refuses the push from vc's session, so hv runs `git -C /Users/matts/Devel/prj/Ccusage push local main`. vc checks `git log local/main..main` at each pickup.
 
 ## Notes
 
-- hv's standing rulings are the decisions on hv's board. Among them: ccusage works for any Claude account type and shows whatever it can for that type; a login a switch drops lapses and is not revoked; engineering04 stays a profile until its allowance is exhausted; Herdr's verbs are `ccusage herdr install`, `remove` and `launch`; `ccusage use NAME` stays the account verb, and `bin/devbin use` is the dev/opt/brew switch (decision 25); hv alone runs `ccusage use`, `login` and `which --use`, on vc's steps; Claude Usage comes from its mainline release, not hv's fork; a PR or commit to someone else's repository carries no (C) line; everything ready goes into one cut, never small releases.
-- hv opens the ccusage panel with cmd-shift-u, a `tab.new` line hv keeps in Molt-matts' `config/herdr-app/keys.json` (decision 17). Herdr reads that file live, and ccusage never writes it. r in the panel forces a fetch (decision 18). The mod takes the key itself through its focus handle (4ae853f), so keys.json carries no `mod:ccusage` section.
-- A Claude session started from a shell that exports `CLAUDE_SECURESTORAGE_CONFIG_DIR` reads that profile's own store, and no switch reaches it. `ccusage doctor` names such sessions, and a switch is refused while one reads the target's store.
-- A `/login` typed inside a Claude session writes into whichever store that session reads, with no check of whose login it is. `ccusage login NAME` checks the email after, and a switch verifies the incoming login before it seats it.
-- Before a cut, dc runs the project's gates on kovacs (Linux ARM64): Linux clippy sees code that only a macOS arm uses, which rhadamanth's runs miss, and the release config names no legs.
-- A cut runs in hv's own terminal tab (`bin/devbin release X.Y.Z`), never as a `!` command. From vc's go until vc says it is published, the seats write nothing to the checkout, whiteboard verbs included, even when a first attempt stopped.
-- All work lands on `main` in the one checkout; cc and ic build in their own worktrees and land by fast-forward. Every commit passes the pre-commit gate (guards, the rust and shell critics, intent doctor). main goes to `local` once committed (hv's decision 4); nothing goes upstream but a release.
-- Validation is hv's one layer of proof: vc reads the diff, and the builder's one measured run, in a Desk cargo slot, is the run. devbin-vc holds the Desk. Test only what changed; the full suite runs once, in the cut's gates.
-- A landing that moves lines under another thread's acceptance-test rows leaves its citations wrong until they are re-cited; whoever sees it re-cites and tells the other seat. For an open thread `intent at lint` finds them; for a Completed one it skips the cited-line check (Intent issues 0665 and 0698), so run `intent doctor --scope all`, whose closed-contract-drift advisory names each row.
+- hv's standing rulings are the decisions on hv's board, which every pickup prints.
 - Never run a local ccusage build against the real XDG config without hv's OK: a renewal spends real tokens. Test in a throwaway HOME and XDG tree.
-- What a running Claude session launched with is in its process (`ps -E -ww -p <pid> -o command=`), not in a Bash tool's shell, which re-runs Molt's startup for each command.
 - How Claude Code reads its login is in ST0003's Context (`intent st show ST0003`), with the command that reads it from the installed binary again. How a Herdr mod is built is in `~/.config/herdr-app/AGENTS.md`, which the Herdr app rewrites at each start.

@@ -1,0 +1,15 @@
+{
+  "id": "01M86JQ60JYDHTZR6HG7GH640V",
+  "ts": "2026-11-24T10:48:10.514Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.add",
+  "subject": {
+    "type": "node",
+    "id": "vc"
+  },
+  "payload": {
+    "kind": "hold",
+    "text": "Holding until hv pushes main to local with git -C /Users/matts/Devel/prj/Ccusage push local main (decision 4). The permission check refuses that push from vc's session. Released when git log local/main..main prints nothing; check it at each pickup."
+  }
+}

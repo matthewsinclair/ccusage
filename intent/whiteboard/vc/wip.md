@@ -3,9 +3,9 @@ node: vc
 name: Validation Claude
 role: validation
 session_id: 1ea449dd-1305-4e03-956b-a04e020230ed
-heartbeat_at: 2026-11-24 09:34Z
-status: active
-focus: "Holding on hv's word (decision 26): no new development. vc gardens its memory on geodica-estate's advice (decision 24), and every other seat holds. Open while holding: PR #18 upstream (hold 5); cc's lint finding with intent-vc (decision 20)"
+heartbeat_at: 2026-11-24 10:48Z
+status: paused
+focus: "Closed on hv's word (decision 27): no thread or issue is open, and every seat holds until hv's next word. Open: PR #18 upstream (hold 5), and hv's push of main to local (decision 4)"
 claims: []
 ---
 
@@ -13,7 +13,7 @@ claims: []
 
 ## DOING
 
-- Validate each hand-over from cc, ic and dc against its work package's or issue's acceptance. Under hv's one layer of proof, the verdict is vc's read of the diff, with the builder's measured Desk run as the one run; a second run only when the landed tree differs from the tested one (check with git diff on src, tests and Cargo files). Each verdict goes to the builder's inbox and live, and vc closes a work package with intent wp done once intent at lint is clean for it. (edited)
+_(none)_
 
 ## TODO
 
@@ -22,10 +22,11 @@ _(none)_
 ## Holds
 
 - Holding until richhickson merges https://github.com/richhickson/claudecodeusage/pull/18 (opened 2026-11-17 by hv's hand, head 52b846a: Claude Usage names an item's account again when its login changes, and keeps history per account) and ships it in a release: then hv updates Claude Usage from that release, and watch-out 2 (stale names after a switch) is spent. Check the PR's state at each pickup (gh pr view 18 -R richhickson/claudecodeusage --json state).
+- Holding until hv pushes main to local with git -C /Users/matts/Devel/prj/Ccusage push local main (decision 4). The permission check refuses that push from vc's session. Released when git log local/main..main prints nothing; check it at each pickup.
 
 ## Watch-outs
 
-- Claude Usage 1.18 (mainline, /Applications since 2026-11-17) keeps each Keychain item's first email for its whole run, so after any ccusage switch its names are stale until it restarts, and the shared item's history mixes the accounts seated there. Until ic's PR lands upstream: read accounts from ccusage, not Claude Usage's names, and expect hv to restart it after a switch. Its login item: the fork's test build has the same bundle id, so check at the next login that the one running is /Applications/ClaudeUsage.app.
+- Claude Usage 1.18 (mainline, in /Applications since 2026-11-17) keeps each Keychain item's first email for its whole run. After a ccusage switch, its account names are stale until it restarts, and the shared item's history mixes the accounts seated there. Until PR #18 ships upstream, read accounts from ccusage, not from Claude Usage, and expect hv to restart Claude Usage after a switch. (edited)
 
 ## Decisions
 
