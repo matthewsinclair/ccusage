@@ -220,6 +220,14 @@
       "text": "hv's word of 2026-11-24, given to vc in the live channel (vc's window, a message typed mid-turn, read after 05:23Z by vc's date -u), in hv's wording, recorded by vc as mediator: \"We're not doing new devel for ccusage now, just doing some memory gardenning based on geodica-estate's advice. No need to get carried away just yet.\" vc's reading: this session is memory gardening alone, on geodica-estate's advice (decision 24). No seat builds, no thread or issue opens, and vc sends the seats no work; every other seat holds as its board says.",
       "state": "live",
       "recorded_at": "2026-11-24T05:24:37.944Z"
+    },
+    {
+      "node": "hv",
+      "kind": "decision",
+      "seq": 27,
+      "text": "hv's words of 2026-11-24, relayed to vc live by two sessions, recorded by vc as mediator. (1) devbin-vc, which holds the Desk, stamped its relay 10:40Z; the wording is devbin-vc's. hv closes the sessions woken for the Claude rules work. Each session closes its threads, work packages and issues that are done and proven, and never runs intent fc. It leans out wip.md, its board and its restart notes, and deletes text that repeats a global rule. It localfolds with commits by path, releases its board and sends devbin-vc \"CLOSED <estate> <sha>\". It pushes nothing that its standing rules do not already push. (2) geodica-estate relayed hv's ruling, given in geodica-estate's window; vc read it between 10:42Z and 10:45Z by vc's date -u, and the wording is geodica-estate's: \"delete the no-wrap line from usage-rules.md before you fold and release\". It answers the question that vc put to hv the same day. vc's reading: vc deletes only usage-rules.md line 18 (\"Never wrap lines in markdown files by hand.\"), which restates house-rules.md, in a commit of its own, and pushes nothing. No thread, work package or issue is open, so none closes. vc then folds and releases its board. main stays ahead of local until hv runs the push (decision 4).",
+      "state": "live",
+      "recorded_at": "2026-11-24T10:47:00.258Z"
     }
   ],
   "sent": [],

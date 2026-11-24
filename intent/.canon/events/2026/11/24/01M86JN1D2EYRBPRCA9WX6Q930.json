@@ -1,0 +1,15 @@
+{
+  "id": "01M86JN1D2EYRBPRCA9WX6Q930",
+  "ts": "2026-11-24T10:47:00.258Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's words of 2026-11-24, relayed to vc live by two sessions, recorded by vc as mediator. (1) devbin-vc, which holds the Desk, stamped its relay 10:40Z; the wording is devbin-vc's. hv closes the sessions woken for the Claude rules work. Each session closes its threads, work packages and issues that are done and proven, and never runs intent fc. It leans out wip.md, its board and its restart notes, and deletes text that repeats a global rule. It localfolds with commits by path, releases its board and sends devbin-vc \"CLOSED <estate> <sha>\". It pushes nothing that its standing rules do not already push. (2) geodica-estate relayed hv's ruling, given in geodica-estate's window; vc read it between 10:42Z and 10:45Z by vc's date -u, and the wording is geodica-estate's: \"delete the no-wrap line from usage-rules.md before you fold and release\". It answers the question that vc put to hv the same day. vc's reading: vc deletes only usage-rules.md line 18 (\"Never wrap lines in markdown files by hand.\"), which restates house-rules.md, in a commit of its own, and pushes nothing. No thread, work package or issue is open, so none closes. vc then folds and releases its board. main stays ahead of local until hv runs the push (decision 4)."
+  }
+}
