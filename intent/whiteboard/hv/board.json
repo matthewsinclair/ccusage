@@ -196,6 +196,14 @@
       "text": "hv's word of 2026-11-17, given to vc in the live channel (vc's window, read at 10:25Z by vc's date -u), in hv's wording, recorded by vc as mediator: \"If we're done, please send a close out message to each Claude here and we can close.\" vc's reading: ccusage is done for the day, and its sessions end. vc sends each running seat (cc, ic and dc) a close-out, live and in its inbox: clear it, archive what it sent that has been handled, release its board, commit the files those verbs print by path, push nothing, and tell vc live with the commit's hash. vc then pushes main to local, releases its own board last, and tells hv the windows can close. Open across the close: PR #18 upstream (vc's hold 5); dc's todo 17, the next cut's kovacs gates, waits for vc's word; and devbin's decision 178(3) on the account verb, which vc puts to hv at Ccusage's next session (intent/wip.md).",
       "state": "live",
       "recorded_at": "2026-11-17T10:27:20.279Z"
+    },
+    {
+      "node": "hv",
+      "kind": "decision",
+      "seq": 24,
+      "text": "hv's word of 2026-11-24, given to vc in the live channel (vc's window, a message typed mid-turn while vc was booting, read between 05:18Z and 05:20Z by vc's date -u), in hv's wording, recorded by vc as mediator: \"Please finish booting, and then look out for a message on memory gardenning from geodica-estate. You have my approval to apply it when you have a moment to spare.\" vc's reading: vc finishes its boot (pickup, boards and inboxes read, the team's sequence, and the account-verb question that intent/wip.md holds for this session's start), then watches for geodica-estate's message, which had not come by 05:20Z. When it comes, vc applies it to vc's own memory, the Ccusage project's memory directory, once nothing else is in hand, on this approval and without asking again; anything it asks beyond that memory comes to hv first.",
+      "state": "live",
+      "recorded_at": "2026-11-24T05:21:05.626Z"
     }
   ],
   "sent": [],

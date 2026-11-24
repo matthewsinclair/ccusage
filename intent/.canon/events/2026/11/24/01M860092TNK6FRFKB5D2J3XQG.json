@@ -1,0 +1,15 @@
+{
+  "id": "01M860092TNK6FRFKB5D2J3XQG",
+  "ts": "2026-11-24T05:21:05.626Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's word of 2026-11-24, given to vc in the live channel (vc's window, a message typed mid-turn while vc was booting, read between 05:18Z and 05:20Z by vc's date -u), in hv's wording, recorded by vc as mediator: \"Please finish booting, and then look out for a message on memory gardenning from geodica-estate. You have my approval to apply it when you have a moment to spare.\" vc's reading: vc finishes its boot (pickup, boards and inboxes read, the team's sequence, and the account-verb question that intent/wip.md holds for this session's start), then watches for geodica-estate's message, which had not come by 05:20Z. When it comes, vc applies it to vc's own memory, the Ccusage project's memory directory, once nothing else is in hand, on this approval and without asking again; anything it asks beyond that memory comes to hv first."
+  }
+}
