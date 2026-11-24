@@ -1,0 +1,15 @@
+{
+  "id": "01M8604N76SJ75P3585VPH6ABH",
+  "ts": "2026-11-24T05:23:29.126Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's ruling of 2026-11-24, given to vc in the live channel (vc's question dialog, answered by 05:23Z by vc's date -u), recorded by vc as mediator. vc put the two rulings on Ccusage's account verb side by side: hv's word of 2026-11-06 in Ccusage's record (the rename to activate reverted at 977589e, so ccusage use NAME stays the account verb, as 0.1.9 to 0.1.11 ship it) and devbin's decision 178(3) of 2026-11-14 08:49Z, devbin-vc's wording of hv's TUI answer (\"Ccusage's use-to-activate rename is ruled work at Ccusage's next session\"). hv chose \"Keep use\" from vc's options, whose wording is vc's: \"The 11-06 revert stands. ccusage use NAME stays the account verb and nothing is renamed.\" vc's reading: 178(3) is spent. No seat renames the account verb; the dev, opt and brew switch stays bin/devbin use, a devbin verb. vc's acts the same hour: devbin-vc told live, to record the answer beside 178(3); the question leaves intent/wip.md."
+  }
+}

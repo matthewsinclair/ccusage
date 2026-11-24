@@ -1,5 +1,5 @@
 ---
-verblock: "2026-11-17T10:28:32Z:v0.47: vc - ccusage closed for the day (decision 23)"
+verblock: "2026-11-24T05:23:54Z:v0.48: vc - account verb ruled (25); gardening only (24, 26)"
 ---
 
 # Work In Progress
@@ -8,10 +8,9 @@ DOING and TODO only; finished work lives in its commit, its closed issue or its 
 
 ## Current Focus
 
-**No thread or issue open: ccusage is closed for the day (decision 23), and every seat waits for hv's next word**
+**No thread or issue open: no new development (decision 26); vc gardens its memory on geodica-estate's advice (decision 24), and every other seat holds**
 
-- When the next release is cut is hv's word: one cut with everything ready, never small ones. Before it, dc runs the kovacs gates at its final code tip (dc's todo 17), first checking its kovacs driver against devbin 0.1.26 (310f3d0). From devbin-vc: devbin 0.1.25 renders a formula's install as `cp_r`, and from 0.1.26 the release gates empty their build cache before a run when it holds more than `release.gate_cache.max` (12G unless the project declares another), so if one Ccusage build is larger, the project declares a larger size or every gate run builds cold.
-- At the next session's start, vc puts two rulings on the account verb to hv. In Ccusage's record, hv's word of 2026-11-06 reverted the account verb's rename to `activate` (977589e), so `ccusage use NAME` stays the account verb, as 0.1.9 to 0.1.11 ship it. In devbin's record, hv's answer of 2026-11-14 08:49Z (devbin's decision 178(3)) reads: "Ccusage's use-to-activate rename is ruled work at Ccusage's next session." No seat renames anything until hv says which stands. devbin's record does not show whether devbin-vc's question of 2026-11-14 set the 2026-11-06 revert beside the rename, so vc puts the two to hv as they stand, then tells devbin-vc hv's answer, which devbin-vc records beside 178(3).
+- When the next release is cut is hv's word: one cut with everything ready, never small ones. Before it, dc runs the kovacs gates at its final code tip (dc's todo 17), first checking its kovacs driver against the devbin the tree then carries (0.1.29 since d7bc738). From devbin-vc: devbin 0.1.25 renders a formula's install as `cp_r`, and from 0.1.26 the release gates empty their build cache before a run when it holds more than `release.gate_cache.max` (12G unless the project declares another), so if one Ccusage build is larger, the project declares a larger size or every gate run builds cold.
 
 ## Active Steel Threads
 
@@ -23,7 +22,7 @@ None open. `intent outstanding` shows what is.
 
 ## Notes
 
-- hv's standing rulings are the decisions on hv's board. Among them: ccusage works for any Claude account type and shows whatever it can for that type; a login a switch drops lapses and is not revoked; engineering04 stays a profile until its allowance is exhausted; Herdr's verbs are `ccusage herdr install`, `remove` and `launch`; hv alone runs `ccusage use`, `login` and `which --use`, on vc's steps; Claude Usage comes from its mainline release, not hv's fork; a PR or commit to someone else's repository carries no (C) line; everything ready goes into one cut, never small releases.
+- hv's standing rulings are the decisions on hv's board. Among them: ccusage works for any Claude account type and shows whatever it can for that type; a login a switch drops lapses and is not revoked; engineering04 stays a profile until its allowance is exhausted; Herdr's verbs are `ccusage herdr install`, `remove` and `launch`; `ccusage use NAME` stays the account verb, and `bin/devbin use` is the dev/opt/brew switch (decision 25); hv alone runs `ccusage use`, `login` and `which --use`, on vc's steps; Claude Usage comes from its mainline release, not hv's fork; a PR or commit to someone else's repository carries no (C) line; everything ready goes into one cut, never small releases.
 - hv opens the ccusage panel with cmd-shift-u, a `tab.new` line hv keeps in Molt-matts' `config/herdr-app/keys.json` (decision 17). Herdr reads that file live, and ccusage never writes it. r in the panel forces a fetch (decision 18). The mod takes the key itself through its focus handle (4ae853f), so keys.json carries no `mod:ccusage` section.
 - A Claude session started from a shell that exports `CLAUDE_SECURESTORAGE_CONFIG_DIR` reads that profile's own store, and no switch reaches it. `ccusage doctor` names such sessions, and a switch is refused while one reads the target's store.
 - A `/login` typed inside a Claude session writes into whichever store that session reads, with no check of whose login it is. `ccusage login NAME` checks the email after, and a switch verifies the incoming login before it seats it.

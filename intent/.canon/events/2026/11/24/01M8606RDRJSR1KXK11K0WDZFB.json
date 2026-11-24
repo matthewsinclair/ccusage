@@ -1,0 +1,15 @@
+{
+  "id": "01M8606RDRJSR1KXK11K0WDZFB",
+  "ts": "2026-11-24T05:24:37.944Z",
+  "principal": "Matthew Sinclair <hello@matthewsinclair.com>",
+  "project_id": "699cb1e4-5f11-4833-bce3-d376c1d54f2f",
+  "op": "wb.decide",
+  "subject": {
+    "type": "node",
+    "id": "hv"
+  },
+  "payload": {
+    "kind": "decision",
+    "text": "hv's word of 2026-11-24, given to vc in the live channel (vc's window, a message typed mid-turn, read after 05:23Z by vc's date -u), in hv's wording, recorded by vc as mediator: \"We're not doing new devel for ccusage now, just doing some memory gardenning based on geodica-estate's advice. No need to get carried away just yet.\" vc's reading: this session is memory gardening alone, on geodica-estate's advice (decision 24). No seat builds, no thread or issue opens, and vc sends the seats no work; every other seat holds as its board says."
+  }
+}
